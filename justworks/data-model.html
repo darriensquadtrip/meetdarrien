@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Central — Data Model</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700&family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --navy: #1B2845;
+    --navy-mid: #263B5E;
+    --navy-light: #3B6FAA;
+    --blue: #4A90D9;
+    --blue-light: #6BB3E8;
+    --yellow: #FFD166;
+    --coral: #EF6461;
+    --green: #06D6A0;
+    --white: #FFFFFF;
+    --off-white: #F0F2F5;
+    --light-gray: #E2E6ED;
+    --mid-gray: #8A95A9;
+    --dark-gray: #4A5568;
+    --text: #2D3748;
+    --bg: #0F1A2E;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Subtle grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(59,111,170,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59,111,170,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 2rem 4rem;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  header .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--yellow);
+    margin-bottom: 0.5rem;
+  }
+
+  header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    color: var(--white);
+    margin-bottom: 0.4rem;
+  }
+
+  header p {
+    color: var(--mid-gray);
+    font-size: 0.85rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.72rem;
+    color: var(--mid-gray);
+  }
+
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+  }
+
+  /* SVG Canvas */
+  .diagram-wrapper {
+    position: relative;
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  svg.diagram {
+    display: block;
+    margin: 0 auto;
+  }
+
+  /* Entity cards in SVG */
+  .entity-group { cursor: pointer; }
+  .entity-group:hover .entity-card { filter: brightness(1.15); }
+  .entity-group:hover .entity-title-bg { filter: brightness(1.1); }
+  .entity-group .entity-card {
+    transition: filter 0.2s ease;
+  }
+
+  /* Tooltip */
+  .tooltip {
+    position: fixed;
+    background: var(--navy);
+    border: 1px solid var(--navy-mid);
+    border-radius: 8px;
+    padding: 1rem;
+    max-width: 320px;
+    z-index: 100;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.2s, transform 0.2s;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+
+  .tooltip.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .tooltip h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--yellow);
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+  }
+
+  .tooltip p {
+    font-size: 0.78rem;
+    color: var(--mid-gray);
+    line-height: 1.5;
+    margin-bottom: 0.5rem;
+  }
+
+  .tooltip .source-badge {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 3px;
+    background: rgba(255,209,102,0.1);
+    color: var(--yellow);
+    border: 1px solid rgba(255,209,102,0.2);
+  }
+
+  .tooltip .fields {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+    margin-top: 0.5rem;
+  }
+
+  .tooltip .field {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    padding: 0.1rem 0.4rem;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.05);
+    color: var(--light-gray);
+  }
+
+  .tooltip .field.pk {
+    background: rgba(6,214,160,0.15);
+    color: var(--green);
+    border: 1px solid rgba(6,214,160,0.2);
+  }
+
+  .tooltip .field.fk {
+    background: rgba(239,100,97,0.12);
+    color: var(--coral);
+    border: 1px solid rgba(239,100,97,0.2);
+  }
+
+  /* Join question callout */
+  .join-callout {
+    margin-top: 2rem;
+    background: rgba(255,209,102,0.06);
+    border: 1px solid rgba(255,209,102,0.15);
+    border-radius: 10px;
+    padding: 1.2rem 1.5rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .join-callout .icon {
+    font-size: 1.3rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  .join-callout h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--yellow);
+    letter-spacing: 1px;
+    margin-bottom: 0.3rem;
+  }
+
+  .join-callout p {
+    font-size: 0.82rem;
+    color: var(--mid-gray);
+    line-height: 1.5;
+  }
+
+  .join-callout code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    background: rgba(255,255,255,0.06);
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    color: var(--coral);
+  }
+
+  /* Footer */
+  .model-footer {
+    margin-top: 2rem;
+    text-align: center;
+    color: var(--mid-gray);
+    font-size: 0.72rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .container { padding: 1rem; }
+    header h1 { font-size: 1.5rem; }
+    .legend { gap: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="label">Customer Central · Data Architecture</div>
+    <h1>Entity Relationship Model</h1>
+    <p>How customer data connects across Justworks Production DB, Salesforce, Zendesk, and Application Logs. Hover over any entity for details.</p>
+  </header>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#06D6A0"></div> Production DB</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#4A90D9"></div> Salesforce</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#FFD166"></div> Zendesk</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#EF6461"></div> App Logs / Billing</div>
+    <div class="legend-item"><div class="legend-dot" style="background:rgba(255,255,255,0.2)"></div> Customer Context API (Unified)</div>
+  </div>
+
+  <div class="diagram-wrapper">
+    <svg class="diagram" viewBox="0 0 1200 700" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 3.5 L 0 7 z" fill="#3B6FAA" opacity="0.6"/>
+        </marker>
+        <marker id="arrow-yellow" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 3.5 L 0 7 z" fill="#FFD166" opacity="0.6"/>
+        </marker>
+        <marker id="arrow-coral" viewBox="0 0 10 7" refX="10" refY="3.5" markerWidth="8" markerHeight="6" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 3.5 L 0 7 z" fill="#EF6461" opacity="0.5"/>
+        </marker>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="2" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <!-- ===== RELATIONSHIP LINES ===== -->
+      <!-- Company → Member (1:many) -->
+      <line x1="230" y1="180" x2="230" y2="300" stroke="#3B6FAA" stroke-width="1.5" opacity="0.4" marker-end="url(#arrow)"/>
+      <text x="240" y="245" fill="#3B6FAA" font-size="9" opacity="0.6" font-family="JetBrains Mono, monospace">1:N</text>
+
+      <!-- Company → Plan (1:many) -->
+      <line x1="310" y1="140" x2="490" y2="140" stroke="#3B6FAA" stroke-width="1.5" opacity="0.4" marker-end="url(#arrow)"/>
+      <text x="395" y="132" fill="#3B6FAA" font-size="9" opacity="0.6" font-family="JetBrains Mono, monospace">1:N</text>
+
+      <!-- Company → Payroll Run (1:many) -->
+      <line x1="310" y1="170" x2="490" y2="310" stroke="#3B6FAA" stroke-width="1.5" opacity="0.3" marker-end="url(#arrow)"/>
+      <text x="410" y="255" fill="#3B6FAA" font-size="9" opacity="0.5" font-family="JetBrains Mono, monospace">1:N</text>
+
+      <!-- Member → Benefits Election (1:many) -->
+      <line x1="310" y1="360" x2="490" y2="440" stroke="#3B6FAA" stroke-width="1.5" opacity="0.3" marker-end="url(#arrow)"/>
+
+      <!-- Company → SF Account (cross-system join — HIGHLIGHT) -->
+      <line x1="230" y1="80" x2="730" y2="80" stroke="#FFD166" stroke-width="2" opacity="0.5" stroke-dasharray="6,4" marker-end="url(#arrow-yellow)"/>
+      <rect x="430" y="64" width="110" height="20" rx="3" fill="#FFD166" opacity="0.15"/>
+      <text x="485" y="78" fill="#FFD166" font-size="8" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="600">CROSS-SYSTEM</text>
+
+      <!-- SF Account → SF Case (1:many) -->
+      <line x1="810" y1="180" x2="810" y2="285" stroke="#4A90D9" stroke-width="1.5" opacity="0.4" marker-end="url(#arrow)"/>
+      <text x="820" y="235" fill="#4A90D9" font-size="9" opacity="0.6" font-family="JetBrains Mono, monospace">1:N</text>
+
+      <!-- SF Account → SF Opportunity (1:many) -->
+      <line x1="890" y1="170" x2="1030" y2="140" stroke="#4A90D9" stroke-width="1.5" opacity="0.3" marker-end="url(#arrow)"/>
+
+      <!-- Member → SF Contact (cross-system) -->
+      <line x1="310" y1="345" x2="730" y2="345" stroke="#FFD166" stroke-width="2" opacity="0.4" stroke-dasharray="6,4"/>
+      <rect x="470" y="330" width="110" height="20" rx="3" fill="#FFD166" opacity="0.12"/>
+      <text x="525" y="344" fill="#FFD166" font-size="8" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="600">CROSS-SYSTEM</text>
+
+      <!-- SF Account → ZD Organization (THE KEY JOIN) -->
+      <path d="M 810 180 Q 810 540 630 560 Q 450 580 350 560" stroke="#EF6461" stroke-width="2.5" opacity="0.5" fill="none" stroke-dasharray="8,5" marker-end="url(#arrow-coral)"/>
+      <rect x="540" y="548" width="160" height="22" rx="4" fill="#EF6461" opacity="0.15" stroke="#EF6461" stroke-width="1" stroke-opacity="0.3"/>
+      <text x="620" y="563" fill="#EF6461" font-size="8" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="700">⚠ KEY JOIN QUESTION</text>
+
+      <!-- ZD Organization → ZD Ticket -->
+      <line x1="280" y1="620" x2="530" y2="620" stroke="#FFD166" stroke-width="1.5" opacity="0.4" marker-end="url(#arrow-yellow)"/>
+      <text x="400" y="612" fill="#FFD166" font-size="9" opacity="0.6" font-family="JetBrains Mono, monospace">1:N</text>
+
+      <!-- Member → Login Events -->
+      <line x1="150" y1="400" x2="150" y2="530" stroke="#EF6461" stroke-width="1.5" opacity="0.3" marker-end="url(#arrow-coral)"/>
+
+      <!-- ===== ENTITY CARDS ===== -->
+
+      <!-- COMPANY (Production DB) -->
+      <g class="entity-group" data-entity="company">
+        <rect class="entity-card" x="110" y="80" width="200" height="100" rx="6" fill="#1B2845" stroke="#06D6A0" stroke-width="1.5"/>
+        <rect class="entity-title-bg" x="110" y="80" width="200" height="28" rx="6" fill="#06D6A0"/>
+        <rect x="110" y="100" width="200" height="8" fill="#06D6A0"/>
+        <text x="210" y="98" fill="#1B2845" font-size="11" font-weight="700" text-anchor="middle" font-family="DM Sans, sans-serif">Company</text>
+        <text x="122" y="125" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">company_id (PK)</text>
+        <text x="122" y="140" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">name, ein, state</text>
+        <text x="122" y="155" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">plan_type, employee_count</text>
+        <text x="122" y="170" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">created_at, status</text>
+      </g>
+
+      <!-- MEMBER (Production DB) -->
+      <g class="entity-group" data-entity="member">
+        <rect class="entity-card" x="110" y="300" width="200" height="100" rx="6" fill="#1B2845" stroke="#06D6A0" stroke-width="1.5"/>
+        <rect class="entity-title-bg" x="110" y="300" width="200" height="28" rx="6" fill="#06D6A0"/>
+        <rect x="110" y="320" width="200" height="8" fill="#06D6A0"/>
+        <text x="210" y="318" fill="#1B2845" font-size="11" font-weight="700" text-anchor="middle" font-family="DM Sans, sans-serif">Member</text>
+        <text x="122" y="345" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">member_id (PK)</text>
+        <text x="122" y="360" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">company_id (FK)</text>
+        <text x="122" y="375" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">role: admin | employee</text>
+        <text x="122" y="390" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">name, email, phone, state</text>
+      </g>
+
+      <!-- PLAN (Production DB) -->
+      <g class="entity-group" data-entity="plan">
+        <rect class="entity-card" x="490" y="80" width="180" height="90" rx="6" fill="#1B2845" stroke="#06D6A0" stroke-width="1.5"/>
+        <rect class="entity-title-bg" x="490" y="80" width="180" height="28" rx="6" fill="#06D6A0"/>
+        <rect x="490" y="100" width="180" height="8" fill="#06D6A0"/>
+        <text x="580" y="98" fill="#1B2845" font-size="11" font-weight="700" text-anchor="middle" font-family="DM Sans, sans-serif">Plan</text>
+        <text x="502" y="125" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">plan_id (PK)</text>
+        <text x="502" y="140" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">type: Payroll|PEO|EOR</text>
+        <text x="502" y="155" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">tier: Basic|Plus</text>
+      </g>
+
+      <!-- PAYROLL RUN (Production DB) -->
+      <g class="entity-group" data-entity="payroll">
+        <rect class="entity-card" x="490" y="270" width="180" height="90" rx="6" fill="#1B2845" stroke="#06D6A0" stroke-width="1.5"/>
+        <rect class="entity-title-bg" x="490" y="270" width="180" height="28" rx="6" fill="#06D6A0"/>
+        <rect x="490" y="290" width="180" height="8" fill="#06D6A0"/>
+        <text x="580" y="288" fill="#1B2845" font-size="11" font-weight="700" text-anchor="middle" font-family="DM Sans, sans-serif">Payroll Run</text>
+        <text x="502" y="315" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">run_id (PK)</text>
+        <text x="502" y="330" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">company_id (FK)</text>
+        <text x="502" y="345" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">pay_date, status, total</text>
+      </g>
+
+      <!-- BENEFITS ELECTION (Production DB) -->
+      <g class="entity-group" data-entity="benefits">
+        <rect class="entity-card" x="490" y="410" width="180" height="90" rx="6" fill="#1B2845" stroke="#06D6A0" stroke-width="1.5"/>
+        <rect class="entity-title-bg" x="490" y="410" width="180" height="28" rx="6" fill="#06D6A0"/>
+        <rect x="490" y="430" width="180" height="8" fill="#06D6A0"/>
+        <text x="580" y="428" fill="#1B2845" font-size="11" font-weight="700" text-anchor="middle" font-family="DM Sans, sans-serif">Benefits Election</text>
+        <text x="502" y="455" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">election_id (PK)</text>
+        <text x="502" y="470" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">member_id (FK)</text>
+        <text x="502" y="485" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">carrier, plan, dependents</text>
+      </g>
+
+      <!-- SF ACCOUNT (Salesforce) -->
+      <g class="entity-group" data-entity="sf_account">
+        <rect class="entity-card" x="730" y="80" width="200" height="100" rx="6" fill="#1B2845" stroke="#4A90D9" stroke-width="1.5"/>
+        <rect class="entity-title-bg" x="730" y="80" width="200" height="28" rx="6" fill="#4A90D9"/>
+        <rect x="730" y="100" width="200" height="8" fill="#4A90D9"/>
+        <text x="830" y="98" fill="#FFFFFF" font-size="11" font-weight="700" text-anchor="middle" font-family="DM Sans, sans-serif">SF Account</text>
+        <text x="742" y="125" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">account_id (PK)</text>
+        <text x="742" y="140" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">justworks_company_id?</text>
+        <text x="742" y="155" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">owner, industry, ARR</text>
+        <text x="742" y="170" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">health_score, tier</text>
+      </g>
+
+      <!-- SF CONTACT (Salesforce) -->
+      <g class="entity-group" data-entity="sf_contact">
+        <rect class="entity-card" x="730" y="300" width="200" height="90" rx="6" fill="#1B2845" stroke="#4A90D9" stroke-width="1.5"/>
+        <rect class="entity-title-bg" x="730" y="300" width="200" height="28" rx="6" fill="#4A90D9"/>
+        <rect x="730" y="320" width="200" height="8" fill="#4A90D9"/>
+        <text x="830" y="318" fill="#FFFFFF" font-size="11" font-weight="700" text-anchor="middle" font-family="DM Sans, sans-serif">SF Contact</text>
+        <text x="742" y="345" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">contact_id (PK)</text>
+        <text x="742" y="360" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">account_id (FK)</text>
+        <text x="742" y="375" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">name, email, role, phone</text>
+      </g>
+
+      <!-- SF CASE (Salesforce) -->
+      <g class="entity-group" data-entity="sf_case">
+        <rect class="entity-card" x="730" y="440" width="200" height="90" rx="6" fill="#1B2845" stroke="#4A90D9" stroke-width="1.5"/>
+        <rect class="entity-title-bg" x="730" y="440" width="200" height="28" rx="6" fill="#4A90D9"/>
+        <rect x="730" y="460" width="200" height="8" fill="#4A90D9"/>
+        <text x="830" y="458" fill="#FFFFFF" font-size="11" font-weight="700" text-anchor="middle" font-family="DM Sans, sans-serif">SF Case</text>
+        <text x="742" y="485" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">case_id (PK)</text>
+        <text x="742" y="500" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">account_id (FK)</text>
+        <text x="742" y="515" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">subject, status, priority</text>
+      </g>
+
+      <!-- SF OPPORTUNITY (Salesforce) -->
+      <g class="entity-group" data-entity="sf_opp">
+        <rect class="entity-card" x="990" y="100" width="180" height="80" rx="6" fill="#1B2845" stroke="#4A90D9" stroke-width="1.5"/>
+        <rect class="entity-title-bg" x="990" y="100" width="180" height="28" rx="6" fill="#4A90D9"/>
+        <rect x="990" y="120" width="180" height="8" fill="#4A90D9"/>
+        <text x="1080" y="118" fill="#FFFFFF" font-size="11" font-weight="700" text-anchor="middle" font-family="DM Sans, sans-serif">SF Opportunity</text>
+        <text x="1002" y="145" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">opp_id, account_id</text>
+        <text x="1002" y="160" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">stage, amount, close_date</text>
+      </g>
+
+      <!-- ZD ORGANIZATION (Zendesk) -->
+      <g class="entity-group" data-entity="zd_org">
+        <rect class="entity-card" x="110" y="530" width="200" height="90" rx="6" fill="#1B2845" stroke="#FFD166" stroke-width="1.5"/>
+        <rect class="entity-title-bg" x="110" y="530" width="200" height="28" rx="6" fill="#FFD166"/>
+        <rect x="110" y="550" width="200" height="8" fill="#FFD166"/>
+        <text x="210" y="548" fill="#1B2845" font-size="11" font-weight="700" text-anchor="middle" font-family="DM Sans, sans-serif">ZD Organization</text>
+        <text x="122" y="575" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">org_id (PK)</text>
+        <text x="122" y="590" fill="#EF6461" font-size="8.5" font-family="JetBrains Mono, monospace">sf_account_id? ← THE JOIN</text>
+        <text x="122" y="605" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">name, domain</text>
+      </g>
+
+      <!-- ZD TICKET (Zendesk) -->
+      <g class="entity-group" data-entity="zd_ticket">
+        <rect class="entity-card" x="530" y="570" width="200" height="100" rx="6" fill="#1B2845" stroke="#FFD166" stroke-width="1.5"/>
+        <rect class="entity-title-bg" x="530" y="570" width="200" height="28" rx="6" fill="#FFD166"/>
+        <rect x="530" y="590" width="200" height="8" fill="#FFD166"/>
+        <text x="630" y="588" fill="#1B2845" font-size="11" font-weight="700" text-anchor="middle" font-family="DM Sans, sans-serif">ZD Ticket</text>
+        <text x="542" y="615" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">ticket_id (PK)</text>
+        <text x="542" y="630" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">org_id (FK), requester_id</text>
+        <text x="542" y="645" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">subject, status, priority</text>
+        <text x="542" y="660" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">channel, satisfaction</text>
+      </g>
+
+      <!-- LOGIN EVENT (App Logs) -->
+      <g class="entity-group" data-entity="login_event">
+        <rect class="entity-card" x="60" y="440" width="170" height="80" rx="6" fill="#1B2845" stroke="#EF6461" stroke-width="1.5"/>
+        <rect class="entity-title-bg" x="60" y="440" width="170" height="28" rx="6" fill="#EF6461"/>
+        <rect x="60" y="460" width="170" height="8" fill="#EF6461"/>
+        <text x="145" y="458" fill="#FFFFFF" font-size="11" font-weight="700" text-anchor="middle" font-family="DM Sans, sans-serif">Login / Activity</text>
+        <text x="72" y="485" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">member_id (FK)</text>
+        <text x="72" y="500" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">event_type, timestamp</text>
+        <text x="72" y="515" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">feature_used, page_viewed</text>
+      </g>
+
+      <!-- BILLING / PAYMENT (Billing System) -->
+      <g class="entity-group" data-entity="billing">
+        <rect class="entity-card" x="990" y="300" width="180" height="90" rx="6" fill="#1B2845" stroke="#EF6461" stroke-width="1.5"/>
+        <rect class="entity-title-bg" x="990" y="300" width="180" height="28" rx="6" fill="#EF6461"/>
+        <rect x="990" y="320" width="180" height="8" fill="#EF6461"/>
+        <text x="1080" y="318" fill="#FFFFFF" font-size="11" font-weight="700" text-anchor="middle" font-family="DM Sans, sans-serif">Billing / Payment</text>
+        <text x="1002" y="345" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">invoice_id (PK)</text>
+        <text x="1002" y="360" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">company_id (FK)</text>
+        <text x="1002" y="375" fill="#8A95A9" font-size="8.5" font-family="JetBrains Mono, monospace">amount, status, due_date</text>
+      </g>
+
+      <!-- SF Account → Billing connection -->
+      <line x1="930" y1="160" x2="990" y2="310" stroke="#EF6461" stroke-width="1" opacity="0.3" stroke-dasharray="4,4"/>
+
+      <!-- CENTRAL API NODE -->
+      <g class="entity-group" data-entity="api">
+        <rect class="entity-card" x="410" y="180" width="240" height="60" rx="30" fill="#1B2845" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+        <text x="530" y="207" fill="#FFD166" font-size="12" font-weight="700" text-anchor="middle" font-family="DM Sans, sans-serif">Customer Context API</text>
+        <text x="530" y="225" fill="#8A95A9" font-size="9" text-anchor="middle" font-family="JetBrains Mono, monospace">Normalized · Cached · API-first</text>
+      </g>
+
+    </svg>
+  </div>
+
+  <!-- Key Join Question Callout -->
+  <div class="join-callout">
+    <div class="icon">⚠️</div>
+    <div>
+      <h3>DAY 1 SPIKE — THE CRITICAL JOIN</h3>
+      <p>
+        The entire dashboard depends on connecting <code>SF Account.account_id</code> to <code>ZD Organization.org_id</code>.
+        If Zendesk stores a <code>sf_account_id</code> field (or vice versa), we have our join key. If not, we need a bridge table mapping companies across systems.
+        <strong>This spike determines whether we can ship in 6 weeks or need 8.</strong>
+      </p>
+      <p style="margin-top:0.5rem; color: var(--yellow);">
+        Secondary question: Does <code>Company.company_id</code> map cleanly to <code>SF Account.account_id</code>, or is there a custom field like <code>justworks_company_id__c</code> on the Salesforce object?
+      </p>
+    </div>
+  </div>
+
+  <div class="model-footer">
+    Prepared by Darrien Watson · Group Product Manager Candidate · Customer Central Case Study · February 2026
+  </div>
+</div>
+
+<!-- Tooltip -->
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+const entities = {
+  company: {
+    title: 'COMPANY',
+    source: 'Production DB',
+    desc: 'Core entity. One company = one Justworks customer account. Can have multiple plans, admins, and employees. The company_id is the universal key that should map to SF Account and ZD Organization.',
+    fields: [
+      { name: 'company_id', type: 'pk' },
+      { name: 'name', type: '' },
+      { name: 'ein', type: '' },
+      { name: 'state_of_incorporation', type: '' },
+      { name: 'plan_type', type: '' },
+      { name: 'employee_count', type: '' },
+      { name: 'status', type: '' },
+      { name: 'created_at', type: '' },
+    ]
+  },
+  member: {
+    title: 'MEMBER',
+    source: 'Production DB',
+    desc: 'A person associated with a company — either an admin (company owner/HR) or an employee. The role field is critical: CSO agents need different information surfaces for admin callers vs employee callers.',
+    fields: [
+      { name: 'member_id', type: 'pk' },
+      { name: 'company_id', type: 'fk' },
+      { name: 'role', type: '' },
+      { name: 'name', type: '' },
+      { name: 'email', type: '' },
+      { name: 'phone', type: '' },
+      { name: 'state_of_residence', type: '' },
+      { name: 'start_date', type: '' },
+    ]
+  },
+  plan: {
+    title: 'PLAN',
+    source: 'Production DB',
+    desc: 'A company can have multiple plans (e.g., PEO Plus domestically + EOR internationally). The plan determines what features, benefits, and support channels are available.',
+    fields: [
+      { name: 'plan_id', type: 'pk' },
+      { name: 'company_id', type: 'fk' },
+      { name: 'type', type: '' },
+      { name: 'tier', type: '' },
+      { name: 'effective_date', type: '' },
+    ]
+  },
+  payroll: {
+    title: 'PAYROLL RUN',
+    source: 'Production DB',
+    desc: 'Each scheduled payroll execution. Agents frequently need to reference the last few payroll runs when handling pay-related inquiries. Status (pending/processing/completed/failed) is critical.',
+    fields: [
+      { name: 'run_id', type: 'pk' },
+      { name: 'company_id', type: 'fk' },
+      { name: 'pay_date', type: '' },
+      { name: 'status', type: '' },
+      { name: 'gross_total', type: '' },
+      { name: 'employee_count', type: '' },
+    ]
+  },
+  benefits: {
+    title: 'BENEFITS ELECTION',
+    source: 'Production DB',
+    desc: 'Individual member benefit elections. Needed when employees call about their coverage, dependents, or carrier-specific questions. Only exists for PEO Plus customers.',
+    fields: [
+      { name: 'election_id', type: 'pk' },
+      { name: 'member_id', type: 'fk' },
+      { name: 'carrier', type: '' },
+      { name: 'plan_name', type: '' },
+      { name: 'dependents', type: '' },
+      { name: 'effective_date', type: '' },
+    ]
+  },
+  sf_account: {
+    title: 'SALESFORCE ACCOUNT',
+    source: 'Salesforce (Caroline\'s domain)',
+    desc: 'The Salesforce representation of a Justworks customer company. Contains sales context, account owner, ARR, and relationship data not in the production DB. The key question: does this have a justworks_company_id custom field?',
+    fields: [
+      { name: 'account_id', type: 'pk' },
+      { name: 'justworks_company_id__c?', type: 'fk' },
+      { name: 'owner_id', type: '' },
+      { name: 'industry', type: '' },
+      { name: 'arr', type: '' },
+      { name: 'health_score', type: '' },
+    ]
+  },
+  sf_contact: {
+    title: 'SALESFORCE CONTACT',
+    source: 'Salesforce',
+    desc: 'People associated with a Salesforce Account. May or may not map 1:1 to Members in the production DB. Sales team may have contacts who aren\'t yet Justworks members (prospects).',
+    fields: [
+      { name: 'contact_id', type: 'pk' },
+      { name: 'account_id', type: 'fk' },
+      { name: 'name', type: '' },
+      { name: 'email', type: '' },
+      { name: 'role', type: '' },
+    ]
+  },
+  sf_case: {
+    title: 'SALESFORCE CASE',
+    source: 'Salesforce',
+    desc: 'Salesforce Cases may overlap with Zendesk tickets if there\'s a sync in place. Need to understand: are cases created from Zendesk, or independently? Deduplication is a risk.',
+    fields: [
+      { name: 'case_id', type: 'pk' },
+      { name: 'account_id', type: 'fk' },
+      { name: 'subject', type: '' },
+      { name: 'status', type: '' },
+      { name: 'priority', type: '' },
+    ]
+  },
+  sf_opp: {
+    title: 'SALESFORCE OPPORTUNITY',
+    source: 'Salesforce',
+    desc: 'Upsell/cross-sell opportunities. In Phase 2+, surfacing open opportunities helps agents align with sales motions (e.g., a Payroll customer being evaluated for PEO upgrade).',
+    fields: [
+      { name: 'opp_id', type: 'pk' },
+      { name: 'account_id', type: 'fk' },
+      { name: 'stage', type: '' },
+      { name: 'amount', type: '' },
+      { name: 'close_date', type: '' },
+    ]
+  },
+  zd_org: {
+    title: 'ZENDESK ORGANIZATION',
+    source: 'Zendesk',
+    desc: 'The Zendesk representation of a company. THE critical join point: does this have a field mapping to SF Account ID or Justworks company_id? If not, we need to build a bridge table. This is the Day 1 spike.',
+    fields: [
+      { name: 'org_id', type: 'pk' },
+      { name: 'sf_account_id?', type: 'fk' },
+      { name: 'name', type: '' },
+      { name: 'domain', type: '' },
+    ]
+  },
+  zd_ticket: {
+    title: 'ZENDESK TICKET',
+    source: 'Zendesk',
+    desc: 'Individual support interactions. Contains channel (phone/email/chat), satisfaction rating, and the full conversation thread. The interaction timeline in the dashboard merges these with SF Cases.',
+    fields: [
+      { name: 'ticket_id', type: 'pk' },
+      { name: 'org_id', type: 'fk' },
+      { name: 'requester_id', type: 'fk' },
+      { name: 'subject', type: '' },
+      { name: 'status', type: '' },
+      { name: 'channel', type: '' },
+      { name: 'satisfaction', type: '' },
+    ]
+  },
+  login_event: {
+    title: 'LOGIN / ACTIVITY EVENT',
+    source: 'Application Logs',
+    desc: 'Event stream from the Justworks application. Used in Phase 2 for engagement scoring (login frequency, feature usage, self-service ratio). Phase 1 may surface last login date.',
+    fields: [
+      { name: 'member_id', type: 'fk' },
+      { name: 'event_type', type: '' },
+      { name: 'timestamp', type: '' },
+      { name: 'feature_used', type: '' },
+      { name: 'page_viewed', type: '' },
+    ]
+  },
+  billing: {
+    title: 'BILLING / PAYMENT',
+    source: 'Billing System',
+    desc: 'Invoice and payment records. Payment status (current/past-due/failed) is one of the most important signals for account health. The Payment Cascade feature (PS-6) visualizes the flow from invoice → payment attempt → resolution.',
+    fields: [
+      { name: 'invoice_id', type: 'pk' },
+      { name: 'company_id', type: 'fk' },
+      { name: 'amount', type: '' },
+      { name: 'status', type: '' },
+      { name: 'due_date', type: '' },
+      { name: 'payment_method', type: '' },
+    ]
+  },
+  api: {
+    title: 'CUSTOMER CONTEXT API',
+    source: 'Unified Layer (New Build)',
+    desc: 'The normalized, API-first service that aggregates all sources into a single query interface. Returns a complete customer profile in <2 seconds. Built as a service so Sales, RevOps, and Product can consume it too — not hardcoded to the CSO dashboard.',
+    fields: [
+      { name: 'company_id (input)', type: 'pk' },
+      { name: 'member_id (input)', type: '' },
+      { name: 'freshness_timestamps', type: '' },
+      { name: 'cache_ttl: 5min', type: '' },
+    ]
+  }
+};
+
+const tooltip = document.getElementById('tooltip');
+let activeEntity = null;
+
+document.querySelectorAll('.entity-group').forEach(group => {
+  group.addEventListener('mouseenter', (e) => {
+    const key = group.dataset.entity;
+    const data = entities[key];
+    if (!data) return;
+
+    activeEntity = key;
+
+    let fieldsHtml = data.fields.map(f =>
+      `<span class="field ${f.type}">${f.name}</span>`
+    ).join('');
+
+    tooltip.innerHTML = `
+      <h3>${data.title}</h3>
+      <span class="source-badge">${data.source}</span>
+      <p style="margin-top:0.5rem">${data.desc}</p>
+      <div class="fields">${fieldsHtml}</div>
+    `;
+    tooltip.classList.add('visible');
+  });
+
+  group.addEventListener('mousemove', (e) => {
+    const x = e.clientX + 16;
+    const y = e.clientY - 10;
+    const rect = tooltip.getBoundingClientRect();
+
+    tooltip.style.left = (x + rect.width > window.innerWidth)
+      ? (e.clientX - rect.width - 16) + 'px'
+      : x + 'px';
+    tooltip.style.top = (y + rect.height > window.innerHeight)
+      ? (e.clientY - rect.height - 10) + 'px'
+      : y + 'px';
+  });
+
+  group.addEventListener('mouseleave', () => {
+    activeEntity = null;
+    tooltip.classList.remove('visible');
+  });
+});
+</script>
+</body>
+</html>

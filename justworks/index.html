@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Darrien Watson | Justworks</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg-deep: #0f1117;
+    --bg-surface: #1a1c25;
+    --bg-card: #22252f;
+    --bg-elevated: #2a2d3a;
+    --border: #333748;
+    --text-primary: #f0f0f5;
+    --text-secondary: #9a9db5;
+    --text-muted: #6b6e85;
+    --accent-blue: #4e8cff;
+    --accent-purple: #8b5cf6;
+    --accent-green: #34d399;
+    --accent-amber: #fbbf24;
+    --accent-red: #f87171;
+    --accent-pink: #f472b6;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ═══════════════════════════════════════
+     PASSWORD GATE
+     ═══════════════════════════════════════ */
+  .gate-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    transition: opacity 0.6s var(--ease-out), visibility 0.6s;
+  }
+
+  .gate-overlay.unlocked {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .gate-card {
+    width: 100%;
+    max-width: 420px;
+    padding: 48px 40px;
+    margin: 0 20px;
+    text-align: center;
+  }
+
+  .gate-logo {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #0f172a;
+    margin-bottom: 48px;
+  }
+
+  .gate-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 24px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .gate-icon svg { width: 28px; height: 28px; color: #fff; }
+
+  .gate-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 8px;
+  }
+
+  .gate-subtitle {
+    font-size: 0.95rem;
+    color: #475569;
+    margin-bottom: 32px;
+  }
+
+  .gate-input {
+    width: 100%;
+    padding: 14px 18px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    color: #0f172a;
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    margin-bottom: 16px;
+  }
+
+  .gate-input:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.08);
+  }
+
+  .gate-input.error {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+    animation: shake 0.4s ease-in-out;
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-6px); }
+    40%, 80% { transform: translateX(6px); }
+  }
+
+  .gate-btn {
+    width: 100%;
+    padding: 14px 24px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.2s var(--ease-out), box-shadow 0.2s;
+  }
+
+  .gate-btn:hover { transform: translateY(-1px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.08); }
+  .gate-btn:active { transform: translateY(0); }
+
+  .gate-error-msg {
+    font-size: 0.85rem;
+    color: #ef4444;
+    margin-top: 12px;
+    min-height: 20px;
+  }
+
+  /* ═══════════════════════════════════════
+     DESKTOP LAYOUT
+     ═══════════════════════════════════════ */
+  .page-content {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.6s var(--ease-out);
+  }
+
+  .page-content.visible {
+    display: block;
+    opacity: 1;
+  }
+
+  .desktop {
+    min-height: 100vh;
+    background: linear-gradient(145deg, #1a1028 0%, #0f1117 40%, #0d1520 100%);
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .desktop::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 15% 25%, rgba(139, 92, 246, 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 85% 75%, rgba(78, 140, 255, 0.04) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  .desktop-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 32px 120px;
+  }
+
+  /* ── Welcome bar ── */
+  .welcome-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 28px;
+    background: rgba(26, 28, 37, 0.7);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 32px;
+  }
+
+  .welcome-text h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    margin-bottom: 6px;
+  }
+
+  .welcome-text h1 em { color: var(--accent-blue); font-style: italic; }
+
+  .welcome-text p {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    max-width: 580px;
+  }
+
+  .welcome-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+  }
+
+  .welcome-stat {
+    text-align: center;
+    padding: 0 16px;
+    border-right: 1px solid var(--border);
+  }
+
+  .welcome-stat:last-child { border-right: none; }
+
+  .welcome-stat .stat-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--accent-blue);
+  }
+
+  .welcome-stat .stat-label {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 600;
+  }
+
+  /* ── Section label ── */
+  .section-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    padding-left: 4px;
+  }
+
+  /* ── Hero files ── */
+  .hero-files {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 36px;
+  }
+
+  .hero-file {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    padding: 22px 24px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .hero-file::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+  }
+
+  .hero-file.pptx::before { background: linear-gradient(90deg, #ea580c, #dc2626); }
+  .hero-file.proto::before { background: linear-gradient(90deg, var(--accent-green), var(--accent-blue)); }
+
+  .hero-file:hover {
+    border-color: var(--accent-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  .hero-file-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    flex-shrink: 0;
+  }
+
+  .hero-file.pptx .hero-file-icon { background: linear-gradient(135deg, #ea580c, #dc2626); }
+  .hero-file.proto .hero-file-icon { background: linear-gradient(135deg, var(--accent-green), #059669); }
+
+  .hero-file-info { flex: 1; }
+
+  .hero-file-info .file-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+
+  .hero-file.pptx .file-label { color: #fb923c; }
+  .hero-file.proto .file-label { color: var(--accent-green); }
+
+  .hero-file-info h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 3px; }
+  .hero-file-info p { font-size: 0.8rem; color: var(--text-muted); }
+
+  .hero-file-badge {
+    padding: 7px 16px;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .hero-file.pptx .hero-file-badge { background: rgba(234, 88, 12, 0.15); color: #fb923c; }
+  .hero-file.proto .hero-file-badge { background: rgba(52, 211, 153, 0.15); color: var(--accent-green); }
+
+  /* ── Folder grid ── */
+  .folder-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .folder-grid-bottom {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .folder-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .folder-card:hover {
+    border-color: var(--accent-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+
+  .folder-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+
+  .folder-icon {
+    width: 52px;
+    height: 44px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .folder-icon .folder-count {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--bg-deep);
+    border: 1.5px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.62rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+  }
+
+  .folder-icon.purple { background: rgba(139, 92, 246, 0.15); }
+  .folder-icon.green { background: rgba(52, 211, 153, 0.15); }
+  .folder-icon.blue { background: rgba(78, 140, 255, 0.15); }
+  .folder-icon.amber { background: rgba(251, 191, 36, 0.15); }
+  .folder-icon.muted { background: rgba(107, 110, 133, 0.15); }
+
+  .folder-card-title h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    line-height: 1.3;
+  }
+
+  .folder-card-title .folder-why {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  .folder-contents {
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .folder-file {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    padding: 4px 0;
+  }
+
+  .folder-file .ff-icon {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.55rem;
+    flex-shrink: 0;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .ff-html { background: rgba(78, 140, 255, 0.15); color: var(--accent-blue); }
+
+  .folder-file span { flex: 1; }
+  .folder-file .ff-type { font-size: 0.6rem; font-weight: 600; color: var(--text-muted); opacity: 0.6; }
+
+  /* ── Finder overlay ── */
+  .finder-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    align-items: center;
+    justify-content: center;
+  }
+
+  .finder-overlay.open { display: flex; }
+
+  .finder-window {
+    width: 600px;
+    max-width: calc(100% - 40px);
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+    animation: finderIn 0.25s ease-out;
+  }
+
+  @keyframes finderIn {
+    from { opacity: 0; transform: scale(0.95) translateY(8px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .finder-titlebar {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    gap: 8px;
+  }
+
+  .finder-dots { display: flex; gap: 6px; }
+  .finder-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .finder-dot.red { background: #ef4444; cursor: pointer; }
+  .finder-dot.red:hover { background: #dc2626; }
+  .finder-dot.yellow { background: #eab308; }
+  .finder-dot.green { background: #22c55e; }
+
+  .finder-title {
+    flex: 1;
+    text-align: center;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+
+  .finder-body { padding: 8px; }
+
+  .finder-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.12s;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .finder-row:hover { background: var(--bg-card); }
+
+  .finder-row-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    flex-shrink: 0;
+  }
+
+  .finder-row-info { flex: 1; }
+  .finder-row-info h4 { font-size: 0.88rem; font-weight: 600; margin-bottom: 1px; }
+  .finder-row-info p { font-size: 0.75rem; color: var(--text-muted); }
+
+  .finder-row-badge {
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 3px 8px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  .badge-interactive { background: rgba(52, 211, 153, 0.12); color: var(--accent-green); }
+  .badge-document { background: rgba(139, 92, 246, 0.12); color: var(--accent-purple); }
+
+  /* ── Dock ── */
+  .dock {
+    position: fixed;
+    bottom: 14px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+    padding: 8px 16px;
+    background: rgba(26, 28, 37, 0.85);
+    backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 18px;
+    z-index: 50;
+  }
+
+  .dock-item {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+    cursor: pointer;
+    transition: transform 0.15s;
+    position: relative;
+    text-decoration: none;
+  }
+
+  .dock-item:hover { transform: scale(1.25) translateY(-6px); }
+
+  .dock-tooltip {
+    display: none;
+    position: absolute;
+    bottom: 58px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    padding: 5px 10px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .dock-item:hover .dock-tooltip { display: block; }
+
+  .dock-sep {
+    width: 1px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.08);
+    align-self: center;
+    margin: 0 4px;
+  }
+
+  /* ── Footer ── */
+  .desktop-footer {
+    text-align: center;
+    padding: 24px 0 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .desktop-footer p {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+
+  .desktop-footer a {
+    color: var(--accent-blue);
+    text-decoration: none;
+  }
+
+  .desktop-footer a:hover { text-decoration: underline; }
+
+  /* ═══════════════════════════════════════
+     RESPONSIVE
+     ═══════════════════════════════════════ */
+  @media (max-width: 900px) {
+    .folder-grid { grid-template-columns: 1fr 1fr; }
+    .folder-grid-bottom { grid-template-columns: 1fr; }
+    .hero-files { grid-template-columns: 1fr; }
+    .welcome-meta { display: none; }
+    .welcome-bar { padding: 20px; }
+    .desktop-inner { padding: 24px 20px 120px; }
+  }
+
+  @media (max-width: 600px) {
+    .folder-grid { grid-template-columns: 1fr; }
+    .gate-card { padding: 40px 24px; }
+    .hero-file { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .hero-file-badge { align-self: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     PASSWORD GATE
+     ═══════════════════════════════════════ -->
+<div class="gate-overlay" id="gate">
+  <div class="gate-card">
+    <div class="gate-logo">Darrien Watson</div>
+    <div class="gate-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+      </svg>
+    </div>
+    <h1 class="gate-title">Private Page</h1>
+    <p class="gate-subtitle">Enter the password to view this content.</p>
+    <form id="gate-form" onsubmit="return false;">
+      <input type="password" class="gate-input" id="gate-password" placeholder="Password" autocomplete="off" autofocus>
+      <button type="submit" class="gate-btn" id="gate-submit">Enter</button>
+      <p class="gate-error-msg" id="gate-error"></p>
+    </form>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     MAIN CONTENT — THE DESKTOP
+     ═══════════════════════════════════════ -->
+<div class="page-content" id="content">
+  <div class="desktop">
+    <div class="desktop-inner">
+
+      <!-- Welcome bar -->
+      <div class="welcome-bar">
+        <div class="welcome-text">
+          <h1>Customer Central — <em>From Prompt to Prototype</em></h1>
+          <p>I was given a case study about building a Customer Health Dashboard for Justworks' CSO. Here's the full body of work. Start with the presentation, then explore the prototype. Everything else shows the thinking behind it.</p>
+        </div>
+        <div class="welcome-meta">
+          <div class="welcome-stat">
+            <div class="stat-num">20</div>
+            <div class="stat-label">Artifacts</div>
+          </div>
+          <div class="welcome-stat">
+            <div class="stat-num">5</div>
+            <div class="stat-label">Phases</div>
+          </div>
+          <div class="welcome-stat">
+            <div class="stat-num">9</div>
+            <div class="stat-label">User Stories</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero files -->
+      <div class="section-label">Start here</div>
+      <div class="hero-files">
+        <a class="hero-file pptx" href="customer-central-presentation.pptx" download>
+          <div class="hero-file-icon">📊</div>
+          <div class="hero-file-info">
+            <div class="file-label">Presentation</div>
+            <h3>Customer Central Presentation</h3>
+            <p>12 slides &middot; Problem &rarr; Solution &rarr; Architecture &rarr; Roadmap</p>
+          </div>
+          <div class="hero-file-badge">Download PPTX</div>
+        </a>
+        <a class="hero-file proto" href="customer-central.html" target="_blank">
+          <div class="hero-file-icon">🖥️</div>
+          <div class="hero-file-info">
+            <div class="file-label">Interactive Prototype</div>
+            <h3>Customer Central Dashboard</h3>
+            <p>Fully interactive &middot; Cmd+K search &middot; All 9 user stories testable</p>
+          </div>
+          <div class="hero-file-badge">Open Prototype</div>
+        </a>
+      </div>
+
+      <!-- Folders row 1 -->
+      <div class="section-label">Explore the work</div>
+      <div class="folder-grid">
+
+        <!-- How I Thought About It -->
+        <div class="folder-card" onclick="openFolder('thinking')">
+          <div class="folder-card-header">
+            <div class="folder-icon purple">📁<span class="folder-count">4</span></div>
+            <div class="folder-card-title">
+              <h3>How I Thought About It</h3>
+              <div class="folder-why">The reasoning layer — shows the "why" behind every decision in the proposal.</div>
+            </div>
+          </div>
+          <div class="folder-contents">
+            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>The Decision Chain</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>Prioritization Logic</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>ICE Problem Scoring</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>Success Metrics</span><span class="ff-type">Interactive</span></div>
+          </div>
+        </div>
+
+        <!-- What I Designed -->
+        <div class="folder-card" onclick="openFolder('designed')">
+          <div class="folder-card-header">
+            <div class="folder-icon green">📁<span class="folder-count">4</span></div>
+            <div class="folder-card-title">
+              <h3>What I Designed</h3>
+              <div class="folder-why">The solution layer — what the product looks like and how the data flows through it.</div>
+            </div>
+          </div>
+          <div class="folder-contents">
+            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>Feature Showcase</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>Data Model (ER Diagram)</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>Data Requirements Matrix</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>Data Performance Strategy</span><span class="ff-type">Interactive</span></div>
+          </div>
+        </div>
+
+        <!-- How I'd Ship It -->
+        <div class="folder-card" onclick="openFolder('ship')">
+          <div class="folder-card-header">
+            <div class="folder-icon blue">📁<span class="folder-count">3</span></div>
+            <div class="folder-card-title">
+              <h3>How I'd Ship It</h3>
+              <div class="folder-why">The execution layer — timeline, team composition, and what's explicitly out of scope.</div>
+            </div>
+          </div>
+          <div class="folder-contents">
+            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>Phased Roadmap</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>Engineering Resources</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>Scope & Future Vision</span><span class="ff-type">Interactive</span></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Folders row 2 -->
+      <div class="folder-grid-bottom">
+
+        <!-- How I'd Collaborate -->
+        <div class="folder-card" onclick="openFolder('collab')">
+          <div class="folder-card-header">
+            <div class="folder-icon amber">📁<span class="folder-count">2</span></div>
+            <div class="folder-card-title">
+              <h3>How I'd Collaborate</h3>
+              <div class="folder-why">The working-with-you layer — what Day 1 looks like when we build this together.</div>
+            </div>
+          </div>
+          <div class="folder-contents">
+            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>Workshop Board (45 min)</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>Open Questions</span><span class="ff-type">Interactive</span></div>
+          </div>
+        </div>
+
+        <!-- Reference -->
+        <div class="folder-card" onclick="openFolder('reference')">
+          <div class="folder-card-header">
+            <div class="folder-icon muted">📁<span class="folder-count">4</span></div>
+            <div class="folder-card-title">
+              <h3>Reference</h3>
+              <div class="folder-why">Supporting materials — not the main show, but there if you want the full depth.</div>
+            </div>
+          </div>
+          <div class="folder-contents">
+            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>Presentation Outline</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>Workshop + Q&A Plan</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>Submission Checklist</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>Prototype Test Guide</span><span class="ff-type">Document</span></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="desktop-footer">
+        <p>Prepared by Darrien Watson &middot; <a href="/">meetdarrien.com</a></p>
+      </div>
+
+    </div>
+
+    <!-- Dock -->
+    <div class="dock">
+      <a class="dock-item" href="customer-central-presentation.pptx" download style="background:linear-gradient(135deg,#ea580c,#dc2626);border-radius:12px;">
+        <span class="dock-tooltip">Presentation (PPTX)</span>📊
+      </a>
+      <a class="dock-item" href="customer-central.html" target="_blank" style="background:linear-gradient(135deg,#059669,#047857);border-radius:12px;">
+        <span class="dock-tooltip">Interactive Prototype</span>🖥️
+      </a>
+      <div class="dock-sep"></div>
+      <a class="dock-item" href="feature-showcase.html" target="_blank" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9);border-radius:12px;">
+        <span class="dock-tooltip">Feature Showcase</span>🎯
+      </a>
+      <a class="dock-item" href="justworks_mvp_scoping_sprint_workshop.html" target="_blank" style="background:linear-gradient(135deg,#fbbf24,#f59e0b);border-radius:12px;">
+        <span class="dock-tooltip">Workshop Board</span>🗂️
+      </a>
+      <a class="dock-item" href="data-model.html" target="_blank" style="background:linear-gradient(135deg,#3b82f6,#2563eb);border-radius:12px;">
+        <span class="dock-tooltip">Data Model</span>🔗
+      </a>
+      <a class="dock-item" href="phased-roadmap.html" target="_blank" style="background:linear-gradient(135deg,#059669,#047857);border-radius:12px;">
+        <span class="dock-tooltip">Phased Roadmap</span>📅
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     FINDER OVERLAYS
+     ═══════════════════════════════════════ -->
+<div class="finder-overlay" id="finder-thinking" onclick="if(event.target===this)closeFinder()">
+  <div class="finder-window">
+    <div class="finder-titlebar">
+      <div class="finder-dots"><div class="finder-dot red" onclick="closeFinder()"></div><div class="finder-dot yellow"></div><div class="finder-dot green"></div></div>
+      <span class="finder-title">How I Thought About It</span>
+    </div>
+    <div class="finder-body">
+      <a class="finder-row" href="assumptions-chain.html" target="_blank">
+        <div class="finder-row-icon" style="background:rgba(139,92,246,0.15)">🧠</div>
+        <div class="finder-row-info"><h4>The Decision Chain</h4><p>14-step reasoning chain with 45 documented assumptions across the entire proposal</p></div>
+        <span class="finder-row-badge badge-interactive">Interactive</span>
+      </a>
+      <a class="finder-row" href="justworks-prioritization.html" target="_blank">
+        <div class="finder-row-icon" style="background:rgba(78,140,255,0.15)">🎯</div>
+        <div class="finder-row-info"><h4>Prioritization Logic</h4><p>Dependency chain proving why Phase 1 must come before Phase 2</p></div>
+        <span class="finder-row-badge badge-interactive">Interactive</span>
+      </a>
+      <a class="finder-row" href="justworks-prioritization.html" target="_blank">
+        <div class="finder-row-icon" style="background:rgba(248,113,113,0.15)">📊</div>
+        <div class="finder-row-info"><h4>ICE Problem Scoring</h4><p>20 CSO problems scored by Impact, Confidence, and Ease</p></div>
+        <span class="finder-row-badge badge-interactive">Interactive</span>
+      </a>
+      <a class="finder-row" href="success-metrics.html" target="_blank">
+        <div class="finder-row-icon" style="background:rgba(52,211,153,0.15)">📏</div>
+        <div class="finder-row-info"><h4>Success Metrics</h4><p>Outcome metrics, guardrails, leading indicators, and anti-metrics</p></div>
+        <span class="finder-row-badge badge-interactive">Interactive</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="finder-overlay" id="finder-designed" onclick="if(event.target===this)closeFinder()">
+  <div class="finder-window">
+    <div class="finder-titlebar">
+      <div class="finder-dots"><div class="finder-dot red" onclick="closeFinder()"></div><div class="finder-dot yellow"></div><div class="finder-dot green"></div></div>
+      <span class="finder-title">What I Designed</span>
+    </div>
+    <div class="finder-body">
+      <a class="finder-row" href="feature-showcase.html" target="_blank">
+        <div class="finder-row-icon" style="background:rgba(139,92,246,0.15)">🎨</div>
+        <div class="finder-row-info"><h4>Feature Showcase</h4><p>Visual walkthrough of all 9 MVP features with design rationale per feature</p></div>
+        <span class="finder-row-badge badge-interactive">Interactive</span>
+      </a>
+      <a class="finder-row" href="data-model.html" target="_blank">
+        <div class="finder-row-icon" style="background:rgba(78,140,255,0.15)">🔗</div>
+        <div class="finder-row-info"><h4>Data Model</h4><p>Interactive ER diagram — 13 entities, 4 source systems, hover for field lists</p></div>
+        <span class="finder-row-badge badge-interactive">Interactive</span>
+      </a>
+      <a class="finder-row" href="data-requirements.html" target="_blank">
+        <div class="finder-row-icon" style="background:rgba(251,191,36,0.15)">📋</div>
+        <div class="finder-row-info"><h4>Data Requirements Matrix</h4><p>47 data fields mapped across 9 features and 5 source systems</p></div>
+        <span class="finder-row-badge badge-interactive">Interactive</span>
+      </a>
+      <a class="finder-row" href="data-performance.html" target="_blank">
+        <div class="finder-row-icon" style="background:rgba(244,114,182,0.15)">⚡</div>
+        <div class="finder-row-info"><h4>Data Performance Strategy</h4><p>4-tier loading model, DB schema, caching, volume estimates</p></div>
+        <span class="finder-row-badge badge-interactive">Interactive</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="finder-overlay" id="finder-ship" onclick="if(event.target===this)closeFinder()">
+  <div class="finder-window">
+    <div class="finder-titlebar">
+      <div class="finder-dots"><div class="finder-dot red" onclick="closeFinder()"></div><div class="finder-dot yellow"></div><div class="finder-dot green"></div></div>
+      <span class="finder-title">How I'd Ship It</span>
+    </div>
+    <div class="finder-body">
+      <a class="finder-row" href="phased-roadmap.html" target="_blank">
+        <div class="finder-row-icon" style="background:rgba(78,140,255,0.15)">📅</div>
+        <div class="finder-row-info"><h4>Phased Roadmap</h4><p>7-week Gantt-style timeline with role-specific tasks and stage gates</p></div>
+        <span class="finder-row-badge badge-interactive">Interactive</span>
+      </a>
+      <a class="finder-row" href="engineering-resources.html" target="_blank">
+        <div class="finder-row-icon" style="background:rgba(52,211,153,0.15)">👥</div>
+        <div class="finder-row-info"><h4>Engineering Resources</h4><p>Team composition, sprint plan, and 4 de-risking strategies</p></div>
+        <span class="finder-row-badge badge-interactive">Interactive</span>
+      </a>
+      <a class="finder-row" href="scope-and-future.html" target="_blank">
+        <div class="finder-row-icon" style="background:rgba(139,92,246,0.15)">🔮</div>
+        <div class="finder-row-info"><h4>Scope & Future Vision</h4><p>12 excluded items with rationale + 5 future feature deep-dives</p></div>
+        <span class="finder-row-badge badge-interactive">Interactive</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="finder-overlay" id="finder-collab" onclick="if(event.target===this)closeFinder()">
+  <div class="finder-window">
+    <div class="finder-titlebar">
+      <div class="finder-dots"><div class="finder-dot red" onclick="closeFinder()"></div><div class="finder-dot yellow"></div><div class="finder-dot green"></div></div>
+      <span class="finder-title">How I'd Collaborate</span>
+    </div>
+    <div class="finder-body">
+      <a class="finder-row" href="justworks_mvp_scoping_sprint_workshop.html" target="_blank">
+        <div class="finder-row-icon" style="background:rgba(251,191,36,0.15)">🗂️</div>
+        <div class="finder-row-info"><h4>Workshop Board</h4><p>45-minute MVP scoping sprint with 4 exercises, facilitator notes, and dot voting</p></div>
+        <span class="finder-row-badge badge-interactive">Interactive</span>
+      </a>
+      <a class="finder-row" href="open-questions.html" target="_blank">
+        <div class="finder-row-icon" style="background:rgba(248,113,113,0.15)">❓</div>
+        <div class="finder-row-info"><h4>Open Questions</h4><p>14 questions organized by panelist with assumptions and discovery actions</p></div>
+        <span class="finder-row-badge badge-interactive">Interactive</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="finder-overlay" id="finder-reference" onclick="if(event.target===this)closeFinder()">
+  <div class="finder-window">
+    <div class="finder-titlebar">
+      <div class="finder-dots"><div class="finder-dot red" onclick="closeFinder()"></div><div class="finder-dot yellow"></div><div class="finder-dot green"></div></div>
+      <span class="finder-title">Reference</span>
+    </div>
+    <div class="finder-body">
+      <a class="finder-row" href="presentation-outline.html" target="_blank">
+        <div class="finder-row-icon" style="background:rgba(78,140,255,0.15)">🎙️</div>
+        <div class="finder-row-info"><h4>Presentation Outline</h4><p>7-section speaker guide with scripted beats and per-panelist hooks</p></div>
+        <span class="finder-row-badge badge-interactive">Interactive</span>
+      </a>
+      <a class="finder-row" href="presentation-workshop-plan.html" target="_blank">
+        <div class="finder-row-icon" style="background:rgba(52,211,153,0.15)">📝</div>
+        <div class="finder-row-info"><h4>Workshop + Q&A Plan</h4><p>Full session plan with killer questions and 5 contingency plans</p></div>
+        <span class="finder-row-badge badge-interactive">Interactive</span>
+      </a>
+      <a class="finder-row" href="submission-checklist.html" target="_blank">
+        <div class="finder-row-icon" style="background:rgba(251,191,36,0.15)">📋</div>
+        <div class="finder-row-info"><h4>Submission Checklist</h4><p>Audit of all deliverables against the case study prompt</p></div>
+        <span class="finder-row-badge badge-interactive">Interactive</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  // ── Password gate ──
+  const HASH = '80107215236f645b8f39dac1653b79a7f70c0129ca571594dbf85a2e06739dca';
+  const SESSION_KEY = 'jw_access';
+
+  async function sha256(message) {
+    const msgBuffer = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  function unlock() {
+    document.getElementById('gate').classList.add('unlocked');
+    document.getElementById('content').classList.add('visible');
+    sessionStorage.setItem(SESSION_KEY, '1');
+  }
+
+  if (sessionStorage.getItem(SESSION_KEY) === '1') {
+    unlock();
+  }
+
+  document.getElementById('gate-form').addEventListener('submit', async function() {
+    const input = document.getElementById('gate-password');
+    const errorEl = document.getElementById('gate-error');
+    const hash = await sha256(input.value);
+    if (hash === HASH) {
+      errorEl.textContent = '';
+      unlock();
+    } else {
+      input.classList.add('error');
+      errorEl.textContent = 'Incorrect password. Please try again.';
+      setTimeout(() => input.classList.remove('error'), 400);
+    }
+  });
+
+  document.getElementById('gate-password').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') document.getElementById('gate-submit').click();
+  });
+
+  // ── Finder overlays ──
+  function openFolder(id) {
+    document.getElementById('finder-' + id).classList.add('open');
+  }
+
+  function closeFinder() {
+    document.querySelectorAll('.finder-overlay').forEach(f => f.classList.remove('open'));
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeFinder();
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Central — MVP Scoping Sprint</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #0f1117;
+    --bg-surface: #1a1c25;
+    --bg-card: #22252f;
+    --bg-elevated: #2a2d3a;
+    --border: #333748;
+    --text-primary: #f0f0f5;
+    --text-secondary: #9a9db5;
+    --text-muted: #6b6e85;
+    --accent-blue: #4e8cff;
+    --accent-purple: #8b5cf6;
+    --accent-green: #34d399;
+    --accent-amber: #fbbf24;
+    --accent-red: #f87171;
+    --accent-pink: #f472b6;
+    --must-have: #22c55e;
+    --should-have: #3b82f6;
+    --could-have: #f59e0b;
+    --wont-have: #6b7280;
+    --facilitator-bg: #1e1b2e;
+    --facilitator-border: #8b5cf6;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    overflow-x: auto;
+    overflow-y: auto;
+  }
+
+  /* ═══════════════════════════════════════════
+     BOARD LAYOUT - Horizontal scroll canvas
+     ═══════════════════════════════════════════ */
+  .board-canvas {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 24px;
+    gap: 32px;
+  }
+
+  /* ═══════════════════════════════════════════
+     HEADER / MAP
+     ═══════════════════════════════════════════ */
+  .workshop-header {
+    text-align: center;
+    padding: 40px 24px 32px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  .workshop-header h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 2.8rem;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .workshop-header h1 span {
+    color: var(--accent-blue);
+  }
+
+  .workshop-header .subtitle {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    max-width: 640px;
+    margin: 0 auto 32px;
+    line-height: 1.6;
+  }
+
+  /* Progress map */
+  .progress-map {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .progress-step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 18px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .progress-step:hover {
+    border-color: var(--accent-blue);
+    background: var(--bg-card);
+  }
+
+  .progress-step .step-num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .progress-step:nth-child(1) .step-num { background: var(--accent-purple); color: white; }
+  .progress-step:nth-child(2) .step-num { background: var(--accent-blue); color: white; }
+  .progress-step:nth-child(3) .step-num { background: var(--accent-green); color: #0f1117; }
+  .progress-step:nth-child(4) .step-num { background: var(--accent-amber); color: #0f1117; }
+  .progress-step:nth-child(5) .step-num { background: var(--accent-pink); color: white; }
+
+  .progress-step .step-time {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-weight: 400;
+  }
+
+  /* ═══════════════════════════════════════════
+     SECTION LAYOUT
+     ═══════════════════════════════════════════ */
+  .workshop-section {
+    padding: 32px 0;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+
+  .section-number {
+    font-family: 'Instrument Serif', serif;
+    font-size: 3.5rem;
+    font-weight: 400;
+    line-height: 1;
+    opacity: 0.15;
+  }
+
+  .section-header h2 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.8rem;
+    font-weight: 400;
+  }
+
+  .section-meta {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-left: 4px;
+  }
+
+  .meta-tag {
+    font-size: 0.8rem;
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-weight: 500;
+  }
+
+  .meta-tag.time {
+    background: rgba(78, 140, 255, 0.12);
+    color: var(--accent-blue);
+    border: 1px solid rgba(78, 140, 255, 0.25);
+  }
+
+  .meta-tag.method {
+    background: rgba(139, 92, 246, 0.12);
+    color: var(--accent-purple);
+    border: 1px solid rgba(139, 92, 246, 0.25);
+  }
+
+  .meta-tag.output {
+    background: rgba(52, 211, 153, 0.12);
+    color: var(--accent-green);
+    border: 1px solid rgba(52, 211, 153, 0.25);
+  }
+
+  .section-description {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.65;
+    max-width: 720px;
+    margin-bottom: 28px;
+  }
+
+  /* ═══════════════════════════════════════════
+     FACILITATOR NOTES
+     ═══════════════════════════════════════════ */
+  .facilitator-note {
+    background: var(--facilitator-bg);
+    border-left: 3px solid var(--facilitator-border);
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 24px;
+    max-width: 720px;
+  }
+
+  .facilitator-note .note-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent-purple);
+    margin-bottom: 6px;
+  }
+
+  .facilitator-note p {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+  }
+
+  .facilitator-note .engage-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    margin-right: 4px;
+  }
+
+  .engage-tag.renee { background: rgba(244, 114, 182, 0.15); color: var(--accent-pink); }
+  .engage-tag.caroline { background: rgba(78, 140, 255, 0.15); color: var(--accent-blue); }
+  .engage-tag.annelise { background: rgba(52, 211, 153, 0.15); color: var(--accent-green); }
+  .engage-tag.evan { background: rgba(251, 191, 36, 0.15); color: var(--accent-amber); }
+
+  /* ═══════════════════════════════════════════
+     EXERCISE 1: AGENT JOURNEY
+     ═══════════════════════════════════════════ */
+  .journey-container {
+    overflow-x: auto;
+    padding-bottom: 16px;
+  }
+
+  .journey-flow {
+    display: flex;
+    gap: 0;
+    min-width: 1100px;
+  }
+
+  .journey-step {
+    flex: 1;
+    min-width: 170px;
+    position: relative;
+  }
+
+  .journey-step-inner {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 16px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .journey-step-inner .step-icon {
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+  }
+
+  .journey-step-inner h4 {
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .journey-step-inner .step-time-marker {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+
+  .journey-step-inner .today-state {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 12px;
+    flex-grow: 1;
+  }
+
+  .journey-step-inner .pain-zone {
+    background: rgba(248, 113, 113, 0.08);
+    border: 1px dashed rgba(248, 113, 113, 0.3);
+    border-radius: 6px;
+    padding: 8px 10px;
+    min-height: 48px;
+  }
+
+  .pain-zone .pain-label {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent-red);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .pain-zone .pain-text {
+    font-size: 0.78rem;
+    color: var(--accent-red);
+    opacity: 0.7;
+    font-style: italic;
+  }
+
+  .journey-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    flex-shrink: 0;
+    color: var(--text-muted);
+    font-size: 1.2rem;
+  }
+
+  /* Persona anchor */
+  .persona-anchor {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    max-width: 720px;
+  }
+
+  .persona-anchor .persona-quote {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--text-primary);
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+
+  .persona-anchor .persona-attribution {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  /* ═══════════════════════════════════════════
+     EXERCISE 2: FEATURE CARDS + VOTING
+     ═══════════════════════════════════════════ */
+  .voting-instructions {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    max-width: 720px;
+  }
+
+  .voting-instructions h4 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .voting-instructions ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .voting-instructions li {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    padding: 3px 0;
+    padding-left: 20px;
+    position: relative;
+  }
+
+  .voting-instructions li::before {
+    content: '●';
+    position: absolute;
+    left: 0;
+    color: var(--accent-red);
+    font-size: 0.6rem;
+    top: 6px;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .feature-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    transition: all 0.15s;
+    position: relative;
+  }
+
+  .feature-card:hover {
+    border-color: var(--accent-blue);
+    transform: translateY(-1px);
+  }
+
+  .feature-card .card-category {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .feature-card .card-category.identity { color: var(--accent-blue); }
+  .feature-card .card-category.account { color: var(--accent-green); }
+  .feature-card .card-category.history { color: var(--accent-purple); }
+  .feature-card .card-category.issues { color: var(--accent-red); }
+  .feature-card .card-category.activity { color: var(--accent-amber); }
+  .feature-card .card-category.search { color: var(--accent-pink); }
+
+  .feature-card h5 {
+    font-size: 0.88rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    line-height: 1.35;
+  }
+
+  .feature-card .card-detail {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 8px;
+    border-top: 1px solid var(--border);
+  }
+
+  .card-source {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .card-effort {
+    font-size: 0.68rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+
+  .card-effort.low { background: rgba(52, 211, 153, 0.12); color: var(--accent-green); }
+  .card-effort.med { background: rgba(251, 191, 36, 0.12); color: var(--accent-amber); }
+  .card-effort.high { background: rgba(248, 113, 113, 0.12); color: var(--accent-red); }
+
+  .vote-dots {
+    display: flex;
+    gap: 4px;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+
+  .vote-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .vote-dot:hover, .vote-dot.active {
+    border-color: var(--accent-red);
+    background: var(--accent-red);
+    box-shadow: 0 0 8px rgba(248, 113, 113, 0.4);
+  }
+
+  /* Blank card for adding */
+  .feature-card.blank {
+    border-style: dashed;
+    border-color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 140px;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: all 0.2s;
+  }
+
+  .feature-card.blank:hover {
+    opacity: 0.8;
+    border-color: var(--accent-blue);
+  }
+
+  .feature-card.blank .blank-text {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+
+  .feature-card.blank .blank-text .plus {
+    font-size: 1.8rem;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  /* ═══════════════════════════════════════════
+     EXERCISE 3: MOSCOW MATRIX
+     ═══════════════════════════════════════════ */
+  .moscow-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    max-width: 1100px;
+  }
+
+  .moscow-quadrant {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    min-height: 200px;
+  }
+
+  .moscow-quadrant h4 {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 4px;
+  }
+
+  .moscow-quadrant .quad-desc {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+  }
+
+  .moscow-quadrant.must h4 { color: var(--must-have); }
+  .moscow-quadrant.must { border-color: rgba(34, 197, 94, 0.3); }
+  .moscow-quadrant.should h4 { color: var(--should-have); }
+  .moscow-quadrant.should { border-color: rgba(59, 130, 246, 0.3); }
+  .moscow-quadrant.could h4 { color: var(--could-have); }
+  .moscow-quadrant.could { border-color: rgba(245, 158, 11, 0.3); }
+  .moscow-quadrant.wont h4 { color: var(--wont-have); }
+
+  .moscow-drop-zone {
+    min-height: 120px;
+    border: 1px dashed var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-content: flex-start;
+  }
+
+  .moscow-chip {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+  }
+
+  .moscow-drop-zone .placeholder-text {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    font-style: italic;
+    padding: 8px;
+  }
+
+  /* ═══════════════════════════════════════════
+     EXERCISE 4: RISKS & SCOPE LOCK
+     ═══════════════════════════════════════════ */
+  .scope-lock-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    max-width: 1100px;
+  }
+
+  .risk-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+  }
+
+  .risk-card .risk-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .risk-card .risk-label.high { color: var(--accent-red); }
+  .risk-card .risk-label.med { color: var(--accent-amber); }
+
+  .risk-card h5 {
+    font-size: 0.88rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .risk-card .risk-detail {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+
+  .risk-card .risk-owner {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .risk-card.blank-risk {
+    border-style: dashed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 140px;
+    opacity: 0.4;
+    cursor: pointer;
+  }
+
+  .risk-card.blank-risk:hover { opacity: 0.7; }
+
+  /* MVP readback */
+  .mvp-readback {
+    background: linear-gradient(135deg, rgba(78, 140, 255, 0.06), rgba(139, 92, 246, 0.06));
+    border: 1px solid rgba(78, 140, 255, 0.2);
+    border-radius: 14px;
+    padding: 28px 32px;
+    max-width: 720px;
+    margin-top: 24px;
+  }
+
+  .mvp-readback h4 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+  }
+
+  .mvp-readback .readback-prompt {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    font-style: italic;
+  }
+
+  /* ═══════════════════════════════════════════
+     CLOSING
+     ═══════════════════════════════════════════ */
+  .closing-section {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 32px;
+    max-width: 720px;
+    text-align: center;
+  }
+
+  .closing-section h3 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+  }
+
+  .closing-section p {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .alignment-question {
+    margin-top: 20px;
+    padding: 16px 24px;
+    background: rgba(52, 211, 153, 0.08);
+    border: 1px solid rgba(52, 211, 153, 0.25);
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--accent-green);
+  }
+
+  /* Divider */
+  .section-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 16px 0;
+  }
+
+  /* Ground rules */
+  .ground-rules {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .ground-rule {
+    padding: 8px 14px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+  }
+
+  .ground-rule strong {
+    color: var(--text-primary);
+  }
+
+  /* ═══════════════════════════════════════════
+     RESPONSIVE
+     ═══════════════════════════════════════════ */
+  @media (max-width: 768px) {
+    .workshop-header h1 { font-size: 2rem; }
+    .cards-grid { grid-template-columns: 1fr; }
+    .moscow-grid { grid-template-columns: 1fr; }
+    .scope-lock-grid { grid-template-columns: 1fr; }
+    .progress-map { gap: 6px; }
+    .progress-step { padding: 8px 12px; font-size: 0.78rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="board-canvas">
+
+  <!-- ═══════════════════════════════════════════
+       HEADER / WORKSHOP MAP
+       ═══════════════════════════════════════════ -->
+  <header class="workshop-header">
+    <h1>Customer Central — <span>MVP Scoping Sprint</span></h1>
+    <p class="subtitle">
+      Our goal: collaboratively define and agree on a tightly scoped MVP for the Customer Health Dashboard.
+      45 minutes. Four exercises. One shared output.
+    </p>
+    <div class="progress-map">
+      <a href="#exercise-0" class="progress-step">
+        <span class="step-num">0</span>
+        <span>Orient & Ground Rules</span>
+        <span class="step-time">2 min</span>
+      </a>
+      <a href="#exercise-1" class="progress-step">
+        <span class="step-num">1</span>
+        <span>Agent Journey Validation</span>
+        <span class="step-time">7 min</span>
+      </a>
+      <a href="#exercise-2" class="progress-step">
+        <span class="step-num">2</span>
+        <span>Prioritize & Validate Effort</span>
+        <span class="step-time">20 min</span>
+      </a>
+      <a href="#exercise-3" class="progress-step">
+        <span class="step-num">3</span>
+        <span>Scope Lock & Risks</span>
+        <span class="step-time">10 min</span>
+      </a>
+      <a href="#exercise-4" class="progress-step">
+        <span class="step-num">4</span>
+        <span>Closing & Alignment</span>
+        <span class="step-time">3 min + 5 min buffer</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- ═══════════════════════════════════════════
+       EXERCISE 0: ORIENT & GROUND RULES
+       ═══════════════════════════════════════════ -->
+  <section class="workshop-section" id="exercise-0">
+    <div class="section-header">
+      <span class="section-number">00</span>
+      <h2>Orient & Ground Rules</h2>
+    </div>
+    <div class="section-meta">
+      <span class="meta-tag time">2 minutes</span>
+      <span class="meta-tag method">Facilitator-led</span>
+    </div>
+
+    <div class="facilitator-note">
+      <div class="note-label">🎯 Facilitator Script</div>
+      <p>
+        "We've covered the strategic vision. Now let's get practical — what's the smallest thing we can ship that delivers real value to a CSO agent on a live call? Here's how the next 45 minutes will work: four exercises, each time-boxed. I'll facilitate, but your expertise drives the output. We'll diverge, then converge — and we'll walk out with a shared MVP definition."
+      </p>
+    </div>
+
+    <div class="ground-rules">
+      <div class="ground-rule"><strong>✍️ Write first, discuss second</strong> — silent input before group conversation</div>
+      <div class="ground-rule"><strong>🗳️ Vote, don't debate</strong> — dot voting for prioritization decisions</div>
+      <div class="ground-rule"><strong>⏱ Time-boxed</strong> — I'll keep us on schedule</div>
+      <div class="ground-rule"><strong>🤝 All expertise matters</strong> — data, design, engineering, strategy</div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ═══════════════════════════════════════════
+       EXERCISE 1: AGENT JOURNEY VALIDATION
+       ═══════════════════════════════════════════ -->
+  <section class="workshop-section" id="exercise-1">
+    <div class="section-header">
+      <span class="section-number">01</span>
+      <h2>Agent Journey Validation</h2>
+    </div>
+    <div class="section-meta">
+      <span class="meta-tag time">7 minutes</span>
+      <span class="meta-tag method">Guided discussion</span>
+      <span class="meta-tag output">Validated pain points → feeds prioritization</span>
+    </div>
+
+    <p class="section-description">
+      Before we prioritize features, let's validate the agent workflow so we're building against the right pain points. 
+      I've mapped my assumption of today's flow — help me correct it. Where does it break? What am I missing?
+    </p>
+
+    <div class="persona-anchor">
+      <p class="persona-quote">
+        "I am a CSO agent. I'm trying to instantly understand who's calling, what their history is, and how to help them — while they're on the line. But the information I need is scattered across 5-6 different systems. Which makes me feel anxious and unprepared."
+      </p>
+      <p class="persona-attribution">— CSO Agent Persona (assumed)</p>
+    </div>
+
+    <div class="facilitator-note">
+      <div class="note-label">🎯 Facilitator Move</div>
+      <p>
+        <span class="engage-tag caroline">Caroline</span> "What systems does the CSO team actually use today? Am I right that they're toggling between Salesforce, Zendesk, and the admin dashboard?"<br><br>
+        <span class="engage-tag annelise">Annelise</span> "Walk me through the first 30 seconds after an agent picks up — what does their screen look like?"<br><br>
+        <span class="engage-tag renee">Renee</span> "From a leadership perspective, which of these pain points is costing the most — in agent time, customer satisfaction, or both?"
+      </p>
+    </div>
+
+    <div class="journey-container">
+      <div class="journey-flow">
+        
+        <div class="journey-step">
+          <div class="journey-step-inner">
+            <div class="step-icon">📞</div>
+            <h4>Call Received</h4>
+            <div class="step-time-marker">T+0s</div>
+            <div class="today-state">Agent sees phone number on telephony system. No context yet. Answers with generic greeting.</div>
+            <div class="pain-zone">
+              <div class="pain-label">Pain Point</div>
+              <div class="pain-text">No caller identification. No context before answering.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="journey-arrow">→</div>
+
+        <div class="journey-step">
+          <div class="journey-step-inner">
+            <div class="step-icon">🔍</div>
+            <h4>Identify Caller</h4>
+            <div class="step-time-marker">T+10-25s</div>
+            <div class="today-state">Asks caller's name and company. Searches Salesforce. Waits for results. Is this an admin or an employee?</div>
+            <div class="pain-zone">
+              <div class="pain-label">Pain Point</div>
+              <div class="pain-text">30-60 seconds of identification. Customer waiting while agent hunts.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="journey-arrow">→</div>
+
+        <div class="journey-step">
+          <div class="journey-step-inner">
+            <div class="step-icon">🗂️</div>
+            <h4>Assemble Context</h4>
+            <div class="step-time-marker">T+25-90s</div>
+            <div class="today-state">Opens Zendesk in another tab. Searches for recent tickets. Opens admin dashboard in a third tab. Scans for account details.</div>
+            <div class="pain-zone">
+              <div class="pain-label">Pain Point</div>
+              <div class="pain-text">3-5 system toggles. Cognitive fragmentation. Half-listening to caller.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="journey-arrow">→</div>
+
+        <div class="journey-step">
+          <div class="journey-step-inner">
+            <div class="step-icon">🩺</div>
+            <h4>Diagnose Issue</h4>
+            <div class="step-time-marker">T+90-180s</div>
+            <div class="today-state">Now has enough context to engage. May need deeper data (payroll details, benefits elections) from yet another system.</div>
+            <div class="pain-zone">
+              <div class="pain-label">Pain Point</div>
+              <div class="pain-text">May need to escalate if data isn't accessible. "Let me check on that."</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="journey-arrow">→</div>
+
+        <div class="journey-step">
+          <div class="journey-step-inner">
+            <div class="step-icon">✅</div>
+            <h4>Resolve</h4>
+            <div class="step-time-marker">T+180s+</div>
+            <div class="today-state">Resolves issue OR creates a ticket for another team. Logs notes in Zendesk. Manually summarizes in Salesforce.</div>
+            <div class="pain-zone">
+              <div class="pain-label">Pain Point</div>
+              <div class="pain-text">Double-entry across systems. Can see the problem but may not be able to act.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="journey-arrow">→</div>
+
+        <div class="journey-step">
+          <div class="journey-step-inner">
+            <div class="step-icon">📝</div>
+            <h4>Document & Handoff</h4>
+            <div class="step-time-marker">Post-call</div>
+            <div class="today-state">Notes scattered between Zendesk ticket comments, Salesforce case notes, and Slack. Next agent starts from scratch.</div>
+            <div class="pain-zone">
+              <div class="pain-label">Pain Point</div>
+              <div class="pain-text">No unified narrative. Customer repeats themselves next time.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ═══════════════════════════════════════════
+       EXERCISE 2: FEATURE PRIORITIZATION
+       ═══════════════════════════════════════════ -->
+  <section class="workshop-section" id="exercise-2">
+    <div class="section-header">
+      <span class="section-number">02</span>
+      <h2>Feature Prioritization</h2>
+    </div>
+    <div class="section-meta">
+      <span class="meta-tag time">20 minutes</span>
+      <span class="meta-tag method">Silent voting → effort validation → group placement</span>
+      <span class="meta-tag output">MoSCoW matrix → MVP definition</span>
+    </div>
+
+    <p class="section-description">
+      Here are the candidate features for Phase 1 based on my proposal. Each card includes data source and estimated effort. 
+      First: silently vote with your dots on what you believe is essential for Day 1. Then we'll place cards into the MoSCoW matrix together.
+    </p>
+
+    <div class="facilitator-note">
+      <div class="note-label">🎯 Facilitator Move</div>
+      <p>
+        "Everyone gets <strong>5 red dots</strong>. Spend them on the features you believe are most critical for a CSO agent on Day 1. Don't discuss — just vote. We'll talk after."<br><br>
+        <span class="engage-tag evan">Evan</span> After voting: "Evan, looking at the vote clusters — does this scope feel shippable in 6 weeks with the team I proposed?"<br><br>
+        <span class="engage-tag caroline">Caroline</span> "Caroline, for the features that got the most votes — which data sources can we access today without new integrations?"<br><br>
+        <span class="engage-tag annelise">Annelise</span> "Annelise, given what we're prioritizing — how would you think about the information hierarchy? What's primary, secondary, tertiary?"
+      </p>
+    </div>
+
+    <div class="voting-instructions">
+      <h4>🗳 Dot Voting Rules</h4>
+      <ul>
+        <li>Each person gets <strong>5 red dots</strong></li>
+        <li>Place dots on cards you consider essential for an agent on Day 1 of launch</li>
+        <li>No discussion during voting — vote silently based on your expertise</li>
+        <li>You can put multiple dots on the same card if you feel strongly</li>
+        <li>After voting, we'll validate effort estimates before placing cards</li>
+      </ul>
+    </div>
+
+    <!-- FEATURE CARDS -->
+    <div class="cards-grid">
+
+      <!-- IDENTITY / SEARCH -->
+      <div class="feature-card">
+        <div class="vote-dots"><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div></div>
+        <div class="card-category search">Search & Lookup</div>
+        <h5>Universal Search</h5>
+        <div class="card-detail">Agent searches by company name, admin name, employee name, or phone number. Results within 2 seconds.</div>
+        <div class="card-footer">
+          <span class="card-source">Salesforce + Production DB</span>
+          <span class="card-effort med">Med Effort</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="vote-dots"><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div></div>
+        <div class="card-category identity">Caller Identity</div>
+        <h5>Caller Profile Card</h5>
+        <div class="card-detail">Name, role (admin/employee), email, phone, last interaction date and topic. Distinguishes admin vs. employee view.</div>
+        <div class="card-footer">
+          <span class="card-source">Production DB + Salesforce Contacts</span>
+          <span class="card-effort low">Low Effort</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="vote-dots"><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div></div>
+        <div class="card-category identity">Company Profile</div>
+        <h5>Company Overview Card</h5>
+        <div class="card-detail">Company name, plan type (Payroll/PEO Basic/Plus/EOR), employee count, industry, state(s) of operation, account age.</div>
+        <div class="card-footer">
+          <span class="card-source">Production DB + Salesforce Accounts</span>
+          <span class="card-effort low">Low Effort</span>
+        </div>
+      </div>
+
+      <!-- ACCOUNT STATUS -->
+      <div class="feature-card">
+        <div class="vote-dots"><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div></div>
+        <div class="card-category account">Account Status</div>
+        <h5>Billing & Payment Status</h5>
+        <div class="card-detail">Current/past due status, last payment date, outstanding balance, next payroll date. Clear visual indicator for at-risk billing.</div>
+        <div class="card-footer">
+          <span class="card-source">Payments DB / Billing System</span>
+          <span class="card-effort med">Med Effort</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="vote-dots"><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div></div>
+        <div class="card-category account">Account Status</div>
+        <h5>Product & Plan Summary</h5>
+        <div class="card-detail">Which Justworks products the company uses. Feature adoption indicators (time tracking, PTO, document center). Eligible upgrades.</div>
+        <div class="card-footer">
+          <span class="card-source">Production DB + Product Analytics</span>
+          <span class="card-effort med">Med Effort</span>
+        </div>
+      </div>
+
+      <!-- HISTORY -->
+      <div class="feature-card">
+        <div class="vote-dots"><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div></div>
+        <div class="card-category history">Interaction History</div>
+        <h5>Unified Contact Timeline</h5>
+        <div class="card-detail">Last 10 interactions across all channels (phone, email, chat) with timestamp, channel, agent, topic summary, resolution status.</div>
+        <div class="card-footer">
+          <span class="card-source">Zendesk + Salesforce Activity</span>
+          <span class="card-effort high">High Effort</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="vote-dots"><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div></div>
+        <div class="card-category issues">Open Issues</div>
+        <h5>Active Tickets Panel</h5>
+        <div class="card-detail">All open Zendesk tickets for this company with priority, assignee, age, and last update. Clickable to expand details.</div>
+        <div class="card-footer">
+          <span class="card-source">Zendesk API</span>
+          <span class="card-effort low">Low Effort</span>
+        </div>
+      </div>
+
+      <!-- ACTIVITY -->
+      <div class="feature-card">
+        <div class="vote-dots"><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div></div>
+        <div class="card-category activity">Recent Activity</div>
+        <h5>Account Activity Feed</h5>
+        <div class="card-detail">Last 7 days of changes: employee adds/removes, benefits changes, payroll runs, plan modifications. Chronological feed.</div>
+        <div class="card-footer">
+          <span class="card-source">Application Logs / Event Stream</span>
+          <span class="card-effort med">Med Effort</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="vote-dots"><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div></div>
+        <div class="card-category activity">Recent Activity</div>
+        <h5>Employee-Level Detail View</h5>
+        <div class="card-detail">When caller is an employee: their pay history, benefits elections, dependents, recent changes, state of residence. Nested under company.</div>
+        <div class="card-footer">
+          <span class="card-source">Production DB</span>
+          <span class="card-effort med">Med Effort</span>
+        </div>
+      </div>
+
+      <!-- SYSTEM / UX -->
+      <div class="feature-card">
+        <div class="vote-dots"><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div></div>
+        <div class="card-category search">System Performance</div>
+        <h5>Sub-3s Dashboard Load</h5>
+        <div class="card-detail">Dashboard loads within 3 seconds of company selection. Auto-refresh every 5 minutes during active session. Stale data indicators.</div>
+        <div class="card-footer">
+          <span class="card-source">Architecture requirement</span>
+          <span class="card-effort high">High Effort</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="vote-dots"><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div></div>
+        <div class="card-category identity">Data Architecture</div>
+        <h5>API-First Data Layer</h5>
+        <div class="card-detail">Normalized data aggregation service behind APIs — not hardcoded to dashboard UI. Serves CSO today; designed so Sales and RevOps can consume later.</div>
+        <div class="card-footer">
+          <span class="card-source">Architecture decision</span>
+          <span class="card-effort high">High Effort</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="vote-dots"><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div></div>
+        <div class="card-category history">Interaction History</div>
+        <h5>Salesforce-Zendesk Record Linking</h5>
+        <div class="card-detail">Joining Zendesk ticket data with Salesforce account records via shared key. Required for unified timeline. Key dependency to validate.</div>
+        <div class="card-footer">
+          <span class="card-source">Zendesk + Salesforce</span>
+          <span class="card-effort high">High Effort</span>
+        </div>
+      </div>
+
+      <!-- PHASE 2+ CANDIDATES (Deliberately included to test scoping discipline) -->
+      <div class="feature-card" style="opacity: 0.65;">
+        <div class="vote-dots"><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div></div>
+        <div class="card-category issues">Health Signals</div>
+        <h5>Composite Health Score</h5>
+        <div class="card-detail">Weighted score combining engagement, payment health, product adoption, and satisfaction. RAG status (Red/Amber/Green) with drill-down.</div>
+        <div class="card-footer">
+          <span class="card-source">Multiple sources + scoring model</span>
+          <span class="card-effort high">High Effort</span>
+        </div>
+      </div>
+
+      <div class="feature-card" style="opacity: 0.65;">
+        <div class="vote-dots"><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div></div>
+        <div class="card-category issues">Proactive Intelligence</div>
+        <h5>At-Risk Account Alerts</h5>
+        <div class="card-detail">Automated flags for declining engagement, missed payments, cancellation page visits. Pushed to agent queue for proactive outreach.</div>
+        <div class="card-footer">
+          <span class="card-source">Hotjar + App Logs + Payments DB</span>
+          <span class="card-effort high">High Effort</span>
+        </div>
+      </div>
+
+      <div class="feature-card" style="opacity: 0.65;">
+        <div class="vote-dots"><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div></div>
+        <div class="card-category account">Upsell Signals</div>
+        <h5>Upsell / Cross-Sell Recommendations</h5>
+        <div class="card-detail">Contextual suggestions based on company profile: Payroll → PEO, Basic → Plus. Triggered by employee count, state expansion, feature gaps.</div>
+        <div class="card-footer">
+          <span class="card-source">Composite scoring model</span>
+          <span class="card-effort high">High Effort</span>
+        </div>
+      </div>
+
+      <!-- BLANK CARDS -->
+      <div class="feature-card blank">
+        <div class="blank-text">
+          <span class="plus">+</span>
+          Add a feature card
+        </div>
+      </div>
+
+      <div class="feature-card blank">
+        <div class="blank-text">
+          <span class="plus">+</span>
+          Add a feature card
+        </div>
+      </div>
+
+    </div>
+
+    <!-- EFFORT VALIDATION STEP -->
+    <div style="margin-bottom: 32px;">
+      <h3 style="font-family: 'Instrument Serif', serif; font-size: 1.4rem; margin-bottom: 4px;">Effort Gut-Check</h3>
+      <p class="section-description" style="margin-bottom: 16px;">
+        We know what the group <em>wants</em>. Before we place cards, let's validate what's <em>feasible</em>. 
+        I've pre-estimated effort — engineering and design partners, tell me where I'm wrong.
+      </p>
+
+      <div class="facilitator-note">
+        <div class="note-label">🎯 Critical Facilitation Moment — Surface the Hard Truth</div>
+        <p>
+          This step separates a wish list from a real MVP. The question isn't "what do we want?" — it's "what can we ship in 6 weeks?"<br><br>
+          <span class="engage-tag evan">Evan</span> "I've estimated the Unified Contact Timeline as High Effort because it joins data across Zendesk and Salesforce. Does that feel right? What specifically makes it hard — is it the data join, the UI, or both?"<br><br>
+          <span class="engage-tag caroline">Caroline</span> "For the features that got the most votes — which data sources can we access via existing APIs today, and which would need new integration work? That's the real effort differentiator."<br><br>
+          <span class="engage-tag annelise">Annelise</span> "Given what's clustering as Must Have — how long would you need for the information architecture and initial wireframes before engineering can build against them? Are we talking days or weeks?"<br><br>
+          <span class="engage-tag evan">Evan</span> "If the Must Haves add up to more than 6 weeks — what's the long pole? What should we spike on in Week 1 while design works in parallel?"
+        </p>
+      </div>
+
+      <!-- Effort validation grid -->
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 900px; margin-bottom: 24px;">
+        <div style="background: var(--bg-surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px;">
+          <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; color: var(--accent-blue); margin-bottom: 10px;">Engineering Estimate</div>
+          <div style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 10px;">For the top-voted features — can we ship them in <strong style="color: var(--text-primary);">6 weeks with 1 BE + 1 FE + 1 Data Engineer</strong>?</div>
+          <div style="background: var(--bg-card); border: 1px dashed var(--border); border-radius: 6px; padding: 10px; min-height: 48px;">
+            <div style="font-size: 0.72rem; color: var(--text-muted); font-style: italic;">Evan & Caroline validate here</div>
+          </div>
+        </div>
+
+        <div style="background: var(--bg-surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px;">
+          <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; color: var(--accent-green); margin-bottom: 10px;">Design Timeline</div>
+          <div style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 10px;">How long for <strong style="color: var(--text-primary);">information architecture + wireframes</strong> before engineering can start building?</div>
+          <div style="background: var(--bg-card); border: 1px dashed var(--border); border-radius: 6px; padding: 10px; min-height: 48px;">
+            <div style="font-size: 0.72rem; color: var(--text-muted); font-style: italic;">Annelise validates here</div>
+          </div>
+        </div>
+
+        <div style="background: var(--bg-surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px;">
+          <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; color: var(--accent-amber); margin-bottom: 10px;">Longest Pole</div>
+          <div style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 10px;">Which integration or feature is the <strong style="color: var(--text-primary);">riskiest to timeline</strong>? What do we spike on in Week 1?</div>
+          <div style="background: var(--bg-card); border: 1px dashed var(--border); border-radius: 6px; padding: 10px; min-height: 48px;">
+            <div style="font-size: 0.72rem; color: var(--text-muted); font-style: italic;">Group identifies here</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MOSCOW MATRIX -->
+    <h3 style="font-family: 'Instrument Serif', serif; font-size: 1.4rem; margin-bottom: 4px;">MoSCoW Placement</h3>
+    <p class="section-description" style="margin-bottom: 16px;">
+      Now we place cards — informed by both desirability (votes) AND feasibility (effort). 
+      High votes + low effort = obvious Must Have. High votes + high effort = the scoping conversation.
+    </p>
+
+    <div class="facilitator-note">
+      <div class="note-label">🎯 Key Facilitation Moment</div>
+      <p>
+        This is where productive disagreement happens. The effort gut-check may have surfaced that a top-voted feature is harder than expected.<br><br>
+        When that happens: <strong>"This got 4 votes but Caroline says the integration takes 3 weeks alone. Do we keep it as Must Have and cut something else, or move it to Should Have and ship it as a fast-follow?"</strong><br><br>
+        When someone pushes a card from "Must" to "Should": <strong>"What would we lose by deferring this?"</strong><br>
+        When someone wants to add something to "Must": <strong>"What comes out to make room within 6 weeks?"</strong><br><br>
+        <span class="engage-tag renee">Renee</span> "Given the effort reality — if you had to cut half of this Must Have list, what stays and what goes?"
+      </p>
+    </div>
+
+    <div class="moscow-grid">
+      <div class="moscow-quadrant must">
+        <h4>Must Have — MVP</h4>
+        <div class="quad-desc">Without these, the tool doesn't deliver value on Day 1. Non-negotiable.</div>
+        <div class="moscow-drop-zone">
+          <span class="moscow-chip">Universal Search</span>
+          <span class="moscow-chip">Caller Profile Card</span>
+          <span class="moscow-chip">Company Overview Card</span>
+          <span class="moscow-chip">Billing & Payment Status</span>
+          <span class="moscow-chip">Unified Contact Timeline</span>
+          <span class="moscow-chip">Active Tickets Panel</span>
+          <span class="moscow-chip">Sub-3s Load</span>
+        </div>
+      </div>
+
+      <div class="moscow-quadrant should">
+        <h4>Should Have — Fast Follow</h4>
+        <div class="quad-desc">Important but not launch-blocking. Ship in first sprint post-MVP.</div>
+        <div class="moscow-drop-zone">
+          <span class="moscow-chip">Account Activity Feed</span>
+          <span class="moscow-chip">Employee-Level Detail View</span>
+          <span class="moscow-chip">Product & Plan Summary</span>
+          <span class="moscow-chip">SF-Zendesk Record Linking</span>
+          <div class="placeholder-text">↑ Move cards here from Must Have or Could Have</div>
+        </div>
+      </div>
+
+      <div class="moscow-quadrant could">
+        <h4>Could Have — Phase 2</h4>
+        <div class="quad-desc">Would improve the product. Can wait for the Health Scoring phase.</div>
+        <div class="moscow-drop-zone">
+          <span class="moscow-chip">Composite Health Score</span>
+          <span class="moscow-chip">API-First Data Layer</span>
+          <div class="placeholder-text">↑ Debate zone — architecture decision may move up</div>
+        </div>
+      </div>
+
+      <div class="moscow-quadrant wont">
+        <h4>Won't Have — Phase 3+</h4>
+        <div class="quad-desc">Explicitly out of scope. Valuable but requires the foundation first.</div>
+        <div class="moscow-drop-zone">
+          <span class="moscow-chip">At-Risk Account Alerts</span>
+          <span class="moscow-chip">Upsell/Cross-Sell Recs</span>
+          <div class="placeholder-text">Also out: AI call summarization, telephony integration, knowledge base surfacing</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ═══════════════════════════════════════════
+       EXERCISE 3: SCOPE LOCK & RISKS
+       ═══════════════════════════════════════════ -->
+  <section class="workshop-section" id="exercise-3">
+    <div class="section-header">
+      <span class="section-number">03</span>
+      <h2>Scope Lock & Risk Identification</h2>
+    </div>
+    <div class="section-meta">
+      <span class="meta-tag time">10 minutes</span>
+      <span class="meta-tag method">Collaborative identification</span>
+      <span class="meta-tag output">Top risks with owners + mitigation</span>
+    </div>
+
+    <p class="section-description">
+      We've defined the MVP. Now: what could go wrong? Let's identify the top risks, assign owners, and agree on de-risking actions for Week 1.
+    </p>
+
+    <div class="facilitator-note">
+      <div class="note-label">🎯 Facilitator Move</div>
+      <p>
+        I've seeded three risks based on my analysis. Let's validate these and add any I'm missing.<br><br>
+        <span class="engage-tag caroline">Caroline</span> "Is the Salesforce-to-Zendesk join I identified the hardest integration, or is there something trickier?"<br><br>
+        <span class="engage-tag evan">Evan</span> "What would you want to spike on in Week 1 to de-risk the build?"<br><br>
+        <span class="engage-tag renee">Renee</span> "Are there organizational dependencies — teams or approvals — we need to unlock early?"
+      </p>
+    </div>
+
+    <div class="scope-lock-grid">
+
+      <div class="risk-card">
+        <div class="risk-label high">High Risk</div>
+        <h5>Salesforce-Zendesk Data Join</h5>
+        <div class="risk-detail">Unified contact timeline requires joining Zendesk ticket data with Salesforce account records. Do we have a shared key today? If not, this is the longest pole in the MVP.</div>
+        <div class="risk-owner">Owner: <strong>Caroline</strong> · De-risk: Spike in Week 1</div>
+      </div>
+
+      <div class="risk-card">
+        <div class="risk-label high">High Risk</div>
+        <h5>Data Freshness & Accuracy</h5>
+        <div class="risk-detail">Agent seeing stale or incorrect data is worse than seeing no data. What's the current sync latency from production DB to the warehouse? Do employee counts in Salesforce match production?</div>
+        <div class="risk-owner">Owner: <strong>Data Engineering</strong> · De-risk: Audit data sources in Week 1</div>
+      </div>
+
+      <div class="risk-card">
+        <div class="risk-label med">Medium Risk</div>
+        <h5>Agent Adoption</h5>
+        <div class="risk-detail">Tool must replace existing workflow, not supplement it. If agents still need to open Salesforce separately, we've failed. Need alpha testers from Day 1 of build.</div>
+        <div class="risk-owner">Owner: <strong>PM (Darrien) + CSO Lead</strong> · De-risk: 5 volunteer agents in alpha</div>
+      </div>
+
+      <div class="risk-card">
+        <div class="risk-label med">Medium Risk</div>
+        <h5>PII & Access Controls</h5>
+        <div class="risk-detail">Consolidating employee PII (pay, benefits, SSN-adjacent data) into one view has compliance implications. What data can agents see? Role-based access needed?</div>
+        <div class="risk-owner">Owner: <strong>Legal/Compliance + Engineering</strong> · De-risk: Review in Week 1</div>
+      </div>
+
+      <div class="risk-card blank-risk">
+        <div class="blank-text" style="color: var(--text-muted); font-size: 0.85rem; text-align: center;">
+          <span class="plus" style="font-size: 1.8rem; display: block; margin-bottom: 4px;">+</span>
+          Add risk
+        </div>
+      </div>
+
+      <div class="risk-card blank-risk">
+        <div class="blank-text" style="color: var(--text-muted); font-size: 0.85rem; text-align: center;">
+          <span class="plus" style="font-size: 1.8rem; display: block; margin-bottom: 4px;">+</span>
+          Add risk
+        </div>
+      </div>
+
+    </div>
+
+    <!-- DEFINITION OF DONE / INTERNAL REVIEW -->
+    <div style="margin-top: 28px; max-width: 1100px;">
+      <h3 style="font-family: 'Instrument Serif', serif; font-size: 1.2rem; margin-bottom: 12px;">✅ Definition of Done — Who Signs Off Before We Ship?</h3>
+
+      <div class="facilitator-note">
+        <div class="note-label">🎯 Facilitator Move</div>
+        <p>
+          "Before we call the MVP done, I want to make sure we're aligned on who needs to review and approve this before it goes to the full CSO team. Shipping to 5 alpha testers is one thing — rolling out org-wide is another."<br><br>
+          <span class="engage-tag renee">Renee</span> "Who on the CSO side needs to sign off? Is that Natalie Miranda's team, or is there a team lead layer we should loop in earlier?"<br><br>
+          <span class="engage-tag annelise">Annelise</span> "For design review — should we plan a design critique at the end of Week 2 before engineering builds against the wireframes?"<br><br>
+          <span class="engage-tag evan">Evan</span> "For technical review — do we need an architecture review with the data services team before we commit to the integration approach?"
+        </p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
+        <div style="background: var(--bg-surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px;">
+          <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; color: var(--accent-green); margin-bottom: 8px;">Design Review</div>
+          <div style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5;">IA + wireframes reviewed by Annelise / design team before eng build starts</div>
+          <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 8px; font-weight: 600;">When: End of Week 2</div>
+        </div>
+
+        <div style="background: var(--bg-surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px;">
+          <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; color: var(--accent-blue); margin-bottom: 8px;">Technical Review</div>
+          <div style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5;">Data architecture + integration approach reviewed by Data Services & Caroline</div>
+          <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 8px; font-weight: 600;">When: End of Week 1 spike</div>
+        </div>
+
+        <div style="background: var(--bg-surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px;">
+          <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; color: var(--accent-amber); margin-bottom: 8px;">CSO Alpha Review</div>
+          <div style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5;">5 volunteer agents test with real calls. Daily feedback sessions. Fix critical issues.</div>
+          <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 8px; font-weight: 600;">When: Weeks 5-6</div>
+        </div>
+
+        <div style="background: var(--bg-surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px;">
+          <div style="font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; color: var(--accent-pink); margin-bottom: 8px;">Leadership Sign-Off</div>
+          <div style="font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5;">CSO leadership + stakeholders approve before full rollout to all agents</div>
+          <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 8px; font-weight: 600;">When: Week 7 (pre-rollout)</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ═══════════════════════════════════════════
+       EXERCISE 4: CLOSING & ALIGNMENT
+       ═══════════════════════════════════════════ -->
+  <section class="workshop-section" id="exercise-4">
+    <div class="section-header">
+      <span class="section-number">04</span>
+      <h2>Closing & Alignment</h2>
+    </div>
+    <div class="section-meta">
+      <span class="meta-tag time">3 minutes + 5 min buffer</span>
+      <span class="meta-tag method">Facilitator readback</span>
+      <span class="meta-tag output">Shared MVP agreement</span>
+    </div>
+
+    <div class="mvp-readback">
+      <h4>📋 MVP Readback</h4>
+      <p class="readback-prompt">
+        "Let me read back what we've aligned on. Our Phase 1 MVP gives a CSO agent a single-pane view 
+        with: [read Must Have cards]. We're deferring [read Should Have and Won't Have] to fast-follow and Phase 2. 
+        Our top risks are [read risks] and we'll de-risk them in Week 1 with [spikes/audits]. 
+        The team is 1 backend engineer, 1 frontend engineer, 1 data engineer, 1 designer, and me — 
+        targeting 6-8 weeks to alpha with 5 volunteer agents."
+      </p>
+    </div>
+
+    <div class="closing-section">
+      <h3>The Alignment Question</h3>
+      <p>
+        Before we close — one question for the group:
+      </p>
+      <div class="alignment-question">
+        "Is everyone comfortable that this is the right starting point? 
+        Not the final product — the first brick, laid in the right direction."
+      </div>
+      <p style="margin-top: 16px;">
+        What was deferred today isn't forgotten — it's sequenced. The foundation we build in Phase 1 
+        is what makes Health Scoring and Proactive Intelligence possible in Phase 2 and 3 without re-architecting.
+      </p>
+    </div>
+
+    <div class="facilitator-note" style="margin-top: 24px;">
+      <div class="note-label">🎯 Facilitator Close</div>
+      <p>
+        "Thank you for collaborating on this. What we've built here in 45 minutes is what I'd want to build in the first week on the job — 
+        a shared understanding of the problem, a tightly scoped MVP, and clear risks to de-risk early. 
+        The difference is, on the job, I'd also spend that first week shadowing CSO agents to validate everything we assumed today."
+      </p>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // Dot voting interactivity
+  document.querySelectorAll('.vote-dot').forEach(dot => {
+    dot.addEventListener('click', function() {
+      this.classList.toggle('active');
+    });
+  });
+
+  // Smooth scroll for progress map
+  document.querySelectorAll('.progress-step').forEach(step => {
+    step.addEventListener('click', function(e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Engineering Resources & Sprint Plan — Customer Central MVP</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700&family=Instrument+Serif&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0c0c10;
+  --bg2: #111118;
+  --bg3: #16161e;
+  --bg4: #1c1c26;
+  --border: rgba(255,255,255,0.06);
+  --border-h: rgba(255,255,255,0.12);
+  --text: #e8e8ec;
+  --text2: #a0a0b0;
+  --text3: #5a5a6e;
+  --green: #6ee7b7;
+  --green-bg: rgba(110,231,183,0.08);
+  --green-bdr: rgba(110,231,183,0.2);
+  --blue: #818cf8;
+  --blue-bg: rgba(129,140,248,0.08);
+  --blue-bdr: rgba(129,140,248,0.2);
+  --amber: #fbbf24;
+  --amber-bg: rgba(251,191,36,0.08);
+  --amber-bdr: rgba(251,191,36,0.2);
+  --red: #f87171;
+  --red-bg: rgba(248,113,113,0.08);
+  --red-bdr: rgba(248,113,113,0.2);
+  --pink: #f472b6;
+  --pink-bg: rgba(244,114,182,0.08);
+  --pink-bdr: rgba(244,114,182,0.15);
+  --cyan: #22d3ee;
+  --cyan-bg: rgba(34,211,238,0.08);
+  --cyan-bdr: rgba(34,211,238,0.2);
+  --orange: #fb923c;
+  --orange-bg: rgba(251,146,60,0.08);
+  --orange-bdr: rgba(251,146,60,0.2);
+  --purple: #a78bfa;
+  --purple-bg: rgba(167,139,250,0.08);
+  --purple-bdr: rgba(167,139,250,0.2);
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 48px 32px 80px;
+}
+
+/* Header */
+.hdr {
+  text-align: center;
+  margin-bottom: 56px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid var(--border);
+}
+.hdr h1 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 32px;
+  color: var(--text);
+  margin-bottom: 8px;
+  letter-spacing: -0.02em;
+}
+.hdr .sub {
+  font-size: 15px;
+  color: var(--text2);
+  max-width: 600px;
+  margin: 0 auto 16px;
+}
+.hdr .meta {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  padding: 3px 10px;
+  border-radius: 4px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  color: var(--text3);
+}
+
+/* Sections */
+.section {
+  margin-bottom: 48px;
+}
+.section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 8px;
+}
+.section-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 24px;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.section-desc {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.7;
+  margin-bottom: 24px;
+  max-width: 720px;
+}
+
+/* Philosophy callout */
+.philosophy {
+  background: var(--bg2);
+  border: 1px solid var(--green-bdr);
+  border-radius: 12px;
+  padding: 28px;
+  margin-bottom: 48px;
+}
+.philosophy h3 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 20px;
+  color: var(--green);
+  margin-bottom: 12px;
+}
+.philosophy p {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.8;
+  margin-bottom: 12px;
+}
+.philosophy p:last-child { margin-bottom: 0; }
+.philosophy strong { color: var(--text); }
+
+/* Team Cards */
+.team-grid {
+  display: grid;
+  gap: 16px;
+}
+.team-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.team-card:hover { border-color: var(--border-h); }
+.team-card.open .tc-body { display: block; }
+.team-card.open .tc-chevron { transform: rotate(180deg); }
+
+.tc-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px;
+}
+.tc-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.tc-info { flex: 1; }
+.tc-role {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.tc-person {
+  font-size: 12px;
+  color: var(--text3);
+}
+.tc-badges {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.tc-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.tc-chevron {
+  color: var(--text3);
+  font-size: 12px;
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+
+.tc-body {
+  display: none;
+  padding: 0 24px 24px;
+  border-top: 1px solid var(--border);
+  margin-top: 0;
+  padding-top: 20px;
+}
+.tc-section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 8px;
+  margin-top: 16px;
+}
+.tc-section-label:first-child { margin-top: 0; }
+.tc-body p {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.7;
+  margin-bottom: 8px;
+}
+.tc-body ul {
+  list-style: none;
+  padding: 0;
+}
+.tc-body li {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.7;
+  padding-left: 16px;
+  position: relative;
+  margin-bottom: 4px;
+}
+.tc-body li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--text3);
+  font-size: 11px;
+}
+
+/* Timeline */
+.timeline-container {
+  position: relative;
+  margin-top: 24px;
+}
+
+/* Week blocks */
+.week-row {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 0;
+  margin-bottom: 2px;
+}
+.week-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--text3);
+  padding: 16px 12px;
+  text-align: right;
+  border-right: 2px solid var(--border);
+}
+.week-label .wk-num {
+  color: var(--text2);
+  font-weight: 500;
+  display: block;
+}
+.week-label .wk-phase {
+  font-size: 9px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.week-content {
+  padding: 12px 20px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.task-chip {
+  font-size: 11px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid;
+  line-height: 1.3;
+  cursor: default;
+  position: relative;
+}
+.task-chip .who {
+  font-family: 'DM Mono', monospace;
+  font-size: 8px;
+  letter-spacing: 0.5px;
+  opacity: 0.7;
+  display: block;
+  margin-top: 2px;
+}
+
+/* Task colors by person */
+.chip-be { background: var(--blue-bg); border-color: var(--blue-bdr); color: var(--blue); }
+.chip-fe { background: var(--green-bg); border-color: var(--green-bdr); color: var(--green); }
+.chip-de { background: var(--purple-bg); border-color: var(--purple-bdr); color: var(--purple); }
+.chip-ds { background: var(--cyan-bg); border-color: var(--cyan-bdr); color: var(--cyan); }
+.chip-pm { background: var(--orange-bg); border-color: var(--orange-bdr); color: var(--orange); }
+.chip-qa { background: var(--pink-bg); border-color: var(--pink-bdr); color: var(--pink); }
+.chip-all { background: var(--amber-bg); border-color: var(--amber-bdr); color: var(--amber); }
+.chip-risk { background: var(--red-bg); border-color: var(--red-bdr); color: var(--red); }
+
+/* Phase dividers */
+.phase-divider {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  margin: 16px 0 8px;
+}
+.phase-divider-label {
+  grid-column: 2;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 8px 20px;
+  border-radius: 6px;
+  margin-left: 0;
+}
+
+/* Legend */
+.legend {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 16px 20px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: var(--text2);
+}
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+}
+
+/* Dependency cards */
+.dep-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+}
+.dep-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px;
+}
+.dep-card h4 {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.dep-card .dep-owner {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--text3);
+  margin-bottom: 10px;
+}
+.dep-card p {
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.6;
+}
+.dep-risk {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-top: 8px;
+}
+.risk-high { background: var(--red-bg); border: 1px solid var(--red-bdr); color: var(--red); }
+.risk-med { background: var(--amber-bg); border: 1px solid var(--amber-bdr); color: var(--amber); }
+.risk-low { background: var(--green-bg); border: 1px solid var(--green-bdr); color: var(--green); }
+
+/* Callout boxes */
+.callout {
+  border-radius: 10px;
+  padding: 24px;
+  margin: 24px 0;
+}
+.callout h4 {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.callout p {
+  font-size: 13px;
+  line-height: 1.7;
+}
+.callout-amber {
+  background: var(--amber-bg);
+  border: 1px solid var(--amber-bdr);
+}
+.callout-amber h4 { color: var(--amber); }
+.callout-amber p { color: #d4a028; }
+.callout-red {
+  background: var(--red-bg);
+  border: 1px solid var(--red-bdr);
+}
+.callout-red h4 { color: var(--red); }
+.callout-red p { color: #e88; }
+.callout-green {
+  background: var(--green-bg);
+  border: 1px solid var(--green-bdr);
+}
+.callout-green h4 { color: var(--green); }
+.callout-green p { color: #5ac9a0; }
+.callout-blue {
+  background: var(--blue-bg);
+  border: 1px solid var(--blue-bdr);
+}
+.callout-blue h4 { color: var(--blue); }
+.callout-blue p { color: #8890d8; }
+
+/* Summary table */
+.summary-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-top: 16px;
+}
+.summary-table th {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text3);
+  text-align: left;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  font-weight: 500;
+}
+.summary-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text2);
+  vertical-align: top;
+}
+.summary-table tr:last-child td { border-bottom: none; }
+.summary-table .role-col { color: var(--text); font-weight: 500; }
+
+/* Gate box */
+.gate-box {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin: 12px 0;
+}
+.gate-box h4 {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.gate-box p {
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.6;
+}
+
+/* Comparison */
+.compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 24px 0;
+}
+.compare-col {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 24px;
+}
+.compare-col h4 {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.compare-col p {
+  font-size: 13px;
+  color: var(--text2);
+  line-height: 1.7;
+}
+.strikethrough { text-decoration: line-through; color: var(--text3); }
+
+.footer {
+  text-align: center;
+  padding-top: 48px;
+  font-size: 12px;
+  color: var(--text3);
+  border-top: 1px solid var(--border);
+  margin-top: 48px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="hdr">
+    <h1>Engineering Resources & Sprint Plan</h1>
+    <p class="sub">Customer Central MVP — Team composition, allocation, and a 5-week sprint plan that puts working software in front of CSO agents in 2 weeks.</p>
+    <div class="meta">
+      <span class="tag">CASE STUDY REQUIREMENT #3c</span>
+      <span class="tag">INCLUDES DATA SERVICES</span>
+      <span class="tag">5-WEEK TOTAL</span>
+    </div>
+  </div>
+
+  <!-- Philosophy -->
+  <div class="philosophy">
+    <h3>Resourcing Philosophy</h3>
+    <p>
+      The conventional approach for internal tool MVPs is 6-8 weeks with a team of 5-6. That's too slow. <strong>Two weeks to get working software in front of real CSO agents. Three more weeks to polish, test, and roll out.</strong> Total: 5 weeks from kickoff to full deployment.
+    </p>
+    <p>
+      This isn't wishful thinking — it's a reflection of how modern product teams ship when they have clear requirements and use AI-assisted development. The frontend is a React dashboard with known data contracts. With AI coding tools, an experienced frontend engineer builds that in 4-5 days, not 4-5 weeks. The backend is an API aggregation layer over existing systems — the data already exists, we're assembling it, not creating it.
+    </p>
+    <p>
+      <strong>The trap is over-resourcing.</strong> More engineers doesn't mean faster at this scale — it means more coordination overhead. Justworks engineers are full-stack — they work across the entire stack within their product area, not in frontend/backend silos. Two full-stack software engineers with different focus areas (API layer vs. UI), plus a Data Services engineer for the Salesforce pipeline, can work in true parallel. And because they're full-stack, they can flex across the boundary during iteration weeks when speed matters more than specialization. Keep the team small, the scope tight, and the feedback loops fast.
+    </p>
+  </div>
+
+  <!-- ═══════ SECTION 1: TEAM ═══════ -->
+  <div class="section">
+    <div class="section-label">01</div>
+    <div class="section-title">Team Composition</div>
+    <p class="section-desc">Five dedicated people plus one shared resource. Justworks engineers are full-stack — they own their product area across the entire stack. We're not hiring backend and frontend specialists; we're assigning two software engineers with different focus areas for this project, plus a Data Services engineer for the Salesforce pipeline. Clear domains, no ambiguous ownership.</p>
+
+    <div class="team-grid">
+
+      <!-- Software Engineer — API & Data Layer -->
+      <div class="team-card" onclick="toggleCard(this)">
+        <div class="tc-header">
+          <div class="tc-icon" style="background: var(--blue-bg); border: 1px solid var(--blue-bdr);">⚙</div>
+          <div class="tc-info">
+            <div class="tc-role">Software Engineer — API & Data Layer Focus</div>
+            <div class="tc-person">Full-stack · Dedicated · Full-time</div>
+          </div>
+          <div class="tc-badges">
+            <span class="tc-badge" style="background: var(--red-bg); border: 1px solid var(--red-bdr); color: var(--red);">LONG POLE</span>
+            <span class="tc-badge" style="background: var(--blue-bg); border: 1px solid var(--blue-bdr); color: var(--blue);">WEEK 1 START</span>
+          </div>
+          <span class="tc-chevron">▼</span>
+        </div>
+        <div class="tc-body">
+          <div class="tc-section-label">Owns</div>
+          <p>The Customer Context Service — the API layer that sits between the dashboard UI and all data sources. This is the single service the UI calls; it handles orchestration, caching, and data merging from Zendesk, the production DB, and the Salesforce integration pipeline. This is a full-stack engineer leaning into the API and data aggregation side of the project — consistent with how Justworks structures teams around product areas, not frontend/backend silos.</p>
+          <div class="tc-section-label">Week-by-Week</div>
+          <ul>
+            <li><strong>Days 1-2:</strong> Data access spikes — validate API connectivity to Zendesk and production DB read replica. Confirm response shapes, auth, rate limits. This is the de-risking move.</li>
+            <li><strong>Days 3-5:</strong> Build the Customer Context Service skeleton with API contracts. The UI-focused engineer starts building against these contracts immediately.</li>
+            <li><strong>Week 2:</strong> Integrate real data sources. Zendesk integration (tickets, interactions), production DB queries (company profile, member data, billing status, payroll dates). Wire up caching layer.</li>
+            <li><strong>Weeks 3-5:</strong> Harden integrations, error handling, graceful degradation, performance optimization. Work with QA on data accuracy testing. Can flex into UI work as integrations stabilize.</li>
+          </ul>
+          <div class="tc-section-label">Why This Person Is Critical</div>
+          <p>Everything depends on the data flowing correctly. If the API layer is delayed, the UI can still be built against mock data — but nothing ships to real users until real data is connected. This is why this engineer starts on Day 1 with data access spikes, not architecture documents. As a full-stack engineer, they can also support the UI side during Weeks 3-5 as the data layer stabilizes — this flexibility is a feature of Justworks' engineering culture, not a workaround.</p>
+        </div>
+      </div>
+
+      <!-- Software Engineer — UI & Experience Focus -->
+      <div class="team-card" onclick="toggleCard(this)">
+        <div class="tc-header">
+          <div class="tc-icon" style="background: var(--green-bg); border: 1px solid var(--green-bdr);">◻</div>
+          <div class="tc-info">
+            <div class="tc-role">Software Engineer — UI & Experience Focus</div>
+            <div class="tc-person">Full-stack · Dedicated · Full-time</div>
+          </div>
+          <div class="tc-badges">
+            <span class="tc-badge" style="background: var(--green-bg); border: 1px solid var(--green-bdr); color: var(--green);">4-5 DAYS BUILD</span>
+            <span class="tc-badge" style="background: var(--amber-bg); border: 1px solid var(--amber-bdr); color: var(--amber);">AFTER DESIGN</span>
+          </div>
+          <span class="tc-chevron">▼</span>
+        </div>
+        <div class="tc-body">
+          <div class="tc-section-label">Owns</div>
+          <p>The React-based Customer Central dashboard UI. Search, company profile card, caller card, interaction timeline, open issues panel, recent activity feed, and all interactive elements (click-to-expand, tab navigation, auto-refresh). As a full-stack engineer with React/JavaScript strength, this person leads the UI but can also contribute to API contract design and integration testing — they're not siloed from the data layer.</p>
+          <div class="tc-section-label">Week-by-Week</div>
+          <ul>
+            <li><strong>Week 1, Days 1-3:</strong> Works with designer to finalize component specs and interaction patterns. Collaborates with the API-focused engineer on API contracts. Sets up project scaffolding and component library.</li>
+            <li><strong>Week 1, Days 3-5 + Week 2:</strong> Builds the full dashboard UI against mock data + agreed API contracts. With AI-assisted development, this is 4-5 days of focused work, not weeks. The data shapes are known, the layout is defined, the interactions are standard (search, tabs, expand/collapse, auto-refresh).</li>
+            <li><strong>Week 2, end:</strong> Connects to real APIs as they come online. Integration testing.</li>
+            <li><strong>Weeks 3-5:</strong> Iteration based on alpha/beta feedback. Accessibility, responsive refinements, edge case handling, loading states, error states. Can also pick up API-side work as needed.</li>
+          </ul>
+          <div class="tc-section-label">Why 4-5 Days Is Realistic</div>
+          <p>This is a React dashboard with well-defined data contracts, not a novel interaction paradigm. The components are: a search bar, card layouts, a timeline list, tabs, and data tables. An experienced engineer with AI coding tools builds this faster than traditional estimation assumes. The complexity isn't in the UI — it's in the data integrations behind it. And because both engineers are full-stack, they can swarm on whichever layer needs attention during alpha/beta iterations.</p>
+        </div>
+      </div>
+
+      <!-- Data Engineer -->
+      <div class="team-card" onclick="toggleCard(this)">
+        <div class="tc-header">
+          <div class="tc-icon" style="background: var(--purple-bg); border: 1px solid var(--purple-bdr);">⛁</div>
+          <div class="tc-info">
+            <div class="tc-role">Data Engineer</div>
+            <div class="tc-person">From Data Services · Part-time / Shared</div>
+          </div>
+          <div class="tc-badges">
+            <span class="tc-badge" style="background: var(--purple-bg); border: 1px solid var(--purple-bdr); color: var(--purple);">DATA SERVICES</span>
+            <span class="tc-badge" style="background: var(--red-bg); border: 1px solid var(--red-bdr); color: var(--red);">HIGHEST RISK</span>
+          </div>
+          <span class="tc-chevron">▼</span>
+        </div>
+        <div class="tc-body">
+          <div class="tc-section-label">Owns</div>
+          <p>Salesforce integration pipeline. Works with Caroline Crossland's Salesforce team to establish API queries (SOQL), handle data mapping between Salesforce objects (Accounts, Contacts, Cases, Opportunities, Activity History) and the Customer Context Service's normalized schema. Resolves the Zendesk-Salesforce join problem — identifying and validating the shared key between these systems.</p>
+          <div class="tc-section-label">Week-by-Week</div>
+          <ul>
+            <li><strong>Days 1-2:</strong> Paired spike with backend engineer and Caroline's team. Map Salesforce objects, confirm API access, identify the Zendesk-Salesforce shared key (email? external ID? custom field?). This is the single riskiest unknown in the project.</li>
+            <li><strong>Week 1-2:</strong> Build the Salesforce query layer. Establish the data pipeline that feeds account context, sales history, and opportunity data into the Customer Context Service. Handle data mapping and normalization.</li>
+            <li><strong>Weeks 3-4:</strong> Data quality validation, sync monitoring, edge case handling (companies with multiple Salesforce accounts, migrated records, data inconsistencies between Salesforce and production DB).</li>
+            <li><strong>Week 5:</strong> Available for production support and monitoring during full rollout.</li>
+          </ul>
+          <div class="tc-section-label">Why Data Services, Specifically</div>
+          <p>The prompt explicitly asks about Data Services team involvement. The Salesforce integration is their domain — they understand the existing sync pipelines, the warehouse architecture, and the data quality challenges. Assigning this to a general backend engineer would mean weeks of ramp-up time on Salesforce schema specifics. The Data Services engineer already knows where the bodies are buried.</p>
+        </div>
+      </div>
+
+      <!-- Product Designer -->
+      <div class="team-card" onclick="toggleCard(this)">
+        <div class="tc-header">
+          <div class="tc-icon" style="background: var(--cyan-bg); border: 1px solid var(--cyan-bdr);">✎</div>
+          <div class="tc-info">
+            <div class="tc-role">Product Designer</div>
+            <div class="tc-person">Annelise Bryda's team · Dedicated</div>
+          </div>
+          <div class="tc-badges">
+            <span class="tc-badge" style="background: var(--cyan-bg); border: 1px solid var(--cyan-bdr); color: var(--cyan);">DESIGN LEAD</span>
+            <span class="tc-badge" style="background: var(--amber-bg); border: 1px solid var(--amber-bdr); color: var(--amber);">FRONT-LOADED</span>
+          </div>
+          <span class="tc-chevron">▼</span>
+        </div>
+        <div class="tc-body">
+          <div class="tc-section-label">Owns</div>
+          <p>Information architecture, interaction design, and the agent experience. Takes the wireframe zones and capability clusters from the proposal into detailed, buildable designs. Conducts usability testing with CSO agents during alpha.</p>
+          <div class="tc-section-label">Week-by-Week</div>
+          <ul>
+            <li><strong>Days 1-3:</strong> This is the critical path for frontend. Designer works with PM on the information hierarchy, component specs, and interaction patterns. Defines the encounter flow: what the agent sees at T+0, T+3, T+10, T+30. Annelise (or her team member) should be in the room for this — it's the design sprint.</li>
+            <li><strong>Week 1-2:</strong> Detailed component designs, responsive layouts, edge case states (missing data, loading, errors, new customer with no history). Hands off to frontend engineer as specs finalize — this is the unblocking moment.</li>
+            <li><strong>Weeks 3-4:</strong> Usability testing with alpha CSO agents. Daily feedback sessions. Iterative refinement based on real agent workflows.</li>
+            <li><strong>Week 5:</strong> Final polish, training materials visual design, launch support.</li>
+          </ul>
+          <div class="tc-section-label">Why Front-Loaded</div>
+          <p>Design gates the frontend. The frontend engineer can't build the real UI until the designer has defined the component specs and interaction patterns. This is why Days 1-3 are a design sprint, not a discovery phase — we've already done the discovery. The designer is refining and specifying, not exploring.</p>
+        </div>
+      </div>
+
+      <!-- PM -->
+      <div class="team-card" onclick="toggleCard(this)">
+        <div class="tc-header">
+          <div class="tc-icon" style="background: var(--orange-bg); border: 1px solid var(--orange-bdr);">◈</div>
+          <div class="tc-info">
+            <div class="tc-role">Product Manager (You)</div>
+            <div class="tc-person">Dedicated · Full-time</div>
+          </div>
+          <div class="tc-badges">
+            <span class="tc-badge" style="background: var(--orange-bg); border: 1px solid var(--orange-bdr); color: var(--orange);">OWNER</span>
+          </div>
+          <span class="tc-chevron">▼</span>
+        </div>
+        <div class="tc-body">
+          <div class="tc-section-label">Owns</div>
+          <p>Everything else. Requirements clarity, stakeholder alignment, sprint planning, user research coordination, launch sequencing, and the continuous judgment calls about scope, priority, and tradeoffs that happen daily on a project like this.</p>
+          <div class="tc-section-label">Week-by-Week</div>
+          <ul>
+            <li><strong>Week 1:</strong> CSO shadowing (2 days observing agents), design sprint co-facilitation, stakeholder alignment with CSO leadership, daily check-ins with the data spike team.</li>
+            <li><strong>Week 2:</strong> Sprint management, alpha user recruitment (5 volunteer CSO agents), acceptance criteria validation, writing the feedback collection protocol.</li>
+            <li><strong>Weeks 3-4:</strong> Alpha facilitation, daily feedback synthesis, scope decisions on what gets fixed vs. deferred, stakeholder communication, beta planning.</li>
+            <li><strong>Week 5:</strong> Beta with full CSO team, training session design, rollout coordination, launch communication to CSO leadership.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- QA -->
+      <div class="team-card" onclick="toggleCard(this)">
+        <div class="tc-header">
+          <div class="tc-icon" style="background: var(--pink-bg); border: 1px solid var(--pink-bdr);">✓</div>
+          <div class="tc-info">
+            <div class="tc-role">QA Engineer</div>
+            <div class="tc-person">Shared Resource · Part-time</div>
+          </div>
+          <div class="tc-badges">
+            <span class="tc-badge" style="background: var(--pink-bg); border: 1px solid var(--pink-bdr); color: var(--pink);">SHARED</span>
+            <span class="tc-badge" style="background: var(--amber-bg); border: 1px solid var(--amber-bdr); color: var(--amber);">WEEKS 2-5</span>
+          </div>
+          <span class="tc-chevron">▼</span>
+        </div>
+        <div class="tc-body">
+          <div class="tc-section-label">Owns</div>
+          <p>Data accuracy testing — the single most critical QA concern. If the dashboard shows an incorrect billing status, wrong employee count, or stale interaction history, agent trust is destroyed immediately. Also owns integration testing across the Zendesk-Salesforce-production DB data flow.</p>
+          <div class="tc-section-label">Focus Areas</div>
+          <ul>
+            <li><strong>Data accuracy:</strong> Cross-reference dashboard data against source systems. Every data point shown to an agent must match reality.</li>
+            <li><strong>Freshness validation:</strong> Confirm data refresh cadence meets requirements (billing: real-time, interactions: near-real-time, activity: daily).</li>
+            <li><strong>Edge cases:</strong> New companies with no history, companies that migrated between plans, employees with multiple roles, Zendesk downtime behavior.</li>
+            <li><strong>Performance:</strong> Dashboard loads in &lt;3 seconds, search returns in &lt;2 seconds under realistic data volumes.</li>
+          </ul>
+          <div class="tc-section-label">Why Shared</div>
+          <p>QA ramps in Week 2 once there's something to test. They don't need to be full-time — they need focused bursts during integration testing and pre-launch validation. A shared resource with clear test plans is more effective than a dedicated QA engineer with idle time.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Team Size Justification -->
+    <div class="callout callout-amber" style="margin-top: 24px;">
+      <h4>Why 2 Software Engineers + 1 Data Engineer, Not 5 Specialists</h4>
+      <p>Justworks engineers are full-stack — they work across the entire stack within their product area, not in frontend/backend silos. That's an advantage here. Two full-stack engineers with different focus areas (API layer vs. UI) can work in true parallel because their domains are distinct, but they can also flex across the boundary during alpha/beta when iteration speed matters more than specialization. The Data Engineer from Data Services brings Salesforce pipeline expertise that would take a general engineer weeks to ramp on. Adding a fourth or fifth engineer introduces coordination overhead — shared code reviews, merge conflicts, daily syncs — that slows everyone down. Small team, clear domains, full-stack flexibility.</p>
+    </div>
+  </div>
+
+  <!-- ═══════ SECTION 2: TIMELINE ═══════ -->
+  <div class="section">
+    <div class="section-label">02</div>
+    <div class="section-title">Sprint Plan: 5 Weeks</div>
+    <p class="section-desc">Two weeks to working software in front of real agents. Three more weeks to polish, test, and roll out to the full CSO team. Every week has a gate — a specific question that must be answered "yes" before proceeding.</p>
+
+    <!-- Timeline comparison -->
+    <div class="compare">
+      <div class="compare-col">
+        <h4><span style="color: var(--red);">✕</span> Traditional Estimate</h4>
+        <p>
+          <span class="strikethrough">Week 1-2: Discovery & architecture</span><br>
+          <span class="strikethrough">Week 3-4: Backend development</span><br>
+          <span class="strikethrough">Week 5-6: Frontend development</span><br>
+          <span class="strikethrough">Week 7-8: Integration & QA</span><br>
+          <span style="color: var(--text3); font-size: 12px; display: block; margin-top: 8px;">6-8 weeks. Sequential. Siloed handoffs between backend and frontend. Agents don't see anything until week 7.</span>
+        </p>
+      </div>
+      <div class="compare-col" style="border-color: var(--green-bdr);">
+        <h4><span style="color: var(--green);">✓</span> Our Approach</h4>
+        <p>
+          <strong style="color: var(--green);">Week 1:</strong> Design sprint + data spikes (parallel)<br>
+          <strong style="color: var(--green);">Week 2:</strong> Build everything (parallel streams)<br>
+          <strong style="color: var(--amber);">Week 3:</strong> Alpha with 5 agents<br>
+          <strong style="color: var(--amber);">Week 4:</strong> Beta with full team<br>
+          <strong style="color: var(--text);">Week 5:</strong> Full rollout<br>
+          <span style="color: var(--green); font-size: 12px; display: block; margin-top: 8px;">5 weeks. Parallel. Agents see working software on Day 10.</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Legend -->
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot" style="background: var(--blue);"></div> SWE — API</div>
+      <div class="legend-item"><div class="legend-dot" style="background: var(--green);"></div> SWE — UI</div>
+      <div class="legend-item"><div class="legend-dot" style="background: var(--purple);"></div> Data Eng</div>
+      <div class="legend-item"><div class="legend-dot" style="background: var(--cyan);"></div> Design</div>
+      <div class="legend-item"><div class="legend-dot" style="background: var(--orange);"></div> PM</div>
+      <div class="legend-item"><div class="legend-dot" style="background: var(--pink);"></div> QA</div>
+      <div class="legend-item"><div class="legend-dot" style="background: var(--amber);"></div> All Hands</div>
+      <div class="legend-item"><div class="legend-dot" style="background: var(--red);"></div> Risk/Gate</div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="timeline-container">
+
+      <!-- PHASE 1: BUILD -->
+      <div class="phase-divider">
+        <div class="phase-divider-label" style="background: var(--green-bg); border: 1px solid var(--green-bdr); color: var(--green);">PHASE 1 — BUILD · WEEKS 1-2 · Get working software in front of agents</div>
+      </div>
+
+      <!-- Week 1 -->
+      <div class="week-row">
+        <div class="week-label">
+          <span class="wk-num">Week 1</span>
+          <span class="wk-phase" style="color: var(--green);">de-risk</span>
+        </div>
+        <div class="week-content">
+          <div class="task-chip chip-be">Zendesk + prod DB access spikes<span class="who">SWE–API · Days 1-2</span></div>
+          <div class="task-chip chip-de">Salesforce object mapping w/ Caroline<span class="who">DATA ENG · Days 1-2</span></div>
+          <div class="task-chip chip-ds">Design sprint: info hierarchy + components<span class="who">DESIGNER · Days 1-3</span></div>
+          <div class="task-chip chip-pm">CSO shadowing (2 days on the floor)<span class="who">PM · Days 1-2</span></div>
+          <div class="task-chip chip-be">Customer Context Service API contracts<span class="who">SWE–API · Days 3-5</span></div>
+          <div class="task-chip chip-fe">Project scaffold + component library<span class="who">SWE–UI · Days 3-5</span></div>
+          <div class="task-chip chip-de">Salesforce query layer + shared key validation<span class="who">DATA ENG · Days 3-5</span></div>
+          <div class="task-chip chip-pm">Stakeholder alignment w/ CSO leadership<span class="who">PM · Days 3-5</span></div>
+        </div>
+      </div>
+
+      <!-- Week 1 Gate -->
+      <div class="week-row">
+        <div class="week-label"></div>
+        <div class="week-content">
+          <div class="gate-box" style="width: 100%;">
+            <h4><span style="color: var(--red);">⬥</span> Week 1 Gate: Can We Build This?</h4>
+            <p>Can we access all three data sources (Zendesk, prod DB, Salesforce) via API? Is the Zendesk-Salesforce shared key confirmed? Are API contracts agreed upon? If any answer is "no," we escalate immediately and adjust scope — don't wait for Week 2 to discover a blocker.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Week 2 -->
+      <div class="week-row">
+        <div class="week-label">
+          <span class="wk-num">Week 2</span>
+          <span class="wk-phase" style="color: var(--green);">build</span>
+        </div>
+        <div class="week-content">
+          <div class="task-chip chip-fe">Full dashboard UI (mock data → real APIs)<span class="who">SWE–UI · 4-5 days</span></div>
+          <div class="task-chip chip-be">Zendesk + prod DB integrations live<span class="who">SWE–API · Full week</span></div>
+          <div class="task-chip chip-de">Salesforce pipeline feeding Context Service<span class="who">DATA ENG · Full week</span></div>
+          <div class="task-chip chip-qa">Data accuracy test plans written<span class="who">QA · Ramps in</span></div>
+          <div class="task-chip chip-pm">Alpha user recruitment (5 CSO volunteers)<span class="who">PM · Parallel</span></div>
+          <div class="task-chip chip-ds">Edge case designs (empty states, errors)<span class="who">DESIGNER · Parallel</span></div>
+        </div>
+      </div>
+
+      <!-- Week 2 Gate -->
+      <div class="week-row">
+        <div class="week-label"></div>
+        <div class="week-content">
+          <div class="gate-box" style="width: 100%;">
+            <h4><span style="color: var(--red);">⬥</span> Week 2 Gate: Is It Usable?</h4>
+            <p>Can an agent search for a company and see a complete profile with real data? Does the interaction timeline merge Zendesk and Salesforce records correctly? Does it load in under 3 seconds? If yes → alpha starts Monday. If data is incomplete but the UI works, alpha with partial data (clearly labeled) is still valuable.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE 2: VALIDATE -->
+      <div class="phase-divider">
+        <div class="phase-divider-label" style="background: var(--amber-bg); border: 1px solid var(--amber-bdr); color: var(--amber);">PHASE 2 — VALIDATE · WEEKS 3-4 · Prove it works in real workflows</div>
+      </div>
+
+      <!-- Week 3 -->
+      <div class="week-row">
+        <div class="week-label">
+          <span class="wk-num">Week 3</span>
+          <span class="wk-phase" style="color: var(--amber);">alpha</span>
+        </div>
+        <div class="week-content">
+          <div class="task-chip chip-all">Alpha: 5 CSO agents using it on real calls<span class="who">ALL · Full week</span></div>
+          <div class="task-chip chip-pm">Daily 15-min feedback sessions w/ alpha users<span class="who">PM · Every day</span></div>
+          <div class="task-chip chip-fe">Rapid iteration on UX feedback<span class="who">SWE–UI · Responsive</span></div>
+          <div class="task-chip chip-be">Fix data accuracy issues surfaced by agents<span class="who">SWE–API · Responsive</span></div>
+          <div class="task-chip chip-qa">Cross-reference testing: dashboard vs source<span class="who">QA · Full week</span></div>
+          <div class="task-chip chip-ds">Observe agent usage, refine interactions<span class="who">DESIGNER · 3 days</span></div>
+        </div>
+      </div>
+
+      <!-- Week 3 Gate -->
+      <div class="week-row">
+        <div class="week-label"></div>
+        <div class="week-content">
+          <div class="gate-box" style="width: 100%;">
+            <h4><span style="color: var(--red);">⬥</span> Week 3 Gate: Do Agents Trust It?</h4>
+            <p>Are the 5 alpha agents choosing to use Customer Central instead of their current workflow? Are they finding data they trust? Are they faster? If agents are still opening Zendesk and Salesforce separately despite having Customer Central, something fundamental is wrong — diagnose before expanding.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Week 4 -->
+      <div class="week-row">
+        <div class="week-label">
+          <span class="wk-num">Week 4</span>
+          <span class="wk-phase" style="color: var(--amber);">beta</span>
+        </div>
+        <div class="week-content">
+          <div class="task-chip chip-all">Beta: Full CSO team (20-30 agents)<span class="who">ALL · Full week</span></div>
+          <div class="task-chip chip-pm">Structured feedback surveys + Hotjar recordings<span class="who">PM · Parallel</span></div>
+          <div class="task-chip chip-fe">Performance optimization under full load<span class="who">SWE–UI · Parallel</span></div>
+          <div class="task-chip chip-be">Scale testing, caching tuning<span class="who">SWE–API · Parallel</span></div>
+          <div class="task-chip chip-qa">Full regression, edge case testing<span class="who">QA · Full week</span></div>
+          <div class="task-chip chip-pm">Identify 2-3 power users as champions<span class="who">PM · End of week</span></div>
+        </div>
+      </div>
+
+      <!-- PHASE 3: SHIP -->
+      <div class="phase-divider">
+        <div class="phase-divider-label" style="background: var(--blue-bg); border: 1px solid var(--blue-bdr); color: var(--blue);">PHASE 3 — SHIP · WEEK 5 · Full rollout with training</div>
+      </div>
+
+      <!-- Week 5 -->
+      <div class="week-row">
+        <div class="week-label">
+          <span class="wk-num">Week 5</span>
+          <span class="wk-phase" style="color: var(--blue);">launch</span>
+        </div>
+        <div class="week-content">
+          <div class="task-chip chip-all">Full rollout to all CSO agents<span class="who">ALL · Monday</span></div>
+          <div class="task-chip chip-pm">Live training sessions (demo + Q&A)<span class="who">PM + DESIGNER · Mon-Tue</span></div>
+          <div class="task-chip chip-pm">Champions program kickoff (peer trainers)<span class="who">PM · Wednesday</span></div>
+          <div class="task-chip chip-be">Production monitoring, incident response<span class="who">BOTH SWEs + DATA ENG · All week</span></div>
+          <div class="task-chip chip-pm">Weekly office hours established<span class="who">PM · Ongoing</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════ SECTION 3: DEPENDENCIES ═══════ -->
+  <div class="section">
+    <div class="section-label">03</div>
+    <div class="section-title">External Dependencies</div>
+    <p class="section-desc">Four things we need from outside the core team. Each has a named owner and a specific ask with a deadline.</p>
+
+    <div class="dep-grid">
+      <div class="dep-card">
+        <h4 style="color: var(--purple);">Salesforce Team</h4>
+        <div class="dep-owner">OWNER: Caroline Crossland</div>
+        <p>API access to Salesforce org. Confirmation of custom objects, field mappings, and the shared key between Zendesk and Salesforce records. Need this answered by end of Day 2 — it gates the entire data pipeline.</p>
+        <span class="dep-risk risk-high">HIGH RISK — Gates data pipeline</span>
+      </div>
+
+      <div class="dep-card">
+        <h4 style="color: var(--cyan);">Zendesk Admin</h4>
+        <div class="dep-owner">OWNER: CSO Ops (TBD)</div>
+        <p>API credentials and rate limit confirmation. Access to ticket, user, comment, and satisfaction rating endpoints. Need to confirm: who owns the Zendesk instance? Is it shared across CSO and other teams?</p>
+        <span class="dep-risk risk-med">MEDIUM RISK — Standard API, ownership unclear</span>
+      </div>
+
+      <div class="dep-card">
+        <h4 style="color: var(--blue);">Infrastructure / DevOps</h4>
+        <div class="dep-owner">OWNER: Engineering Platform (TBD)</div>
+        <p>Read replica access to the production database. Deployment pipeline for the Customer Context Service. Staging environment that mirrors production data volumes for realistic testing.</p>
+        <span class="dep-risk risk-low">LOW RISK — Standard infra request</span>
+      </div>
+
+      <div class="dep-card">
+        <h4 style="color: var(--orange);">CSO Leadership</h4>
+        <div class="dep-owner">OWNER: Natalie Miranda (VP) or delegate</div>
+        <p>5 volunteer CSO agents for alpha (Week 3), full team availability for beta (Week 4), and 2-3 identified power users for the champions program. Also need: what's the current AHT baseline? We need pre-launch benchmarks.</p>
+        <span class="dep-risk risk-low">LOW RISK — Organizational, not technical</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ SECTION 4: DE-RISKING ═══════ -->
+  <div class="section">
+    <div class="section-label">04</div>
+    <div class="section-title">De-Risking Strategy</div>
+    <p class="section-desc">The biggest risk isn't building the wrong thing — it's discovering on Day 15 that a data source we assumed was accessible isn't. Every risk gets tested in Week 1.</p>
+
+    <div class="callout callout-red">
+      <h4>Risk #1: Salesforce Integration Complexity</h4>
+      <p><strong>What could go wrong:</strong> Salesforce org has custom objects, non-standard relationships, or API rate limits that make real-time querying infeasible. The Zendesk-Salesforce shared key doesn't exist or is unreliable.</p>
+      <p style="margin-top: 8px;"><strong>De-risk move:</strong> Day 1-2 paired spike with Data Engineer + Caroline's team. Don't write production code — just prove we can pull Account, Contact, and Case data via API and join it to a Zendesk ticket. If we can't, we know on Day 2 and can adjust scope (e.g., Salesforce data in Phase 2, MVP uses only Zendesk + prod DB).</p>
+    </div>
+
+    <div class="callout callout-amber">
+      <h4>Risk #2: Data Freshness Expectations vs. Reality</h4>
+      <p><strong>What could go wrong:</strong> The production DB read replica has a 15-minute lag. Zendesk API rate limits constrain how frequently we can poll. Agents see stale data and lose trust.</p>
+      <p style="margin-top: 8px;"><strong>De-risk move:</strong> Measure actual latency during Week 1 spikes. If data isn't fresh enough for live calls, show freshness timestamps on every data point ("Updated 3 min ago") so agents know what they're looking at. Transparent staleness is better than invisible staleness.</p>
+    </div>
+
+    <div class="callout callout-blue">
+      <h4>Risk #3: Agent Adoption</h4>
+      <p><strong>What could go wrong:</strong> Agents have built muscle memory around their current 6-tab workflow. Even with a better tool, changing behavior is hard. They open Customer Central, glance at it, and go back to Zendesk.</p>
+      <p style="margin-top: 8px;"><strong>De-risk move:</strong> Alpha with 5 volunteer agents, not 5 assigned agents. Volunteers are intrinsically motivated to try the new thing. Daily feedback sessions in Week 3 catch adoption friction early. The gate question is explicit: "Are agents choosing to use this?"</p>
+    </div>
+
+    <div class="callout callout-green">
+      <h4>Risk #4: Scope Creep During Alpha</h4>
+      <p><strong>What could go wrong:</strong> Alpha agents request 20 features. Team starts building them. Week 4 beta slips to Week 6. The 5-week plan becomes an 8-week plan.</p>
+      <p style="margin-top: 8px;"><strong>De-risk move:</strong> Pre-commit: alpha feedback goes into three buckets. (1) Fix now: data accuracy issues, broken interactions, blocking problems. (2) Fix before beta: usability improvements that take &lt;1 day. (3) Backlog: everything else. The PM's job during alpha is to say "great idea, that's Phase 2" more often than "let's build that."</p>
+    </div>
+  </div>
+
+  <!-- ═══════ SECTION 5: SUMMARY ═══════ -->
+  <div class="section">
+    <div class="section-label">05</div>
+    <div class="section-title">Resource Summary</div>
+
+    <table class="summary-table">
+      <thead>
+        <tr>
+          <th>Role</th>
+          <th>Source</th>
+          <th>Allocation</th>
+          <th>Critical Period</th>
+          <th>Primary Risk They Own</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="role-col">Software Engineer (API focus)</td>
+          <td>Internal Tools team</td>
+          <td>100% · 5 weeks</td>
+          <td style="color: var(--green);">Week 1-2 (integrations)</td>
+          <td>Data freshness, API performance, service reliability</td>
+        </tr>
+        <tr>
+          <td class="role-col">Software Engineer (UI focus)</td>
+          <td>Internal Tools team</td>
+          <td>100% · 5 weeks</td>
+          <td style="color: var(--green);">Week 2 (build), Week 3 (iteration)</td>
+          <td>Load time &lt;3s, agent UX, accessibility</td>
+        </tr>
+        <tr>
+          <td class="role-col">Data Engineer</td>
+          <td style="color: var(--purple);">Data Services team</td>
+          <td>75% · Weeks 1-4, 25% · Week 5</td>
+          <td style="color: var(--red);">Week 1 (Salesforce spike)</td>
+          <td>Salesforce integration, data join accuracy, sync pipeline</td>
+        </tr>
+        <tr>
+          <td class="role-col">Product Designer</td>
+          <td>Annelise's design team</td>
+          <td>100% · Weeks 1-2, 50% · Weeks 3-5</td>
+          <td style="color: var(--green);">Days 1-3 (design sprint)</td>
+          <td>Information hierarchy, agent cognitive load, usability</td>
+        </tr>
+        <tr>
+          <td class="role-col">Product Manager</td>
+          <td>You</td>
+          <td>100% · 5 weeks</td>
+          <td style="color: var(--amber);">All of it</td>
+          <td>Scope control, stakeholder alignment, adoption</td>
+        </tr>
+        <tr>
+          <td class="role-col">QA Engineer</td>
+          <td>Shared resource</td>
+          <td>50% · Weeks 2-5</td>
+          <td style="color: var(--amber);">Weeks 3-4 (alpha/beta)</td>
+          <td>Data accuracy — the trust killer</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top: 24px; padding: 24px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 12px;">
+      <p style="font-family: 'Instrument Serif', serif; font-size: 20px; color: #ccc; line-height: 1.4; margin-bottom: 12px;">
+        Total: 5 dedicated people + 1 shared QA for 5 weeks.
+      </p>
+      <p style="font-size: 14px; color: var(--text2); line-height: 1.7;">
+        That's roughly <strong style="color: var(--text);">22 person-weeks of effort</strong> — equivalent to about 5.5 person-months. For context, the traditional 6-8 week estimate with siloed backend/frontend teams would be 30-40 person-weeks with sequential handoffs. We're not cutting scope — we're leveraging Justworks' full-stack engineering culture to eliminate the handoff waste that inflates timelines. Both software engineers work in parallel with different focus areas but can flex across the stack. Design and data spikes happen simultaneously. Alpha starts the moment something is usable, not the moment everything is perfect.
+      </p>
+      <p style="font-size: 14px; color: var(--text2); line-height: 1.7; margin-top: 12px;">
+        <strong style="color: var(--green);">The question for the room:</strong> "Who from Data Services would be the right person for the Salesforce integration? And Caroline — can we get API access confirmed in the first two days so we de-risk the data pipeline before writing any production code?"
+      </p>
+    </div>
+  </div>
+
+  <div class="footer">
+    Darrien Watson · Customer Central MVP — Engineering Resources & Sprint Plan · February 2026
+  </div>
+
+</div>
+
+<script>
+function toggleCard(el) {
+  el.classList.toggle('open');
+}
+// Open first card by default
+document.querySelector('.team-card').classList.add('open');
+</script>
+</body>
+</html>

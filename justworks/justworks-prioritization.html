@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prioritization Logic — Customer Central</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #0a0a0e; color: #e0e0e0;
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+  }
+  .container { max-width: 940px; margin: 0 auto; padding: 60px 32px 100px; }
+
+  .header-label {
+    font-family: 'DM Mono', monospace; font-size: 11px; color: #6ee7b7;
+    letter-spacing: 3px; text-transform: uppercase; margin-bottom: 14px;
+  }
+  h1 {
+    font-family: 'Instrument Serif', Georgia, serif; font-size: 44px;
+    font-weight: 400; line-height: 1.15; color: #f5f5f5;
+    letter-spacing: -0.02em; margin-bottom: 16px;
+  }
+  .subtitle {
+    font-size: 15px; line-height: 1.7; color: #888; max-width: 640px; margin-bottom: 56px;
+  }
+
+  /* === THE CORE ARGUMENT === */
+  .argument {
+    background: rgba(110,231,183,0.04); border: 1px solid rgba(110,231,183,0.12);
+    border-radius: 14px; padding: 32px; margin-bottom: 56;
+  }
+  .argument-title {
+    font-family: 'Instrument Serif', serif; font-size: 24px; color: #f0f0f0;
+    margin-bottom: 12px;
+  }
+  .argument p {
+    font-size: 15px; line-height: 1.8; color: #b0b0b0;
+  }
+  .argument strong { color: #e0e0e0; }
+  .argument em { color: #6ee7b7; font-style: normal; }
+
+  /* === DEPENDENCY DIAGRAM === */
+  .diagram-section {
+    margin: 64px 0;
+  }
+  .section-label {
+    font-family: 'DM Mono', monospace; font-size: 11px; color: #888;
+    letter-spacing: 2px; text-transform: uppercase; margin-bottom: 24px;
+  }
+
+  .layer {
+    position: relative;
+    margin-bottom: 0;
+  }
+  .layer-bar {
+    display: flex; align-items: center; gap: 16px;
+    padding: 12px 20px; margin-bottom: 8px;
+  }
+  .layer-label {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    letter-spacing: 2px; text-transform: uppercase;
+    width: 100px; flex-shrink: 0;
+  }
+  .layer-desc {
+    font-size: 13px; color: #777; flex: 1;
+  }
+
+  .job-row {
+    display: flex; gap: 12px; padding: 0 0 0 116px; margin-bottom: 12px;
+  }
+  .job-card {
+    flex: 1; border-radius: 12px; padding: 20px 22px;
+    position: relative; cursor: default;
+    transition: all 0.3s;
+  }
+  .job-card:hover { transform: translateY(-2px); }
+  .job-number {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    letter-spacing: 1px; margin-bottom: 6px;
+  }
+  .job-title {
+    font-family: 'Instrument Serif', serif; font-size: 19px;
+    font-weight: 400; margin-bottom: 6px;
+  }
+  .job-why {
+    font-size: 12px; line-height: 1.6; margin-top: 8px;
+  }
+
+  /* Layer colors */
+  .layer-0 .layer-label { color: #6ee7b7; }
+  .layer-0 .job-card {
+    background: rgba(110,231,183,0.06); border: 1px solid rgba(110,231,183,0.18);
+  }
+  .layer-0 .job-number { color: #6ee7b7; }
+  .layer-0 .job-title { color: #d1fae5; }
+  .layer-0 .job-why { color: #6ee7b7; opacity: 0.7; }
+
+  .layer-1 .layer-label { color: #fbbf24; }
+  .layer-1 .job-card {
+    background: rgba(251,191,36,0.05); border: 1px solid rgba(251,191,36,0.15);
+  }
+  .layer-1 .job-number { color: #fbbf24; }
+  .layer-1 .job-title { color: #fef3c7; }
+  .layer-1 .job-why { color: #fbbf24; opacity: 0.7; }
+
+  .layer-2 .layer-label { color: #818cf8; }
+  .layer-2 .job-card {
+    background: rgba(129,140,248,0.05); border: 1px solid rgba(129,140,248,0.15);
+  }
+  .layer-2 .job-number { color: #818cf8; }
+  .layer-2 .job-title { color: #e0e7ff; }
+  .layer-2 .job-why { color: #818cf8; opacity: 0.7; }
+
+  /* === CONNECTOR LINES === */
+  .connectors {
+    position: relative;
+    height: 56px;
+    margin-left: 116px;
+    margin-bottom: 12px;
+  }
+  .connectors svg {
+    width: 100%; height: 100%;
+    overflow: visible;
+  }
+
+  /* === DEPENDENCY CHAIN (text) === */
+  .chain-section { margin: 64px 0; }
+
+  .chain-step {
+    display: grid; grid-template-columns: 56px 3px 1fr;
+    gap: 20px; min-height: 100px;
+  }
+  .chain-icon {
+    width: 56px; height: 56px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Mono', monospace; font-size: 14px; font-weight: 500;
+    flex-shrink: 0;
+  }
+  .chain-line {
+    width: 3px; background: rgba(255,255,255,0.06);
+    justify-self: center; min-height: 100%;
+  }
+  .chain-line.active { background: rgba(110,231,183,0.2); }
+  .chain-content {
+    padding-bottom: 32px;
+  }
+  .chain-content h3 {
+    font-family: 'Instrument Serif', serif; font-size: 22px;
+    font-weight: 400; margin-bottom: 4px;
+  }
+  .chain-content .requires {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    letter-spacing: 1px; margin-bottom: 10px;
+  }
+  .chain-content p {
+    font-size: 14px; line-height: 1.7; color: #999;
+  }
+  .chain-content p strong { color: #e0e0e0; }
+
+  /* === ANALOGY === */
+  .analogy {
+    background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 14px; padding: 32px; margin: 48px 0;
+  }
+  .analogy-label {
+    font-family: 'DM Mono', monospace; font-size: 10px; color: #888;
+    letter-spacing: 2px; text-transform: uppercase; margin-bottom: 16px;
+  }
+  .analogy-grid {
+    display: grid; grid-template-columns: 1fr 40px 1fr; gap: 0; align-items: start;
+  }
+  .analogy-col h4 {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px;
+  }
+  .analogy-item {
+    padding: 10px 14px; border-radius: 8px; margin-bottom: 6px;
+    font-size: 13px; line-height: 1.5;
+  }
+  .analogy-arrow {
+    display: flex; align-items: center; justify-content: center;
+    color: #555; font-size: 18px; padding-top: 30px;
+  }
+
+  /* === PHASE SUMMARY === */
+  .phase-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;
+    margin: 48px 0;
+  }
+  .phase-card {
+    border-radius: 12px; padding: 24px;
+  }
+  .phase-card h3 {
+    font-family: 'Instrument Serif', serif; font-size: 20px;
+    font-weight: 400; margin: 10px 0 8px;
+  }
+  .phase-card .phase-jobs {
+    font-size: 13px; line-height: 1.6; margin-bottom: 12px;
+  }
+  .phase-card .phase-why {
+    font-size: 12px; line-height: 1.6; padding-top: 12px;
+    border-top-width: 1px; border-top-style: solid;
+  }
+
+  .tag {
+    display: inline-block; padding: 3px 10px; border-radius: 12px;
+    font-size: 11px; font-family: 'DM Mono', monospace; letter-spacing: 0.5px;
+  }
+
+  .footer {
+    margin-top: 64px; padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    font-family: 'DM Mono', monospace; font-size: 11px; color: #444;
+    letter-spacing: 1px;
+  }
+
+  .cant-before {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 12px; border-radius: 6px;
+    background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.15);
+    font-size: 12px; color: #f87171;
+    font-family: 'DM Mono', monospace;
+    margin: 3px 4px 3px 0;
+  }
+  .enabled-by {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 12px; border-radius: 6px;
+    background: rgba(110,231,183,0.08); border: 1px solid rgba(110,231,183,0.15);
+    font-size: 12px; color: #6ee7b7;
+    font-family: 'DM Mono', monospace;
+    margin: 3px 4px 3px 0;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header-label">Customer Central — Prioritization</div>
+  <h1>Why This Order</h1>
+  <p class="subtitle">
+    The six jobs aren't a menu to pick from — they're a dependency chain. Some jobs are impossible without others existing first. The phasing isn't a preference. It's physics.
+  </p>
+
+  <!-- The Core Argument -->
+  <div class="argument" style="margin-bottom: 56px;">
+    <div class="argument-title">The Dependency Principle</div>
+    <p>
+      You <strong>cannot diagnose a problem</strong> if you don't know who the customer is or what's happened before.
+      You <strong>cannot assess account health</strong> if you haven't consolidated the data that health is computed from.
+      You <strong>cannot pre-empt a problem</strong> if you can't yet see the signals that predict it.
+      You <strong>cannot recommend a product expansion</strong> if you don't understand what they already use and how they use it.
+    </p>
+    <p style="margin-top: 16px;">
+      Jobs 1 and 2 are <em>the data foundation</em>. Everything above them is impossible — not just harder, <em>impossible</em> — without that foundation in place and trusted.
+    </p>
+  </div>
+
+  <!-- DEPENDENCY DIAGRAM -->
+  <div class="diagram-section">
+    <div class="section-label">The Dependency Stack</div>
+
+    <!-- Layer 2: Intelligence -->
+    <div class="layer layer-2">
+      <div class="layer-bar">
+        <span class="layer-label">Intelligence</span>
+        <span class="layer-desc">System tells the agent what to <strong style="color:#e0e7ff">do</strong> and <strong style="color:#e0e7ff">recommend</strong></span>
+      </div>
+      <div class="job-row">
+        <div class="job-card">
+          <div class="job-number">JOB 05</div>
+          <div class="job-title">Pre-empt Problems</div>
+          <div class="job-why">Requires health signals (Job 4) + interaction patterns (Job 2) + account context (Job 1)</div>
+        </div>
+        <div class="job-card">
+          <div class="job-number">JOB 06</div>
+          <div class="job-title">Expand the Relationship</div>
+          <div class="job-why">Requires product usage data (Job 1) + health/growth signals (Job 4) + engagement patterns (Job 2)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Connector 2→1 -->
+    <div class="connectors">
+      <svg viewBox="0 0 800 56" preserveAspectRatio="none">
+        <defs>
+          <marker id="arrow2" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="rgba(129,140,248,0.3)" />
+          </marker>
+        </defs>
+        <!-- Left arrow down -->
+        <line x1="200" y1="0" x2="200" y2="44" stroke="rgba(129,140,248,0.15)" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#arrow2)" />
+        <!-- Right arrow down -->
+        <line x1="600" y1="0" x2="600" y2="44" stroke="rgba(129,140,248,0.15)" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#arrow2)" />
+        <!-- Label -->
+        <text x="400" y="28" text-anchor="middle" fill="#555" font-family="DM Mono, monospace" font-size="10" letter-spacing="1">REQUIRES</text>
+      </svg>
+    </div>
+
+    <!-- Layer 1: Operations -->
+    <div class="layer layer-1">
+      <div class="layer-bar">
+        <span class="layer-label">Operations</span>
+        <span class="layer-desc">Agent uses consolidated data to <strong style="color:#fef3c7">solve</strong> and <strong style="color:#fef3c7">assess</strong></span>
+      </div>
+      <div class="job-row">
+        <div class="job-card">
+          <div class="job-number">JOB 03</div>
+          <div class="job-title">Handle the Direct Problem</div>
+          <div class="job-why">Requires customer identity (Job 1) + interaction context (Job 2) to diagnose and resolve</div>
+        </div>
+        <div class="job-card">
+          <div class="job-number">JOB 04</div>
+          <div class="job-title">Understand Status & Health</div>
+          <div class="job-why">Requires consolidated profile data (Job 1) + interaction history (Job 2) to compute signals</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Connector 1→0 -->
+    <div class="connectors">
+      <svg viewBox="0 0 800 56" preserveAspectRatio="none">
+        <defs>
+          <marker id="arrow1" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+            <polygon points="0 0, 8 3, 0 6" fill="rgba(251,191,36,0.3)" />
+          </marker>
+        </defs>
+        <line x1="200" y1="0" x2="200" y2="44" stroke="rgba(251,191,36,0.15)" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#arrow1)" />
+        <line x1="600" y1="0" x2="600" y2="44" stroke="rgba(251,191,36,0.15)" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#arrow1)" />
+        <text x="400" y="28" text-anchor="middle" fill="#555" font-family="DM Mono, monospace" font-size="10" letter-spacing="1">REQUIRES</text>
+      </svg>
+    </div>
+
+    <!-- Layer 0: Foundation -->
+    <div class="layer layer-0">
+      <div class="layer-bar">
+        <span class="layer-label">Foundation</span>
+        <span class="layer-desc">Consolidated data that <strong style="color:#d1fae5">everything else depends on</strong></span>
+      </div>
+      <div class="job-row">
+        <div class="job-card">
+          <div class="job-number">JOB 01</div>
+          <div class="job-title">Know the Customer Completely</div>
+          <div class="job-why">Unified company + person profile across all product lines and data sources</div>
+        </div>
+        <div class="job-card">
+          <div class="job-number">JOB 02</div>
+          <div class="job-title">See the Full Interaction History</div>
+          <div class="job-why">Unified timeline across calls, emails, chat — consolidated from Zendesk + Salesforce</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHY EACH LAYER DEPENDS ON THE ONE BELOW -->
+  <div class="chain-section">
+    <div class="section-label">The Dependency Logic, Step by Step</div>
+
+    <!-- Step 1: Foundation -->
+    <div class="chain-step">
+      <div class="chain-icon" style="background: rgba(110,231,183,0.1); border: 2px solid rgba(110,231,183,0.3); color: #6ee7b7;">F</div>
+      <div class="chain-line active"></div>
+      <div class="chain-content">
+        <div class="chain-content requires" style="color: #6ee7b7;">FOUNDATION · NO DEPENDENCIES</div>
+        <h3 style="color: #d1fae5;">Jobs 1 & 2 — Data Consolidation</h3>
+        <p style="margin-top: 8px;">
+          These two jobs are <strong>pure data unification</strong>. They don't require any prior capability to exist — they require integrations to data sources (Salesforce, Zendesk, production DB) and a presentation layer.
+        </p>
+        <p style="margin-top: 12px;">
+          Job 1 consolidates the customer's <strong>identity and profile</strong>: who they are, what company, what product, what state the account is in. Job 2 consolidates their <strong>interaction history</strong>: every call, email, and chat across every channel and agent.
+        </p>
+        <p style="margin-top: 12px;">
+          Together, these create the <strong>unified customer record</strong> that every other job reads from. Without this record, every other job is either impossible or requires the agent to build the picture manually — which is exactly the problem we're solving.
+        </p>
+      </div>
+    </div>
+
+    <!-- Step 2: Operations -->
+    <div class="chain-step">
+      <div class="chain-icon" style="background: rgba(251,191,36,0.1); border: 2px solid rgba(251,191,36,0.3); color: #fbbf24;">O</div>
+      <div class="chain-line" style="background: rgba(251,191,36,0.15);"></div>
+      <div class="chain-content">
+        <div class="chain-content requires" style="color: #fbbf24;">OPERATIONS · REQUIRES FOUNDATION</div>
+        <h3 style="color: #fef3c7;">Job 3 — Handle the Direct Problem</h3>
+        <p style="margin-top: 8px;">
+          An agent cannot diagnose a payroll discrepancy without first knowing which company, which employee, and what plan they're on <strong>(Job 1)</strong>. They cannot avoid asking the customer to repeat themselves without seeing prior interactions <strong>(Job 2)</strong>.
+        </p>
+        <p style="margin-top: 12px; display: flex; flex-wrap: wrap; gap: 4px; align-items: center;">
+          <span class="cant-before">✕ Can't diagnose without Job 1</span>
+          <span class="cant-before">✕ Can't contextualize without Job 2</span>
+        </p>
+        <p style="margin-top: 16px;">
+          Resolution also means <strong>knowing what's already been tried</strong>. If the customer called yesterday and an agent applied a fix that hasn't taken effect yet — the current agent needs to know that before attempting the same fix again. That's Job 2 enabling Job 3.
+        </p>
+
+        <h3 style="color: #fef3c7; margin-top: 28px;">Job 4 — Understand Status & Health</h3>
+        <p style="margin-top: 8px;">
+          Account <strong>status</strong> (billing current? tickets open? payroll on schedule?) is computed from the same data that Jobs 1 and 2 consolidate. You're not looking at new data — you're <strong>interpreting the same data</strong> through an evaluative lens.
+        </p>
+        <p style="margin-top: 12px; display: flex; flex-wrap: wrap; gap: 4px; align-items: center;">
+          <span class="cant-before">✕ Can't compute status without Job 1 profile data</span>
+          <span class="cant-before">✕ Can't assess health without Job 2 interaction patterns</span>
+        </p>
+        <p style="margin-top: 16px;">
+          Account <strong>health</strong> (composite scoring) adds engagement frequency, product adoption depth, and satisfaction signals — which require the data foundation to be stable and trusted before you can layer computation on top. <strong>Wrong health signals are worse than no health signals</strong> — they erode trust in the tool.
+        </p>
+      </div>
+    </div>
+
+    <!-- Step 3: Intelligence -->
+    <div class="chain-step">
+      <div class="chain-icon" style="background: rgba(129,140,248,0.1); border: 2px solid rgba(129,140,248,0.3); color: #818cf8;">I</div>
+      <div class="chain-line" style="background: rgba(129,140,248,0.15);"></div>
+      <div class="chain-content">
+        <div class="chain-content requires" style="color: #818cf8;">INTELLIGENCE · REQUIRES FOUNDATION + OPERATIONS</div>
+        <h3 style="color: #e0e7ff;">Job 5 — Pre-empt Problems</h3>
+        <p style="margin-top: 8px;">
+          Pre-emption requires <strong>pattern recognition across time</strong>. "This company has had manual payroll adjustments 3 cycles in a row" requires interaction history <strong>(Job 2)</strong>. "Declining login frequency" requires engagement tracking that builds on the profile <strong>(Job 1)</strong>. "At-risk account" requires a health model <strong>(Job 4)</strong> to define what "at-risk" means.
+        </p>
+        <p style="margin-top: 12px; display: flex; flex-wrap: wrap; gap: 4px; align-items: center;">
+          <span class="cant-before">✕ Can't detect patterns without Job 2 history</span>
+          <span class="cant-before">✕ Can't define "at-risk" without Job 4 health model</span>
+          <span class="cant-before">✕ Can't target alerts without Job 1 profile data</span>
+        </p>
+
+        <h3 style="color: #e0e7ff; margin-top: 28px;">Job 6 — Expand the Relationship</h3>
+        <p style="margin-top: 8px;">
+          You cannot recommend "upgrade to PEO Plus" without knowing they're on PEO Basic <strong>(Job 1)</strong>. You cannot suggest "companies your size typically use time tracking" without knowing their employee count and current feature usage <strong>(Job 1)</strong>. You cannot time the recommendation without knowing they're a healthy, growing account <strong>(Job 4)</strong> — recommending an upsell to a churning customer is tone-deaf.
+        </p>
+        <p style="margin-top: 12px; display: flex; flex-wrap: wrap; gap: 4px; align-items: center;">
+          <span class="cant-before">✕ Can't recommend without Job 1 product context</span>
+          <span class="cant-before">✕ Can't time it without Job 4 health signals</span>
+          <span class="cant-before">✕ Can't frame it without Job 2 relationship history</span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- THERE'S ALSO AN ADOPTION ARGUMENT -->
+  <div class="analogy" style="margin-bottom: 48px;">
+    <div class="analogy-label">There's Also an Adoption Argument</div>
+    <p style="font-size: 15px; line-height: 1.8; color: #b0b0b0; margin-bottom: 20px;">
+      Beyond technical dependencies, there's a <strong style="color: #e0e0e0;">behavioral</strong> reason to sequence this way. Internal tools live or die on adoption. You earn trust in layers:
+    </p>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
+      <div style="background: rgba(110,231,183,0.04); border: 1px solid rgba(110,231,183,0.12); border-radius: 10px; padding: 20px;">
+        <div style="font-family: 'DM Mono', monospace; font-size: 10px; color: #6ee7b7; letter-spacing: 1px; margin-bottom: 8px;">PHASE 1</div>
+        <div style="font-size: 14px; color: #d1fae5; font-weight: 500; margin-bottom: 8px;">Earn trust through accuracy</div>
+        <div style="font-size: 12px; color: #888; line-height: 1.6;">
+          The data is correct. The profile matches reality. The timeline is complete. Agents believe the tool because it's <em>right</em> every time.
+        </div>
+      </div>
+      <div style="background: rgba(251,191,36,0.04); border: 1px solid rgba(251,191,36,0.12); border-radius: 10px; padding: 20px;">
+        <div style="font-family: 'DM Mono', monospace; font-size: 10px; color: #fbbf24; letter-spacing: 1px; margin-bottom: 8px;">PHASE 2</div>
+        <div style="font-size: 14px; color: #fef3c7; font-weight: 500; margin-bottom: 8px;">Earn trust through insight</div>
+        <div style="font-size: 12px; color: #888; line-height: 1.6;">
+          Once agents trust the data, they'll trust interpretations of it — health scores, risk signals, status assessments. Trust in inputs precedes trust in outputs.
+        </div>
+      </div>
+      <div style="background: rgba(129,140,248,0.04); border: 1px solid rgba(129,140,248,0.12); border-radius: 10px; padding: 20px;">
+        <div style="font-family: 'DM Mono', monospace; font-size: 10px; color: #818cf8; letter-spacing: 1px; margin-bottom: 8px;">PHASE 3</div>
+        <div style="font-size: 14px; color: #e0e7ff; font-weight: 500; margin-bottom: 8px;">Earn trust through prediction</div>
+        <div style="font-size: 12px; color: #888; line-height: 1.6;">
+          Only after agents trust both the data and the analysis will they act on predictions — proactive alerts, expansion signals. Premature predictions destroy credibility.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE SUMMARY -->
+  <div class="section-label">The Phases</div>
+  <div class="phase-grid">
+    <div class="phase-card" style="background: rgba(110,231,183,0.04); border: 1px solid rgba(110,231,183,0.15);">
+      <span class="tag" style="background: rgba(110,231,183,0.15); color: #6ee7b7; border: 1px solid rgba(110,231,183,0.3);">MVP</span>
+      <h3 style="color: #d1fae5;">Unified Context</h3>
+      <div class="phase-jobs" style="color: #6ee7b7;">
+        Job 1 · Job 2 · Job 3 (partial) · Job 4 (status only)
+      </div>
+      <div class="phase-why" style="color: #6ee7b7; opacity: 0.6; border-top-color: rgba(110,231,183,0.15);">
+        Replaces the multi-system workflow. Agents open one tool instead of six. The data is consolidated, accurate, and fast. Adoption is earned.
+      </div>
+    </div>
+    <div class="phase-card" style="background: rgba(251,191,36,0.04); border: 1px solid rgba(251,191,36,0.12);">
+      <span class="tag" style="background: rgba(251,191,36,0.12); color: #fbbf24; border: 1px solid rgba(251,191,36,0.25);">Phase 2</span>
+      <h3 style="color: #fef3c7;">Health & Action</h3>
+      <div class="phase-jobs" style="color: #fbbf24;">
+        Job 3 (full resolution) · Job 4 (health scoring) · Job 5 (early signals)
+      </div>
+      <div class="phase-why" style="color: #fbbf24; opacity: 0.6; border-top-color: rgba(251,191,36,0.12);">
+        Agents now act from within the tool. Health signals surface what the data means. The tool becomes the workspace, not just the reference.
+      </div>
+    </div>
+    <div class="phase-card" style="background: rgba(129,140,248,0.04); border: 1px solid rgba(129,140,248,0.12);">
+      <span class="tag" style="background: rgba(129,140,248,0.12); color: #818cf8; border: 1px solid rgba(129,140,248,0.25);">Phase 3</span>
+      <h3 style="color: #e0e7ff;">Proactive Intelligence</h3>
+      <div class="phase-jobs" style="color: #818cf8;">
+        Job 5 (full pre-emption) · Job 6 (expansion)
+      </div>
+      <div class="phase-why" style="color: #818cf8; opacity: 0.6; border-top-color: rgba(129,140,248,0.12);">
+        The system tells agents what's coming and what to recommend. CSO shifts from reactive support to proactive partnership. The moat widens.
+      </div>
+    </div>
+  </div>
+
+  <!-- The punchline -->
+  <div style="margin-top: 48px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; padding: 32px;">
+    <p style="font-family: 'Instrument Serif', serif; font-size: 22px; color: #ccc; line-height: 1.4; margin-bottom: 16px;">
+      The phasing isn't a preference. It's a dependency chain.
+    </p>
+    <p style="font-size: 14px; line-height: 1.8; color: #888;">
+      Every phase builds what the next phase needs to exist. You cannot skip a layer without building on an unstable foundation. The MVP isn't the most important features first — it's the features that <strong style="color: #e0e0e0;">make every future feature possible</strong>.
+    </p>
+    <p style="font-size: 14px; line-height: 1.8; color: #888; margin-top: 12px;">
+      This is also why the architecture matters in Phase 1. We build the data layer as a normalized, API-first service — not because the MVP needs it, but because Phases 2 and 3 are <strong style="color: #e0e0e0;">inevitable once the foundation proves its value</strong>. Building the right foundation means the future arrives as iteration, not re-architecture.
+    </p>
+  </div>
+
+  <div class="footer">Darrien Watson · Customer Central Case Study · February 2026</div>
+</div>
+</body>
+</html>

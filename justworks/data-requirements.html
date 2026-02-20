@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Requirements — Customer Central MVP</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500;600&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0c10;
+  --surface: #12151c;
+  --surface-2: #181c24;
+  --surface-3: #1e2330;
+  --border: #262d3d;
+  --border-active: #3a4560;
+  --text: #e0e5ee;
+  --text-muted: #8b95a8;
+  --text-dim: #566178;
+  --accent: #e8a838;
+  --accent-dim: #a07020;
+  --green: #34d399;
+  --green-bg: rgba(52, 211, 153, 0.07);
+  --green-bdr: rgba(52, 211, 153, 0.2);
+  --red: #f87171;
+  --red-bg: rgba(248, 113, 113, 0.07);
+  --red-bdr: rgba(248, 113, 113, 0.2);
+  --blue: #60a5fa;
+  --blue-bg: rgba(96, 165, 250, 0.07);
+  --blue-bdr: rgba(96, 165, 250, 0.2);
+  --amber: #fbbf24;
+  --amber-bg: rgba(251, 191, 36, 0.07);
+  --amber-bdr: rgba(251, 191, 36, 0.2);
+  --purple: #a78bfa;
+  --purple-bg: rgba(167, 139, 250, 0.07);
+  --cyan: #22d3ee;
+  --cyan-bg: rgba(34, 211, 238, 0.07);
+  --cyan-bdr: rgba(34, 211, 238, 0.2);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Source Sans 3', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.55;
+}
+
+/* Header */
+.hdr {
+  padding: 2.5rem 2rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, #0e1118 0%, var(--bg) 100%);
+}
+.hdr h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+  color: var(--accent);
+  text-align: center;
+  margin-bottom: 0.3rem;
+}
+.hdr .sub {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+  font-weight: 300;
+  max-width: 750px;
+  margin: 0 auto 1rem;
+}
+.hdr-stats {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.hdr-stat {
+  text-align: center;
+}
+.hdr-stat .num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--accent);
+}
+.hdr-stat .lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 0.15rem;
+}
+
+/* Nav */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(10, 12, 16, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 0.2rem;
+  padding: 0.4rem 0.8rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.nav::-webkit-scrollbar { display: none; }
+.nav-btn {
+  background: none;
+  border: 1px solid transparent;
+  color: var(--text-dim);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  padding: 0.35rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.nav-btn:hover { color: var(--text-muted); border-color: var(--border); }
+.nav-btn.active { color: var(--accent); background: rgba(232, 168, 56, 0.08); border-color: var(--accent-dim); }
+
+.main { max-width: 1200px; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
+
+/* Section */
+.sec {
+  margin-bottom: 2.5rem;
+}
+.sec-head {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Source system cards */
+.src-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+.src-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.9rem 1rem;
+  transition: border-color 0.2s;
+}
+.src-card:hover { border-color: var(--border-active); }
+.src-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+.src-name.sf { color: var(--blue); }
+.src-name.zd { color: var(--green); }
+.src-name.prod { color: var(--purple); }
+.src-name.bill { color: var(--amber); }
+.src-name.logs { color: var(--cyan); }
+.src-desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 0.4rem;
+}
+.src-method {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--text-dim);
+  background: var(--surface-2);
+  display: inline-block;
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+  margin-top: 0.2rem;
+}
+
+/* Feature data matrix */
+.matrix {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.78rem;
+  margin-bottom: 1rem;
+}
+.matrix thead th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  padding: 0.6rem 0.7rem;
+  text-align: left;
+  border-bottom: 2px solid var(--border);
+  position: sticky;
+  top: 36px;
+  background: var(--bg);
+  z-index: 10;
+  white-space: nowrap;
+}
+.matrix tbody td {
+  padding: 0.6rem 0.7rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+  color: var(--text-muted);
+}
+.matrix tbody tr:hover td {
+  background: var(--surface);
+}
+.matrix .feat-id {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.matrix .feat-id.fs { color: var(--green); }
+.matrix .feat-id.ps { color: var(--blue); }
+
+.matrix .field-list {
+  list-style: none;
+  padding: 0;
+}
+.matrix .field-list li {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  padding: 0.1rem 0;
+}
+.matrix .field-list li code {
+  color: var(--text);
+  background: var(--surface-3);
+  padding: 0.05rem 0.3rem;
+  border-radius: 2px;
+  font-size: 0.65rem;
+}
+
+/* Source badge */
+.src-badge {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  font-weight: 600;
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+  margin: 0.1rem 0.15rem 0.1rem 0;
+  white-space: nowrap;
+}
+.src-badge.sf { color: var(--blue); background: var(--blue-bg); border: 1px solid var(--blue-bdr); }
+.src-badge.zd { color: var(--green); background: var(--green-bg); border: 1px solid var(--green-bdr); }
+.src-badge.prod { color: var(--purple); background: rgba(167,139,250,0.07); border: 1px solid rgba(167,139,250,0.2); }
+.src-badge.bill { color: var(--amber); background: var(--amber-bg); border: 1px solid var(--amber-bdr); }
+.src-badge.logs { color: var(--cyan); background: var(--cyan-bg); border: 1px solid var(--cyan-bdr); }
+
+/* Freshness badge */
+.fresh-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 500;
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+  display: inline-block;
+}
+.fresh-rt { color: var(--red); background: var(--red-bg); border: 1px solid var(--red-bdr); }
+.fresh-nrt { color: var(--amber); background: var(--amber-bg); border: 1px solid var(--amber-bdr); }
+.fresh-daily { color: var(--text-dim); background: var(--surface-3); border: 1px solid var(--border); }
+
+/* Risk badge */
+.risk-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  font-weight: 600;
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+  display: inline-block;
+}
+.risk-h { color: var(--red); background: var(--red-bg); border: 1px solid var(--red-bdr); }
+.risk-m { color: var(--amber); background: var(--amber-bg); border: 1px solid var(--amber-bdr); }
+.risk-l { color: var(--green); background: var(--green-bg); border: 1px solid var(--green-bdr); }
+
+/* Callout */
+.callout {
+  background: var(--surface);
+  border-left: 3px solid var(--border);
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+  font-size: 0.82rem;
+  border-radius: 0 6px 6px 0;
+  color: var(--text-muted);
+}
+.callout strong { color: var(--text); }
+.callout.red { border-left-color: var(--red); background: var(--red-bg); }
+.callout.green { border-left-color: var(--green); background: var(--green-bg); }
+.callout.blue { border-left-color: var(--blue); background: var(--blue-bg); }
+.callout.amber { border-left-color: var(--amber); background: var(--amber-bg); }
+
+/* Integration diagram */
+.arch-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin: 1rem 0;
+}
+.arch-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0.5rem 0;
+}
+.arch-node {
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.5rem 0.8rem;
+  text-align: center;
+  min-width: 110px;
+}
+.arch-node .an-name {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+.arch-node .an-sub {
+  font-size: 0.65rem;
+  color: var(--text-dim);
+}
+.arch-node.sf .an-name { color: var(--blue); }
+.arch-node.zd .an-name { color: var(--green); }
+.arch-node.prod .an-name { color: var(--purple); }
+.arch-node.bill .an-name { color: var(--amber); }
+.arch-node.logs .an-name { color: var(--cyan); }
+.arch-node.api .an-name { color: var(--accent); }
+.arch-node.api { border-color: var(--accent-dim); background: rgba(232,168,56,0.06); }
+.arch-node.ui { border-color: var(--green-bdr); }
+.arch-arrow {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+/* Expandable detail blocks */
+.detail-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+}
+.detail-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 1rem;
+  cursor: pointer;
+  user-select: none;
+}
+.detail-header:hover { background: var(--surface-2); }
+.dh-id {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.dh-id.fs { color: var(--green); }
+.dh-id.ps { color: var(--blue); }
+.dh-title {
+  flex: 1;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+.dh-badges { display: flex; gap: 0.3rem; flex-shrink: 0; flex-wrap: wrap; }
+.dh-toggle {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+.detail-block.open .dh-toggle { transform: rotate(180deg); }
+.detail-body {
+  display: none;
+  border-top: 1px solid var(--border);
+  padding: 1rem;
+}
+.detail-block.open .detail-body { display: block; }
+
+/* Data field table inside detail */
+.field-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.76rem;
+  margin: 0.5rem 0;
+}
+.field-table th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  text-align: left;
+  padding: 0.4rem 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.field-table td {
+  padding: 0.4rem 0.5rem;
+  border-bottom: 1px solid rgba(38,45,61,0.5);
+  color: var(--text-muted);
+  vertical-align: top;
+}
+.field-table td:first-child {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text);
+}
+.field-table tr:last-child td { border-bottom: none; }
+
+.sfobj {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--blue);
+  background: var(--blue-bg);
+  padding: 0.05rem 0.3rem;
+  border-radius: 2px;
+}
+
+.sub-head {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 1rem 0 0.4rem;
+}
+.sub-head:first-child { margin-top: 0; }
+.risk-text { font-size: 0.8rem; color: var(--text-muted); }
+
+.footer {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-dim);
+  font-size: 0.7rem;
+  border-top: 1px solid var(--border);
+  margin-top: 2rem;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .matrix { font-size: 0.7rem; }
+  .matrix thead th, .matrix tbody td { padding: 0.4rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <h1>Data Requirements</h1>
+  <p class="sub">Every data field, source system, Salesforce object, integration method, freshness requirement, and risk — mapped to each MVP feature</p>
+  <div class="hdr-stats">
+    <div class="hdr-stat"><div class="num">5</div><div class="lbl">Source Systems</div></div>
+    <div class="hdr-stat"><div class="num">9</div><div class="lbl">MVP Features</div></div>
+    <div class="hdr-stat"><div class="num">47</div><div class="lbl">Data Fields</div></div>
+    <div class="hdr-stat"><div class="num">3</div><div class="lbl">High-Risk Integrations</div></div>
+  </div>
+</div>
+
+<nav class="nav">
+  <button class="nav-btn active" data-view="all">FULL VIEW</button>
+  <button class="nav-btn" data-view="arch">ARCHITECTURE</button>
+  <button class="nav-btn" data-view="sources">SOURCE SYSTEMS</button>
+  <button class="nav-btn" data-view="features">BY FEATURE</button>
+  <button class="nav-btn" data-view="risks">RISKS & QUESTIONS</button>
+</nav>
+
+<div class="main">
+
+  <!-- ============================== -->
+  <!-- ARCHITECTURE -->
+  <!-- ============================== -->
+  <div class="sec" data-section="arch">
+    <div class="sec-head">◆ PROPOSED DATA ARCHITECTURE</div>
+
+    <div class="arch-box">
+      <div style="text-align:center; margin-bottom:0.75rem">
+        <span style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; color:var(--text-dim)">PRESENTATION LAYER</span>
+      </div>
+      <div class="arch-row">
+        <div class="arch-node ui">
+          <div class="an-name" style="color:var(--green)">Customer Central UI</div>
+          <div class="an-sub">React SPA · Agent-facing</div>
+        </div>
+      </div>
+      <div class="arch-row"><span class="arch-arrow">↑ JSON responses</span></div>
+      <div style="text-align:center; margin:0.5rem 0 0.25rem">
+        <span style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; color:var(--text-dim)">AGGREGATION LAYER</span>
+      </div>
+      <div class="arch-row">
+        <div class="arch-node api">
+          <div class="an-name">Customer Data API</div>
+          <div class="an-sub">Internal REST service · Normalized schema</div>
+        </div>
+      </div>
+      <div class="arch-row"><span class="arch-arrow">↑ Queries from 5 sources</span></div>
+      <div style="text-align:center; margin:0.5rem 0 0.25rem">
+        <span style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; color:var(--text-dim)">SOURCE SYSTEMS</span>
+      </div>
+      <div class="arch-row">
+        <div class="arch-node sf"><div class="an-name">Salesforce</div><div class="an-sub">Account & relationship data</div></div>
+        <div class="arch-node zd"><div class="an-name">Zendesk</div><div class="an-sub">Tickets & interactions</div></div>
+        <div class="arch-node prod"><div class="an-name">Production DB</div><div class="an-sub">Payroll, benefits, HR data</div></div>
+        <div class="arch-node bill"><div class="an-name">Billing System</div><div class="an-sub">Invoices & payments</div></div>
+        <div class="arch-node logs"><div class="an-name">Event Stream</div><div class="an-sub">Application logs & activity</div></div>
+      </div>
+    </div>
+
+    <div class="callout blue">
+      <strong>Why an aggregation layer, not direct queries from the UI?</strong> Three reasons: (1) the UI shouldn't know about 5 different API schemas — one normalized interface is simpler and faster to build against. (2) The aggregation service can cache, join, and pre-compute data that would be expensive to assemble on every page load. (3) This same API layer can serve Sales tools, RevOps dashboards, and Product analytics — it's not just a CSO endpoint. This is the Tiebreaker Principle in action.
+    </div>
+
+    <div class="callout amber">
+      <strong>Open question for Caroline:</strong> Does an internal aggregation API already exist, or would we be building from scratch? If the Salesforce Delivery Team has existing middleware or a data warehouse sync layer, we should build on top of it, not alongside it.
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- SOURCE SYSTEMS -->
+  <!-- ============================== -->
+  <div class="sec" data-section="sources">
+    <div class="sec-head">◆ SOURCE SYSTEMS — WHAT LIVES WHERE</div>
+
+    <div class="src-grid">
+      <div class="src-card">
+        <div class="src-name sf">Salesforce</div>
+        <div class="src-desc">System of record for customer accounts, contacts, relationships, cases, and opportunities. Heavily customized — likely has custom objects for Plans, Members, Compliance status.</div>
+        <span class="src-method">REST API / SOQL</span>
+        <span class="src-method">Bulk API for sync</span>
+        <div style="margin-top:0.5rem; font-size:0.72rem; color:var(--text-dim)">
+          <strong style="color:var(--blue)">Key objects:</strong> Account, Contact, Case, Opportunity, Activity History, + Custom objects (Plan__c, Member__c, etc.)
+        </div>
+        <div style="margin-top:0.3rem; font-size:0.72rem; color:var(--text-dim)">
+          <strong style="color:var(--red)">Risk:</strong> Custom object schema is unknown. API rate limits may constrain real-time queries. Caroline is the authority here.
+        </div>
+      </div>
+
+      <div class="src-card">
+        <div class="src-name zd">Zendesk</div>
+        <div class="src-desc">Front-line ticketing, chat history, and CSAT scores. Primary log of customer interactions across phone, email, and chat channels.</div>
+        <span class="src-method">REST API v2</span>
+        <span class="src-method">Incremental Export API</span>
+        <div style="margin-top:0.5rem; font-size:0.72rem; color:var(--text-dim)">
+          <strong style="color:var(--green)">Key objects:</strong> Tickets, Users, Comments, Satisfaction Ratings, Organizations
+        </div>
+        <div style="margin-top:0.3rem; font-size:0.72rem; color:var(--text-dim)">
+          <strong style="color:var(--red)">Risk:</strong> Joining Zendesk tickets to Salesforce accounts requires a shared key. Is Zendesk Organization ID mapped to Salesforce Account ID? This is the #1 integration question.
+        </div>
+      </div>
+
+      <div class="src-card">
+        <div class="src-name prod">Justworks Production DB</div>
+        <div class="src-desc">Transactional source of truth — payroll runs, employee records, benefits elections, tax withholdings, PTO balances. This is the actual product data.</div>
+        <span class="src-method">Read replica / Internal API</span>
+        <div style="margin-top:0.5rem; font-size:0.72rem; color:var(--text-dim)">
+          <strong style="color:var(--purple)">Key tables:</strong> companies, members, payroll_runs, pay_stubs, benefits_elections, tax_documents, plans
+        </div>
+        <div style="margin-top:0.3rem; font-size:0.72rem; color:var(--text-dim)">
+          <strong style="color:var(--red)">Risk:</strong> May not be directly queryable — might require going through internal service APIs. Read replica latency unknown. PII access controls may restrict which fields are surfaceable.
+        </div>
+      </div>
+
+      <div class="src-card">
+        <div class="src-name bill">Billing / Payments System</div>
+        <div class="src-desc">Invoice generation, payment processing, account balance, payment method status. May be part of the production DB or a separate service (e.g., Stripe).</div>
+        <span class="src-method">Internal API / Payment gateway API</span>
+        <div style="margin-top:0.5rem; font-size:0.72rem; color:var(--text-dim)">
+          <strong style="color:var(--amber)">Key data:</strong> invoices, payments, payment_methods, billing_status, outstanding_balance
+        </div>
+        <div style="margin-top:0.3rem; font-size:0.72rem; color:var(--text-dim)">
+          <strong style="color:var(--red)">Risk:</strong> Billing architecture unknown. Could be internal service, could be Stripe/equivalent. Payment failure cascade (PS-6) requires joining billing status to payroll schedule to employee roster — 3-system join.
+        </div>
+      </div>
+
+      <div class="src-card">
+        <div class="src-name logs">Application Event Stream</div>
+        <div class="src-desc">Login events, feature usage, page views, account changes (employee adds/removes, benefits modifications, plan changes). Powers the "recent changes" and "last activity" signals.</div>
+        <span class="src-method">Data warehouse / Event bus</span>
+        <div style="margin-top:0.5rem; font-size:0.72rem; color:var(--text-dim)">
+          <strong style="color:var(--cyan)">Key events:</strong> login, employee_added, employee_removed, benefits_changed, payroll_submitted, plan_changed
+        </div>
+        <div style="margin-top:0.3rem; font-size:0.72rem; color:var(--text-dim)">
+          <strong style="color:var(--red)">Risk:</strong> Event schema may not be standardized. Data warehouse sync latency could be hours, not minutes. Real-time events may require subscribing to an event bus (Kafka, etc.) that may not exist.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- BY FEATURE -->
+  <!-- ============================== -->
+  <div class="sec" data-section="features">
+    <div class="sec-head">◆ DATA REQUIREMENTS BY FEATURE</div>
+
+    <!-- FS-1 -->
+    <div class="detail-block" id="fs1">
+      <div class="detail-header" onclick="toggle(this)">
+        <span class="dh-id fs">FS-1</span>
+        <span class="dh-title">Instant Caller Recognition</span>
+        <div class="dh-badges">
+          <span class="src-badge sf">SALESFORCE</span>
+          <span class="src-badge prod">PROD DB</span>
+          <span class="fresh-badge fresh-nrt">NEAR REAL-TIME</span>
+          <span class="risk-badge risk-m">MED RISK</span>
+        </div>
+        <span class="dh-toggle">▼</span>
+      </div>
+      <div class="detail-body">
+        <div class="sub-head">DATA FIELDS</div>
+        <table class="field-table">
+          <tr><th>Field</th><th>Source</th><th>Salesforce Object</th><th>Notes</th></tr>
+          <tr><td>Person name</td><td><span class="src-badge sf">SF</span></td><td><span class="sfobj">Contact.Name</span></td><td>FirstName + LastName on Contact record</td></tr>
+          <tr><td>Email</td><td><span class="src-badge sf">SF</span></td><td><span class="sfobj">Contact.Email</span></td><td>Primary email; may have multiple</td></tr>
+          <tr><td>Phone</td><td><span class="src-badge sf">SF</span></td><td><span class="sfobj">Contact.Phone</span></td><td>Business phone; personal phone may differ</td></tr>
+          <tr><td>Role (admin/employee)</td><td><span class="src-badge prod">PROD</span></td><td>—</td><td>Role is a Justworks product concept, not Salesforce. Likely in production DB member table as <code>role</code> field</td></tr>
+          <tr><td>Company name</td><td><span class="src-badge sf">SF</span></td><td><span class="sfobj">Account.Name</span></td><td>Lookup through Contact → Account relationship</td></tr>
+          <tr><td>Company ID</td><td><span class="src-badge sf">SF</span></td><td><span class="sfobj">Account.Id</span></td><td>Used as join key across systems</td></tr>
+          <tr><td>Plan type</td><td><span class="src-badge sf">SF</span> <span class="src-badge prod">PROD</span></td><td><span class="sfobj">Account.Plan__c</span> (custom)</td><td>Payroll / PEO Basic / PEO Plus / EOR. May be custom field or custom object</td></tr>
+        </table>
+        <div class="sub-head">INTEGRATION NOTES</div>
+        <div class="risk-text">Search requires a <strong>cross-system lookup</strong>: search Salesforce Contacts by name/email/phone, then enrich with production DB role data. The aggregation API needs to join Contact.AccountId → production DB company record. <strong>Key question for Caroline:</strong> Is the Salesforce Account ID the same identifier used in the production database, or is there a mapping table?</div>
+        <div class="sub-head">ACCEPTANCE CRITERIA</div>
+        <div class="risk-text">Search returns results in &lt;2 seconds. Disambiguates admin vs. employee with role badge. Handles partial name matches. Shows company affiliation in search results.</div>
+      </div>
+    </div>
+
+    <!-- FS-2 -->
+    <div class="detail-block" id="fs2">
+      <div class="detail-header" onclick="toggle(this)">
+        <span class="dh-id fs">FS-2</span>
+        <span class="dh-title">Complete Interaction History</span>
+        <div class="dh-badges">
+          <span class="src-badge zd">ZENDESK</span>
+          <span class="src-badge sf">SALESFORCE</span>
+          <span class="fresh-badge fresh-nrt">NEAR REAL-TIME</span>
+          <span class="risk-badge risk-h">HIGH RISK</span>
+        </div>
+        <span class="dh-toggle">▼</span>
+      </div>
+      <div class="detail-body">
+        <div class="sub-head">DATA FIELDS</div>
+        <table class="field-table">
+          <tr><th>Field</th><th>Source</th><th>Object</th><th>Notes</th></tr>
+          <tr><td>Ticket/case ID</td><td><span class="src-badge zd">ZD</span></td><td>Ticket.id</td><td>Primary identifier</td></tr>
+          <tr><td>Channel</td><td><span class="src-badge zd">ZD</span></td><td>Ticket.via.channel</td><td>phone / email / chat / web</td></tr>
+          <tr><td>Subject / topic</td><td><span class="src-badge zd">ZD</span></td><td>Ticket.subject</td><td>Quality varies — may be auto-generated or agent-written</td></tr>
+          <tr><td>Status</td><td><span class="src-badge zd">ZD</span></td><td>Ticket.status</td><td>open / pending / solved / closed</td></tr>
+          <tr><td>Priority</td><td><span class="src-badge zd">ZD</span></td><td>Ticket.priority</td><td>low / normal / high / urgent</td></tr>
+          <tr><td>Assigned agent</td><td><span class="src-badge zd">ZD</span></td><td>Ticket.assignee_id</td><td>Need to resolve to agent name via Zendesk Users API</td></tr>
+          <tr><td>Created / updated timestamps</td><td><span class="src-badge zd">ZD</span></td><td>Ticket.created_at / .updated_at</td><td>For timeline ordering</td></tr>
+          <tr><td>CSAT rating</td><td><span class="src-badge zd">ZD</span></td><td>Satisfaction Rating</td><td>If customer rated the interaction</td></tr>
+          <tr><td>Salesforce case notes</td><td><span class="src-badge sf">SF</span></td><td><span class="sfobj">Case.Description</span>, <span class="sfobj">CaseComment</span></td><td>Account-level notes from sales/CS team, not in Zendesk</td></tr>
+          <tr><td>Salesforce activity history</td><td><span class="src-badge sf">SF</span></td><td><span class="sfobj">ActivityHistory</span></td><td>Logged calls, emails, meetings from account management</td></tr>
+        </table>
+        <div class="sub-head">INTEGRATION NOTES</div>
+        <div class="callout red">
+          <strong>This is the hardest integration in the MVP.</strong> Zendesk and Salesforce store interaction data in completely different schemas. To build a unified timeline, we need to: (1) query Zendesk tickets by organization/requester, (2) query Salesforce Cases and ActivityHistory by Account, (3) merge and deduplicate (some tickets may exist in both systems), (4) sort chronologically, and (5) normalize into a common interaction record format. The join key between systems is the critical dependency — is Zendesk Organization ID mapped to Salesforce Account ID?
+        </div>
+        <div class="risk-text"><strong>De-risking plan:</strong> Week 1 spike — confirm the Zendesk-to-Salesforce mapping exists. If it does, build the merge logic. If not, MVP timeline may need to show Zendesk interactions only (80% of the value) and add Salesforce Case data in Phase 2.</div>
+      </div>
+    </div>
+
+    <!-- FS-3 -->
+    <div class="detail-block" id="fs3">
+      <div class="detail-header" onclick="toggle(this)">
+        <span class="dh-id fs">FS-3</span>
+        <span class="dh-title">Account Status at a Glance</span>
+        <div class="dh-badges">
+          <span class="src-badge bill">BILLING</span>
+          <span class="src-badge prod">PROD DB</span>
+          <span class="src-badge zd">ZENDESK</span>
+          <span class="src-badge logs">EVENTS</span>
+          <span class="src-badge sf">SALESFORCE</span>
+          <span class="fresh-badge fresh-nrt">NEAR REAL-TIME</span>
+          <span class="risk-badge risk-m">MED RISK</span>
+        </div>
+        <span class="dh-toggle">▼</span>
+      </div>
+      <div class="detail-body">
+        <div class="sub-head">5 STATUS INDICATORS — DATA PER INDICATOR</div>
+        <table class="field-table">
+          <tr><th>Indicator</th><th>Fields</th><th>Source</th><th>Notes</th></tr>
+          <tr><td>Billing status (RAG)</td><td>payment_status, last_payment_date, outstanding_balance, days_past_due</td><td><span class="src-badge bill">BILLING</span></td><td>Green = current, Amber = approaching due, Red = past due. Logic: if days_past_due > 0 → Red, if due within 3 days → Amber</td></tr>
+          <tr><td>Next payroll</td><td>next_payroll_date, payroll_frequency</td><td><span class="src-badge prod">PROD DB</span></td><td>Countdown in days. Urgency context: "payroll in 2 days" vs "payroll in 3 weeks"</td></tr>
+          <tr><td>Open tickets</td><td>COUNT(tickets WHERE status IN (open, pending))</td><td><span class="src-badge zd">ZENDESK</span></td><td>Aggregate count. Click to expand ticket list. Need organization_id for query.</td></tr>
+          <tr><td>Recent changes (7 days)</td><td>employee_added, employee_removed, benefits_changed, plan_changed events</td><td><span class="src-badge logs">EVENTS</span></td><td>Aggregate count of account-change events in last 7 days. Click to expand feed.</td></tr>
+          <tr><td>Customer tenure</td><td>account_created_date</td><td><span class="src-badge sf">SF</span> <span class="sfobj">Account.CreatedDate</span></td><td>Displayed as "Customer since Mar 2022" or "2y 11mo". Extremely low-risk — single field, no join.</td></tr>
+        </table>
+        <div class="sub-head">INTEGRATION NOTES</div>
+        <div class="risk-text">This indicator strip touches all 5 source systems — but each indicator is a simple, independent query. The risk isn't complexity per indicator, it's aggregate latency: 5 parallel queries must all return within the 3-second page load budget. <strong>Mitigation:</strong> Cache status strip data for 5 minutes. Pre-compute on account load rather than lazy-loading each indicator.</div>
+      </div>
+    </div>
+
+    <!-- PS-1 -->
+    <div class="detail-block" id="ps1">
+      <div class="detail-header" onclick="toggle(this)">
+        <span class="dh-id ps">PS-1</span>
+        <span class="dh-title">Paycheck Discrepancy Resolution</span>
+        <div class="dh-badges">
+          <span class="src-badge prod">PROD DB</span>
+          <span class="fresh-badge fresh-rt">REAL-TIME</span>
+          <span class="risk-badge risk-m">MED RISK</span>
+        </div>
+        <span class="dh-toggle">▼</span>
+      </div>
+      <div class="detail-body">
+        <div class="sub-head">DATA FIELDS</div>
+        <table class="field-table">
+          <tr><th>Field</th><th>Source</th><th>Notes</th></tr>
+          <tr><td>gross_pay</td><td><span class="src-badge prod">PROD DB</span></td><td>Current + previous period for comparison</td></tr>
+          <tr><td>federal_tax_withheld</td><td><span class="src-badge prod">PROD DB</span></td><td>Delta highlighting if changed</td></tr>
+          <tr><td>state_tax_withheld</td><td><span class="src-badge prod">PROD DB</span></td><td>Per state if multi-state employee</td></tr>
+          <tr><td>social_security, medicare</td><td><span class="src-badge prod">PROD DB</span></td><td>FICA components</td></tr>
+          <tr><td>benefits_deductions[]</td><td><span class="src-badge prod">PROD DB</span></td><td>Array: health, dental, vision, 401k, HSA. Each with name + amount</td></tr>
+          <tr><td>other_deductions[]</td><td><span class="src-badge prod">PROD DB</span></td><td>Garnishments, loan repayments, etc.</td></tr>
+          <tr><td>net_pay</td><td><span class="src-badge prod">PROD DB</span></td><td>Bottom line — the number employees care about most</td></tr>
+          <tr><td>pay_period_start, pay_period_end</td><td><span class="src-badge prod">PROD DB</span></td><td>For period-over-period alignment</td></tr>
+          <tr><td>hours_worked (if hourly)</td><td><span class="src-badge prod">PROD DB</span></td><td>Only applicable for hourly employees</td></tr>
+          <tr><td>change_events[]</td><td><span class="src-badge logs">EVENTS</span></td><td>W-4 update, benefits change, address change — powers the "WHY" annotations</td></tr>
+        </table>
+        <div class="sub-head">INTEGRATION NOTES</div>
+        <div class="risk-text">All data comes from the production database — single source, no cross-system joins. The complexity is in the <strong>presentation logic</strong>, not the data access: period-over-period comparison, delta calculation, and auto-annotations explaining WHY each line changed. The annotation engine needs to correlate change_events (from event stream) with pay stub deltas.</div>
+        <div class="callout amber"><strong>Key question:</strong> Are pay stubs accessible via an internal API, or do we need direct database queries? If there's an existing payroll service API, this integration is straightforward. If we need raw table access, PII controls and query patterns need discussion with the Data Services team.</div>
+      </div>
+    </div>
+
+    <!-- PS-2 -->
+    <div class="detail-block" id="ps2">
+      <div class="detail-header" onclick="toggle(this)">
+        <span class="dh-id ps">PS-2</span>
+        <span class="dh-title">Payroll Failure Triage (Alert + Deep Link)</span>
+        <div class="dh-badges">
+          <span class="src-badge prod">PROD DB</span>
+          <span class="fresh-badge fresh-rt">REAL-TIME</span>
+          <span class="risk-badge risk-h">HIGH RISK</span>
+        </div>
+        <span class="dh-toggle">▼</span>
+      </div>
+      <div class="detail-body">
+        <div class="sub-head">DATA FIELDS (ALERT ONLY — MVP SCOPE)</div>
+        <table class="field-table">
+          <tr><th>Field</th><th>Source</th><th>Notes</th></tr>
+          <tr><td>payroll_run_status</td><td><span class="src-badge prod">PROD DB</span></td><td>success / failed / pending / processing</td></tr>
+          <tr><td>failure_reason</td><td><span class="src-badge prod">PROD DB</span></td><td>Insufficient funds, bank rejection, configuration error, etc.</td></tr>
+          <tr><td>payroll_run_date</td><td><span class="src-badge prod">PROD DB</span></td><td>When the failed run was attempted</td></tr>
+          <tr><td>affected_employee_count</td><td><span class="src-badge prod">PROD DB</span></td><td>How many people weren't paid</td></tr>
+        </table>
+        <div class="sub-head">INTEGRATION NOTES</div>
+        <div class="callout red">
+          <strong>Highest-risk integration in the MVP.</strong> Payroll processing is likely a separate engine/service, not just database tables. Real-time status may require webhooks or event subscriptions from the payroll service. We scoped this as alert + deep link (not full diagnostic panel) specifically because the data access pattern is unvalidated. <strong>Week 1 spike:</strong> Determine if payroll run status is queryable via internal API and what the latency is.
+        </div>
+      </div>
+    </div>
+
+    <!-- PS-3 -->
+    <div class="detail-block" id="ps3">
+      <div class="detail-header" onclick="toggle(this)">
+        <span class="dh-id ps">PS-3</span>
+        <span class="dh-title">Tax Document Lookup</span>
+        <div class="dh-badges">
+          <span class="src-badge prod">PROD DB</span>
+          <span class="fresh-badge fresh-daily">DAILY</span>
+          <span class="risk-badge risk-l">LOW RISK</span>
+        </div>
+        <span class="dh-toggle">▼</span>
+      </div>
+      <div class="detail-body">
+        <div class="sub-head">DATA FIELDS</div>
+        <table class="field-table">
+          <tr><th>Field</th><th>Source</th><th>Notes</th></tr>
+          <tr><td>w2_status</td><td><span class="src-badge prod">PROD DB</span></td><td>available / processing / not_applicable</td></tr>
+          <tr><td>w2_issued_date</td><td><span class="src-badge prod">PROD DB</span></td><td>When W-2 was generated</td></tr>
+          <tr><td>form_1099_status</td><td><span class="src-badge prod">PROD DB</span></td><td>Per contractor: issued / pending</td></tr>
+          <tr><td>form_1099_count</td><td><span class="src-badge prod">PROD DB</span></td><td>X of Y complete</td></tr>
+          <tr><td>tax_year</td><td><span class="src-badge prod">PROD DB</span></td><td>Which tax year the documents cover</td></tr>
+        </table>
+        <div class="sub-head">INTEGRATION NOTES</div>
+        <div class="risk-text">Lowest-risk integration in the MVP. Tax document status is static metadata — it changes once when generated and once when delivered. Daily refresh is sufficient. No cross-system joins. ~0.5 engineering weeks. This is a "why not?" feature — practically free, high seasonal value (Jan–Apr).</div>
+      </div>
+    </div>
+
+    <!-- PS-4 -->
+    <div class="detail-block" id="ps4">
+      <div class="detail-header" onclick="toggle(this)">
+        <span class="dh-id ps">PS-4</span>
+        <span class="dh-title">Benefits Enrollment Guidance (Quick-View + Deep Link)</span>
+        <div class="dh-badges">
+          <span class="src-badge prod">PROD DB</span>
+          <span class="src-badge sf">SALESFORCE</span>
+          <span class="fresh-badge fresh-daily">DAILY</span>
+          <span class="risk-badge risk-m">MED RISK</span>
+        </div>
+        <span class="dh-toggle">▼</span>
+      </div>
+      <div class="detail-body">
+        <div class="sub-head">DATA FIELDS (SUMMARY CARD — MVP SCOPE)</div>
+        <table class="field-table">
+          <tr><th>Field</th><th>Source</th><th>Notes</th></tr>
+          <tr><td>enrolled_plans[]</td><td><span class="src-badge prod">PROD DB</span></td><td>Array: plan name, carrier, coverage level (individual/family), monthly cost</td></tr>
+          <tr><td>enrollment_window_status</td><td><span class="src-badge prod">PROD DB</span></td><td>open / closed / upcoming (with date)</td></tr>
+          <tr><td>dependents[]</td><td><span class="src-badge prod">PROD DB</span></td><td>Name, relationship, covered under which plan</td></tr>
+          <tr><td>carrier_contacts</td><td><span class="src-badge sf">SF</span> or static config</td><td>Carrier name, phone, member services URL</td></tr>
+        </table>
+        <div class="sub-head">INTEGRATION NOTES</div>
+        <div class="risk-text">Scoped as quick-view + deep link because the benefits domain is enormous. The summary card shows what the agent needs for 80% of benefits calls (what's enrolled, is enrollment open, carrier contacts). Complex benefits operations (plan changes, life events, COBRA) deep-link to the benefits admin system. Full benefits management in Customer Central is a Phase 2 multi-quarter effort.</div>
+      </div>
+    </div>
+
+    <!-- PS-5 -->
+    <div class="detail-block" id="ps5">
+      <div class="detail-header" onclick="toggle(this)">
+        <span class="dh-id ps">PS-5</span>
+        <span class="dh-title">Invoice Explanation (Deep Link + Annotation)</span>
+        <div class="dh-badges">
+          <span class="src-badge bill">BILLING</span>
+          <span class="fresh-badge fresh-nrt">NEAR REAL-TIME</span>
+          <span class="risk-badge risk-m">MED RISK</span>
+        </div>
+        <span class="dh-toggle">▼</span>
+      </div>
+      <div class="detail-body">
+        <div class="sub-head">DATA FIELDS (ANNOTATION — MVP SCOPE)</div>
+        <table class="field-table">
+          <tr><th>Field</th><th>Source</th><th>Notes</th></tr>
+          <tr><td>current_invoice_total</td><td><span class="src-badge bill">BILLING</span></td><td>This month's amount</td></tr>
+          <tr><td>previous_invoice_total</td><td><span class="src-badge bill">BILLING</span></td><td>Last month's amount for delta</td></tr>
+          <tr><td>invoice_delta</td><td>Computed</td><td>Difference + reason (employee count change, plan upgrade, etc.)</td></tr>
+          <tr><td>invoice_date, due_date</td><td><span class="src-badge bill">BILLING</span></td><td>Timing context</td></tr>
+          <tr><td>line_items[]</td><td><span class="src-badge bill">BILLING</span></td><td>Deep link target — full line item detail in billing system</td></tr>
+        </table>
+        <div class="sub-head">INTEGRATION NOTES</div>
+        <div class="risk-text">The Customer Central value-add is the <strong>delta annotation</strong> — not replicating the full invoice view. "Your invoice increased $1,247 because you added 3 employees this month." This requires correlating billing changes with account events (employee adds/removes, plan changes). Deep link to billing system for full line-item detail.</div>
+      </div>
+    </div>
+
+    <!-- PS-6 -->
+    <div class="detail-block" id="ps6">
+      <div class="detail-header" onclick="toggle(this)">
+        <span class="dh-id ps">PS-6</span>
+        <span class="dh-title">Payment Failure Cascade</span>
+        <div class="dh-badges">
+          <span class="src-badge bill">BILLING</span>
+          <span class="src-badge prod">PROD DB</span>
+          <span class="fresh-badge fresh-rt">REAL-TIME</span>
+          <span class="risk-badge risk-h">HIGH RISK</span>
+        </div>
+        <span class="dh-toggle">▼</span>
+      </div>
+      <div class="detail-body">
+        <div class="sub-head">DATA FIELDS</div>
+        <table class="field-table">
+          <tr><th>Field</th><th>Source</th><th>Notes</th></tr>
+          <tr><td>payment_status</td><td><span class="src-badge bill">BILLING</span></td><td>failed / declined / processing / succeeded</td></tr>
+          <tr><td>failure_reason</td><td><span class="src-badge bill">BILLING</span></td><td>NSF, expired card, bank reject, etc.</td></tr>
+          <tr><td>amount_due</td><td><span class="src-badge bill">BILLING</span></td><td>How much is outstanding</td></tr>
+          <tr><td>next_payroll_date</td><td><span class="src-badge prod">PROD DB</span></td><td>Is payroll at risk?</td></tr>
+          <tr><td>payroll_blocked</td><td><span class="src-badge prod">PROD DB</span></td><td>Boolean: has the payment failure actually blocked payroll processing?</td></tr>
+          <tr><td>affected_employee_count</td><td><span class="src-badge prod">PROD DB</span></td><td>How many people would miss a paycheck</td></tr>
+          <tr><td>days_until_payroll</td><td>Computed</td><td>Urgency indicator</td></tr>
+          <tr><td>retry_status</td><td><span class="src-badge bill">BILLING</span></td><td>Has auto-retry been attempted? When?</td></tr>
+        </table>
+        <div class="sub-head">INTEGRATION NOTES</div>
+        <div class="callout red">
+          <strong>The novel feature — and the riskiest data requirement.</strong> The cascade (failed payment → payroll at risk → N employees affected) requires a <strong>3-system join</strong>: billing system (payment status) + production DB (payroll schedule) + production DB (employee roster). This join may not exist as a pre-built query today. Building it requires understanding the business logic: at what point does a failed payment actually block payroll? Is there a grace period? Auto-retry? Manual override? These are business rules, not just data queries.
+        </div>
+        <div class="risk-text"><strong>De-risking:</strong> Week 1 — validate with the billing/payroll team that the payment → payroll → employee chain can be queried. If the join is feasible, this is the highest-value novel feature in the MVP. If not, fall back to a simpler "payment failed" alert (like PS-2) and promote the full cascade to Phase 2.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- RISKS & QUESTIONS -->
+  <!-- ============================== -->
+  <div class="sec" data-section="risks">
+    <div class="sec-head">◆ TOP INTEGRATION RISKS & OPEN QUESTIONS</div>
+
+    <div class="callout red" style="margin-bottom: 1rem">
+      <strong>Risk #1: Zendesk ↔ Salesforce Join Key</strong><br>
+      The unified interaction timeline (FS-2) requires merging Zendesk tickets with Salesforce cases for the same account. This requires a shared identifier — typically Zendesk Organization ID mapped to Salesforce Account ID. If this mapping doesn't exist, FS-2 degrades to Zendesk-only in MVP. <strong>Question for Caroline:</strong> "Is Zendesk Organization ID mapped to Salesforce Account ID? Is there a sync layer, or are these separate systems?"
+    </div>
+
+    <div class="callout red" style="margin-bottom: 1rem">
+      <strong>Risk #2: Payroll Engine Access Pattern</strong><br>
+      Both PS-2 (payroll failure alert) and PS-6 (payment cascade) need real-time payroll status. If the payroll engine is a separate service with no external API, we can't query it from the aggregation layer. <strong>Question for Evan:</strong> "Is payroll run status accessible via an internal API today, or is it only visible within the payroll processing service?"
+    </div>
+
+    <div class="callout red" style="margin-bottom: 1rem">
+      <strong>Risk #3: Payment-to-Payroll Business Logic</strong><br>
+      PS-6 assumes a failed payment can block payroll. But we don't know the business rules: Is there a grace period? Auto-retry? Manual override? Escrow that covers one cycle? The cascade visualization requires understanding these rules to be accurate. <strong>Inaccurate cascade data is worse than no cascade data.</strong> <strong>Question for Renee:</strong> "When a customer's payment fails, what actually happens to their next payroll? Is there a documented process?"
+    </div>
+
+    <div class="callout amber" style="margin-bottom: 1rem">
+      <strong>Risk #4: Salesforce API Rate Limits</strong><br>
+      Salesforce enforces API call limits per 24-hour period. If Customer Central makes real-time SOQL queries for every agent search, we could hit rate limits at scale (hundreds of agents × dozens of searches per shift). <strong>Mitigation:</strong> Cache Salesforce data in the aggregation layer with 5-minute TTL. Bulk sync via Salesforce Bulk API for initial population. <strong>Question for Caroline:</strong> "What are the current API usage levels? Is there headroom, or are we near limits?"
+    </div>
+
+    <div class="callout amber" style="margin-bottom: 1rem">
+      <strong>Risk #5: PII Access Controls</strong><br>
+      Pay stubs (PS-1), benefits elections (PS-4), and tax documents (PS-3) contain sensitive PII. The aggregation API must enforce access controls: which agents can see what data, audit logging of data access, and compliance with privacy requirements. <strong>Question for Renee/Evan:</strong> "Are there existing PII access policies for internal tools? Does CSO already have access to this data in other systems, or would surfacing it in Customer Central require new data governance approvals?"
+    </div>
+
+    <div class="callout" style="margin-bottom: 1rem; border-left-color: var(--blue); background: var(--blue-bg)">
+      <strong>Risk #6: Event Stream Maturity</strong><br>
+      FS-3 (recent changes) and PS-1 (change annotations) depend on structured application events. If the event stream is immature — inconsistent schema, delayed delivery, or missing event types — these features degrade. <strong>Question for Evan:</strong> "Does Justworks have a structured event stream (Kafka, EventBridge, etc.) or are we working from application logs in a data warehouse with latency?"
+    </div>
+
+    <div class="sec-head" style="margin-top: 2rem">◆ WEEK 1 DE-RISKING SPIKES</div>
+
+    <div class="callout green">
+      <strong>Before committing to the full MVP scope, Week 1 should validate:</strong><br><br>
+      <strong>Spike 1:</strong> Zendesk-Salesforce join key — confirm the mapping, test a cross-system query, measure latency.<br>
+      <strong>Spike 2:</strong> Payroll engine API — determine access pattern, test read queries, validate real-time availability.<br>
+      <strong>Spike 3:</strong> Billing-to-payroll chain — map the business rules for payment failure → payroll impact with domain experts.<br>
+      <strong>Spike 4:</strong> Production DB access — confirm read replica availability, test pay stub queries, validate PII controls.<br><br>
+      If Spikes 1-2 fail, adjust MVP scope: FS-2 becomes Zendesk-only, PS-2 and PS-6 downgrade to deep links. The foundation stories (FS-1, FS-3) and remaining problem stories (PS-1, PS-3, PS-4, PS-5) are unaffected.
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  Customer Central MVP — Data Requirements · Darrien Watson · Justworks GPM Case Study · February 2026
+</div>
+
+<script>
+function toggle(el) {
+  el.closest('.detail-block').classList.toggle('open');
+}
+
+// Nav filtering
+document.querySelectorAll('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const view = btn.dataset.view;
+    document.querySelectorAll('.sec').forEach(sec => {
+      if (view === 'all') {
+        sec.style.display = 'block';
+      } else {
+        sec.style.display = sec.dataset.section === view ? 'block' : 'none';
+      }
+    });
+  });
+});
+</script>
+
+</body>
+</html>

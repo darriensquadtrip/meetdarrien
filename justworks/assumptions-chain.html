@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Decision Chain: Customer Central MVP</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d0f12;
+  --surface: #161a20;
+  --surface-2: #1c2028;
+  --surface-3: #232830;
+  --border: #2a3040;
+  --border-active: #4a5568;
+  --text: #e2e8f0;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  --accent: #f59e0b;
+  --accent-dim: #b45309;
+  --green: #10b981;
+  --green-dim: rgba(16, 185, 129, 0.15);
+  --red: #ef4444;
+  --red-dim: rgba(239, 68, 68, 0.12);
+  --blue: #3b82f6;
+  --blue-dim: rgba(59, 130, 246, 0.12);
+  --purple: #a855f7;
+  --purple-dim: rgba(168, 85, 247, 0.12);
+  --orange: #f97316;
+  --orange-dim: rgba(249, 115, 22, 0.12);
+  --cyan: #06b6d4;
+  --cyan-dim: rgba(6, 182, 212, 0.12);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Source Sans 3', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+.header {
+  padding: 3rem 2rem 2rem;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, #12151a 0%, var(--bg) 100%);
+}
+
+.header h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.header .subtitle {
+  color: var(--text-muted);
+  font-size: 1rem;
+  font-weight: 300;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.header .meta {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.header .meta span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--text-dim);
+  background: var(--surface);
+  padding: 0.3rem 0.7rem;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}
+
+/* Navigation */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(13, 15, 18, 0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0.5rem 1rem;
+  display: flex;
+  gap: 0.25rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.nav::-webkit-scrollbar { display: none; }
+
+.nav-btn {
+  background: none;
+  border: 1px solid transparent;
+  color: var(--text-dim);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  padding: 0.4rem 0.7rem;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.nav-btn:hover {
+  color: var(--text-muted);
+  border-color: var(--border);
+}
+
+.nav-btn.active {
+  color: var(--accent);
+  background: rgba(245, 158, 11, 0.08);
+  border-color: var(--accent-dim);
+}
+
+/* Main content */
+.content {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+}
+
+/* Decision Step */
+.step {
+  margin-bottom: 2rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+
+.step:hover {
+  border-color: var(--border-active);
+}
+
+.step-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.step-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid var(--accent-dim);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.step-title-block { flex: 1; }
+
+.step-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.15rem;
+  color: var(--text);
+  margin-bottom: 0.25rem;
+}
+
+.step-summary {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 300;
+}
+
+.step-toggle {
+  color: var(--text-dim);
+  font-size: 1.2rem;
+  transition: transform 0.3s;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.step.open .step-toggle { transform: rotate(180deg); }
+
+.step-body {
+  display: none;
+  border-top: 1px solid var(--border);
+}
+
+.step.open .step-body { display: block; }
+
+/* Decision subsections */
+.decision-section {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.decision-section:last-child { border-bottom: none; }
+
+.section-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.label-decision { color: var(--accent); }
+.label-assumption { color: var(--purple); }
+.label-evidence { color: var(--green); }
+.label-alternative { color: var(--cyan); }
+.label-risk { color: var(--red); }
+.label-output { color: var(--blue); }
+.label-directive { color: var(--orange); }
+
+.section-content {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+
+.section-content p { margin-bottom: 0.6rem; }
+.section-content p:last-child { margin-bottom: 0; }
+
+.section-content strong { color: var(--text); font-weight: 600; }
+
+.section-content em {
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+/* Highlight boxes */
+.highlight-box {
+  background: var(--surface-3);
+  border-left: 3px solid var(--accent-dim);
+  padding: 0.75rem 1rem;
+  border-radius: 0 4px 4px 0;
+  margin: 0.6rem 0;
+  font-size: 0.82rem;
+}
+
+.highlight-box.green { border-left-color: var(--green); background: var(--green-dim); }
+.highlight-box.red { border-left-color: var(--red); background: var(--red-dim); }
+.highlight-box.blue { border-left-color: var(--blue); background: var(--blue-dim); }
+.highlight-box.purple { border-left-color: var(--purple); background: var(--purple-dim); }
+.highlight-box.orange { border-left-color: var(--orange); background: var(--orange-dim); }
+.highlight-box.cyan { border-left-color: var(--cyan); background: var(--cyan-dim); }
+
+/* Quote blocks */
+.prompt-quote {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--accent);
+  background: rgba(245, 158, 11, 0.06);
+  border: 1px solid rgba(245, 158, 11, 0.15);
+  padding: 0.6rem 1rem;
+  border-radius: 4px;
+  margin: 0.5rem 0;
+  line-height: 1.6;
+}
+
+/* Convergence table */
+.convergence-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 0.75rem 0;
+}
+
+@media (max-width: 700px) {
+  .convergence-grid { grid-template-columns: 1fr; }
+}
+
+.convergence-card {
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.75rem;
+}
+
+.convergence-card h4 {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.convergence-card ul {
+  list-style: none;
+  padding: 0;
+}
+
+.convergence-card li {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  padding: 0.15rem 0;
+  padding-left: 1rem;
+  position: relative;
+}
+
+.convergence-card li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--text-dim);
+}
+
+/* ICE mini-bar */
+.ice-bar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+}
+
+.ice-score {
+  background: var(--surface-3);
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+.ice-high { color: var(--green); border: 1px solid rgba(16, 185, 129, 0.3); }
+.ice-mid { color: var(--accent); border: 1px solid rgba(245, 158, 11, 0.3); }
+.ice-low { color: var(--red); border: 1px solid rgba(239, 68, 68, 0.3); }
+
+/* Phase flow */
+.phase-flow {
+  display: flex;
+  gap: 0;
+  margin: 1rem 0;
+  overflow-x: auto;
+}
+
+.phase-node {
+  flex: 1;
+  min-width: 120px;
+  text-align: center;
+  padding: 0.6rem 0.5rem;
+  position: relative;
+}
+
+.phase-node::after {
+  content: '→';
+  position: absolute;
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-dim);
+  font-size: 0.8rem;
+}
+
+.phase-node:last-child::after { display: none; }
+
+.phase-node .phase-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.3rem;
+}
+
+.phase-node .phase-desc {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.phase-mvp .phase-label { color: var(--green); }
+.phase-p2 .phase-label { color: var(--accent); }
+.phase-p3 .phase-label { color: var(--purple); }
+
+/* Story grid */
+.story-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.75rem;
+  margin: 0.75rem 0;
+}
+
+.story-card {
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.75rem;
+}
+
+.story-card .story-id {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--green);
+  margin-bottom: 0.3rem;
+}
+
+.story-card .story-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.3rem;
+}
+
+.story-card .story-scope {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.story-card.deep-link .story-id { color: var(--cyan); }
+.story-card.deferred .story-id { color: var(--text-dim); }
+
+/* Section dividers */
+.section-divider {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  position: relative;
+}
+
+.section-divider::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, var(--border), transparent);
+}
+
+.section-divider .divider-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--bg);
+  padding: 0.3rem 1rem;
+  position: relative;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+/* Validation matrix */
+.validation-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.8rem;
+}
+
+.validation-row:last-child { border-bottom: none; }
+
+.val-label {
+  flex: 1;
+  color: var(--text-muted);
+}
+
+.val-status {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+}
+
+.val-inferred {
+  color: var(--accent);
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.val-confirmed {
+  color: var(--green);
+  background: var(--green-dim);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.val-unknown {
+  color: var(--red);
+  background: var(--red-dim);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+/* Expand all / collapse all */
+.controls {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.control-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.control-btn:hover {
+  color: var(--text-muted);
+  border-color: var(--border-active);
+}
+
+/* Phase badge inline */
+.phase-badge {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 600;
+  padding: 0.1rem 0.4rem;
+  border-radius: 3px;
+  vertical-align: middle;
+}
+
+.phase-badge.mvp {
+  color: var(--green);
+  background: var(--green-dim);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.phase-badge.p2 {
+  color: var(--accent);
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.phase-badge.p3 {
+  color: var(--purple);
+  background: var(--purple-dim);
+  border: 1px solid rgba(168, 85, 247, 0.2);
+}
+
+.phase-badge.cut {
+  color: var(--red);
+  background: var(--red-dim);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+/* Hidden sections */
+.section-group { display: none; }
+.section-group.active { display: block; }
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-dim);
+  font-size: 0.75rem;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>The Decision Chain</h1>
+  <p class="subtitle">Every assumption, fork, and rationale that shaped the Customer Central MVP — from prompt analysis through scoping decisions</p>
+  <div class="meta">
+    <span>14 DECISION POINTS</span>
+    <span>45 ASSUMPTIONS DOCUMENTED</span>
+    <span>20 PROBLEMS SCORED</span>
+    <span>9 USER STORIES</span>
+  </div>
+</div>
+
+<nav class="nav" id="nav">
+  <button class="nav-btn active" data-section="all">ALL STEPS</button>
+  <button class="nav-btn" data-section="prompt">01–02 PROMPT</button>
+  <button class="nav-btn" data-section="framing">03–04 FRAMING</button>
+  <button class="nav-btn" data-section="problems">05–06 PROBLEMS</button>
+  <button class="nav-btn" data-section="scoring">07–08 SCORING</button>
+  <button class="nav-btn" data-section="scoping">09–11 SCOPING</button>
+  <button class="nav-btn" data-section="solution">12–14 SOLUTION & UX</button>
+</nav>
+
+<div class="content">
+  <div class="controls">
+    <button class="control-btn" onclick="expandAll()">↓ Expand All</button>
+    <button class="control-btn" onclick="collapseAll()">↑ Collapse All</button>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- STEP 1: READ THE PROMPT -->
+  <!-- ============================================================ -->
+  <div class="section-group active" data-group="prompt">
+  <div class="step" id="step1">
+    <div class="step-header" onclick="toggleStep(this)">
+      <span class="step-number">01</span>
+      <div class="step-title-block">
+        <div class="step-title">Read the Prompt — Extract the Actual Ask</div>
+        <div class="step-summary">The case study prompt is itself phased. The first paragraphs describe today's needs; the last paragraph describes tomorrow's aspirations. The roadmap should mirror that structure.</div>
+      </div>
+      <span class="step-toggle">▼</span>
+    </div>
+    <div class="step-body">
+      <div class="decision-section">
+        <div class="section-label label-decision">⬡ DECISION</div>
+        <div class="section-content">
+          <p>Treat the prompt as a requirements document, not a vague question. Decompose it paragraph by paragraph to extract jobs, not features.</p>
+        </div>
+      </div>
+      <div class="decision-section">
+        <div class="section-label label-evidence">◉ PROMPT LANGUAGE → JOB DERIVATION</div>
+        <div class="section-content">
+          <div class="prompt-quote">¶1: "consolidates data and internal tooling across our product offerings into a single place" → <strong>Job 1: Know Who I'm Talking To</strong></div>
+          <div class="prompt-quote">¶1: "understand complete profiles about our customer companies and the employees of those companies" → <strong>Job 2: See the Full History</strong></div>
+          <div class="prompt-quote">¶1: "carry out routine tasks" + "information necessary to provide best-in-class customer experience" → <strong>Job 3: Handle Their Problem</strong></div>
+          <div class="prompt-quote">¶2: "understand the status and health of our customer accounts" → <strong>Job 4: Know Account Status & Health</strong></div>
+          <div class="prompt-quote">¶2: "pre-empt problems before they arise and proactively provide support" → <strong>Job 5: Pre-empt Problems</strong></div>
+          <div class="prompt-quote">¶2: "opportunities to utilize additional areas of our product offerings" → <strong>Job 6: Expand the Relationship</strong></div>
+        </div>
+      </div>
+      <div class="decision-section">
+        <div class="section-label label-assumption">◇ KEY ASSUMPTION</div>
+        <div class="section-content">
+          <p><strong>The prompt itself is phased.</strong> Paragraph 1 uses present-tense, operational language ("carry out," "understand," "provide"). Paragraph 2 shifts to aspirational language ("pre-empt," "proactively," "opportunities"). This isn't accidental — it signals that the interviewers expect a phased approach, not a monolithic proposal.</p>
+          <div class="highlight-box purple">
+            <strong>Implication:</strong> Jobs 1–3 are the MVP ask. Jobs 5–6 are the Phase 2–3 aspiration. Job 4 bridges both (status = MVP, health scoring = Phase 2). Building all six in one phase would fail the "MVP discipline" test Renee is evaluating.
+          </div>
+        </div>
+      </div>
+      <div class="decision-section">
+        <div class="section-label label-alternative">◈ ALTERNATIVE CONSIDERED</div>
+        <div class="section-content">
+          <p>We could have started from industry frameworks (ITSM, JTBD templates, support ops playbooks) rather than the prompt text. We explicitly chose prompt-first derivation because <strong>traceability to their words</strong> is more persuasive than external frameworks. When the panel asks "why these jobs?" we can point to their own language.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- STEP 2: DEFINE THE USERS -->
+  <!-- ============================================================ -->
+  <div class="step" id="step2">
+    <div class="step-header" onclick="toggleStep(this)">
+      <span class="step-number">02</span>
+      <div class="step-title-block">
+        <div class="step-title">Define the Users — "The Person" Is Not One Person</div>
+        <div class="step-summary">The prompt says "the profile of the person, and their company." That "person" is three different user types with fundamentally different data needs.</div>
+      </div>
+      <span class="step-toggle">▼</span>
+    </div>
+    <div class="step-body">
+      <div class="decision-section">
+        <div class="section-label label-decision">⬡ DECISION</div>
+        <div class="section-content">
+          <p>The primary user is the CSO agent, but we must design for <strong>who the agent is talking to</strong> — because the data they need changes completely based on caller type.</p>
+        </div>
+      </div>
+      <div class="decision-section">
+        <div class="section-label label-assumption">◇ ASSUMPTIONS ABOUT USER TYPES</div>
+        <div class="section-content">
+          <div class="highlight-box">
+            <strong>Caller Type A: Company Administrator</strong> — Founder, HR manager, or ops lead who manages the Justworks account. Calls about payroll, benefits admin, compliance, billing. Needs company-level data surfaced.
+          </div>
+          <div class="highlight-box">
+            <strong>Caller Type B: Individual Employee</strong> — An employee at a client company. Didn't choose Justworks. Calls about their paycheck, benefits, tax docs, life events. Needs personal-level data surfaced within their employer's context.
+          </div>
+          <div class="highlight-box">
+            <strong>Caller Type C: Accountant/Bookkeeper</strong> — Third-party professional. Limited access. Needs reconciliation data, journal entries, integration info. Less frequent.
+          </div>
+          <p><strong>Assumption confidence:</strong> High. The prompt explicitly distinguishes "the person" from "their company." Justworks help center and product surface confirm both admin and employee portals exist. The PEO model structurally creates both user types.</p>
+          <div class="highlight-box red">
+            <strong>What we don't know:</strong> The ratio of admin vs. employee calls. If employees rarely call (because admins handle most things), the dashboard design weights toward admin workflows. If employee calls are 40%+ of volume, the person-within-company information architecture becomes critical. <em>This should be validated with CSO data.</em>
+          </div>
+        </div>
+      </div>
+      <div class="decision-section">
+        <div class="section-label label-assumption">◇ ASSUMPTIONS ABOUT THE CSO AGENT</div>
+        <div class="section-content">
+          <p><strong>Not generic call center reps.</strong> Justworks' 9 Stevie Awards, NPS of +60, and brand language ("work directly with real people to solve their most complex problems") indicate agents operate as consultants. They're expected to advise across payroll, benefits, compliance, and HR — not read scripts.</p>
+          <p><strong>Multi-system workflow today:</strong> We assume agents toggle between 5–6 systems (Zendesk, Salesforce, Justworks admin dashboard, internal KB, Slack, possibly Tableau). This is inferred from Justworks' confirmed tech stack, not validated through observation.</p>
+          <div class="highlight-box orange">
+            <strong>Validation needed:</strong> 2–3 days shadowing CSO agents would confirm or refute the multi-system pain. If they've already built internal Salesforce views that consolidate some of this, the problem is less severe than we assume.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div><!-- end prompt group -->
+
+  <div class="section-divider"><span class="divider-label">FRAMING THE PROBLEM</span></div>
+
+  <!-- ============================================================ -->
+  <!-- STEP 3: ESTABLISH THE DEPENDENCY STACK -->
+  <!-- ============================================================ -->
+  <div class="section-group active" data-group="framing">
+  <div class="step" id="step3">
+    <div class="step-header" onclick="toggleStep(this)">
+      <span class="step-number">03</span>
+      <div class="step-title-block">
+        <div class="step-title">Establish the Dependency Stack — Why This Order</div>
+        <div class="step-summary">Jobs 1–2 are foundation. Jobs 3–4 are operations. Jobs 5–6 are intelligence. Each layer depends on the one below it.</div>
+      </div>
+      <span class="step-toggle">▼</span>
+    </div>
+    <div class="step-body">
+      <div class="decision-section">
+        <div class="section-label label-decision">⬡ DECISION</div>
+        <div class="section-content">
+          <p>Phase the roadmap as a <strong>dependency stack</strong>, not a feature priority list. The phasing is structural, not just strategic.</p>
+          <div class="phase-flow">
+            <div class="phase-node phase-mvp">
+              <div class="phase-label">Phase 1: Foundation</div>
+              <div class="phase-desc">Jobs 1 & 2 — Know the customer, see the history</div>
+            </div>
+            <div class="phase-node phase-mvp">
+              <div class="phase-label">Phase 1: Operations</div>
+              <div class="phase-desc">Jobs 3 & 4 — Solve problems, assess status</div>
+            </div>
+            <div class="phase-node phase-p2">
+              <div class="phase-label">Phase 2: Health</div>
+              <div class="phase-desc">Job 4b — Composite health scoring</div>
+            </div>
+            <div class="phase-node phase-p3">
+              <div class="phase-label">Phase 3: Intelligence</div>
+              <div class="phase-desc">Jobs 5 & 6 — Pre-empt, expand</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="decision-section">
+        <div class="section-label label-assumption">◇ THREE ARGUMENTS FOR THIS ORDER</div>
+        <div class="section-content">
+          <p><strong>1. Technical dependency:</strong> You can't diagnose a payroll discrepancy (Job 3) without knowing which company and employee you're looking at (Job 1). You can't avoid making customers repeat themselves (Job 3) without unified interaction history (Job 2). You can't predict churn risk (Job 5) without historical health data patterns (Job 4).</p>
+          <p><strong>2. Trust progression:</strong> Phase 1 earns trust through accuracy (the data is right). Phase 2 earns trust through insight (interpretations of trusted data). Phase 3 earns trust through prediction (agents only act on proactive alerts if they already trust the foundation). Premature predictions destroy credibility.</p>
+          <p><strong>3. Adoption risk:</strong> Internal tools live or die on daily adoption. If the foundation is unreliable, agents won't use it. If they don't use it, downstream intelligence features have no audience. The MVP must replace existing workflows, not supplement them.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- STEP 4: THE PIVOTAL USER DIRECTIVE -->
+  <!-- ============================================================ -->
+  <div class="step" id="step4">
+    <div class="step-header" onclick="toggleStep(this)">
+      <span class="step-number">04</span>
+      <div class="step-title-block">
+        <div class="step-title">The Pivotal Reframe — "Don't Build Foundation in Abstract"</div>
+        <div class="step-summary">Rather than building a generic data consolidation layer, start with the specific problems agents face and the specific questions they ask. Let the problems define the data requirements.</div>
+      </div>
+      <span class="step-toggle">▼</span>
+    </div>
+    <div class="step-body">
+      <div class="decision-section">
+        <div class="section-label label-directive">★ USER DIRECTIVE</div>
+        <div class="section-content">
+          <div class="prompt-quote">"I would go to the stakeholders and ask 'when trying to understand status and health, what info do you want and why?' I want to solve for highest volume and highest impact first. I don't want to just build 1 and 2 without a clear understanding of the detailed and specific outcome they want to solve for."</div>
+          <p>This reframed the entire approach. Instead of: <em>"What data should the dashboard show?"</em> → we ask: <em>"What problems do agents have? What questions do they need answered? Build the foundation that handles those."</em></p>
+        </div>
+      </div>
+      <div class="decision-section">
+        <div class="section-label label-decision">⬡ RESULTING DECISION</div>
+        <div class="section-content">
+          <p><strong>Two parallel inventories:</strong></p>
+          <p>1. <strong>CSO Problems</strong> — The specific issues agents are called about. Scored by frequency and impact.</p>
+          <p>2. <strong>Health & Status Questions</strong> — The specific questions agents need answered on every call, regardless of the problem.</p>
+          <p>The foundation emerges from the intersection of both lists. Whatever data both the top problems AND the top health questions need — that's the MVP data layer.</p>
+          <div class="highlight-box green">
+            <strong>Why this matters:</strong> This approach is defensible in the interview. Rather than saying "we'll consolidate data" (vague), we say "here are the 6 most frequent agent problems and the 8 most critical health questions. Here's the data both lists need. That's our MVP." It's bottom-up, validated, and specific.
+          </div>
+        </div>
+      </div>
+      <div class="decision-section">
+        <div class="section-label label-assumption">◇ CRITICAL ASSUMPTION</div>
+        <div class="section-content">
+          <p><strong>Because this is an exercise, the problem inventory is inferred, not validated.</strong> We derived 20 problems and 12 health questions from Justworks' product surface area, help center patterns, PEO industry norms, and domain reasoning. Without shadowing agents or analyzing Zendesk ticket data, every problem's frequency and severity is an educated guess.</p>
+          <div class="highlight-box red">
+            <strong>What could change everything:</strong> If we shadow CSO agents for 2–3 days and analyze 500 recent Zendesk tickets, the confidence scores in our ICE model would shift significantly. Impact and Ease scores are structural (they don't change with observation). Confidence scores are behavioral (they depend on whether the problem is actually as frequent as we think). The framework is right; the inputs need validation.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div><!-- end framing group -->
+
+  <div class="section-divider"><span class="divider-label">PROBLEM INVENTORY</span></div>
+
+  <!-- ============================================================ -->
+  <!-- STEP 5: THE 20 CSO PROBLEMS -->
+  <!-- ============================================================ -->
+  <div class="section-group active" data-group="problems">
+  <div class="step" id="step5">
+    <div class="step-header" onclick="toggleStep(this)">
+      <span class="step-number">05</span>
+      <div class="step-title-block">
+        <div class="step-title">Inventory 20 CSO Problems by Domain</div>
+        <div class="step-summary">Specific problems agents solve daily, grounded in Justworks' product surface — not generic support taxonomy.</div>
+      </div>
+      <span class="step-toggle">▼</span>
+    </div>
+    <div class="step-body">
+      <div class="decision-section">
+        <div class="section-label label-assumption">◇ HOW WE DERIVED THESE</div>
+        <div class="section-content">
+          <p>We did NOT have access to actual CSO data. Problems were inferred from:</p>
+          <p><strong>1. Justworks product surface:</strong> Multi-product lines (Payroll, PEO Basic, PEO Plus, EOR, International Contractors) each create distinct problem categories.</p>
+          <p><strong>2. PEO industry patterns:</strong> Payroll processing questions are universally the #1 support driver in PEO/payroll companies. Benefits questions spike during open enrollment. Compliance questions grow with remote work adoption.</p>
+          <p><strong>3. Justworks help center:</strong> Categories and article frequency provide signal about common issues.</p>
+          <p><strong>4. Domain reasoning:</strong> A company with employees across multiple states inherently creates compliance complexity. A company growing rapidly creates onboarding volume.</p>
+        </div>
+      </div>
+      <div class="decision-section">
+        <div class="section-label label-evidence">◉ THE 20 PROBLEMS (SUMMARY)</div>
+        <div class="section-content">
+          <div class="convergence-grid">
+            <div class="convergence-card">
+              <h4 style="color: var(--green)">PAYROLL (5 problems)</h4>
+              <ul>
+                <li>P1: "Why is my paycheck different?" <span class="ice-bar"><span class="ice-score ice-high">ICE 54</span></span></li>
+                <li>P2: "Payroll didn't run / missed deadline" <span class="ice-bar"><span class="ice-score ice-high">ICE 45</span></span></li>
+                <li>P3: "Off-cycle / bonus payment" <span class="ice-bar"><span class="ice-score ice-low">ICE 24</span></span></li>
+                <li>P4: "Tax withholdings are wrong" <span class="ice-bar"><span class="ice-score ice-low">ICE 29</span></span></li>
+                <li>P5: "W-2 / 1099 questions" <span class="ice-bar"><span class="ice-score ice-mid">ICE 40</span></span></li>
+              </ul>
+            </div>
+            <div class="convergence-card">
+              <h4 style="color: var(--blue)">BENEFITS (4 problems)</h4>
+              <ul>
+                <li>B1: "How do I enroll/change benefits?" <span class="ice-bar"><span class="ice-score ice-mid">ICE 40</span></span></li>
+                <li>B2: "Life event — marriage/baby/divorce" <span class="ice-bar"><span class="ice-score ice-low">ICE 19</span></span></li>
+                <li>B3: "How do I use my insurance?" <span class="ice-bar"><span class="ice-score ice-low">ICE 27</span></span></li>
+                <li>B4: "COBRA / post-termination" <span class="ice-bar"><span class="ice-score ice-low">ICE 20</span></span></li>
+              </ul>
+            </div>
+            <div class="convergence-card">
+              <h4 style="color: var(--purple)">COMPLIANCE (3 problems)</h4>
+              <ul>
+                <li>C1: "Hiring in new state — what's needed?" <span class="ice-bar"><span class="ice-score ice-low">ICE 22</span></span></li>
+                <li>C2: "Workers' comp claim" <span class="ice-bar"><span class="ice-score ice-low">ICE 5</span></span></li>
+                <li>C3: "Year-end tax compliance" <span class="ice-bar"><span class="ice-score ice-low">ICE 32</span></span></li>
+              </ul>
+            </div>
+            <div class="convergence-card">
+              <h4 style="color: var(--orange)">ACCOUNT & BILLING (3 problems)</h4>
+              <ul>
+                <li>A1: "Invoice looks wrong" <span class="ice-bar"><span class="ice-score ice-high">ICE 43</span></span></li>
+                <li>A2: "Payment failed / past due" <span class="ice-bar"><span class="ice-score ice-high">ICE 50</span></span></li>
+                <li>A3: "Want to upgrade/change plan" <span class="ice-bar"><span class="ice-score ice-low">ICE 25</span></span></li>
+              </ul>
+            </div>
+            <div class="convergence-card">
+              <h4 style="color: var(--cyan)">ONBOARDING & OFFBOARDING (3)</h4>
+              <ul>
+                <li>O1: "How to add new employee?" <span class="ice-bar"><span class="ice-score ice-low">ICE 32</span></span></li>
+                <li>O2: "Need to terminate employee" <span class="ice-bar"><span class="ice-score ice-low">ICE 29</span></span></li>
+                <li>O3: "New company onboarding" <span class="ice-bar"><span class="ice-score ice-low">ICE 25</span></span></li>
+              </ul>
+            </div>
+            <div class="convergence-card">
+              <h4 style="color: var(--text-dim)">PLATFORM & ACCESS (2)</h4>
+              <ul>
+                <li>L1: "Can't log in / password / MFA" <span class="ice-bar"><span class="ice-score ice-mid">ICE 36</span></span></li>
+                <li>L2: "How do I do X in the platform?" <span class="ice-bar"><span class="ice-score ice-low">ICE 19</span></span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="decision-section">
+        <div class="section-label label-risk">▲ WHAT COULD BE WRONG</div>
+        <div class="section-content">
+          <p><strong>Benefits may outrank payroll.</strong> We assumed payroll is #1 volume based on industry norms, but Justworks' PEO Plus plan bundles health/dental/vision — benefits confusion could actually be the top call driver. Only Zendesk data resolves this.</p>
+          <p><strong>Problems we may have missed entirely.</strong> We have no visibility into Justworks-specific issues like platform migration problems, specific carrier integrations breaking, or internal process gaps. Agent shadowing would surface these.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- STEP 6: THE 12 HEALTH/STATUS QUESTIONS -->
+  <!-- ============================================================ -->
+  <div class="step" id="step6">
+    <div class="step-header" onclick="toggleStep(this)">
+      <span class="step-number">06</span>
+      <div class="step-title-block">
+        <div class="step-title">Inventory 12 Health & Status Questions</div>
+        <div class="step-summary">Questions agents need answered on every interaction — regardless of why the customer called. These define the "always on" data layer.</div>
+      </div>
+      <span class="step-toggle">▼</span>
+    </div>
+    <div class="step-body">
+      <div class="decision-section">
+        <div class="section-label label-evidence">◉ EVERY-INTERACTION QUESTIONS (5)</div>
+        <div class="section-content">
+          <div class="highlight-box green">
+            <strong>H3: "What product/plan is this company on?"</strong> <span class="ice-bar"><span class="ice-score ice-high">ICE 90</span></span> — Fundamental context setter. Determines what features are available, what the customer can ask about, and what the agent can offer. Without this, every other data point lacks context.
+          </div>
+          <div class="highlight-box green">
+            <strong>H1: "Is this company current on billing?"</strong> <span class="ice-bar"><span class="ice-score ice-high">ICE 72</span></span> — Past-due account = completely different interaction urgency and tone. Changes what the agent can/should do.
+          </div>
+          <div class="highlight-box green">
+            <strong>H2: "Any open tickets for this company?"</strong> <span class="ice-bar"><span class="ice-score ice-high">ICE 72</span></span> — Prevents the "repeat yourself" problem. If there's an open ticket about the same issue, the agent can pick up where the last one left off.
+          </div>
+          <div class="highlight-box green">
+            <strong>H5: "Has this person contacted us before, and about what?"</strong> <span class="ice-bar"><span class="ice-score ice-high">ICE 60</span></span> — The #1 brand promise enabler. The difference between "tell me your issue" and "I see you called about this last week."
+          </div>
+          <div class="highlight-box green">
+            <strong>H4: "When is their next payroll?"</strong> <span class="ice-bar"><span class="ice-score ice-high">ICE 58</span></span> — Creates urgency context. If payroll is tomorrow and there's a problem, that's a very different conversation than if it's in 2 weeks.
+          </div>
+        </div>
+      </div>
+      <div class="decision-section">
+        <div class="section-label label-evidence">◉ CONTEXTUAL QUESTIONS (7)</div>
+        <div class="section-content">
+          <p><strong>H8:</strong> "What changed recently in their account?" <span class="ice-bar"><span class="ice-score ice-high">ICE 57</span></span> — Recent changes explain most calls. Added employee, changed benefits, ran payroll.</p>
+          <p><strong>H12:</strong> "Who is the admin / decision-maker?" <span class="ice-bar"><span class="ice-score ice-high">ICE 50</span></span></p>
+          <p><strong>H11:</strong> "How long have they been a customer?" <span class="ice-bar"><span class="ice-score ice-mid">ICE 41</span></span></p>
+          <p><strong>H6:</strong> "How many employees? Growing or shrinking?" <span class="ice-bar"><span class="ice-score ice-low">ICE 34</span></span></p>
+          <p><strong>H9:</strong> "Is open enrollment approaching?" <span class="ice-bar"><span class="ice-score ice-low">ICE 34</span></span></p>
+          <p><strong>H7:</strong> "Is the company in compliance across all states?" <span class="ice-bar"><span class="ice-score ice-low">ICE 25</span></span></p>
+          <p><strong>H10:</strong> "Is this account showing churn risk signals?" <span class="ice-bar"><span class="ice-score ice-low">ICE 13</span></span> — Phase 2–3. Requires composite scoring model.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div><!-- end problems group -->
+
+  <div class="section-divider"><span class="divider-label">ICE SCORING & CONVERGENCE</span></div>
+
+  <!-- ============================================================ -->
+  <!-- STEP 7: ICE METHODOLOGY -->
+  <!-- ============================================================ -->
+  <div class="section-group active" data-group="scoring">
+  <div class="step" id="step7">
+    <div class="step-header" onclick="toggleStep(this)">
+      <span class="step-number">07</span>
+      <div class="step-title-block">
+        <div class="step-title">ICE Scoring Methodology</div>
+        <div class="step-summary">Impact × Confidence × Ease / 10. The formula is straightforward; the assumptions behind each score are where the real decisions live.</div>
+      </div>
+      <span class="step-toggle">▼</span>
+    </div>
+    <div class="step-body">
+      <div class="decision-section">
+        <div class="section-label label-decision">⬡ FRAMEWORK CHOICE</div>
+        <div class="section-content">
+          <p>We chose ICE over RICE (Reach × Impact × Confidence / Effort) because:</p>
+          <p><strong>Reach is uniform.</strong> For an internal tool used by all CSO agents, every feature has the same reach — the entire CSO team. Differentiating by reach doesn't help.</p>
+          <p><strong>Ease is more nuanced than inverse-Effort.</strong> Ease captures not just engineering effort but data availability, integration complexity, and schema readiness — which matter more for this project than raw development time.</p>
+        </div>
+      </div>
+      <div class="decision-section">
+        <div class="section-label label-assumption">◇ HOW EACH DIMENSION WAS SCORED</div>
+        <div class="section-content">
+          <p><strong>Impact (1–10):</strong> How much does better tooling for this problem improve AHT, FCR, and NPS? This is relatively stable — a payroll failure always has high impact regardless of frequency.</p>
+          <p><strong>Confidence (1–10):</strong> How sure are we this problem is real and frequent? <em>This is the most uncertain dimension.</em> A score of 10 means "every PEO company has this problem daily." A score of 5 means "we think this happens but aren't sure how often."</p>
+          <p><strong>Ease (1–10):</strong> How feasible is it to surface the needed data in the MVP timeline? Considers: data source accessibility, integration complexity, schema readiness, PII constraints.</p>
+          <div class="highlight-box orange">
+            <strong>The asymmetry that matters:</strong> Impact and Ease are structural — they don't change much with validation. Confidence is behavioral — it shifts dramatically with real data. Our framework is designed so that validation primarily updates Confidence scores, leaving the rest intact.
+          </div>
+        </div>
+      </div>
+      <div class="decision-section">
+        <div class="section-label label-decision">⬡ CUTOFF DECISIONS</div>
+        <div class="section-content">
+          <p><strong>ICE ≥ 40:</strong> MVP target — problem is high-impact, reasonably confident, and feasible.</p>
+          <p><strong>ICE 30–39:</strong> Phase 2 candidate — worth solving but either lower confidence or harder integration.</p>
+          <p><strong>ICE &lt; 30:</strong> Phase 3+ or out of scope — either too specialized, too uncertain, or too hard for MVP timeline.</p>
+          <div class="highlight-box">
+            <strong>Why 40?</strong> Not arbitrary. An ICE of 40 requires at least two dimensions scoring 7+ with the third at 5+. That means: real impact, reasonable confidence, and achievable within the timeline. It's the minimum bar for committing engineering resources.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- STEP 8: THE CONVERGENCE -->
+  <!-- ============================================================ -->
+  <div class="step" id="step8">
+    <div class="step-header" onclick="toggleStep(this)">
+      <span class="step-number">08</span>
+      <div class="step-title-block">
+        <div class="step-title">The Convergence — Both Lists Need the Same Data</div>
+        <div class="step-summary">The top problems and top health questions independently converge on the same underlying data requirements. This isn't coincidence — it's the foundation revealing itself.</div>
+      </div>
+      <span class="step-toggle">▼</span>
+    </div>
+    <div class="step-body">
+      <div class="decision-section">
+        <div class="section-label label-evidence">◉ THE DATA BOTH LISTS NEED</div>
+        <div class="section-content">
+          <div class="convergence-grid">
+            <div class="convergence-card">
+              <h4 style="color: var(--green)">TOP PROBLEMS NEED</h4>
+              <ul>
+                <li>Company profile + plan type (P1, P2, B1, A1)</li>
+                <li>Recent pay history + changes (P1, P2)</li>
+                <li>Billing/payment status (A1, A2)</li>
+                <li>Interaction history (P2, A2)</li>
+                <li>Employee benefits summary (B1)</li>
+                <li>Tax document status (P5)</li>
+              </ul>
+            </div>
+            <div class="convergence-card">
+              <h4 style="color: var(--blue)">TOP HEALTH QUESTIONS NEED</h4>
+              <ul>
+                <li>Product/plan type (H3)</li>
+                <li>Billing status (H1)</li>
+                <li>Open tickets (H2)</li>
+                <li>Prior interaction history (H5)</li>
+                <li>Next payroll date (H4)</li>
+                <li>Recent account changes (H8)</li>
+                <li>Customer tenure (H11)</li>
+                <li>Admin identity (H12)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="highlight-box green">
+            <strong>The insight:</strong> Company profile, plan type, billing status, interaction history, open tickets, and recent changes appear in BOTH lists. Building the data layer that serves these 6 data categories simultaneously solves the top problems AND answers the top health questions. That's the MVP scope — derived from the bottom up, not imposed from the top down.
+          </div>
+        </div>
+      </div>
+      <div class="decision-section">
+        <div class="section-label label-decision">⬡ MVP DATA LAYER DEFINED</div>
+        <div class="section-content">
+          <p>The MVP must surface:</p>
+          <p><strong>1. Company profile</strong> — name, plan type, employee count, states, tenure <em>(Source: Production DB + Salesforce)</em></p>
+          <p><strong>2. Billing & payment status</strong> — current/past due, last payment, next invoice <em>(Source: Billing system)</em></p>
+          <p><strong>3. Interaction history</strong> — last N interactions across all channels <em>(Source: Zendesk + Salesforce)</em></p>
+          <p><strong>4. Open tickets</strong> — active issues with priority and assignee <em>(Source: Zendesk API)</em></p>
+          <p><strong>5. Payroll context</strong> — next payroll date, last run status <em>(Source: Production DB / payroll engine)</em></p>
+          <p><strong>6. Recent changes</strong> — employee adds/removes, benefits changes, plan changes in last 7 days <em>(Source: Application event stream)</em></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div><!-- end scoring group -->
+
+  <div class="section-divider"><span class="divider-label">MVP SCOPING DECISIONS</span></div>
+
+  <!-- ============================================================ -->
+  <!-- STEP 9: USER STORIES & SOLUTION OPTIONS -->
+  <!-- ============================================================ -->
+  <div class="section-group active" data-group="scoping">
+  <div class="step" id="step9">
+    <div class="step-header" onclick="toggleStep(this)">
+      <span class="step-number">09</span>
+      <div class="step-title-block">
+        <div class="step-title">9 User Stories — 3 Foundation + 6 Problem</div>
+        <div class="step-summary">Foundation stories are non-negotiable. Problem stories are where the scoping cuts happen. Each has multiple solution options at different effort levels.</div>
+      </div>
+      <span class="step-toggle">▼</span>
+    </div>
+    <div class="step-body">
+      <div class="decision-section">
+        <div class="section-label label-decision">⬡ STORY SELECTION LOGIC</div>
+        <div class="section-content">
+          <p><strong>Foundation Stories (from health questions — always-on context):</strong></p>
+          <div class="story-grid">
+            <div class="story-card">
+              <div class="story-id">FS-1 <span class="phase-badge mvp">FULL BUILD</span></div>
+              <div class="story-name">Instant Caller Recognition</div>
+              <div class="story-scope">Search by name/email/phone/company. Disambiguate admin vs employee. Surface identity in &lt;3 seconds.</div>
+            </div>
+            <div class="story-card">
+              <div class="story-id">FS-2 <span class="phase-badge mvp">FULL BUILD</span></div>
+              <div class="story-name">Complete Interaction History</div>
+              <div class="story-scope">Unified timeline across Zendesk, Salesforce, and call logs. Solves "repeat yourself" problem.</div>
+            </div>
+            <div class="story-card">
+              <div class="story-id">FS-3 <span class="phase-badge mvp">FULL BUILD</span></div>
+              <div class="story-name">Account Status at a Glance</div>
+              <div class="story-scope">5 health indicators: billing status, next payroll, open tickets, recent changes, customer tenure.</div>
+            </div>
+          </div>
+          <p style="margin-top: 1rem"><strong>Problem Stories (from ICE ≥ 40 problems — the reason they called):</strong></p>
+          <div class="story-grid">
+            <div class="story-card">
+              <div class="story-id">PS-1 <span class="phase-badge mvp">FULL BUILD</span></div>
+              <div class="story-name">Paycheck Discrepancy Resolution</div>
+              <div class="story-scope">Period-over-period comparison with delta highlighting. Auto-annotations explaining WHY each line changed. "The feature agents can't go back from."</div>
+            </div>
+            <div class="story-card deep-link">
+              <div class="story-id">PS-2 <span class="phase-badge p2">ALERT + DEEP LINK</span></div>
+              <div class="story-name">Payroll Failure Triage</div>
+              <div class="story-scope">Alert banner when payroll failed + deep link to payroll system. Full diagnostic panel deferred — payroll engine integration is highest-risk data source.</div>
+            </div>
+            <div class="story-card">
+              <div class="story-id">PS-3 <span class="phase-badge mvp">FULL BUILD</span></div>
+              <div class="story-name">Tax Document Lookup</div>
+              <div class="story-scope">W-2/1099 availability badges. Practically free to build (~0.5 weeks). Handles massive seasonal Jan–Apr volume.</div>
+            </div>
+            <div class="story-card deep-link">
+              <div class="story-id">PS-4 <span class="phase-badge p2">QUICK-VIEW + DEEP LINK</span></div>
+              <div class="story-name">Benefits Enrollment Guidance</div>
+              <div class="story-scope">Summary card showing what's enrolled, enrollment window, carrier contacts. Deep link for complex changes. Benefits domain complexity doesn't compress into MVP.</div>
+            </div>
+            <div class="story-card deep-link">
+              <div class="story-id">PS-5 <span class="phase-badge p2">DEEP LINK + ANNOTATION</span></div>
+              <div class="story-name">Invoice Explanation</div>
+              <div class="story-scope">Invoice summary with inline delta annotation. Deep link to billing dashboard for complex cases.</div>
+            </div>
+            <div class="story-card">
+              <div class="story-id">PS-6 <span class="phase-badge mvp">FULL BUILD</span></div>
+              <div class="story-name">Payment Failure Response</div>
+              <div class="story-scope">THE NOVEL FEATURE: Risk cascade connecting failed payment → blocked payroll → affected employees. No existing tool makes this chain visible.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- STEP 10: THE FULL BUILD vs DEEP LINK DECISION -->
+  <!-- ============================================================ -->
+  <div class="step" id="step10">
+    <div class="step-header" onclick="toggleStep(this)">
+      <span class="step-number">10</span>
+      <div class="step-title-block">
+        <div class="step-title">Full Build vs. Deep Link — The Key Scoping Cut</div>
+        <div class="step-summary">Not every problem needs a full in-dashboard solution. For some, alert + deep link covers 80% of the use case at 20% of the engineering effort.</div>
+      </div>
+      <span class="step-toggle">▼</span>
+    </div>
+    <div class="step-body">
+      <div class="decision-section">
+        <div class="section-label label-decision">⬡ THE FRAMEWORK</div>
+        <div class="section-content">
+          <p>For each problem story, we asked three questions:</p>
+          <p><strong>1. Does the agent need to see detailed data inline?</strong> If yes → full build. If they just need to know something is happening and jump to the right place → deep link.</p>
+          <p><strong>2. How risky is the data integration?</strong> If the data source is unvalidated or complex → deep link for MVP, full build for Phase 2 after integration is proven.</p>
+          <p><strong>3. Does this solve a novel problem?</strong> If no existing tool shows this data at all → full build (this is where Customer Central adds unique value). If the data already exists in another system → deep link (reduce context-switching, don't rebuild).</p>
+        </div>
+      </div>
+      <div class="decision-section">
+        <div class="section-label label-decision">⬡ HOW EACH STORY WAS CLASSIFIED</div>
+        <div class="section-content">
+          <p><strong>PS-1 (Paycheck Discrepancy) → FULL BUILD</strong> because period-over-period comparison with auto-annotations doesn't exist anywhere today. This is the feature that makes agents say "I can't go back to the old way."</p>
+          <p><strong>PS-2 (Payroll Failure) → ALERT + DEEP LINK</strong> because payroll engine integration is unvalidated. We don't know the data access patterns, latency, or schema. Week 1 spike needed before committing to full build.</p>
+          <p><strong>PS-3 (Tax Docs) → FULL BUILD</strong> because it's practically free (~0.5 weeks) and handles massive seasonal volume. ROI is extraordinary.</p>
+          <p><strong>PS-4 (Benefits) → QUICK-VIEW + DEEP LINK</strong> because benefits domain is enormous (multiple carriers, plan types, state rules). Full in-dashboard benefits management is a multi-quarter project. Summary card + deep link covers the 80% case.</p>
+          <p><strong>PS-5 (Invoice) → DEEP LINK + ANNOTATION</strong> because invoice detail is already visible in the billing system. The value-add is surfacing the delta (what changed since last invoice), not rebuilding invoice views.</p>
+          <p><strong>PS-6 (Payment Failure) → FULL BUILD</strong> because the risk cascade (failed payment → blocked payroll → affected employees) is the novel insight no existing tool surfaces. This is Customer Central's unique value proposition.</p>
+        </div>
+      </div>
+      <div class="decision-section">
+        <div class="section-label label-assumption">◇ ASSUMPTIONS BEHIND THESE CUTS</div>
+        <div class="section-content">
+          <p><strong>80/20 assumption:</strong> We assume alert + deep link covers 80% of the use case for PS-2, PS-4, and PS-5. If agents need to diagnose payroll failures in-depth without switching systems, the deep link isn't enough. This should be validated during alpha.</p>
+          <p><strong>Integration risk assumption:</strong> We assume the payroll engine is the hardest integration (hence PS-2 as deep link). If Caroline confirms the data is readily accessible via internal API, PS-2 could be promoted to full build.</p>
+          <p><strong>Novel value assumption:</strong> We assume the risk cascade (PS-6) is genuinely novel. If agents have an existing internal tool that shows payment → payroll impact, we're solving a solved problem.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- STEP 11: WHAT WE EXPLICITLY CHOSE NOT TO BUILD -->
+  <!-- ============================================================ -->
+  <div class="step" id="step11">
+    <div class="step-header" onclick="toggleStep(this)">
+      <span class="step-number">11</span>
+      <div class="step-title-block">
+        <div class="step-title">What We Chose NOT to Build — And Why</div>
+        <div class="step-summary">Every item here has a defensible reason for deferral. The cuts are as important as the inclusions for demonstrating MVP discipline.</div>
+      </div>
+      <span class="step-toggle">▼</span>
+    </div>
+    <div class="step-body">
+      <div class="decision-section">
+        <div class="section-label label-decision">⬡ DEFERRED TO PHASE 2</div>
+        <div class="section-content">
+          <p><strong>Composite Health Scoring (H10)</strong> — Requires weighted algorithm across engagement, payment, adoption, and satisfaction signals. Can't score health until the data foundation is proven accurate. Phase 1 provides the raw signals; Phase 2 composes them.</p>
+          <p><strong>Benefits Life Event Flows (B2)</strong> — Marriage/baby/divorce triggers cross multiple carriers, state rules, and enrollment systems. Most complex call type but lowest frequency × highest integration cost. Deep domain expertise required to build correctly.</p>
+          <p><strong>Compliance Contextual Guidance (C1)</strong> — State-specific rules surfaced in context. Requires a compliance knowledge engine that doesn't exist yet. The data source is a knowledge base, not a database.</p>
+          <p><strong>In-place Ticket Creation/Updates</strong> — Agents should eventually create and update Zendesk tickets from within Customer Central. Deferred because the read path (viewing tickets) must be proven before the write path (creating tickets). Write-path errors are more dangerous.</p>
+        </div>
+      </div>
+      <div class="decision-section">
+        <div class="section-label label-decision">⬡ DEFERRED TO PHASE 3+</div>
+        <div class="section-content">
+          <p><strong>AI-Generated Interaction Summaries</strong> — NLP summarization of past conversations. High value, but requires ML pipeline, training data, and quality validation. Phase 1 builds the structured interaction records that make future AI possible.</p>
+          <p><strong>Pre-emptive Problem Identification (Job 5)</strong> — Predicting issues before they happen. Requires pattern detection across historical data that Phase 1 is just starting to collect in structured form.</p>
+          <p><strong>Upsell/Cross-sell Recommendations (Job 6)</strong> — Contextual product suggestions. Requires product adoption analytics, company growth signals, and conversion models that don't exist yet.</p>
+          <p><strong>Workers' Comp Claims (C2)</strong> — Separate carrier system, always requires specialist escalation, very low volume. Not a Customer Central problem.</p>
+        </div>
+      </div>
+      <div class="decision-section">
+        <div class="section-label label-assumption">◇ THE TIEBREAKER PRINCIPLE</div>
+        <div class="section-content">
+          <div class="highlight-box">
+            <strong>When two approaches are equal on risk, effort, and near-term value — pick the one that also builds toward the AI-native, platform-grade future.</strong>
+          </div>
+          <p>This is why FS-2 (Interaction History) uses a structured data schema instead of just embedding Zendesk — same MVP value, but structured records feed the AI summarization in Phase 3. Same MVP cost, wildly different future leverage.</p>
+          <p>This is why we proposed an API-first data service instead of a monolithic dashboard — same MVP UI, but other teams (Sales, RevOps, Product) can consume the same customer data layer. Same build effort, exponentially more organizational value.</p>
+          <div class="highlight-box purple">
+            <strong>The MVP design principle:</strong> Every feature we build must serve the agent today AND feed the intelligence layer that reduces the need for that feature tomorrow. That's not scope creep — it's architectural intentionality.
+          </div>
+        </div>
+      </div>
+      <div class="decision-section">
+        <div class="section-label label-risk">▲ VALIDATION PLAN</div>
+        <div class="section-content">
+          <div class="validation-row">
+            <span class="val-label">Problem frequency ranking (P1 > P2 > B1 > A1 > A2 > P5)</span>
+            <span class="val-status val-inferred">INFERRED</span>
+          </div>
+          <div class="validation-row">
+            <span class="val-label">Multi-system toggling as primary pain point</span>
+            <span class="val-status val-inferred">INFERRED</span>
+          </div>
+          <div class="validation-row">
+            <span class="val-label">Admin vs. employee call ratio</span>
+            <span class="val-status val-unknown">UNKNOWN</span>
+          </div>
+          <div class="validation-row">
+            <span class="val-label">Payroll engine data accessibility</span>
+            <span class="val-status val-unknown">UNKNOWN</span>
+          </div>
+          <div class="validation-row">
+            <span class="val-label">Salesforce schema and custom objects</span>
+            <span class="val-status val-unknown">UNKNOWN</span>
+          </div>
+          <div class="validation-row">
+            <span class="val-label">Zendesk-to-Salesforce shared key exists</span>
+            <span class="val-status val-unknown">UNKNOWN</span>
+          </div>
+          <div class="validation-row">
+            <span class="val-label">Justworks uses Salesforce (confirmed)</span>
+            <span class="val-status val-confirmed">CONFIRMED</span>
+          </div>
+          <div class="validation-row">
+            <span class="val-label">Justworks uses Zendesk (confirmed)</span>
+            <span class="val-status val-confirmed">CONFIRMED</span>
+          </div>
+          <div class="validation-row">
+            <span class="val-label">Justworks uses React frontend (confirmed)</span>
+            <span class="val-status val-confirmed">CONFIRMED</span>
+          </div>
+          <div class="validation-row">
+            <span class="val-label">CSO provides 24/7 phone/email/chat support</span>
+            <span class="val-status val-confirmed">CONFIRMED</span>
+          </div>
+          <div class="validation-row">
+            <span class="val-label">NPS of +60 (confirmed via Stevie Awards)</span>
+            <span class="val-status val-confirmed">CONFIRMED</span>
+          </div>
+          <div class="validation-row">
+            <span class="val-label">Deep-link approach covers 80% of use case</span>
+            <span class="val-status val-inferred">INFERRED</span>
+          </div>
+          <p style="margin-top: 0.75rem"><strong>Day 1 validation plan:</strong> Shadow CSO agents 2–3 days. Analyze 500 recent Zendesk tickets. Interview 3–5 agents on their workflow. Spike on payroll engine data access. Confirm Salesforce schema with Caroline.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div><!-- end scoping group -->
+
+  <div class="section-divider"><span class="divider-label">SOLUTION DESIGN & UX ASSUMPTIONS</span></div>
+
+  <!-- ============================================================ -->
+  <!-- STEP 12: HOW WE DESIGNED WITHOUT USER INPUT -->
+  <!-- ============================================================ -->
+  <div class="section-group active" data-group="solution">
+  <div class="step" id="step12">
+    <div class="step-header" onclick="toggleStep(this)">
+      <span class="step-number">12</span>
+      <div class="step-title-block">
+        <div class="step-title">Designing Without Users — The Fundamental Constraint</div>
+        <div class="step-summary">We had zero direct input from CSO agents. Every layout decision, information hierarchy choice, and interaction pattern is an assumption waiting to be validated.</div>
+      </div>
+      <span class="step-toggle">▼</span>
+    </div>
+    <div class="step-body">
+      <div class="decision-section">
+        <div class="section-label label-risk">▲ THE CORE CONSTRAINT</div>
+        <div class="section-content">
+          <p><strong>We never spoke to a single CSO agent.</strong> No interviews, no shadowing, no survey data, no recorded calls, no Zendesk ticket analysis, no session recordings (even though Justworks uses Hotjar). Every UX decision in the prototype is inferred from second-order sources:</p>
+          <div class="highlight-box red">
+            <strong>What we had:</strong> The case study prompt, Justworks' public product information, their confirmed tech stack, PEO industry patterns, Stevie Award descriptions, general support operations principles, and domain reasoning about payroll/benefits/compliance workflows.
+          </div>
+          <div class="highlight-box red">
+            <strong>What we didn't have:</strong> Agent workflow observations, call recordings, screen recordings, Zendesk ticket categorization data, AHT breakdowns by issue type, agent interviews about pain points, heatmaps of current tool usage, or feedback on prior internal tools.
+          </div>
+          <p>This isn't a flaw in our approach — it's the nature of the exercise. But it means <strong>every design choice below should be framed as a hypothesis, not a decision.</strong> The presentation should make this explicit: "Here's what we believe the solution should look like and why. Day 1 on the job, I'd validate every one of these assumptions before writing a single requirement."</p>
+        </div>
+      </div>
+      <div class="decision-section">
+        <div class="section-label label-assumption">◇ WHAT WOULD CHANGE WITH REAL INPUT</div>
+        <div class="section-content">
+          <p><strong>Information hierarchy could be wrong.</strong> We assumed the cognitive sequence is WHO → CONTEXT → HISTORY → PROBLEM. But if agents typically know exactly who's calling (maybe CTI already shows caller ID), then identity isn't the first need — it's the problem diagnosis panel. We'd only know this by watching agents work.</p>
+          <p><strong>Feature importance may shift.</strong> We ranked paycheck discrepancy (PS-1) as the highest-value problem feature. If agents tell us "benefits confusion calls take 3x longer and we have no tools for them," then PS-4 (Benefits) jumps from deep-link to full-build and PS-1 might be the one that gets scoped down.</p>
+          <p><strong>Interaction patterns are guessed.</strong> We designed expandable panels, tab navigation, and click-to-drill-down interactions. But agents on live calls may need everything visible at once — no clicking, no expanding, no hunting. They might need a denser, flatter layout that sacrifices elegance for instant scannability. Or they might prefer fewer, larger data elements because they're scanning while listening to a customer talk. We don't know.</p>
+          <p><strong>The "deep link" assumption may not hold.</strong> We assumed agents would accept being linked out to Zendesk or the billing system for some tasks. But if the whole pain is context-switching between systems, any deep link that opens another tab might feel like the same broken experience — just with a nicer starting point.</p>
+        </div>
+      </div>
+      <div class="decision-section">
+        <div class="section-label label-decision">⬡ HOW WE COMPENSATED</div>
+        <div class="section-content">
+          <p>Without user research, we leaned on three proxy sources:</p>
+          <p><strong>1. The encounter narrative.</strong> We constructed a moment-by-moment timeline of what a CSO call looks like today (T+0s through T+120s) vs. what it should look like with Customer Central (T+0s through T+30s). This forced us to think sequentially about what information the agent needs and when — even without observing real agents.</p>
+          <p><strong>2. Support operations first principles.</strong> Time-to-context is the #1 driver of AHT in support. Information that reduces "let me look that up" moments has the highest ROI. Progressive disclosure (summary → detail) matches how humans process information under time pressure. These are well-established patterns, not Justworks-specific.</p>
+          <p><strong>3. The panel as proxy users.</strong> Annelise (Staff Designer) and Evan (Sr. Technical PM) work with CSO daily. The workshop is designed so they can correct our assumptions in real-time. The prototype is explicitly framed as "a starting point for discussion" — not a final design.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- STEP 13: LAYOUT & INFORMATION ARCHITECTURE ASSUMPTIONS -->
+  <!-- ============================================================ -->
+  <div class="step" id="step13">
+    <div class="step-header" onclick="toggleStep(this)">
+      <span class="step-number">13</span>
+      <div class="step-title-block">
+        <div class="step-title">Layout & Information Architecture — Every Choice Is a Hypothesis</div>
+        <div class="step-summary">Single-pane encounter view, cognitive sequence ordering, status strip, tabbed problem panels — all assumed, none validated.</div>
+      </div>
+      <span class="step-toggle">▼</span>
+    </div>
+    <div class="step-body">
+      <div class="decision-section">
+        <div class="section-label label-assumption">◇ ASSUMPTION: SINGLE-PANE ENCOUNTER VIEW</div>
+        <div class="section-content">
+          <p>We designed one screen that shows everything for one customer encounter. No navigation between pages, no separate "company view" and "person view."</p>
+          <div class="highlight-box">
+            <strong>Why we assumed this:</strong> The prompt says "a single place for CSO to service our customers." The core pain is context-switching between systems. A single pane directly addresses that. Support tools like Zendesk and Salesforce Service Cloud use this pattern for the same reason.
+          </div>
+          <div class="highlight-box red">
+            <strong>What could be wrong:</strong> A single pane may be too dense for complex accounts. A company with 200 employees, 5 open tickets, 15 recent interactions, and multiple product lines might overwhelm a single screen. Agents might actually prefer a navigation model — quick overview first, then drill into specific areas. We'd only know by testing with real data density.
+          </div>
+        </div>
+      </div>
+      <div class="decision-section">
+        <div class="section-label label-assumption">◇ ASSUMPTION: COGNITIVE SEQUENCE ORDERING</div>
+        <div class="section-content">
+          <p>We arranged the screen top-to-bottom matching how we believe the agent's brain processes a call:</p>
+          <p><strong>Top: WHO</strong> — Caller identity, role, company (FS-1) → 3 seconds to orient<br>
+          <strong>Upper-mid: CONTEXT</strong> — Status strip with billing, payroll, tickets, changes (FS-3) → 10 seconds to contextualize<br>
+          <strong>Mid: HISTORY</strong> — Interaction timeline, open tickets (FS-2) → 15 seconds to understand continuity<br>
+          <strong>Lower: PROBLEM-SPECIFIC</strong> — Pay stub viewer, payment health, benefits summary (PS-1 through PS-6) → as needed during the call</p>
+          <div class="highlight-box orange">
+            <strong>This sequence assumes inbound calls.</strong> For proactive outbound (Phase 2), the sequence might be reversed — the agent starts with "why am I calling this customer?" (health signals, alerts) before "who are they?" If CSO does significant outbound today, this layout needs a different mode.
+          </div>
+          <div class="highlight-box red">
+            <strong>Untested with agents:</strong> Maybe agents want billing status at the very top because past-due accounts change everything about the conversation. Maybe they want open tickets above the caller card because ongoing issues are more important than who specifically is calling. The ordering is logical but not validated.
+          </div>
+        </div>
+      </div>
+      <div class="decision-section">
+        <div class="section-label label-assumption">◇ ASSUMPTION: TABBED PROBLEM PANELS</div>
+        <div class="section-content">
+          <p>Problem-specific data (pay stubs, payment health, benefits, invoices) is organized in tabs at the bottom of the screen. The agent clicks the relevant tab based on why the customer called.</p>
+          <div class="highlight-box">
+            <strong>Why tabs:</strong> Not every call needs every panel. Tabs keep the default view clean and let the agent pull up context-specific data as the conversation evolves. It's a progressive disclosure pattern — summary first, detail on demand.
+          </div>
+          <div class="highlight-box red">
+            <strong>Risk: Tabs require the agent to predict which panel they need.</strong> On a call where the customer starts with a payroll question and pivots to benefits, the agent has to switch tabs mid-conversation. A sidebar or persistent multi-panel layout might be better — but at the cost of density and cognitive load. This is a classic support tool design tension that only usability testing resolves.
+          </div>
+        </div>
+      </div>
+      <div class="decision-section">
+        <div class="section-label label-assumption">◇ ASSUMPTION: STATUS STRIP AS PERSISTENT HEADER</div>
+        <div class="section-content">
+          <p>Five health indicators always visible: billing status (RAG), next payroll countdown, open ticket count, recent changes count, customer tenure.</p>
+          <div class="highlight-box">
+            <strong>Why these five:</strong> They map directly to the top-scoring health questions (H1, H4, H2, H8, H11). They answer the questions agents need on every single call regardless of topic. They're the "peripheral vision" of the encounter — always there, always informing.
+          </div>
+          <div class="highlight-box orange">
+            <strong>Assumption: 5 is the right number.</strong> More than 5 and the strip becomes noise. Fewer than 5 and we're missing context. But agents might want different signals — maybe they care more about "when did this customer last log in?" or "how many employees?" than "customer tenure." The specific 5 items are educated guesses.
+          </div>
+        </div>
+      </div>
+      <div class="decision-section">
+        <div class="section-label label-assumption">◇ ASSUMPTION: DARK THEME / DENSE UI</div>
+        <div class="section-content">
+          <p>The prototype uses a dark color scheme with compact, dense information layout — more like a Bloomberg terminal than a consumer app.</p>
+          <div class="highlight-box">
+            <strong>Why:</strong> CSO agents use this tool 8+ hours per day. Dark themes reduce eye strain for extended use. Dense layouts minimize scrolling and keep more data visible simultaneously — critical when the agent is on a live call and can't afford to scroll hunting for information. Internal tools generally favor density over whitespace.
+          </div>
+          <div class="highlight-box red">
+            <strong>Completely untested.</strong> We don't know if agents prefer dark or light mode. We don't know their monitor sizes, whether they use dual screens, or if the tool will be used on laptops during remote shifts. We don't know if the team has brand guidelines for internal tools. A real design process would start with an agent environment audit — what hardware, what screen sizes, what ambient lighting, what other tools are open simultaneously.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- STEP 14: SPECIFIC FEATURE UX ASSUMPTIONS -->
+  <!-- ============================================================ -->
+  <div class="step" id="step14">
+    <div class="step-header" onclick="toggleStep(this)">
+      <span class="step-number">14</span>
+      <div class="step-title-block">
+        <div class="step-title">Feature-Level UX Assumptions — How Each Story Should Work</div>
+        <div class="step-summary">Every feature's interaction model, data presentation, and edge case handling is assumed from first principles — not from watching agents use it.</div>
+      </div>
+      <span class="step-toggle">▼</span>
+    </div>
+    <div class="step-body">
+      <div class="decision-section">
+        <div class="section-label label-assumption">◇ FS-1: SEARCH → DASHBOARD LOAD</div>
+        <div class="section-content">
+          <p><strong>Assumed interaction:</strong> Agent types into search bar (name, email, phone, or company name). Results appear. Click a result → dashboard populates with that customer's data.</p>
+          <div class="highlight-box orange">
+            <strong>Assumption: Manual search is the entry point.</strong> We designed search-first because we don't know if Justworks has CTI (Computer Telephony Integration) that could auto-populate the dashboard from caller ID. If they do, the search bar becomes a fallback, not the primary interaction. If they don't, search is critical — but then we also need to handle: what if the phone number matches multiple contacts? What if the caller isn't in the system at all? What if an employee calls from a personal phone that's not on file?
+          </div>
+          <div class="highlight-box red">
+            <strong>Edge cases we assumed behavior for:</strong> Disambiguation (multiple results for "Sarah") — we show a result list. No match found — we show an empty state with manual entry option. Admin vs. employee — we differentiate in search results with role badges. All of these are guesses about what agents actually encounter and how they'd want to handle ambiguity.
+          </div>
+        </div>
+      </div>
+      <div class="decision-section">
+        <div class="section-label label-assumption">◇ FS-2: INTERACTION TIMELINE</div>
+        <div class="section-content">
+          <p><strong>Assumed interaction:</strong> Unified chronological timeline showing last 10 interactions across phone, email, and chat. Each entry shows timestamp, channel icon, agent name, topic summary, and resolution status.</p>
+          <div class="highlight-box orange">
+            <strong>Assumption: Chronological is the right sort order.</strong> Agents might prefer sorting by channel, by issue/topic, or by resolution status. A customer with 50 interactions over 2 years — is the timeline useful, or do they need filtering and search within the history? We assumed "last 10" is enough for the MVP view. That might be 2 days of history for a high-touch account or 6 months for a quiet one.
+          </div>
+          <div class="highlight-box red">
+            <strong>Assumption: Summary text is available and useful.</strong> We assumed each interaction has a useful topic summary. In reality, Zendesk ticket descriptions and Salesforce case subjects are often inconsistent — some agents write detailed notes, others don't. The timeline's value depends entirely on data quality we haven't measured.
+          </div>
+        </div>
+      </div>
+      <div class="decision-section">
+        <div class="section-label label-assumption">◇ PS-1: PAY STUB COMPARISON</div>
+        <div class="section-content">
+          <p><strong>Assumed interaction:</strong> Side-by-side or inline comparison of current vs. previous pay period, with delta highlighting showing exactly what changed and auto-annotations explaining WHY (e.g., "Federal withholding increased: W-4 updated Feb 1").</p>
+          <div class="highlight-box green">
+            <strong>Highest confidence UX assumption.</strong> "Why is my paycheck different?" is the #1 support question in every payroll company. The answer is always "compare this period to last period, find the delta, explain the cause." The UX directly maps to the agent's cognitive process. This is the one feature we're most confident agents would immediately adopt.
+          </div>
+          <div class="highlight-box orange">
+            <strong>But:</strong> We assumed agents need to see the full pay stub breakdown (gross, taxes, deductions, net). Some agents may only need the delta — "your net pay decreased by $47.82 because your health insurance premium went up." A simpler delta-only view might be faster. We also assumed the annotation engine can auto-detect causes. If it can't (because changes come from different source systems), the annotations would require manual data correlation that may not be feasible in MVP.
+          </div>
+        </div>
+      </div>
+      <div class="decision-section">
+        <div class="section-label label-assumption">◇ PS-6: PAYMENT FAILURE CASCADE</div>
+        <div class="section-content">
+          <p><strong>Assumed interaction:</strong> When a payment fails, show the downstream impact chain: failed payment → payroll at risk (date) → N employees affected. Visual cascade that makes the urgency immediately clear.</p>
+          <div class="highlight-box">
+            <strong>Why we believe this is the novel feature:</strong> No existing tool connects payment failure to employee impact in a single view. The agent currently has to check billing status, separately check payroll schedule, and mentally connect the dots. The cascade makes the invisible visible.
+          </div>
+          <div class="highlight-box red">
+            <strong>Major UX assumption: Agents need to see employee-level impact.</strong> We show "34 employees affected." But the agent might not need that granularity — they might just need "payroll is at risk, escalate immediately." Or they might need MORE granularity — which specific employees have direct deposit vs. paper checks, which are hourly vs. salary. We assumed a middle ground (count + list) without knowing what agents actually do when a payment fails.
+          </div>
+          <div class="highlight-box red">
+            <strong>Data assumption:</strong> We assume the billing system, payroll engine, and employee roster can be queried together to build this cascade. This requires cross-system joins that may not exist today. The feasibility depends entirely on the data architecture — which is a question for Caroline, not a design decision.
+          </div>
+        </div>
+      </div>
+      <div class="decision-section">
+        <div class="section-label label-assumption">◇ DEEP-LINK FEATURES (PS-2, PS-4, PS-5)</div>
+        <div class="section-content">
+          <p><strong>Assumed interaction:</strong> Alert banner or summary card within Customer Central, with a "View Details" link that opens the source system (payroll dashboard, benefits admin, billing portal) in a new tab or inline frame.</p>
+          <div class="highlight-box red">
+            <strong>Assumption: Opening another system is acceptable.</strong> This is the weakest UX assumption. If the whole value proposition is "stop switching between systems," then a deep link that opens another system is a half-measure. Agents may perceive it as "I still have to go somewhere else." The counterargument: it's one click from the right context, not manual navigation through multiple menus. But we honestly don't know if agents will experience it as progress or as the same old problem with a nicer starting screen.
+          </div>
+          <div class="highlight-box orange">
+            <strong>Alternative we considered:</strong> Inline iframes that embed the source system within Customer Central. This avoids tab-switching but introduces technical complexity (authentication, responsive embedding, cross-origin restrictions) and UX issues (nested scrolling, conflicting navigation). We deferred this to Phase 2 after validating whether deep links are good enough.
+          </div>
+        </div>
+      </div>
+      <div class="decision-section">
+        <div class="section-label label-assumption">◇ OVERALL INTERACTION MODEL</div>
+        <div class="section-content">
+          <p><strong>What we assumed agents want:</strong></p>
+          <p>— Instant load (&lt;3 seconds from search to full dashboard)<br>
+          — Minimal clicking (most critical data visible without interaction)<br>
+          — Keyboard shortcuts for power users (Cmd+K search, tab switching)<br>
+          — Auto-refresh during active sessions (data stays current without manual reload)<br>
+          — Toast notifications for real-time events (new ticket, payment status change)</p>
+          <div class="highlight-box red">
+            <strong>None of these were validated.</strong> Agents might not use keyboard shortcuts. They might prefer manual refresh so the screen doesn't change while they're reading it mid-call. Toast notifications might be distracting during a conversation. Load time targets (&lt;3s) are aspirational without knowing the actual data aggregation latency across 4+ source systems. Every performance target is a hypothesis.
+          </div>
+          <p style="margin-top: 1rem"><strong>What we assumed agents DON'T want:</strong></p>
+          <p>— Customizable dashboards (adds complexity, delays adoption — standardize first, customize later)<br>
+          — Drag-and-drop widget layouts (overkill for MVP, creates divergent experiences across agents)<br>
+          — AI-generated summaries or suggestions (Phase 3, requires trust in data layer first)<br>
+          — Write-back capabilities (editing records, creating tickets — read-only in MVP to avoid data integrity risks)</p>
+          <div class="highlight-box orange">
+            <strong>The read-only constraint is deliberate.</strong> A dashboard that shows wrong data is a mild problem. A dashboard that lets agents write wrong data back into source systems is a severe problem. MVP is read-only. Write capabilities come after data accuracy is proven. But agents may see a read-only tool as "yet another screen I have to look at AND still go to the other system to actually do anything." That friction could tank adoption.
+          </div>
+        </div>
+      </div>
+      <div class="decision-section">
+        <div class="section-label label-decision">⬡ THE PRESENTATION FRAMING</div>
+        <div class="section-content">
+          <div class="highlight-box green">
+            <strong>How to present these UX decisions in the room:</strong> "This prototype represents our best hypothesis for what the agent experience should be, built from the prompt requirements, support operations principles, and domain reasoning. It is explicitly not a final design — it's a conversation starter. On Day 1, I would shadow CSO agents, run card-sorting exercises to validate the information hierarchy, and test this prototype with 5 agents before committing to any layout decisions. Annelise, I'd love your reaction to the information architecture and where you think we're wrong."
+          </div>
+          <p>This framing accomplishes three things: it demonstrates UX thinking without pretending to have answers, it creates space for Annelise to contribute (which scores on the "design collaboration" rubric), and it shows Renee you have the judgment to not over-commit to assumptions.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div><!-- end solution group -->
+
+  <div class="section-divider"><span class="divider-label">THE COMPLETE CHAIN</span></div>
+
+  <!-- Summary Chain -->
+  <div class="step open" id="summary">
+    <div class="step-header" onclick="toggleStep(this)">
+      <span class="step-number">∑</span>
+      <div class="step-title-block">
+        <div class="step-title">The Full Decision Chain — One View</div>
+        <div class="step-summary">From prompt analysis through solution design in 14 connected steps. Each step earned the right to take the next.</div>
+      </div>
+      <span class="step-toggle">▼</span>
+    </div>
+    <div class="step-body">
+      <div class="decision-section">
+        <div class="section-content">
+          <p><strong>Step 1:</strong> Read the prompt → extracted 6 jobs from actual language (not invented)</p>
+          <p><strong>Step 2:</strong> Defined users → the "person" is 3 caller types with different data needs</p>
+          <p><strong>Step 3:</strong> Established dependency stack → Foundation → Operations → Intelligence</p>
+          <p><strong>Step 4:</strong> Pivotal reframe → "Don't build foundation in abstract — build it in service of validated problems"</p>
+          <p><strong>Step 5:</strong> Inventoried 20 CSO problems across 6 domains (inferred, not validated)</p>
+          <p><strong>Step 6:</strong> Inventoried 12 health/status questions agents need answered every call</p>
+          <p><strong>Step 7:</strong> Applied ICE scoring → Impact (stable) × Confidence (needs validation) × Ease (feasibility)</p>
+          <p><strong>Step 8:</strong> Discovered convergence → top problems and top health questions need the same 6 data categories</p>
+          <p><strong>Step 9:</strong> Wrote 9 user stories → 3 foundation (non-negotiable) + 6 problem (scoping cuts here)</p>
+          <p><strong>Step 10:</strong> Applied Full Build vs. Deep Link framework → 4 full builds + 3 deep links + 2 low-cost additions</p>
+          <p><strong>Step 11:</strong> Documented what we chose NOT to build → with defensible rationale for every deferral</p>
+          <p><strong>Step 12:</strong> Acknowledged the fundamental constraint → zero direct user input, every UX decision is a hypothesis</p>
+          <p><strong>Step 13:</strong> Made layout and IA choices → single-pane view, cognitive sequence ordering, tabbed panels, status strip — all assumed from first principles, not user research</p>
+          <p><strong>Step 14:</strong> Designed feature-level interactions → search entry, timeline sort, pay stub comparison, cascade visualization, deep-link model — each with documented risks and alternatives</p>
+          <div class="highlight-box green">
+            <strong>The meta-principle:</strong> This isn't a dashboard proposal. It's a defensible argument for why <em>this</em> dashboard, with <em>these</em> features, in <em>this</em> order, solving <em>these</em> problems — presented as hypotheses to validate, not decisions to defend. The dashboard is the consequence. The thinking is the product.
+          </div>
+          <div class="highlight-box orange">
+            <strong>The honest framing:</strong> Every UX decision in this prototype was made without talking to a single agent who would use it. That's not a weakness to hide — it's a strength to name. It shows the discipline to distinguish between "what we know" and "what we assume," and the humility to design a validation plan alongside the design itself.
+          </div>
+          <div class="highlight-box">
+            <strong>Interview framing:</strong> "Here are the problems we think you deal with most. Here are the questions we think you need answered on every call. Here's the data both lists need. Here's where we're confident and where we need your validation. Where are we wrong? What are we missing?"
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  Customer Central Decision Chain · Darrien Watson · Justworks GPM Case Study · February 2026
+</div>
+
+<script>
+function toggleStep(header) {
+  const step = header.closest('.step');
+  step.classList.toggle('open');
+}
+
+function expandAll() {
+  document.querySelectorAll('.step').forEach(s => s.classList.add('open'));
+}
+
+function collapseAll() {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('open'));
+}
+
+// Navigation
+document.querySelectorAll('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    // Update active state
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    
+    const section = btn.dataset.section;
+    
+    if (section === 'all') {
+      document.querySelectorAll('.section-group').forEach(g => g.classList.add('active'));
+      document.querySelectorAll('.section-divider').forEach(d => d.style.display = 'block');
+      document.getElementById('summary').style.display = 'block';
+    } else {
+      document.querySelectorAll('.section-group').forEach(g => g.classList.remove('active'));
+      document.querySelectorAll('.section-divider').forEach(d => d.style.display = 'none');
+      
+      // Show matching groups
+      document.querySelectorAll(`[data-group="${section}"]`).forEach(g => g.classList.add('active'));
+      
+      // Show summary only for 'all'
+      document.getElementById('summary').style.display = section === 'all' ? 'block' : 'none';
+    }
+  });
+});
+
+// Start with summary expanded, others collapsed
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('summary').style.display = 'block';
+});
+</script>
+
+</body>
+</html>

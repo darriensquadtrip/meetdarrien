@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Central — Feature Showcase</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#06060a;--bg1:#0c0c12;--bg2:#12121a;--bg3:#1a1a24;--bg4:#22222e;
+  --b0:rgba(255,255,255,.04);--b1:rgba(255,255,255,.07);--b2:rgba(255,255,255,.12);
+  --t1:#eeeef2;--t2:#a8a8b8;--t3:#6a6a7e;--t4:#3e3e52;
+  --g:#6ee7b7;--gb:rgba(110,231,183,.08);--gd:rgba(110,231,183,.2);--gs:rgba(110,231,183,.4);
+  --bl:#818cf8;--blb:rgba(129,140,248,.08);--bld:rgba(129,140,248,.2);
+  --a:#fbbf24;--ab:rgba(251,191,36,.08);--ad:rgba(251,191,36,.2);
+  --r:#f87171;--rb:rgba(248,113,113,.08);--rd:rgba(248,113,113,.2);
+  --p:#f472b6;--pb:rgba(244,114,182,.08);
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);line-height:1.6;-webkit-font-smoothing:antialiased}
+
+/* HEADER */
+.hero{padding:80px 40px 60px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:800px;height:600px;background:radial-gradient(ellipse,rgba(110,231,183,.06) 0%,transparent 70%);pointer-events:none}
+.hero-logo{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:3px;color:var(--g);margin-bottom:14px;display:flex;align-items:center;justify-content:center;gap:8px}
+.hero-logo span{width:7px;height:7px;border-radius:50%;background:var(--g);box-shadow:0 0 10px var(--g)}
+.hero h1{font-size:36px;font-weight:700;letter-spacing:-.5px;margin-bottom:10px}
+.hero h1 em{font-style:normal;color:var(--g)}
+.hero p{font-size:15px;color:var(--t2);max-width:540px;margin:0 auto 24px}
+.hero-meta{display:flex;justify-content:center;gap:20px;font-family:'DM Mono',monospace;font-size:10px;color:var(--t4);letter-spacing:.5px}
+
+/* TOC */
+.toc{max-width:700px;margin:0 auto 60px;padding:0 40px}
+.toc-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--t4);text-transform:uppercase;margin-bottom:10px}
+.toc-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.toc-i{padding:8px 12px;border-radius:6px;display:flex;align-items:center;gap:8px;cursor:pointer;transition:all .15s;text-decoration:none;color:var(--t2);font-size:12px}
+.toc-i:hover{background:var(--b0);color:var(--t1)}
+.toc-tag{font-family:'DM Mono',monospace;font-size:9px;padding:1px 6px;border-radius:3px;flex-shrink:0}
+
+/* SECTIONS */
+.section{max-width:780px;margin:0 auto;padding:0 40px 80px}
+.section-divider{width:40px;height:2px;background:var(--b2);margin:0 auto 60px;border-radius:1px}
+.section-tag{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--g);text-transform:uppercase;margin-bottom:6px}
+.section h2{font-size:22px;font-weight:600;margin-bottom:4px;letter-spacing:-.3px}
+.section h2 .story-id{color:var(--t4);font-weight:400;font-size:16px;margin-left:6px}
+.section .desc{font-size:14px;color:var(--t2);margin-bottom:6px;line-height:1.7}
+.section .user-story{font-size:12px;color:var(--t3);font-style:italic;margin-bottom:20px;padding-left:12px;border-left:2px solid var(--b2)}
+.phase-badge{display:inline-flex;align-items:center;gap:4px;font-family:'DM Mono',monospace;font-size:9px;padding:2px 8px;border-radius:4px;margin-left:8px;vertical-align:middle}
+
+/* SCREENSHOT */
+.shot{background:var(--bg1);border:1px solid var(--b1);border-radius:12px;overflow:hidden;margin-bottom:16px;box-shadow:0 4px 24px rgba(0,0,0,.3)}
+.shot-bar{padding:6px 12px;background:var(--bg2);border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:6px}
+.shot-dot{width:8px;height:8px;border-radius:50%;background:var(--b2)}
+.shot-title{margin-left:8px;font-family:'DM Mono',monospace;font-size:9px;color:var(--t4);letter-spacing:.5px}
+.shot-body{padding:16px}
+.shot-caption{font-size:11px;color:var(--t3);margin-top:8px;line-height:1.6}
+.shot-callout{display:flex;align-items:flex-start;gap:8px;margin-top:10px;padding:10px 12px;background:var(--gb);border:1px solid var(--gd);border-radius:8px;font-size:11px;color:var(--g);line-height:1.6}
+.shot-callout .ci{flex-shrink:0;margin-top:1px}
+
+/* MINI-COMPONENTS — recreated from prototype */
+/* Search */
+.m-search{display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--bg3);border:1px solid var(--gd);border-radius:8px;margin-bottom:6px}
+.m-search-ico{color:var(--t4);font-size:14px}
+.m-search-text{font-size:12px;color:var(--g)}
+.m-search-kbd{margin-left:auto;font-family:'DM Mono',monospace;font-size:9px;color:var(--t4);background:var(--b0);padding:2px 6px;border-radius:3px;border:1px solid var(--b1)}
+.m-dd{background:var(--bg3);border:1px solid var(--b2);border-radius:9px;overflow:hidden}
+.m-sr{padding:9px 12px;display:flex;align-items:center;gap:9px;border-bottom:1px solid var(--b0)}
+.m-sr:last-child{border:none}
+.m-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0}
+.m-sr-name{font-size:11px;font-weight:500}
+.m-sr-det{font-size:9px;color:var(--t3);margin-top:1px}
+.m-badge{font-family:'DM Mono',monospace;font-size:8px;padding:1px 6px;border-radius:3px;margin-left:auto}
+
+/* Status strip */
+.m-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--b1);border-radius:8px;overflow:hidden}
+.m-strip-i{background:var(--bg2);padding:9px 10px}
+.m-strip-l{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:1.5px;color:var(--t4);text-transform:uppercase;margin-bottom:2px}
+.m-strip-v{font-size:12px;font-weight:600;display:flex;align-items:center;gap:4px}
+.m-strip-s{font-size:9px;color:var(--t3);margin-top:1px}
+.m-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+
+/* Caller card */
+.m-caller{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg2);border:1px solid var(--gd);border-radius:8px}
+.m-caller-av{width:32px;height:32px;border-radius:50%;background:var(--gb);border:2px solid var(--g);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:11px;color:var(--g);flex-shrink:0}
+.m-caller-n{font-size:12px;font-weight:600}
+.m-caller-r{font-size:10px;color:var(--t2);margin-top:1px}
+.m-caller-c{font-size:9px;color:var(--t3);margin-top:1px}
+.m-caller-right{margin-left:auto;text-align:right}
+.m-admin-b{font-family:'DM Mono',monospace;font-size:8px;padding:2px 7px;border-radius:3px;background:var(--gb);color:var(--g);border:1px solid var(--gd)}
+
+/* Tax badges */
+.m-tax{display:flex;gap:5px;flex-wrap:wrap}
+.m-tax-b{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:5px;font-family:'DM Mono',monospace;font-size:9px}
+
+/* Timeline */
+.m-tl{position:relative;padding-left:18px}
+.m-tl::before{content:'';position:absolute;left:4px;top:12px;bottom:12px;width:2px;background:var(--b1)}
+.m-tli{display:flex;gap:10px;padding:8px 0;position:relative}
+.m-tld{width:8px;height:8px;border-radius:50%;border:2px solid;background:var(--bg1);z-index:1;flex-shrink:0;margin-top:3px;margin-left:-15px}
+.m-tlch{font-family:'DM Mono',monospace;font-size:8px;padding:1px 5px;border-radius:3px}
+.m-tldt{font-family:'DM Mono',monospace;font-size:8px;color:var(--t4)}
+.m-tlst{font-family:'DM Mono',monospace;font-size:8px;padding:1px 4px;border-radius:3px}
+.m-tlt{font-size:11px;color:var(--t1);line-height:1.5;margin-top:2px}
+.m-tla{font-size:9px;color:var(--t3);margin-top:1px}
+.m-filters{display:flex;gap:3px;margin-bottom:8px}
+.m-filt{padding:3px 7px;border-radius:4px;border:1px solid var(--b1);background:transparent;color:var(--t3);font-size:9px;font-family:'DM Mono',monospace}
+.m-filt.act{background:var(--gb);border-color:var(--gd);color:var(--g)}
+
+/* Pay stub */
+.m-ps{border:1px solid var(--b1);border-radius:8px;overflow:hidden;background:var(--bg2)}
+.m-ps-head{padding:8px 12px;background:var(--b0);border-bottom:1px solid var(--b1);display:flex;justify-content:space-between;align-items:center}
+.m-ps-period{font-family:'DM Mono',monospace;font-size:9px;color:var(--t3)}
+.m-ps-net{font-size:14px;font-weight:600}
+.m-ps-delta{font-size:9px;margin-top:1px}
+.m-psr{display:grid;grid-template-columns:1fr 70px 70px 55px;padding:4px 12px;font-size:10px;align-items:center}
+.m-psr.hd{font-family:'DM Mono',monospace;font-size:8px;color:var(--t4);letter-spacing:.5px;text-transform:uppercase;padding:5px 12px;border-bottom:1px solid var(--b1)}
+.m-psr .lb{color:var(--t2)}
+.m-psr .v{font-family:'DM Mono',monospace;text-align:right}
+.m-psr .p{font-family:'DM Mono',monospace;text-align:right;color:var(--t4)}
+.m-psr .d{font-family:'DM Mono',monospace;text-align:right;font-size:9px}
+.m-psr.hl{background:var(--ab)}
+.m-psr.hlr{background:var(--rb)}
+.m-ann{grid-column:1/-1;padding:3px 12px 6px;font-size:9px;display:flex;align-items:center;gap:4px}
+.m-ann-b{font-family:'DM Mono',monospace;font-size:7px;padding:1px 5px;border-radius:3px}
+.m-ps-sum{padding:8px 12px;border-top:1px solid var(--b1);font-size:10px;color:var(--t3);display:flex;align-items:flex-start;gap:5px;line-height:1.5}
+
+/* Payment / risk */
+.m-pay{padding:10px 12px;border-radius:8px;display:flex;align-items:center;gap:10px}
+.m-pay-ico{width:30px;height:30px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.m-pay-t{font-size:12px;font-weight:500}
+.m-pay-d{font-size:10px;margin-top:1px}
+.m-risk{border:1px solid var(--rd);border-radius:8px;overflow:hidden;margin-top:8px}
+.m-risk-hd{padding:7px 12px;background:var(--rb);border-bottom:1px solid var(--rd);font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1.5px;color:var(--r);text-transform:uppercase;display:flex;align-items:center;gap:4px}
+.m-risk-s{display:flex;align-items:flex-start;gap:8px;padding:8px 12px;border-bottom:1px solid var(--b0);font-size:10px;line-height:1.5}
+.m-risk-s:last-child{border:none}
+.m-risk-n{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:9px;font-weight:500;flex-shrink:0;margin-top:1px}
+.m-risk-ft{padding:7px 12px;background:var(--b0);font-family:'DM Mono',monospace;font-size:8px;color:var(--r);letter-spacing:.5px}
+
+/* Invoice */
+.m-inv{display:grid;grid-template-columns:1fr 70px 55px 45px;padding:7px 12px;background:var(--bg2);border:1px solid var(--b1);border-radius:6px;font-size:10px;align-items:center;margin-bottom:3px}
+.m-inv-name{font-weight:500}
+.m-inv-sub{font-size:8px;color:var(--t4);margin-top:1px}
+
+/* Benefits */
+.m-ben-g{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px}
+.m-ben-c{background:var(--bg2);border:1px solid var(--b1);border-radius:6px;padding:8px 10px}
+.m-ben-type{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:1px;color:var(--t4);text-transform:uppercase;margin-bottom:2px}
+.m-ben-plan{font-size:10px;font-weight:500;margin-bottom:1px}
+.m-ben-det{font-size:9px;color:var(--t3)}
+.m-ben-c.empty{border-style:dashed;opacity:.5}
+
+/* Pinned ticket */
+.m-pinned{border:1px solid var(--ad);background:rgba(251,191,36,.02);border-radius:7px;padding:9px 12px}
+.m-pin-l{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:1.5px;color:var(--a);text-transform:uppercase;margin-bottom:4px;display:flex;align-items:center;gap:4px}
+.m-pin-title{font-size:11px;font-weight:500;margin-bottom:2px}
+.m-pin-desc{font-size:9px;color:var(--t2);line-height:1.5}
+.m-pin-meta{display:flex;gap:5px;align-items:center;margin-top:4px}
+.m-btn{padding:3px 7px;border-radius:4px;border:1px solid var(--b1);background:transparent;color:var(--t2);font-family:'DM Sans',sans-serif;font-size:9px;display:inline-flex;align-items:center;gap:3px}
+.m-btn-g{background:var(--gb);border-color:var(--gd);color:var(--g)}
+.m-dl{display:inline-flex;align-items:center;gap:3px;padding:3px 7px;border-radius:4px;background:var(--blb);border:1px solid var(--bld);color:var(--bl);font-size:9px}
+
+/* Alert bar */
+.m-alert{padding:7px 12px;border-radius:7px;display:flex;align-items:center;gap:6px;font-size:10px}
+
+/* Changes feed */
+.m-chg{display:flex;align-items:flex-start;gap:7px;padding:5px 6px}
+.m-chg-ico{width:20px;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0}
+.m-chg-t{font-size:10px;color:var(--t2);line-height:1.4}
+.m-chg-t strong{color:var(--t1);font-weight:500}
+.m-chg-d{font-family:'DM Mono',monospace;font-size:8px;color:var(--t4);margin-top:1px}
+
+/* Two-up */
+.two-up{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.two-up .shot{margin-bottom:0}
+
+/* Annotation pointer */
+.annot{position:relative}
+.annot-arrow{position:absolute;font-size:18px;color:var(--g);opacity:.7}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-logo"><span></span>CUSTOMER CENTRAL</div>
+  <h1>Feature Showcase — <em>MVP Prototype</em></h1>
+  <p>A walkthrough of every feature in the Customer Central prototype, organized by user story. Each section shows what the agent sees and why it matters.</p>
+  <div class="hero-meta">
+    <span>9 USER STORIES</span>
+    <span>·</span>
+    <span>6 FULL BUILD + 3 DEEP LINK</span>
+    <span>·</span>
+    <span>6-8 WEEKS</span>
+  </div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+  <div class="toc-label">Feature Map</div>
+  <div class="toc-grid">
+    <a class="toc-i" href="#fs1"><span class="toc-tag" style="background:var(--gb);color:var(--g)">FS-1</span>Instant Caller Recognition</a>
+    <a class="toc-i" href="#fs2"><span class="toc-tag" style="background:var(--gb);color:var(--g)">FS-2</span>Complete Interaction History</a>
+    <a class="toc-i" href="#fs3"><span class="toc-tag" style="background:var(--gb);color:var(--g)">FS-3</span>Account Status at a Glance</a>
+    <a class="toc-i" href="#ps1"><span class="toc-tag" style="background:var(--blb);color:var(--bl)">PS-1</span>Paycheck Discrepancy Resolution</a>
+    <a class="toc-i" href="#ps2"><span class="toc-tag" style="background:var(--ab);color:var(--a)">PS-2</span>Payroll Failure Triage</a>
+    <a class="toc-i" href="#ps3"><span class="toc-tag" style="background:var(--blb);color:var(--bl)">PS-3</span>Tax Document Lookup</a>
+    <a class="toc-i" href="#ps4"><span class="toc-tag" style="background:var(--ab);color:var(--a)">PS-4</span>Benefits Enrollment Guidance</a>
+    <a class="toc-i" href="#ps5"><span class="toc-tag" style="background:var(--ab);color:var(--a)">PS-5</span>Invoice Explanation</a>
+    <a class="toc-i" href="#ps6"><span class="toc-tag" style="background:var(--blb);color:var(--bl)">PS-6</span>Payment Failure Response</a>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- FS-1: INSTANT CALLER RECOGNITION -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section-divider"></div>
+<div class="section" id="fs1">
+  <div class="section-tag">Foundation Story</div>
+  <h2>Instant Caller Recognition <span class="story-id">FS-1</span><span class="phase-badge" style="background:var(--gb);color:var(--g);border:1px solid var(--gd)">MVP · Full Build</span></h2>
+  <p class="desc">The agent's first 3 seconds. Search by name, email, phone, or company — results disambiguate admin from employee, show plan context, and load the full dashboard on click.</p>
+  <p class="user-story">As a CSO agent receiving an inbound call, I want to immediately see who this person is, what company they belong to, and whether they're an admin — so I can greet them by name before they finish introducing themselves.</p>
+
+  <div class="two-up">
+    <div class="shot">
+      <div class="shot-bar"><div class="shot-dot"></div><div class="shot-dot"></div><div class="shot-dot"></div><span class="shot-title">SEARCH · TYPE ANY CHARACTER</span></div>
+      <div class="shot-body">
+        <div class="m-search">
+          <span class="m-search-ico">⌕</span>
+          <span class="m-search-text">acme</span>
+          <span class="m-search-kbd">⌘K</span>
+        </div>
+        <div class="m-dd">
+          <div class="m-sr">
+            <div class="m-av" style="background:var(--gb);color:var(--g)">SC</div>
+            <div><div class="m-sr-name">Sarah Chen</div><div class="m-sr-det">Admin · Acme Corp · PEO Plus</div></div>
+            <span class="m-badge" style="background:var(--gb);color:var(--g);border:1px solid var(--gd)">Active</span>
+          </div>
+          <div class="m-sr">
+            <div class="m-av" style="background:var(--blb);color:var(--bl)">AC</div>
+            <div><div class="m-sr-name">Acme Corp</div><div class="m-sr-det">PEO Plus · 34 employees · Since Jan 2022</div></div>
+            <span class="m-badge" style="background:var(--gb);color:var(--g);border:1px solid var(--gd)">Current</span>
+          </div>
+          <div class="m-sr">
+            <div class="m-av" style="background:var(--pb);color:var(--p)">MJ</div>
+            <div><div class="m-sr-name">Marcus Johnson</div><div class="m-sr-det">Employee · Acme Corp · Engineering · CA</div></div>
+            <span class="m-badge" style="background:var(--blb);color:var(--bl);border:1px solid var(--bld)">Employee</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="shot">
+      <div class="shot-bar"><div class="shot-dot"></div><div class="shot-dot"></div><div class="shot-dot"></div><span class="shot-title">CALLER CARD · AFTER SELECTION</span></div>
+      <div class="shot-body">
+        <div class="m-caller">
+          <div class="m-caller-av">SC</div>
+          <div>
+            <div class="m-caller-n">Sarah Chen</div>
+            <div class="m-caller-r">Account Administrator · Primary Contact</div>
+            <div class="m-caller-c">sarah.chen@acmecorp.com · (212) 555-0147 · Last contact: Feb 8</div>
+          </div>
+          <div class="m-caller-right">
+            <div class="m-admin-b">Admin</div>
+            <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--t4);margin-top:3px">Since Mar 2022</div>
+          </div>
+        </div>
+        <div class="shot-callout"><span class="ci">→</span>Agent sees name, role, contact info, admin status, and tenure in one glance. No "can you spell your company name?" — the call starts with recognition.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- FS-3: ACCOUNT STATUS AT A GLANCE -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section-divider"></div>
+<div class="section" id="fs3">
+  <div class="section-tag">Foundation Story</div>
+  <h2>Account Status at a Glance <span class="story-id">FS-3</span><span class="phase-badge" style="background:var(--gb);color:var(--g);border:1px solid var(--gd)">MVP · Full Build</span></h2>
+  <p class="desc">Five health indicators visible without clicking — billing, payroll, tickets, changes, tenure. Color-coded for instant triage: green = fine, amber = attention, red = urgent. Each panel links to its detail tab.</p>
+  <p class="user-story">As a CSO agent during any interaction, I want to see key health indicators without clicking — so I can understand urgency and context before the customer finishes explaining their issue.</p>
+
+  <div class="shot">
+    <div class="shot-bar"><div class="shot-dot"></div><div class="shot-dot"></div><div class="shot-dot"></div><span class="shot-title">STATUS STRIP · ALWAYS VISIBLE AT TOP</span></div>
+    <div class="shot-body">
+      <div class="m-strip">
+        <div class="m-strip-i">
+          <div class="m-strip-l">Billing</div>
+          <div class="m-strip-v" style="color:var(--g)"><span class="m-dot" style="background:var(--g)"></span>Current</div>
+          <div class="m-strip-s">Paid Feb 1 · $12,480</div>
+        </div>
+        <div class="m-strip-i">
+          <div class="m-strip-l">Next Payroll</div>
+          <div class="m-strip-v" style="color:var(--a)">Feb 28</div>
+          <div class="m-strip-s">Bi-weekly · Deadline Feb 26 · <span style="color:var(--a)">17 days</span></div>
+        </div>
+        <div class="m-strip-i">
+          <div class="m-strip-l">Open Tickets</div>
+          <div class="m-strip-v" style="color:var(--a)"><span class="m-dot" style="background:var(--a)"></span>1 Open</div>
+          <div class="m-strip-s">Payroll discrepancy · 3 days</div>
+        </div>
+        <div class="m-strip-i">
+          <div class="m-strip-l">Recent Changes</div>
+          <div class="m-strip-v">3</div>
+          <div class="m-strip-s">Last 14 days · 2 hires</div>
+        </div>
+        <div class="m-strip-i">
+          <div class="m-strip-l">Customer Since</div>
+          <div class="m-strip-v">Jan 2022</div>
+          <div class="m-strip-s">3 yrs · PEO Plus since '23</div>
+        </div>
+      </div>
+      <div class="shot-callout"><span class="ci">→</span>The agent scans these five panels in under 5 seconds. Before Sarah even explains why she's calling, the agent already knows: billing is fine, payroll is coming up in 17 days, there's one open ticket about a payroll discrepancy, and the company recently hired two people.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- PS-3: TAX DOC LOOKUP -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section-divider"></div>
+<div class="section" id="ps3">
+  <div class="section-tag">Problem Story</div>
+  <h2>Tax Document Lookup <span class="story-id">PS-3</span><span class="phase-badge" style="background:var(--gb);color:var(--g);border:1px solid var(--gd)">MVP · Build (0.5 wks)</span></h2>
+  <p class="desc">Seasonal volume monster (Jan–Apr). Two badges always visible below the caller card: W-2 availability with issue date, 1099 completion progress. Resolves the highest-volume low-complexity call type in seconds.</p>
+  <p class="user-story">As a CSO agent helping a caller who can't find their W-2 or 1099, I want to instantly confirm whether the document has been generated and when it was delivered — so I can resolve this call in under 90 seconds.</p>
+
+  <div class="shot">
+    <div class="shot-bar"><div class="shot-dot"></div><div class="shot-dot"></div><div class="shot-dot"></div><span class="shot-title">TAX DOC BADGES · BELOW CALLER CARD</span></div>
+    <div class="shot-body">
+      <div class="m-tax">
+        <div class="m-tax-b" style="background:var(--gb);color:var(--g);border:1px solid var(--gd)">✓ W-2s Available · Issued Jan 31</div>
+        <div class="m-tax-b" style="background:var(--ab);color:var(--a);border:1px solid var(--ad)">⏳ 1099s: 8 of 10 complete</div>
+      </div>
+      <div class="shot-callout"><span class="ci">→</span>Built because it's practically free (0.5 engineering weeks) and handles a massive seasonal call volume. Agent sees immediately: "Yes, your W-2 was issued January 31st" — call over.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- FS-2: COMPLETE INTERACTION HISTORY -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section-divider"></div>
+<div class="section" id="fs2">
+  <div class="section-tag">Foundation Story</div>
+  <h2>Complete Interaction History <span class="story-id">FS-2</span><span class="phase-badge" style="background:var(--gb);color:var(--g);border:1px solid var(--gd)">MVP · Full Build</span></h2>
+  <p class="desc">Every phone call, email, and chat in a single unified timeline. Channel-coded badges, open vs. resolved status, agent attribution, and duration. Filter by channel type. Open tickets pinned at top.</p>
+  <p class="user-story">As a CSO agent with a returning customer, I want to see every prior interaction across all channels — so I never ask them to repeat themselves and I can build on what the last agent discussed.</p>
+
+  <div class="two-up">
+    <div class="shot">
+      <div class="shot-bar"><div class="shot-dot"></div><div class="shot-dot"></div><div class="shot-dot"></div><span class="shot-title">OVERVIEW · OPEN TICKET PINNED</span></div>
+      <div class="shot-body">
+        <div class="m-pinned">
+          <div class="m-pin-l">⚡ OPEN · 3 DAYS</div>
+          <div class="m-pin-title">Payroll discrepancy — new hire withholding</div>
+          <div class="m-pin-desc">Sarah reported Marcus Johnson's first paycheck had incorrect state tax withholding. CA resident taxed as NY.</div>
+          <div class="m-pin-meta">
+            <span style="font-family:'DM Mono',monospace;font-size:8px;padding:1px 5px;border-radius:3px;background:var(--ab);color:var(--a)">Medium</span>
+            <span style="font-size:9px;color:var(--t4)">Alex Rivera · Feb 8</span>
+          </div>
+          <div style="margin-top:5px;display:flex;gap:4px">
+            <span class="m-btn">View Full Ticket</span>
+            <span class="m-btn">Copy Link</span>
+            <span class="m-btn m-btn-g">Take Over</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="shot">
+      <div class="shot-bar"><div class="shot-dot"></div><div class="shot-dot"></div><div class="shot-dot"></div><span class="shot-title">HISTORY TAB · FULL TIMELINE</span></div>
+      <div class="shot-body">
+        <div class="m-filters">
+          <span class="m-filt act">All</span>
+          <span class="m-filt">📞</span>
+          <span class="m-filt">📧</span>
+          <span class="m-filt">💬</span>
+        </div>
+        <div class="m-tl">
+          <div class="m-tli"><div class="m-tld" style="border-color:var(--a)"></div><div><div style="display:flex;gap:4px;align-items:center;flex-wrap:wrap"><span class="m-tlch" style="background:var(--blb);color:var(--bl)">Email</span><span class="m-tldt">Feb 8 · 2:14 PM</span><span class="m-tlst" style="background:var(--ab);color:var(--a)">OPEN</span></div><div class="m-tlt">Payroll discrepancy — Marcus Johnson's state withholding</div><div class="m-tla">Sarah Chen → Alex Rivera</div></div></div>
+          <div class="m-tli"><div class="m-tld" style="border-color:var(--g)"></div><div><div style="display:flex;gap:4px;align-items:center"><span class="m-tlch" style="background:var(--gb);color:var(--g)">Phone</span><span class="m-tldt">Jan 22</span><span class="m-tlst" style="background:var(--gb);color:var(--g)">RESOLVED</span></div><div class="m-tlt">Adding two new employees — remote hire onboarding</div><div class="m-tla">Sarah Chen → Jordan Mitchell · 12 min</div></div></div>
+          <div class="m-tli"><div class="m-tld" style="border-color:var(--g)"></div><div><div style="display:flex;gap:4px;align-items:center"><span class="m-tlch" style="background:var(--pb);color:var(--p)">Chat</span><span class="m-tldt">Jan 15</span><span class="m-tlst" style="background:var(--gb);color:var(--g)">RESOLVED</span></div><div class="m-tlt">Benefits enrollment deadline — open enrollment Feb 15</div><div class="m-tla">Sarah Chen → Kim Patel · 4 min</div></div></div>
+          <div class="m-tli"><div class="m-tld" style="border-color:var(--g)"></div><div><div style="display:flex;gap:4px;align-items:center"><span class="m-tlch" style="background:var(--gb);color:var(--g)">Phone</span><span class="m-tldt">Jan 3</span><span class="m-tlst" style="background:var(--gb);color:var(--g)">RESOLVED</span></div><div class="m-tlt">Year-end review — W-2 data accuracy, 1099 timeline</div><div class="m-tla">Sarah Chen → Jordan Mitchell · 18 min</div></div></div>
+        </div>
+        <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--t4);text-align:center;margin-top:8px;padding:6px;border-top:1px solid var(--b1)">+ 6 MORE INTERACTIONS (AUG 2025 → OCT 2025)</div>
+      </div>
+    </div>
+  </div>
+  <div class="shot-caption" style="margin-top:12px">The timeline unifies Zendesk (tickets/chat), Salesforce (cases), and call logs into a single chronological view. Open items are visually distinct (amber dot + OPEN badge). The agent immediately knows: Sarah emailed 3 days ago about a payroll issue, and it's still open — she's probably calling to follow up.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- PS-1: PAYCHECK DISCREPANCY RESOLUTION -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section-divider"></div>
+<div class="section" id="ps1">
+  <div class="section-tag">Problem Story · #1 Call Volume Driver</div>
+  <h2>Paycheck Discrepancy Resolution <span class="story-id">PS-1</span><span class="phase-badge" style="background:var(--gb);color:var(--g);border:1px solid var(--gd)">MVP · Full Build</span></h2>
+  <p class="desc">Period-over-period pay stub comparison with delta highlighting and auto-annotations that explain WHY each line item changed. The feature agents "can't go back" from — it does the diagnosis for them.</p>
+  <p class="user-story">As a CSO agent helping an employee whose paycheck looks different, I want to see pay history with period-over-period comparison highlighting changes — so I can explain the difference in under 60 seconds.</p>
+
+  <div class="shot">
+    <div class="shot-bar"><div class="shot-dot"></div><div class="shot-dot"></div><div class="shot-dot"></div><span class="shot-title">PAYROLL TAB · MARCUS JOHNSON · PAY STUB VIEWER</span></div>
+    <div class="shot-body">
+      <div style="font-size:10px;color:var(--t3);margin-bottom:6px">Engineering · California · Salaried · $120,000/yr</div>
+      <div class="m-ps">
+        <div class="m-ps-head">
+          <div class="m-ps-period">Jan 16 – Jan 31, 2026 vs Jan 1 – Jan 15</div>
+          <div style="text-align:right"><div class="m-ps-net">$3,847.23</div><div class="m-ps-delta" style="color:var(--r)">-$142.50 vs prior</div></div>
+        </div>
+        <div>
+          <div class="m-psr hd"><span>Item</span><span style="text-align:right">Current</span><span style="text-align:right">Previous</span><span style="text-align:right">Delta</span></div>
+          <div class="m-psr"><span class="lb">Gross Pay</span><span class="v">$5,000.00</span><span class="p">$5,000.00</span><span class="d" style="color:var(--t4)">—</span></div>
+          <div class="m-psr"><span class="lb">Federal Income Tax</span><span class="v">$612.50</span><span class="p">$612.50</span><span class="d" style="color:var(--t4)">—</span></div>
+          <div class="m-psr hl"><span class="lb" style="color:var(--t1);font-weight:500">State Income Tax</span><span class="v" style="color:var(--a)">$316.27</span><span class="p">$256.50</span><span class="d" style="color:var(--r)">+$59.77</span></div>
+          <div class="m-ann" style="background:var(--ab)"><span class="m-ann-b" style="background:var(--ab);color:var(--a);border:1px solid var(--ad)">WHY</span><span style="color:var(--a);font-size:9px">Withholding changed NY (5.13%) → CA (6.33%) on Jan 20</span></div>
+          <div class="m-psr"><span class="lb">Social Security</span><span class="v">$310.00</span><span class="p">$310.00</span><span class="d" style="color:var(--t4)">—</span></div>
+          <div class="m-psr"><span class="lb">Medicare</span><span class="v">$72.50</span><span class="p">$72.50</span><span class="d" style="color:var(--t4)">—</span></div>
+          <div class="m-psr hlr"><span class="lb" style="color:var(--t1);font-weight:500">CA SDI</span><span class="v" style="color:var(--r)">$55.00</span><span class="p">—</span><span class="d" style="color:var(--r)">+$55.00</span></div>
+          <div class="m-ann" style="background:var(--rb)"><span class="m-ann-b" style="background:var(--rb);color:var(--r);border:1px solid var(--rd)">NEW</span><span style="color:var(--r);font-size:9px">CA State Disability Insurance — mandatory for CA employees</span></div>
+          <div class="m-psr"><span class="lb">Health Insurance (Aetna)</span><span class="v">$186.50</span><span class="p">$186.50</span><span class="d" style="color:var(--t4)">—</span></div>
+          <div class="m-psr hlr"><span class="lb" style="color:var(--t1);font-weight:500">Dental (Delta Dental)</span><span class="v" style="color:var(--r)">$27.73</span><span class="p">—</span><span class="d" style="color:var(--r)">+$27.73</span></div>
+          <div class="m-ann" style="background:var(--rb)"><span class="m-ann-b" style="background:var(--rb);color:var(--r);border:1px solid var(--rd)">NEW</span><span style="color:var(--r);font-size:9px">Dental enrollment effective Jan 16</span></div>
+          <div class="m-psr"><span class="lb">401(k) Contribution (6%)</span><span class="v">$300.00</span><span class="p">$300.00</span><span class="d" style="color:var(--t4)">—</span></div>
+        </div>
+        <div class="m-ps-sum"><span style="color:var(--a);flex-shrink:0">💡</span><span><strong style="color:var(--t2)">Summary:</strong> Net pay decreased $142.50 due to: CA state tax (+$59.77), CA SDI (+$55.00), dental enrollment (+$27.73).</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="shot-callout"><span class="ci">→</span><strong>This is the MVP's signature feature.</strong> Instead of digging through payroll records to compare two pay stubs line-by-line, the agent sees exactly what changed, by how much, and why — with annotations linking changes to their root cause. The agent reads the summary to Sarah: "Marcus's net pay dropped $142.50 because his state tax updated from New York to California, California SDI kicked in, and his dental enrollment started." A 15-minute investigation becomes a 30-second explanation.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- PS-2: PAYROLL FAILURE TRIAGE -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section-divider"></div>
+<div class="section" id="ps2">
+  <div class="section-tag">Problem Story · Deep Link</div>
+  <h2>Payroll Failure Triage <span class="story-id">PS-2</span><span class="phase-badge" style="background:var(--ab);color:var(--a);border:1px solid var(--ad)">MVP · Alert + Deep Link</span></h2>
+  <p class="desc">Scoped as an alert banner with deep link for MVP — not a full diagnostic panel. The payroll engine integration is the highest-risk data source in the system; we de-risk it with a spike in Week 1 and build the full panel in Phase 2.</p>
+  <p class="user-story">As a CSO agent receiving an urgent call about payroll not running, I want to see payroll run status and whether the next payroll is at risk — so I can assess severity and route the caller quickly.</p>
+
+  <div class="shot">
+    <div class="shot-bar"><div class="shot-dot"></div><div class="shot-dot"></div><div class="shot-dot"></div><span class="shot-title">PAYROLL TAB · ALERT BANNER + DEEP LINK</span></div>
+    <div class="shot-body">
+      <div class="m-alert" style="background:var(--gb);border:1px solid var(--gd);color:var(--g)">
+        ✓ Last payroll ran successfully · Jan 31 · 32 employees · $148,230
+        <span class="m-dl" style="margin-left:auto">View Payroll Details ↗</span>
+      </div>
+      <div style="margin-top:8px;font-size:10px;color:var(--t3);padding:6px 10px;background:var(--b0);border-radius:6px">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px"><span style="color:var(--a)">⏱</span><span style="color:var(--t2)">Next payroll: Feb 28 · Bi-weekly · Deadline: Feb 26</span></div>
+        <div style="font-size:9px;color:var(--t4)">Status strip shows 17-day countdown with amber indicator</div>
+      </div>
+      <div class="shot-callout" style="background:var(--ab);border-color:var(--ad);color:var(--a)"><span class="ci">→</span><strong>Why deep link, not full build?</strong> The payroll processing engine is the highest integration risk in the MVP. Real-time payroll diagnostics require access to the payroll engine's processing queue, error logs, and batch status — data we haven't validated access to. The alert banner + deep link covers 80% of the use case. Phase 2 adds the full diagnostic panel once the payroll data API is proven in the Week 1 spike.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- PS-6: PAYMENT FAILURE RESPONSE -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section-divider"></div>
+<div class="section" id="ps6">
+  <div class="section-tag">Problem Story · Novel Feature</div>
+  <h2>Payment Failure Response <span class="story-id">PS-6</span><span class="phase-badge" style="background:var(--gb);color:var(--g);border:1px solid var(--gd)">MVP · Full Build</span></h2>
+  <p class="desc">The risk cascade — a feature that doesn't exist anywhere today. Connects a failed payment to its downstream consequences: blocked payroll → affected employees. Turns a billing problem into a visible crisis with a deadline and resolution path.</p>
+  <p class="user-story">As a CSO agent receiving a call about a failed payment, I want to see failure reason, account balance, and whether payroll is at risk — so I can assess the crisis and guide the admin to resolution.</p>
+
+  <div class="two-up">
+    <div class="shot">
+      <div class="shot-bar"><div class="shot-dot"></div><div class="shot-dot"></div><div class="shot-dot"></div><span class="shot-title">BILLING · HEALTHY STATE</span></div>
+      <div class="shot-body">
+        <div class="m-pay" style="background:var(--gb);border:1px solid var(--gd)">
+          <div class="m-pay-ico" style="background:rgba(110,231,183,.15);color:var(--g)">✓</div>
+          <div><div class="m-pay-t" style="color:var(--g)">All Payments Current</div><div class="m-pay-d" style="color:var(--t2)">Last: $12,480 · Feb 1 · ACH ···4892</div></div>
+        </div>
+        <div style="font-size:9px;color:var(--t4);margin-top:6px;text-align:center">Payment History button opens modal with 5-month ledger</div>
+      </div>
+    </div>
+    <div class="shot">
+      <div class="shot-bar"><div class="shot-dot"></div><div class="shot-dot"></div><div class="shot-dot"></div><span class="shot-title">BILLING · AT-RISK STATE</span></div>
+      <div class="shot-body">
+        <div class="m-pay" style="background:var(--rb);border:1px solid var(--rd)">
+          <div class="m-pay-ico" style="background:rgba(248,113,113,.15);color:var(--r)">✕</div>
+          <div><div class="m-pay-t" style="color:var(--r)">Payment Failed — $12,480 Past Due (8 days)</div><div class="m-pay-d" style="color:var(--t2)">ACH rejected · Insufficient funds · Chase ···4892</div></div>
+        </div>
+        <div class="m-risk">
+          <div class="m-risk-hd">⚠ RISK CASCADE</div>
+          <div class="m-risk-s"><div class="m-risk-n" style="background:var(--rb);color:var(--r)">1</div><div><strong style="color:var(--r)">Payment failed</strong> — $12,480 ACH rejected. Past due 8 days.</div></div>
+          <div class="m-risk-s"><div class="m-risk-n" style="background:var(--ab);color:var(--a)">2</div><div><strong style="color:var(--a)">Next payroll at risk</strong> — If not resolved by <strong>Feb 21</strong>, payroll may be blocked.</div></div>
+          <div class="m-risk-s"><div class="m-risk-n" style="background:var(--ab);color:var(--a)">3</div><div><strong style="color:var(--a)">34 employees affected</strong> — Across NY, CA, TX. Feb 28 paycheck at risk.</div></div>
+          <div class="m-risk-ft">RESOLUTION DEADLINE: FEB 21 (13 DAYS)</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="shot-callout"><span class="ci">→</span><strong>No existing support tool connects billing failure → payroll impact → employee count.</strong> Today, an agent would see a failed payment in the billing system but have no idea whether payroll is at risk or how many people are affected. The risk cascade makes the invisible chain of consequences visible — and gives the agent a deadline and action buttons (Update Payment Method, Escalate to Billing) to drive resolution.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- PS-5: INVOICE EXPLANATION -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section-divider"></div>
+<div class="section" id="ps5">
+  <div class="section-tag">Problem Story · Deep Link</div>
+  <h2>Invoice Explanation <span class="story-id">PS-5</span><span class="phase-badge" style="background:var(--ab);color:var(--a);border:1px solid var(--ad)">MVP · Deep Link + Annotation</span></h2>
+  <p class="desc">Invoice summary with inline delta annotation explaining why amounts changed. Clickable rows open a line-item modal. Deep link to the full billing dashboard for complex scenarios.</p>
+  <p class="user-story">As a CSO agent handling an admin who says their invoice looks wrong, I want to see recent invoices alongside the headcount changes that explain the difference — so I can resolve billing confusion in one call.</p>
+
+  <div class="shot">
+    <div class="shot-bar"><div class="shot-dot"></div><div class="shot-dot"></div><div class="shot-dot"></div><span class="shot-title">BILLING TAB · RECENT INVOICES</span></div>
+    <div class="shot-body">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--t4);letter-spacing:1px">RECENT INVOICES</span>
+        <span class="m-dl">View All Invoices ↗</span>
+      </div>
+      <div class="m-inv">
+        <div><div class="m-inv-name">February 2026</div><div class="m-inv-sub">34 employees · Billed Feb 1</div></div>
+        <div style="text-align:right;font-family:'DM Mono',monospace;font-size:10px">$12,480</div>
+        <div style="text-align:center"><span style="font-family:'DM Mono',monospace;font-size:8px;padding:1px 5px;border-radius:3px;background:var(--gb);color:var(--g)">Paid</span></div>
+        <div style="text-align:right;color:var(--r);font-family:'DM Mono',monospace;font-size:10px">+$720</div>
+      </div>
+      <div class="m-inv">
+        <div><div class="m-inv-name">January 2026</div><div class="m-inv-sub">32 employees · Billed Jan 1</div></div>
+        <div style="text-align:right;font-family:'DM Mono',monospace;font-size:10px">$11,760</div>
+        <div style="text-align:center"><span style="font-family:'DM Mono',monospace;font-size:8px;padding:1px 5px;border-radius:3px;background:var(--gb);color:var(--g)">Paid</span></div>
+        <div style="text-align:right;color:var(--t4);font-family:'DM Mono',monospace;font-size:10px">—</div>
+      </div>
+      <div class="m-inv">
+        <div><div class="m-inv-name">December 2025</div><div class="m-inv-sub">32 employees · Billed Dec 1</div></div>
+        <div style="text-align:right;font-family:'DM Mono',monospace;font-size:10px">$11,760</div>
+        <div style="text-align:center"><span style="font-family:'DM Mono',monospace;font-size:8px;padding:1px 5px;border-radius:3px;background:var(--gb);color:var(--g)">Paid</span></div>
+        <div style="text-align:right;color:var(--t4);font-family:'DM Mono',monospace;font-size:10px">—</div>
+      </div>
+      <div style="margin-top:6px;font-size:10px;color:var(--t3);display:flex;align-items:flex-start;gap:5px;line-height:1.5"><span style="color:var(--a);flex-shrink:0">💡</span><span>Feb invoice +$720 vs Jan. Reason: <strong style="color:var(--t2)">+2 employees</strong> (Marcus Johnson Feb 3, Lisa Park Feb 1) at $360/employee PEO Plus rate.</span></div>
+    </div>
+  </div>
+  <div class="shot-callout"><span class="ci">→</span>The inline annotation does the math the agent used to do manually: "Your bill went up $720 because you added Marcus and Lisa this month, each at the $360/employee PEO Plus rate." Clicking a row opens a full line-item breakdown in a modal. Deep link goes to the billing dashboard for complex cases.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- PS-4: BENEFITS ENROLLMENT GUIDANCE -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section-divider"></div>
+<div class="section" id="ps4">
+  <div class="section-tag">Problem Story · Quick-View</div>
+  <h2>Benefits Enrollment Guidance <span class="story-id">PS-4</span><span class="phase-badge" style="background:var(--ab);color:var(--a);border:1px solid var(--ad)">MVP · Quick-View + Deep Link</span></h2>
+  <p class="desc">What you're enrolled in, enrollment window status, carrier contacts, and a deep link for management. Covers 80% of benefits calls without building a full enrollment flow.</p>
+  <p class="user-story">As a CSO agent helping an employee with benefits questions, I want to see the company's offerings, the employee's elections, and the enrollment window — so I can guide them to the right decision.</p>
+
+  <div class="shot">
+    <div class="shot-bar"><div class="shot-dot"></div><div class="shot-dot"></div><div class="shot-dot"></div><span class="shot-title">BENEFITS TAB · SARAH CHEN</span></div>
+    <div class="shot-body">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <div><span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--t4);letter-spacing:1px">SARAH CHEN — BENEFITS</span><div style="font-size:10px;color:var(--a);margin-top:2px">Open enrollment closes Feb 15</div></div>
+        <span class="m-dl">Manage Benefits ↗</span>
+      </div>
+      <div class="m-ben-g">
+        <div class="m-ben-c"><div class="m-ben-type">Medical</div><div class="m-ben-plan">Aetna PPO · Emp+Spouse</div><div class="m-ben-det">$373/mo · Employer $280</div></div>
+        <div class="m-ben-c"><div class="m-ben-type">Dental</div><div class="m-ben-plan">Delta Dental · Emp Only</div><div class="m-ben-det">$27.73/mo</div></div>
+        <div class="m-ben-c"><div class="m-ben-type">Vision</div><div class="m-ben-plan">VSP Choice · Emp+Spouse</div><div class="m-ben-det">$18.50/mo</div></div>
+        <div class="m-ben-c"><div class="m-ben-type">401(k)</div><div class="m-ben-plan">8% · $483.33/period</div><div class="m-ben-det">Match: 50% up to 4%</div></div>
+        <div class="m-ben-c"><div class="m-ben-type">Life Insurance</div><div class="m-ben-plan">Basic · 1x Salary</div><div class="m-ben-det">Employer paid</div></div>
+        <div class="m-ben-c empty"><div class="m-ben-type">FSA / HSA</div><div class="m-ben-plan" style="color:var(--t4)">Not enrolled</div><div class="m-ben-det">Available</div></div>
+      </div>
+      <div style="margin-top:8px">
+        <span style="font-family:'DM Mono',monospace;font-size:7px;color:var(--t4);letter-spacing:1px">DEPENDENTS</span>
+        <div style="display:flex;align-items:center;gap:8px;padding:6px 8px;background:var(--bg2);border:1px solid var(--b1);border-radius:5px;margin-top:4px">
+          <div class="m-av" style="background:var(--blb);color:var(--bl);width:22px;height:22px;font-size:8px">DC</div>
+          <div><div style="font-size:10px;font-weight:500">David Chen</div><div style="font-size:8px;color:var(--t3)">Spouse · Medical, Vision</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="shot-callout" style="background:var(--ab);border-color:var(--ad);color:var(--a)"><span class="ci">→</span><strong>Why quick-view, not full build?</strong> Benefits domain complexity (multiple carriers, plan tiers, state-specific rules, life event eligibility) doesn't compress into an MVP timeline. The quick-view covers "what am I enrolled in?" calls. The deep link handles "I want to change my plan." Phase 2 adds plan comparison and life-event enrollment flows.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- OVERVIEW: CHANGES + ACTIONS -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section-divider"></div>
+<div class="section">
+  <div class="section-tag">Supporting Features</div>
+  <h2>Recent Changes + Quick Actions</h2>
+  <p class="desc">The Overview tab combines open tickets, recent account changes, and the last 3 interactions in a single view. The sidebar provides quick actions — create tickets, log interactions, and escalate — from any screen.</p>
+
+  <div class="two-up">
+    <div class="shot">
+      <div class="shot-bar"><div class="shot-dot"></div><div class="shot-dot"></div><div class="shot-dot"></div><span class="shot-title">OVERVIEW · RECENT CHANGES FEED</span></div>
+      <div class="shot-body">
+        <div style="font-family:'DM Mono',monospace;font-size:8px;color:var(--t4);letter-spacing:1px;margin-bottom:6px">RECENT CHANGES (14 DAYS)</div>
+        <div class="m-chg">
+          <div class="m-chg-ico" style="background:var(--gb);color:var(--g)">＋</div>
+          <div><div class="m-chg-t"><strong>Marcus Johnson</strong> added · Engineering · CA</div><div class="m-chg-d">Feb 3, 2026</div></div>
+        </div>
+        <div class="m-chg">
+          <div class="m-chg-ico" style="background:var(--gb);color:var(--g)">＋</div>
+          <div><div class="m-chg-t"><strong>Lisa Park</strong> added · Design · NY</div><div class="m-chg-d">Feb 1, 2026</div></div>
+        </div>
+        <div class="m-chg">
+          <div class="m-chg-ico" style="background:var(--blb);color:var(--bl)">✎</div>
+          <div><div class="m-chg-t"><strong>Payroll</strong> ran · 32 employees · $148,230</div><div class="m-chg-d">Jan 31, 2026</div></div>
+        </div>
+        <div class="m-chg">
+          <div class="m-chg-ico" style="background:var(--ab);color:var(--a)">↻</div>
+          <div><div class="m-chg-t"><strong>Benefits</strong> updated for 3 employees</div><div class="m-chg-d">Jan 28, 2026</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="shot">
+      <div class="shot-bar"><div class="shot-dot"></div><div class="shot-dot"></div><div class="shot-dot"></div><span class="shot-title">SIDEBAR · QUICK ACTIONS</span></div>
+      <div class="shot-body">
+        <div style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:2px;color:var(--t4);margin-bottom:5px">ACTIONS</div>
+        <div style="display:flex;flex-direction:column;gap:3px">
+          <div style="display:flex;align-items:center;gap:7px;padding:5px 8px;border-radius:5px;background:var(--b0);font-size:11px;color:var(--t2)"><span style="width:14px;text-align:center;font-size:12px">＋</span>New Ticket</div>
+          <div style="display:flex;align-items:center;gap:7px;padding:5px 8px;border-radius:5px;font-size:11px;color:var(--t2)"><span style="width:14px;text-align:center;font-size:12px">✎</span>Log Interaction</div>
+          <div style="display:flex;align-items:center;gap:7px;padding:5px 8px;border-radius:5px;font-size:11px;color:var(--t2)"><span style="width:14px;text-align:center;font-size:12px">↗</span>Escalate</div>
+        </div>
+        <div style="font-family:'DM Mono',monospace;font-size:7px;letter-spacing:2px;color:var(--t4);margin:10px 0 5px">ACCOUNT</div>
+        <div style="display:flex;flex-direction:column;gap:3px">
+          <div style="display:flex;align-items:center;gap:7px;padding:5px 8px;border-radius:5px;font-size:11px;color:var(--t2);background:var(--gb);color:var(--g)"><span style="width:14px;text-align:center">◈</span>Overview</div>
+          <div style="display:flex;align-items:center;gap:7px;padding:5px 8px;border-radius:5px;font-size:11px;color:var(--t2)"><span style="width:14px;text-align:center">◷</span>History <span style="margin-left:auto;font-family:'DM Mono',monospace;font-size:8px;background:var(--b0);padding:1px 5px;border-radius:2px">10</span></div>
+          <div style="display:flex;align-items:center;gap:7px;padding:5px 8px;border-radius:5px;font-size:11px;color:var(--t2)"><span style="width:14px;text-align:center">$</span>Payroll</div>
+          <div style="display:flex;align-items:center;gap:7px;padding:5px 8px;border-radius:5px;font-size:11px;color:var(--t2)"><span style="width:14px;text-align:center">▤</span>Billing</div>
+          <div style="display:flex;align-items:center;gap:7px;padding:5px 8px;border-radius:5px;font-size:11px;color:var(--t2)"><span style="width:14px;text-align:center">♡</span>Benefits</div>
+        </div>
+        <div class="shot-callout" style="margin-top:8px"><span class="ci">→</span>Actions available from any screen. Modals capture structured data (channel, topic, resolution, priority) that feeds the interaction intelligence layer.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div style="text-align:center;padding:40px;font-family:'DM Mono',monospace;font-size:9px;color:var(--t4);letter-spacing:1px;border-top:1px solid var(--b1);margin-top:20px">
+  <div style="margin-bottom:6px;color:var(--g)">● CUSTOMER CENTRAL</div>
+  DARRIEN WATSON · GPM CASE STUDY · JUSTWORKS · FEB 2026
+</div>
+
+</body>
+</html>

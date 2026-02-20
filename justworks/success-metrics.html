@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Success Metrics — Customer Central MVP</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500;600&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#090b10;--s1:#10131a;--s2:#161a24;--s3:#1c212e;--s4:#242a38;
+  --bd:#262e40;--bd2:#3a4560;
+  --t0:#f0f2f8;--t1:#c8cede;--t2:#8b95ae;--t3:#5a6580;--t4:#3a4258;
+  --acc:#e8a838;--acc2:#a07020;
+  --g:#34d399;--gbg:rgba(52,211,153,.06);--gbd:rgba(52,211,153,.2);
+  --r:#f87171;--rbg:rgba(248,113,113,.06);--rbd:rgba(248,113,113,.2);
+  --b:#60a5fa;--bbg:rgba(96,165,250,.06);--bbd:rgba(96,165,250,.2);
+  --a:#fbbf24;--abg:rgba(251,191,36,.06);--abd:rgba(251,191,36,.2);
+  --p:#a78bfa;--pbg:rgba(167,139,250,.06);--pbd:rgba(167,139,250,.2);
+  --c:#22d3ee;--cbg:rgba(34,211,238,.06);--cbd:rgba(34,211,238,.2);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--t1);line-height:1.65}
+.main{max-width:880px;margin:0 auto;padding:3rem 1.5rem 5rem}
+.hdr{margin-bottom:2.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--bd)}
+.hdr-label{font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:600;color:var(--acc);text-transform:uppercase;letter-spacing:.15em;margin-bottom:.5rem}
+.hdr h1{font-family:'DM Serif Display',serif;font-size:clamp(1.6rem,4vw,2.4rem);color:var(--t0);margin-bottom:.75rem;line-height:1.2}
+.hdr h1 em{color:var(--acc);font-style:normal}
+.prose{font-size:.92rem;color:var(--t2);margin-bottom:1.5rem}
+.prose p{margin-bottom:.75rem}
+.prose strong{color:var(--t1)}
+.sh{font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:600;color:var(--acc);text-transform:uppercase;letter-spacing:.12em;padding-bottom:.45rem;border-bottom:1px solid var(--bd);margin:2.5rem 0 1rem}
+.met{background:var(--s1);border:1px solid var(--bd);border-radius:8px;margin-bottom:1rem;overflow:hidden}
+.met-top{padding:1rem 1.15rem}
+.met-name{font-size:1.05rem;font-weight:700;color:var(--t0);margin-bottom:.2rem}
+.met-oneliner{font-size:.84rem;color:var(--t2);margin-bottom:.5rem}
+.met-row{display:flex;gap:1rem;flex-wrap:wrap;margin-top:.4rem}
+.met-pill{font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:600;padding:.15rem .5rem;border-radius:3px;white-space:nowrap}
+.pill-target{color:var(--g);background:var(--gbg);border:1px solid var(--gbd)}
+.pill-when{color:var(--a);background:var(--abg);border:1px solid var(--abd)}
+.pill-type{color:var(--b);background:var(--bbg);border:1px solid var(--bbd)}
+.pill-guard{color:var(--r);background:var(--rbg);border:1px solid var(--rbd)}
+.met-detail{border-top:1px solid var(--bd);padding:1rem 1.15rem;display:none}
+.met.open .met-detail{display:block}
+.met-toggle{display:flex;align-items:center;justify-content:center;padding:.45rem;border-top:1px solid var(--bd);cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:.6rem;color:var(--t3);letter-spacing:.06em;transition:background .15s;user-select:none}
+.met-toggle:hover{background:var(--s2)}
+.met.open .met-toggle .arrow{transform:rotate(180deg)}
+.arrow{display:inline-block;margin-right:.3rem;transition:transform .2s}
+.det-h{font-family:'JetBrains Mono',monospace;font-size:.58rem;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin:1rem 0 .35rem}
+.det-h:first-child{margin-top:0}
+.det-p{font-size:.82rem;color:var(--t2);margin-bottom:.4rem}
+.det-p strong{color:var(--t1)}
+.inst{background:var(--s2);border:1px solid var(--bd2);border-radius:6px;padding:.65rem .85rem;margin:.5rem 0;font-size:.78rem}
+.inst-label{font-family:'JetBrains Mono',monospace;font-size:.55rem;font-weight:600;color:var(--c);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.25rem}
+.inst-body{color:var(--t2)}
+.inst-body strong{color:var(--t1)}
+.inst-body code{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--c);background:rgba(34,211,238,.06);padding:.05rem .3rem;border-radius:2px}
+.co{background:var(--s2);border-left:3px solid var(--bd);padding:.65rem .85rem;margin:.6rem 0;font-size:.82rem;border-radius:0 6px 6px 0;color:var(--t2)}
+.co strong{color:var(--t1)}
+.co.r{border-left-color:var(--r);background:var(--rbg)}
+.co.g{border-left-color:var(--g);background:var(--gbg)}
+.co.b{border-left-color:var(--b);background:var(--bbg)}
+.co.a{border-left-color:var(--a);background:var(--abg)}
+.tbl{width:100%;border-collapse:collapse;font-size:.78rem;margin:.5rem 0}
+.tbl th{font-family:'JetBrains Mono',monospace;font-size:.56rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);text-align:left;padding:.45rem .55rem;border-bottom:2px solid var(--bd);white-space:nowrap}
+.tbl td{padding:.45rem .55rem;border-bottom:1px solid rgba(38,46,64,.5);color:var(--t2);vertical-align:top}
+.tbl tr:hover td{background:var(--s1)}
+.footer{text-align:center;padding:2rem;color:var(--t4);font-size:.68rem;border-top:1px solid var(--bd);margin-top:3rem}
+</style>
+</head>
+<body>
+<div class="main">
+
+<div class="hdr">
+  <div class="hdr-label">Success Metrics & Rationale</div>
+  <h1>Customer Central is successful when <em>agents are faster, more accurate, and more confident</em> — and we can prove it with numbers, not anecdotes.</h1>
+</div>
+
+<!-- =========================================== -->
+<!-- THE SIMPLE STORY -->
+<!-- =========================================== -->
+<div class="prose">
+<p><strong>Three things we actually care about.</strong></p>
+
+<p><strong>Agents resolve calls faster.</strong> Today they spend 2-3 minutes per call just finding information across 5 different systems. If Customer Central eliminates that scavenger hunt, calls get shorter without feeling rushed. We measure Average Handle Time. Target: 15-20% reduction within 90 days. That's not "rush the customer off the phone" — it's "stop wasting time hunting for data."</p>
+
+<p><strong>Agents resolve calls the first time.</strong> When agents can see the full history and diagnose problems inline, customers don't have to call back. We measure First Contact Resolution — did the customer contact us again about the same issue within 7 days? Target: 10% improvement. That's modest because Phase 1 only helps agents <em>see</em> the problem faster, not <em>fix</em> it in-place. Write-back comes in Phase 2.</p>
+
+<p><strong>Service quality holds as Justworks scales.</strong> This is the big one. Justworks has NPS +60 with 10,000 customers. Can they keep that at 50,000? If every new customer requires proportionally more agents, the business model breaks. We measure NPS divided by CSO cost per customer. If that ratio trends up over time, the tooling is creating leverage — same quality, less cost per customer. That's the whole point of this investment.</p>
+</div>
+
+<div class="prose">
+<p><strong>But those numbers take 60-90 days to move.</strong> We can't wait that long to know if we're on track. So in the first two weeks, we watch early signals: How fast does the agent orient after picking up the phone? Does the customer still have to repeat themselves? Did agents actually stop opening Salesforce and Zendesk in other tabs? Do agents <em>feel</em> more confident? If those signals move, the big numbers will follow.</p>
+
+<p><strong>And we protect against causing harm while pursuing gains.</strong> NPS doesn't drop below +60. Data accuracy stays above 98%. Escalation rate doesn't increase. If any guardrail breaks, we pause and fix before scaling.</p>
+
+<p><strong>What we deliberately don't measure in Phase 1:</strong> upsell revenue (no upsell intelligence yet — that's Phase 3), call volume reduction (requires proactive outreach, not a better dashboard), and feature count shipped (nobody cares how many features we built if agents only use three of them).</p>
+</div>
+
+<div class="co a" style="margin-bottom:2rem">
+  <strong>That's the story. Below is the detail — every metric defined, how we measure it, and what needs to be engineered into the product to capture it.</strong>
+</div>
+
+<!-- =========================================== -->
+<!-- OUTCOME METRICS -->
+<!-- =========================================== -->
+<div class="sh">◆ Outcome Metrics — "Did it move the business?"</div>
+
+<div class="prose"><p>These are the metrics Renee reports to leadership. They take 60-90 days post-launch to move meaningfully. They're the reason the project exists.</p></div>
+
+<div class="met" id="aht">
+  <div class="met-top">
+    <div class="met-name">Average Handle Time (AHT)</div>
+    <div class="met-oneliner">Less context-switching = faster resolution. If agents spend 2-3 fewer minutes assembling context per call, AHT drops proportionally.</div>
+    <div class="met-row">
+      <span class="met-pill pill-target">TARGET: 15-20% REDUCTION</span>
+      <span class="met-pill pill-when">TIMELINE: 90 DAYS POST-LAUNCH</span>
+      <span class="met-pill pill-type">OUTCOME</span>
+    </div>
+  </div>
+  <div class="met-toggle" onclick="tog(this)"><span class="arrow">▼</span> HOW WE MEASURE · WHAT COULD GO WRONG · INSTRUMENTATION</div>
+  <div class="met-detail">
+    <div class="det-h">How We Measure</div>
+    <div class="det-p"><strong>Baseline:</strong> Measure AHT for 2 weeks before alpha launch. Segment by call type (payroll, benefits, billing, general) — AHT varies dramatically by topic. Use the same segmentation post-launch, or changes in call mix confuse the signal.</div>
+    <div class="det-p"><strong>Control group:</strong> During beta (1 team on Customer Central, others not), compare AHT between the beta team and control teams. This isolates the tool's effect from seasonal or process changes.</div>
+    <div class="det-p"><strong>Ongoing:</strong> Weekly AHT by team, segmented by call type. Tracked in the telephony system (not Customer Central).</div>
+
+    <div class="inst">
+      <div class="inst-label">⚙ What needs to be engineered</div>
+      <div class="inst-body"><strong>Call-session linkage.</strong> To correlate specific calls with Customer Central usage, log the telephony <code>call_id</code> alongside the Customer Central <code>session_id</code> when the agent selects an account during a call. One event, lightweight. Without this join key, we can compare team-level AHT but can't analyze which Customer Central behaviors correlate with shorter calls. <strong>Depends on:</strong> telephony system having an accessible event stream or API.</div>
+    </div>
+
+    <div class="det-h">What Could Go Wrong</div>
+    <div class="det-p"><strong>AHT goes UP initially.</strong> Expected. Agents learning a new tool are slower for 1-2 weeks. If still elevated after 4 weeks, the tool is adding friction — investigate.</div>
+    <div class="det-p"><strong>AHT drops but CSAT drops too.</strong> Agents rushing calls. That's why NPS is a guardrail.</div>
+    <div class="det-p"><strong>The nuance:</strong> We're optimizing for efficient resolution, not short calls. If agents spend saved time on deeper customer engagement instead of faster hangups, that's equally a win — it shows up in NPS and FCR instead of AHT.</div>
+  </div>
+</div>
+
+<div class="met" id="fcr">
+  <div class="met-top">
+    <div class="met-name">First Contact Resolution (FCR)</div>
+    <div class="met-oneliner">Better information = fewer escalations and callbacks. If the agent can see the full history and diagnose inline, they resolve on the first touch.</div>
+    <div class="met-row">
+      <span class="met-pill pill-target">TARGET: 10% IMPROVEMENT</span>
+      <span class="met-pill pill-when">TIMELINE: 90 DAYS POST-LAUNCH</span>
+      <span class="met-pill pill-type">OUTCOME</span>
+    </div>
+  </div>
+  <div class="met-toggle" onclick="tog(this)"><span class="arrow">▼</span> HOW WE MEASURE · WHY ONLY 10% · INSTRUMENTATION</div>
+  <div class="met-detail">
+    <div class="det-h">How We Measure</div>
+    <div class="det-p"><strong>Definition:</strong> Customer did not contact CSO again about the same topic within 7 days. Measured through Zendesk: if a customer creates a new ticket with similar tags/topic within 7 days of the last resolved ticket, the original was not resolved on first contact.</div>
+    <div class="det-p"><strong>Caveat:</strong> Some issues genuinely require multiple contacts (waiting for a payroll correction to process, benefits carrier delays). Exclude known multi-step workflows, or create a separate "avoidable re-contact rate."</div>
+
+    <div class="inst">
+      <div class="inst-label">⚙ What needs to be engineered</div>
+      <div class="inst-body"><strong>Topic matching logic in the measurement pipeline.</strong> Zendesk tickets need consistent topic tagging so re-contacts can be identified as "same issue." If Justworks doesn't have a standardized topic taxonomy in Zendesk, this is a prerequisite — either a required agent field at ticket close or automated classification. <strong>This is a Zendesk process change, not a Customer Central feature.</strong> Flag as a dependency for accurate FCR measurement.</div>
+    </div>
+
+    <div class="det-h">Why Only 10%</div>
+    <div class="det-p">Phase 1 helps agents <strong>see</strong> problems faster (unified data, history, pay stub comparison). It doesn't help them <strong>fix</strong> in-place — write-back is Phase 2. The 10% improvement reflects diagnostic improvement alone. Once action capabilities ship, FCR should improve further.</div>
+  </div>
+</div>
+
+<div class="met" id="nps-hc">
+  <div class="met-top">
+    <div class="met-name">NPS per CSO Headcount Dollar</div>
+    <div class="met-oneliner">The scaling metric. Can Justworks maintain NPS +60 as the customer base grows without proportionally growing the CSO team?</div>
+    <div class="met-row">
+      <span class="met-pill pill-target">TARGET: TRENDING UP QoQ</span>
+      <span class="met-pill pill-when">TIMELINE: 2-3 QUARTERS</span>
+      <span class="met-pill pill-type">NORTH STAR</span>
+    </div>
+  </div>
+  <div class="met-toggle" onclick="tog(this)"><span class="arrow">▼</span> WHY THIS METRIC · HOW WE MEASURE · INSTRUMENTATION</div>
+  <div class="met-detail">
+    <div class="det-h">Why Not Just NPS</div>
+    <div class="det-p"><strong>NPS alone is misleading at scale.</strong> Justworks could maintain +60 by doubling headcount every time the customer base doubles. That's linear cost with no leverage. The real question: can we maintain quality with sub-linear headcount growth?</div>
+    <div class="det-p"><strong>Formula:</strong> NPS ÷ (annual CSO labor cost ÷ customer count). As customer count grows, if CSO cost grows more slowly, this ratio rises. That's proof tooling creates leverage.</div>
+
+    <div class="det-h">How We Measure</div>
+    <div class="det-p">Quarterly. NPS from existing survey infrastructure. CSO cost from finance. Customer count from production DB. A leadership dashboard widget — not something instrumented in Customer Central.</div>
+
+    <div class="inst">
+      <div class="inst-label">⚙ What needs to be engineered</div>
+      <div class="inst-body"><strong>Nothing in Customer Central.</strong> This metric composes existing data sources. The only work is building the quarterly report that pulls NPS, CSO cost, and customer count into one view. Recommend a single Tableau widget on the existing leadership dashboard.</div>
+    </div>
+
+    <div class="co g"><strong>What to say in the room:</strong> "The question isn't whether we can maintain NPS at +60. The question is whether we can maintain it as we grow to 50,000 customers. If we need 5x the agents for 5x the customers, tooling has failed. If we need 2x, tooling has succeeded. This ratio tells us which path we're on."</div>
+  </div>
+</div>
+
+<!-- =========================================== -->
+<!-- GUARDRAIL METRICS -->
+<!-- =========================================== -->
+<div class="sh">◆ Guardrail Metrics — "Are we causing harm while pursuing gains?"</div>
+
+<div class="prose"><p>Guardrails don't need to improve — they need to not degrade. If any breaks, pause rollout and investigate.</p></div>
+
+<div class="met" id="nps-abs">
+  <div class="met-top">
+    <div class="met-name">NPS (Absolute)</div>
+    <div class="met-oneliner">Customer Central must be invisible to customers — they should only notice that service got faster and more informed. If NPS drops during rollout, something is wrong.</div>
+    <div class="met-row">
+      <span class="met-pill pill-guard">FLOOR: ≥ +60</span>
+      <span class="met-pill pill-type">GUARDRAIL</span>
+    </div>
+  </div>
+  <div class="met-toggle" onclick="tog(this)"><span class="arrow">▼</span> DETAIL</div>
+  <div class="met-detail">
+    <div class="det-p">Measured through existing NPS survey infrastructure. During beta, segment NPS responses by whether the handling agent was on the beta team vs. not.</div>
+    <div class="inst">
+      <div class="inst-label">⚙ What needs to be engineered</div>
+      <div class="inst-body"><strong>Beta team segmentation in NPS reporting.</strong> Link NPS responses to the handling agent, then filter by "beta team" vs. "control." A Zendesk + survey tool configuration, not a Customer Central feature.</div>
+    </div>
+  </div>
+</div>
+
+<div class="met" id="accuracy">
+  <div class="met-top">
+    <div class="met-name">Data Accuracy Rate</div>
+    <div class="met-oneliner">An agent quoting wrong data is worse than having no tool. Trust in internal tools is binary — one bad billing status quote and the whole pod stops trusting that section.</div>
+    <div class="met-row">
+      <span class="met-pill pill-guard">FLOOR: ≥ 98%</span>
+      <span class="met-pill pill-type">GUARDRAIL</span>
+    </div>
+  </div>
+  <div class="met-toggle" onclick="tog(this)"><span class="arrow">▼</span> WHY 98% · HOW TO MEASURE · INSTRUMENTATION</div>
+  <div class="met-detail">
+    <div class="det-h">Why 98%</div>
+    <div class="det-p">At 200 interactions per agent per month, 2% error = ~4 wrong data points. Noticeable but recoverable. At 5%, it's 10 per month and agents abandon the tool. Trust erodes fast — one wrong billing status and the agent tells teammates, and within a week the pod is back in Salesforce.</div>
+
+    <div class="det-h">How to Measure</div>
+    <div class="det-p">Nightly automated consistency checks. Sample 50 random accounts from the aggregation layer, query each source system for the same fields, compare. Flag discrepancies by section (billing, contacts, interactions, events). PM dashboard showing accuracy trends.</div>
+
+    <div class="inst">
+      <div class="inst-label">⚙ What needs to be engineered</div>
+      <div class="inst-body"><strong>Nightly consistency checker.</strong> Background job: select 50 random <code>company_id</code>s from <code>account_summaries</code>, query source systems, compare field-by-field. Log discrepancies with field name, cached value, source value, and staleness. ~1-2 days of engineering. <strong>Build during alpha, not after.</strong> Also: the freshness timestamp (<code>last_synced_at</code>) surfaced in the UI as "as of X min ago" — already designed in the data performance strategy, must ship with MVP.</div>
+    </div>
+  </div>
+</div>
+
+<div class="met" id="escalation">
+  <div class="met-top">
+    <div class="met-name">Escalation Rate</div>
+    <div class="met-oneliner">Better information should mean fewer escalations. If they rise, either agents see problems they didn't before (temporary, good) or the tool creates confusion (bad). Segment by reason.</div>
+    <div class="met-row">
+      <span class="met-pill pill-guard">FLOOR: NO INCREASE FROM BASELINE</span>
+      <span class="met-pill pill-type">GUARDRAIL</span>
+    </div>
+  </div>
+  <div class="met-toggle" onclick="tog(this)"><span class="arrow">▼</span> DETAIL</div>
+  <div class="met-detail">
+    <div class="det-p">Measured through Zendesk escalation tags. Baseline during pre-launch. Temporary increase in first 2 weeks is expected. Sustained increase after 4 weeks is a red flag.</div>
+    <div class="inst">
+      <div class="inst-label">⚙ What needs to be engineered</div>
+      <div class="inst-body"><strong>Nothing in Customer Central.</strong> Escalation tracking lives in Zendesk. Validate that escalation tags are applied consistently during pre-launch baseline — if they're not, this metric is unmeasurable.</div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================== -->
+<!-- LEADING INDICATORS -->
+<!-- =========================================== -->
+<div class="sh">◆ Leading Indicators — "Early signals the big numbers will follow"</div>
+
+<div class="prose"><p>These move in Week 1-2 of alpha. Each one is a link in the causal chain to an outcome metric. If orientation time drops, AHT will follow. If repeat-info rate drops, NPS holds. If systems-accessed drops, agents are truly consolidating.</p></div>
+
+<div class="met" id="orient">
+  <div class="met-top">
+    <div class="met-name">Orientation Time</div>
+    <div class="met-oneliner">How long from call arrival to the agent saying something informed — "Hi Sarah, I see you called about payroll last week." Directly measures whether context-assembly is solved.</div>
+    <div class="met-row">
+      <span class="met-pill pill-target">TARGET: &lt;10 SECONDS</span>
+      <span class="met-pill pill-when">VISIBLE: WEEK 1</span>
+      <span class="met-pill pill-type">LEADING → DRIVES AHT</span>
+    </div>
+  </div>
+  <div class="met-toggle" onclick="tog(this)"><span class="arrow">▼</span> THREE MEASUREMENT APPROACHES · INSTRUMENTATION</div>
+  <div class="met-detail">
+    <div class="det-h">Three Approaches (Escalating Investment)</div>
+    <div class="det-p"><strong>Option A — Observational (alpha, zero engineering).</strong> PM shadows 10 calls per agent. Notes when the agent says the customer's name, references history, starts troubleshooting. Imprecise but rich.</div>
+    <div class="det-p"><strong>Option B — Proxy (available immediately in Customer Central).</strong> Time from search submit to first tab click or scroll. Captures information-consumption behavior. If they search and immediately navigate — context was useful. If they pause 30 seconds — confused.</div>
+    <div class="det-p"><strong>Option C — Full (requires telephony integration).</strong> Timestamp of call arrival from phone system → timestamp of first account selection in Customer Central. Most accurate.</div>
+
+    <div class="inst">
+      <div class="inst-label">⚙ What needs to be engineered</div>
+      <div class="inst-body"><strong>For Option B (recommended for MVP):</strong> Three event types in Customer Central: <code>search_submitted</code> (timestamp), <code>result_selected</code> (timestamp), <code>first_interaction</code> (timestamp of first tab click, scroll, or expand). Delta between <code>result_selected</code> and <code>first_interaction</code> = proxy orientation time. Lightweight. <strong>For Option C (Phase 2):</strong> Requires <code>call_id</code> feed from telephony system + join to Customer Central sessions. Ask Evan/Caroline if the telephony system has an event stream.</div>
+    </div>
+  </div>
+</div>
+
+<div class="met" id="repeat">
+  <div class="met-top">
+    <div class="met-name">Repeat-Information Rate</div>
+    <div class="met-oneliner">"Can you explain your issue again?" is the #1 brand promise killer. If the interaction timeline works, agents should never ask this when prior tickets exist.</div>
+    <div class="met-row">
+      <span class="met-pill pill-target">TARGET: &lt;10% OF CALLS</span>
+      <span class="met-pill pill-when">VISIBLE: WEEK 2</span>
+      <span class="met-pill pill-type">LEADING → DRIVES NPS</span>
+    </div>
+  </div>
+  <div class="met-toggle" onclick="tog(this)"><span class="arrow">▼</span> HOW TO MEASURE · INSTRUMENTATION</div>
+  <div class="met-detail">
+    <div class="det-p"><strong>Primary:</strong> Add one question to the existing post-interaction survey: "Did you have to re-explain an issue you'd already reported?" (Yes/No). The % of "Yes" is the repeat-information rate.</div>
+    <div class="det-p"><strong>Secondary:</strong> Agent self-report during alpha. End of shift, agents note how many times they asked a customer to re-explain.</div>
+    <div class="inst">
+      <div class="inst-label">⚙ What needs to be engineered</div>
+      <div class="inst-body"><strong>One survey question added to the existing CSAT flow.</strong> Zendesk or survey tool configuration, not a Customer Central feature. If the tool supports conditional logic, only show this question when the customer has prior tickets in the last 30 days.</div>
+    </div>
+  </div>
+</div>
+
+<div class="met" id="systems">
+  <div class="met-top">
+    <div class="met-name">Systems Accessed per Interaction</div>
+    <div class="met-oneliner">The real adoption test. If agents still have Salesforce and Zendesk open alongside Customer Central, we added a 6th system instead of replacing 5.</div>
+    <div class="met-row">
+      <span class="met-pill pill-target">TARGET: FROM ~5 TO ≤2</span>
+      <span class="met-pill pill-when">VISIBLE: WEEK 2 OF BETA</span>
+      <span class="met-pill pill-type">LEADING → DRIVES AHT + FCR</span>
+    </div>
+  </div>
+  <div class="met-toggle" onclick="tog(this)"><span class="arrow">▼</span> HOW TO MEASURE · INSTRUMENTATION</div>
+  <div class="met-detail">
+    <div class="det-p"><strong>Primary:</strong> End-of-day agent survey: "For a typical call today, which systems did you use?" Multi-select: Customer Central, Salesforce, Zendesk, Admin Dashboard, Knowledge Base, Slack, Other. Track weekly.</div>
+    <div class="det-p"><strong>Secondary:</strong> PM observation during alpha shadowing — note which apps are open during calls.</div>
+    <div class="inst">
+      <div class="inst-label">⚙ What needs to be engineered</div>
+      <div class="inst-body"><strong>For MVP: Nothing in Customer Central.</strong> Self-report surveys and observation. <strong>For Phase 2:</strong> Browser/desktop analytics detecting active tabs during sessions. Invasive — discuss with CSO leadership before building. Self-report is sufficient for MVP.</div>
+    </div>
+  </div>
+</div>
+
+<div class="met" id="confidence">
+  <div class="met-top">
+    <div class="met-name">Agent Confidence Score</div>
+    <div class="met-oneliner">Weekly pulse: "How confident did you feel handling calls this week?" (1-5). Captures the emotional design target — mastery, flow, agency.</div>
+    <div class="met-row">
+      <span class="met-pill pill-target">TARGET: ≥ 4.0 / 5.0</span>
+      <span class="met-pill pill-when">VISIBLE: WEEKLY FROM ALPHA</span>
+      <span class="met-pill pill-type">LEADING → DRIVES RETENTION + NPS</span>
+    </div>
+  </div>
+  <div class="met-toggle" onclick="tog(this)"><span class="arrow">▼</span> DETAIL</div>
+  <div class="met-detail">
+    <div class="det-p">Single question, 5 seconds to answer. Track the trendline: rising = tool is landing, flat or declining = UX or trust problem. Follow up with qualitative interviews.</div>
+    <div class="inst">
+      <div class="inst-label">⚙ What needs to be engineered</div>
+      <div class="inst-body"><strong>Nothing in Customer Central.</strong> Slack poll, Google Form, or existing pulse survey. Same question, same scale, same day each week. Add one optional free-text: "What helped or hindered your confidence this week?"</div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================== -->
+<!-- INPUT METRICS -->
+<!-- =========================================== -->
+<div class="sh">◆ Input Metrics — "Is the tool functioning?"</div>
+
+<div class="prose"><p>Operational health. Necessary for debugging, insufficient for declaring success.</p></div>
+
+<table class="tbl">
+  <thead><tr><th>Metric</th><th>Target</th><th>How Measured</th><th>Engineering Needed</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Daily Active Usage</strong></td><td style="color:var(--g)">≥80% in 30 days</td><td>Agent login + ≥1 search per shift</td><td>Session logging: <code>agent_id</code>, <code>session_start</code>, <code>search_count</code>. Built into auth + search.</td></tr>
+    <tr><td><strong>Search-to-Context Time</strong></td><td style="color:var(--g)">&lt;3 seconds</td><td>Search submit → Tier 1 render</td><td>Performance timing: <code>search_submitted_at</code>, <code>tier1_rendered_at</code>. ~0.5 days.</td></tr>
+    <tr><td><strong>Feature Usage</strong></td><td style="color:var(--a)">Problem tabs ≥30% of sessions</td><td>Click events per tab/section</td><td><code>tab_clicked(tab_name, session_id)</code>. Standard analytics.</td></tr>
+    <tr><td><strong>Data Freshness</strong></td><td style="color:var(--g)">≤5 min avg staleness</td><td>Sync pipeline: time since last sync</td><td>Log <code>last_synced_at</code> per source, alert if &gt;10 min. Backend ops.</td></tr>
+    <tr><td><strong>Error Rate</strong></td><td style="color:var(--g)">&lt;0.5% of loads</td><td>API errors ÷ total requests</td><td>Standard monitoring (Datadog, etc.). No custom work.</td></tr>
+  </tbody>
+</table>
+
+<!-- =========================================== -->
+<!-- MEASUREMENT TIMELINE -->
+<!-- =========================================== -->
+<div class="sh">◆ When to Measure What</div>
+
+<table class="tbl">
+  <thead><tr><th>Phase</th><th>Timeline</th><th>What We Measure</th><th>Decision Gate</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Baseline</strong></td><td>2 weeks pre-alpha</td><td>AHT, FCR, NPS, escalation rate, agent confidence</td><td>Baseline established → alpha</td></tr>
+    <tr><td><strong>Alpha</strong> (5 agents)</td><td>Weeks 1-2</td><td>Orientation time, data accuracy, error rate, agent confidence. Daily feedback.</td><td>Accuracy ≥98%, agents say "I'd use this" → beta</td></tr>
+    <tr><td><strong>Beta</strong> (1 team)</td><td>Weeks 3-4</td><td>All leading indicators. AHT/FCR: beta team vs. control. Systems-accessed. Repeat-info rate.</td><td>Leading indicators positive, no guardrail breach → rollout</td></tr>
+    <tr><td><strong>Full Rollout</strong></td><td>Weeks 5-8</td><td>Adoption (daily active), all leading indicators, begin outcome tracking.</td><td>Adoption ≥80% in 30 days → steady state</td></tr>
+    <tr><td><strong>Steady State</strong></td><td>Day 60+</td><td>Outcome metrics: AHT, FCR, NPS/headcount $. Monthly reviews.</td><td>AHT -15%, FCR +10%, NPS ≥+60 → Phase 2 business case</td></tr>
+  </tbody>
+</table>
+
+<div class="co g" style="margin-top:.75rem"><strong>Each phase has a gate.</strong> Don't roll out because the calendar says Week 7. Roll out because the data says it works. If alpha reveals accuracy problems, fix before beta — even if it delays the timeline.</div>
+
+<!-- =========================================== -->
+<!-- INSTRUMENTATION SUMMARY -->
+<!-- =========================================== -->
+<div class="sh">◆ Instrumentation Summary — What Must Be Built</div>
+
+<div class="prose"><p>Not all metrics need custom engineering. But several require instrumentation built into Customer Central. Here's the full list, in priority order.</p></div>
+
+<table class="tbl">
+  <thead><tr><th>Priority</th><th>What to Build</th><th>Effort</th><th>Metrics Enabled</th></tr></thead>
+  <tbody>
+    <tr><td style="color:var(--r)"><strong>P0</strong></td><td><strong>Session + event logging.</strong> Every account lookup, tab click, search emits: <code>agent_id</code>, <code>session_id</code>, <code>company_id</code>, <code>action</code>, <code>timestamp</code>.</td><td>0.5 days</td><td>Adoption, feature usage, search-to-context, orientation time</td></tr>
+    <tr><td style="color:var(--r)"><strong>P0</strong></td><td><strong>Freshness timestamps in UI.</strong> Each section shows "as of X min ago." Already designed — ensure it ships.</td><td>0.5 days</td><td>Agent trust, data accuracy transparency</td></tr>
+    <tr><td style="color:var(--a)"><strong>P1</strong></td><td><strong>Nightly consistency checker.</strong> Sample 50 accounts, compare cached vs. source. Log discrepancies.</td><td>1-2 days</td><td>Data accuracy (guardrail)</td></tr>
+    <tr><td style="color:var(--a)"><strong>P1</strong></td><td><strong>Performance timing.</strong> <code>search_submitted_at</code>, <code>tier1_rendered_at</code>, <code>tier2_rendered_at</code>.</td><td>0.5 days</td><td>Search-to-context time</td></tr>
+    <tr><td style="color:var(--b)"><strong>P2</strong></td><td><strong>Call-session linkage.</strong> Log telephony <code>call_id</code> with Customer Central <code>session_id</code>.</td><td>1 day</td><td>Precise orientation time, per-call AHT</td></tr>
+  </tbody>
+</table>
+
+<div class="co b" style="margin-top:.75rem"><strong>Total: ~3-4 days of engineering.</strong> P0 ships with MVP. P1 ships during first week of alpha. P2 ships when telephony integration is available.</div>
+
+<!-- =========================================== -->
+<!-- ANTI-METRICS -->
+<!-- =========================================== -->
+<div class="sh">◆ What We Don't Measure — And Why</div>
+
+<table class="tbl">
+  <thead><tr><th>Anti-Metric</th><th>Why We Skip It</th><th>When It Becomes Relevant</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Upsell Revenue</strong></td><td>Phase 1 builds the data foundation, not upsell intelligence. Measuring revenue guarantees a zero.</td><td>Phase 3</td></tr>
+    <tr><td><strong>Call Volume Reduction</strong></td><td>Phase 1 makes agents better on calls, not fewer calls. If volume drops, it might mean churn.</td><td>Phase 3</td></tr>
+    <tr><td><strong>Feature Count</strong></td><td>Output ≠ outcome. Fewer features used daily beats more features used occasionally.</td><td>Never</td></tr>
+    <tr><td><strong>Page Views / Time on Tool</strong></td><td>For agent tools, more time = struggling to find info. Track efficiency, not volume.</td><td>Never in raw form</td></tr>
+  </tbody>
+</table>
+
+</div>
+
+<div class="footer">
+  Customer Central MVP — Success Metrics & Rationale · Darrien Watson · Justworks GPM Case Study · February 2026
+</div>
+
+<script>
+function tog(el){ el.closest('.met').classList.toggle('open') }
+</script>
+</body>
+</html>

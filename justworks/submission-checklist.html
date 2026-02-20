@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Submission Packet — Master Checklist</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500;600&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d0f12;
+  --surface: #161a20;
+  --surface-2: #1c2028;
+  --surface-3: #232830;
+  --border: #2a3040;
+  --border-active: #4a5568;
+  --text: #e2e8f0;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  --accent: #f59e0b;
+  --green: #10b981;
+  --green-dim: rgba(16, 185, 129, 0.12);
+  --red: #ef4444;
+  --red-dim: rgba(239, 68, 68, 0.1);
+  --blue: #3b82f6;
+  --blue-dim: rgba(59, 130, 246, 0.1);
+  --amber: #f59e0b;
+  --amber-dim: rgba(245, 158, 11, 0.1);
+  --purple: #a855f7;
+  --purple-dim: rgba(168, 85, 247, 0.1);
+  --cyan: #06b6d4;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Source Sans 3', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+.header {
+  padding: 2.5rem 2rem 1.5rem;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+.header h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  color: var(--accent);
+  margin-bottom: 0.4rem;
+}
+.header .sub {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 300;
+}
+
+/* Score bar */
+.score-bar {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.score-item {
+  text-align: center;
+}
+.score-num {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.8rem;
+  line-height: 1;
+}
+.score-num.green { color: var(--green); }
+.score-num.amber { color: var(--amber); }
+.score-num.red { color: var(--red); }
+.score-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 0.2rem;
+}
+
+/* Filter */
+.filters {
+  display: flex;
+  gap: 0.3rem;
+  padding: 0.6rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+}
+.filter-btn {
+  background: none;
+  border: 1px solid transparent;
+  color: var(--text-dim);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.filter-btn:hover { color: var(--text-muted); border-color: var(--border); }
+.filter-btn.active { color: var(--accent); background: rgba(245,158,11,0.08); border-color: rgba(245,158,11,0.3); }
+
+.content { max-width: 1100px; margin: 0 auto; padding: 1.5rem; }
+
+/* Section headers */
+.section-head {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 1.5rem 0 0.5rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Item card */
+.item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.item:hover { border-color: var(--border-active); }
+.item-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+}
+.item-status {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  margin-top: 1px;
+}
+.status-done { background: var(--green-dim); border: 1px solid rgba(16,185,129,0.25); }
+.status-partial { background: var(--amber-dim); border: 1px solid rgba(245,158,11,0.25); }
+.status-missing { background: var(--red-dim); border: 1px solid rgba(239,68,68,0.25); }
+.status-bonus { background: var(--purple-dim); border: 1px solid rgba(168,85,247,0.25); }
+
+.item-main { flex: 1; }
+.item-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.15rem;
+}
+.item-req {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--text-dim);
+  margin-bottom: 0.3rem;
+}
+.item-desc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-weight: 300;
+}
+.item-toggle {
+  color: var(--text-dim);
+  font-size: 1rem;
+  transition: transform 0.2s;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+.item.open .item-toggle { transform: rotate(180deg); }
+
+.item-body {
+  display: none;
+  border-top: 1px solid var(--border);
+  padding: 1rem 1.25rem;
+}
+.item.open .item-body { display: block; }
+
+/* Sub-sections within body */
+.sub-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.4rem;
+  margin-top: 0.75rem;
+}
+.sub-label:first-child { margin-top: 0; }
+.sub-label.artifacts { color: var(--green); }
+.sub-label.gaps { color: var(--red); }
+.sub-label.action { color: var(--blue); }
+.sub-label.notes { color: var(--text-dim); }
+
+.body-text {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+  margin-bottom: 0.4rem;
+}
+
+.artifact-tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  background: var(--green-dim);
+  color: var(--green);
+  border: 1px solid rgba(16,185,129,0.2);
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+  margin: 0.15rem 0.2rem 0.15rem 0;
+}
+
+.gap-tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  background: var(--red-dim);
+  color: var(--red);
+  border: 1px solid rgba(239,68,68,0.2);
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+  margin: 0.15rem 0.2rem 0.15rem 0;
+}
+
+.action-tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  background: var(--blue-dim);
+  color: var(--blue);
+  border: 1px solid rgba(59,130,246,0.2);
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+  margin: 0.15rem 0.2rem 0.15rem 0;
+}
+
+.effort-tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  background: var(--surface-3);
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  padding: 0.1rem 0.4rem;
+  border-radius: 3px;
+  margin-left: 0.3rem;
+}
+
+/* Highlight callouts */
+.callout {
+  background: var(--surface-3);
+  border-left: 3px solid var(--border);
+  padding: 0.6rem 0.9rem;
+  margin: 0.5rem 0;
+  font-size: 0.8rem;
+  border-radius: 0 4px 4px 0;
+}
+.callout.green { border-left-color: var(--green); background: var(--green-dim); }
+.callout.red { border-left-color: var(--red); background: var(--red-dim); }
+.callout.blue { border-left-color: var(--blue); background: var(--blue-dim); }
+.callout.amber { border-left-color: var(--amber); background: var(--amber-dim); }
+
+.footer {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-dim);
+  font-size: 0.7rem;
+  border-top: 1px solid var(--border);
+  margin-top: 2rem;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Submission Packet — Master Checklist</h1>
+  <p class="sub">Every required deliverable mapped to artifact status, gaps identified, and work remaining</p>
+</div>
+
+<div class="score-bar">
+  <div class="score-item"><div class="score-num green">8</div><div class="score-label">Complete</div></div>
+  <div class="score-item"><div class="score-num amber">5</div><div class="score-label">Partial</div></div>
+  <div class="score-item"><div class="score-num red">4</div><div class="score-label">Not Started</div></div>
+  <div class="score-item"><div class="score-num" style="color:var(--purple)">3</div><div class="score-label">Bonus (Beyond Prompt)</div></div>
+</div>
+
+<div class="filters">
+  <button class="filter-btn active" data-filter="all">ALL (20)</button>
+  <button class="filter-btn" data-filter="done">✅ COMPLETE (8)</button>
+  <button class="filter-btn" data-filter="partial">🟡 PARTIAL (5)</button>
+  <button class="filter-btn" data-filter="missing">❌ NEEDS WORK (4)</button>
+  <button class="filter-btn" data-filter="bonus">🟣 BONUS (3)</button>
+</div>
+
+<div class="content">
+
+  <!-- ============================== -->
+  <!-- REQUIRED BY PROMPT -->
+  <!-- ============================== -->
+  <div class="section-head">⬡ REQUIRED BY THE CASE STUDY PROMPT</div>
+
+  <!-- 1. Problem/Context/Opportunity -->
+  <div class="item" data-status="done" onclick="toggleItem(this)">
+    <div class="item-header">
+      <div class="item-status status-done">✅</div>
+      <div class="item-main">
+        <div class="item-req">PROMPT REQUIREMENT #1</div>
+        <div class="item-title">An overview of the problem, context, and business opportunity</div>
+        <div class="item-desc">Covered across written doc + interactive strategy walkthrough. Strong.</div>
+      </div>
+      <span class="item-toggle">▼</span>
+    </div>
+    <div class="item-body">
+      <div class="sub-label artifacts">EXISTING ARTIFACTS</div>
+      <span class="artifact-tag">justworks_north_star_and_problem_overview.pdf</span>
+      <span class="artifact-tag">justworks-strategy.jsx</span>
+      <div class="body-text" style="margin-top:0.5rem">The PDF covers: North Star definition, CSO success model (individual/team/leadership), 6 compounding problems, the business opportunity, and the tiebreaker principle. The interactive strategy site walks through the same content in a presentable format with expandable sections.</div>
+      <div class="sub-label notes">ASSESSMENT</div>
+      <div class="body-text">Complete and strong. The problem framing is one of the most developed parts of the preparation. The 6 compounding problems (context-switching tax, caller identity problem, repeat yourself problem, knowledge gap, proactive blindspot, scaling threat) are vivid and specific.</div>
+    </div>
+  </div>
+
+  <!-- 2. Phased Roadmap -->
+  <div class="item" data-status="partial" onclick="toggleItem(this)">
+    <div class="item-header">
+      <div class="item-status status-partial">🟡</div>
+      <div class="item-main">
+        <div class="item-req">PROMPT REQUIREMENT #2</div>
+        <div class="item-title">Proposed phases of the project and a high-level roadmap</div>
+        <div class="item-desc">Dependency logic and phasing rationale exist. Missing: formal timeline with milestones, durations, resource allocation per phase.</div>
+      </div>
+      <span class="item-toggle">▼</span>
+    </div>
+    <div class="item-body">
+      <div class="sub-label artifacts">EXISTING ARTIFACTS</div>
+      <span class="artifact-tag">justworks-prioritization.html</span>
+      <span class="artifact-tag">justworks-journey-map.jsx</span>
+      <span class="artifact-tag">assumptions-chain.html (Step 3)</span>
+      <div class="body-text" style="margin-top:0.5rem">The prioritization artifact shows the Foundation → Operations → Intelligence dependency stack. The journey map shows the methodology. The assumptions chain documents why this order.</div>
+      <div class="sub-label gaps">WHAT'S MISSING</div>
+      <span class="gap-tag">Formal 3-phase timeline (weeks/months)</span>
+      <span class="gap-tag">Milestones per phase</span>
+      <span class="gap-tag">Resource allocation per phase</span>
+      <span class="gap-tag">Phase gate criteria (what must be true to move to Phase 2)</span>
+      <div class="sub-label action">ACTION NEEDED</div>
+      <div class="body-text"><span class="action-tag">BUILD NEW ARTIFACT</span> <span class="effort-tag">~30 min</span> Create a visual roadmap showing: Phase 1 MVP (6-8 weeks) → Phase 2 Health Scoring (8-12 weeks post-MVP) → Phase 3 Intelligence (following quarter). Include milestones, team allocation, and phase gate criteria.</div>
+    </div>
+  </div>
+
+  <!-- 3. MVP Requirements + Acceptance Criteria -->
+  <div class="item" data-status="done" onclick="toggleItem(this)">
+    <div class="item-header">
+      <div class="item-status status-done">✅</div>
+      <div class="item-main">
+        <div class="item-req">PROMPT REQUIREMENT #3</div>
+        <div class="item-title">Requirement and acceptance criteria list for a Phase 1 MVP</div>
+        <div class="item-desc">9 user stories with acceptance criteria, scoping matrix with composite scoring. This is thoroughly covered.</div>
+      </div>
+      <span class="item-toggle">▼</span>
+    </div>
+    <div class="item-body">
+      <div class="sub-label artifacts">EXISTING ARTIFACTS</div>
+      <span class="artifact-tag">justworks-user-stories.jsx</span>
+      <span class="artifact-tag">justworks-mvp-scoping.jsx</span>
+      <div class="body-text" style="margin-top:0.5rem">User stories artifact has 3 foundation + 6 problem stories, each with acceptance criteria specific enough to write JIRA tickets from. Scoping matrix grades each on 6 dimensions (time unlock, difficulty solved, volume served, dependency value, eng effort, integration risk) with composite ranking.</div>
+      <div class="sub-label notes">ASSESSMENT</div>
+      <div class="body-text">Among the strongest deliverables. Acceptance criteria include specific thresholds (load time &lt;3s, search results &lt;2s), data completeness rules, and edge case handling. This is what Evan will evaluate most closely.</div>
+    </div>
+  </div>
+
+  <!-- 3a. Wireframes / Prototype -->
+  <div class="item" data-status="done" onclick="toggleItem(this)">
+    <div class="item-header">
+      <div class="item-status status-done">✅</div>
+      <div class="item-main">
+        <div class="item-req">PROMPT REQUIREMENT #3a</div>
+        <div class="item-title">Basic wireframes, including sample data points, measures, and proposed user interaction details</div>
+        <div class="item-desc">Exceeds the requirement — full interactive prototype + scrollable feature showcase, not just wireframes.</div>
+      </div>
+      <span class="item-toggle">▼</span>
+    </div>
+    <div class="item-body">
+      <div class="sub-label artifacts">EXISTING ARTIFACTS</div>
+      <span class="artifact-tag">customer-central.html</span>
+      <span class="artifact-tag">feature-showcase.html</span>
+      <span class="artifact-tag">customer-central-test-guide.md</span>
+      <div class="body-text" style="margin-top:0.5rem">The prototype is a fully interactive HTML application with realistic sample data (Sarah Chen, Acme Corp, PEO Plus, 34 employees). Clickable search, tab navigation, expandable panels, toast notifications. The feature showcase is a scrollable tour explaining each feature. The test guide maps each user story to prototype interactions.</div>
+      <div class="callout amber"><strong>Caveat for the room:</strong> Frame the prototype as a "high-fidelity hypothesis" — built from first principles, not user research. Every UX decision is documented as an assumption in the decision chain (Steps 12-14). The prototype exists to facilitate discussion with Annelise, not to present a finished design.</div>
+    </div>
+  </div>
+
+  <!-- 3b. Data Requirements -->
+  <div class="item" data-status="partial" onclick="toggleItem(this)">
+    <div class="item-header">
+      <div class="item-status status-partial">🟡</div>
+      <div class="item-main">
+        <div class="item-req">PROMPT REQUIREMENT #3b</div>
+        <div class="item-title">Data requirements, including expected information in the production schema, logs, or third-party sources</div>
+        <div class="item-desc">Data sources named per feature throughout artifacts. Missing: formal data requirements table mapping features → fields → sources → integration method → freshness.</div>
+      </div>
+      <span class="item-toggle">▼</span>
+    </div>
+    <div class="item-body">
+      <div class="sub-label artifacts">EXISTING COVERAGE</div>
+      <span class="artifact-tag">justworks-ice-scoring.jsx (data sources per problem)</span>
+      <span class="artifact-tag">assumptions-chain.html (Step 8 - MVP data layer)</span>
+      <div class="body-text" style="margin-top:0.5rem">The ICE scoring artifact names data sources for each problem. The assumptions chain Step 8 defines the 6 MVP data categories with sources. But there's no single, Caroline-ready artifact that maps each feature to specific database objects, Salesforce objects, API endpoints, and integration methods.</div>
+      <div class="sub-label gaps">WHAT'S MISSING</div>
+      <span class="gap-tag">Formal data requirements table</span>
+      <span class="gap-tag">Salesforce objects named (Accounts, Contacts, Cases, etc.)</span>
+      <span class="gap-tag">Integration method per source (REST API, SOQL, read replica, webhook)</span>
+      <span class="gap-tag">Data freshness requirements (real-time vs. near-real-time vs. daily)</span>
+      <span class="gap-tag">PII / access control considerations</span>
+      <div class="sub-label action">ACTION NEEDED</div>
+      <div class="body-text"><span class="action-tag">BUILD NEW ARTIFACT</span> <span class="effort-tag">~30 min</span> Create a data requirements matrix: rows = MVP features, columns = data fields needed, source system, Salesforce object (where applicable), integration method, freshness requirement, known risks. This is what Caroline will scrutinize.</div>
+    </div>
+  </div>
+
+  <!-- 3c. Engineering Resources -->
+  <div class="item" data-status="missing" onclick="toggleItem(this)">
+    <div class="item-header">
+      <div class="item-status status-missing">❌</div>
+      <div class="item-main">
+        <div class="item-req">PROMPT REQUIREMENT #3c</div>
+        <div class="item-title">Proposed engineering resources, including those from our Data Services team</div>
+        <div class="item-desc">Referenced in prep doc but no standalone artifact. Needs team composition, allocation, and sprint plan.</div>
+      </div>
+      <span class="item-toggle">▼</span>
+    </div>
+    <div class="item-body">
+      <div class="sub-label artifacts">EXISTING COVERAGE</div>
+      <div class="body-text">The prep doc references: 1 Backend Engineer, 1 Frontend Engineer, 1 Data Engineer (Data Services), 1 Product Designer, 1 PM (you), QA (shared). But this isn't formalized or justified.</div>
+      <div class="sub-label gaps">WHAT'S MISSING</div>
+      <span class="gap-tag">Team composition with role responsibilities</span>
+      <span class="gap-tag">Allocation by phase (who works on what, when)</span>
+      <span class="gap-tag">Data Services team involvement specifics</span>
+      <span class="gap-tag">Dependency on external teams (Salesforce team, Zendesk admin)</span>
+      <span class="gap-tag">Sprint plan sketch (what happens in weeks 1-2, 3-4, 5-6, 7-8)</span>
+      <div class="sub-label action">ACTION NEEDED</div>
+      <div class="body-text"><span class="action-tag">BUILD NEW ARTIFACT</span> <span class="effort-tag">~20 min</span> Create engineering resource plan: team roster with responsibilities, weekly allocation across the 6-8 week MVP timeline, de-risking sprint (Week 1: data access spikes), and identification of external dependencies (Caroline's Salesforce team, whoever owns Zendesk).</div>
+    </div>
+  </div>
+
+  <!-- 4. Open Questions -->
+  <div class="item" data-status="partial" onclick="toggleItem(this)">
+    <div class="item-header">
+      <div class="item-status status-partial">🟡</div>
+      <div class="item-main">
+        <div class="item-req">PROMPT REQUIREMENT #4</div>
+        <div class="item-title">Open questions or dependencies</div>
+        <div class="item-desc">Assumptions and validation matrix documented in decision chain. Missing: clean, panel-ready open questions list organized by who can answer each one.</div>
+      </div>
+      <span class="item-toggle">▼</span>
+    </div>
+    <div class="item-body">
+      <div class="sub-label artifacts">EXISTING COVERAGE</div>
+      <span class="artifact-tag">assumptions-chain.html (Step 11 - validation matrix)</span>
+      <div class="body-text" style="margin-top:0.5rem">The validation matrix in Step 11 shows confirmed vs. inferred vs. unknown items. But it's buried inside the decision chain, not formatted as a standalone deliverable.</div>
+      <div class="sub-label gaps">WHAT'S MISSING</div>
+      <span class="gap-tag">Clean open questions list, grouped by panelist (Caroline, Annelise, Evan, Renee)</span>
+      <span class="gap-tag">Dependencies with owners and timelines</span>
+      <span class="gap-tag">Questions that could change MVP scope if answered differently</span>
+      <div class="sub-label action">ACTION NEEDED</div>
+      <div class="body-text"><span class="action-tag">BUILD NEW SECTION</span> <span class="effort-tag">~15 min</span> Extract from assumptions chain + add new questions. Format as: question → who can answer → impact if answer differs from assumption. This becomes a workshop input — questions the panel can answer in real-time.</div>
+    </div>
+  </div>
+
+  <!-- 5. Success Metrics -->
+  <div class="item" data-status="missing" onclick="toggleItem(this)">
+    <div class="item-header">
+      <div class="item-status status-missing">❌</div>
+      <div class="item-main">
+        <div class="item-req">PROMPT REQUIREMENT #5</div>
+        <div class="item-title">Success metrics and rationale</div>
+        <div class="item-desc">Metrics referenced in prep doc (AHT, FCR, Adoption, NPS). Not formalized as a standalone artifact with baselines, targets, measurement method, and rationale.</div>
+      </div>
+      <span class="item-toggle">▼</span>
+    </div>
+    <div class="item-body">
+      <div class="sub-label artifacts">EXISTING COVERAGE</div>
+      <div class="body-text">The research prep doc lists: AHT (15-20% reduction in 90 days), FCR (10% improvement), Agent Satisfaction (&gt;4.0/5.0), Tool Adoption (&gt;80% daily active in 30 days), NPS (maintain +60). But there's no rationale explaining why these metrics, why these targets, and how they'd be measured.</div>
+      <div class="sub-label gaps">WHAT'S MISSING</div>
+      <span class="gap-tag">Metric hierarchy (primary vs. guardrail vs. input metrics)</span>
+      <span class="gap-tag">Baseline measurement plan (how to capture pre-launch benchmarks)</span>
+      <span class="gap-tag">Why these specific targets (grounded in industry benchmarks or domain reasoning)</span>
+      <span class="gap-tag">Leading vs. lagging indicators</span>
+      <span class="gap-tag">How each metric connects to a user story / feature</span>
+      <div class="sub-label action">ACTION NEEDED</div>
+      <div class="body-text"><span class="action-tag">BUILD NEW ARTIFACT</span> <span class="effort-tag">~25 min</span> Create success metrics framework: primary metrics (AHT, FCR, Adoption), guardrail metrics (NPS, data accuracy, agent satisfaction), input metrics (search-to-context time, tab switches per call). Include measurement method, baseline plan, targets with rationale, and traceability to user stories.</div>
+    </div>
+  </div>
+
+  <!-- 6. Rollout + Training -->
+  <div class="item" data-status="missing" onclick="toggleItem(this)">
+    <div class="item-header">
+      <div class="item-status status-missing">❌</div>
+      <div class="item-main">
+        <div class="item-req">PROMPT REQUIREMENT #6</div>
+        <div class="item-title">Rollout and training plan</div>
+        <div class="item-desc">Referenced in prep doc (alpha → beta → full rollout). Not formalized with specifics — who, when, what training materials, feedback loops, success criteria per stage.</div>
+      </div>
+      <span class="item-toggle">▼</span>
+    </div>
+    <div class="item-body">
+      <div class="sub-label artifacts">EXISTING COVERAGE</div>
+      <div class="body-text">Prep doc outlines: Week 1-2 alpha (5 agents), Week 3-4 beta (1 full team, 20-30 agents), Week 5-6 fix/refine, Week 7 full rollout, Champions Program. But this is outline-level, not detailed.</div>
+      <div class="sub-label gaps">WHAT'S MISSING</div>
+      <span class="gap-tag">Stage gate criteria (what must be true to move from alpha to beta)</span>
+      <span class="gap-tag">Training delivery method (live demo, recorded walkthrough, sandbox)</span>
+      <span class="gap-tag">Feedback collection mechanism per stage</span>
+      <span class="gap-tag">Change management considerations (agents switching from current workflow)</span>
+      <span class="gap-tag">Rollback plan if adoption fails</span>
+      <div class="sub-label action">ACTION NEEDED</div>
+      <div class="body-text"><span class="action-tag">BUILD NEW ARTIFACT</span> <span class="effort-tag">~20 min</span> Formalize the rollout plan with stage gates, training materials plan, feedback loops, and the Champions Program detail. Key insight: adoption is the #1 risk for internal tools. This plan must address "why would agents use this instead of their current workflow?"</div>
+    </div>
+  </div>
+
+  <!-- 7. MVP Rationale -->
+  <div class="item" data-status="done" onclick="toggleItem(this)">
+    <div class="item-header">
+      <div class="item-status status-done">✅</div>
+      <div class="item-main">
+        <div class="item-req">PROMPT REQUIREMENT #7</div>
+        <div class="item-title">Rationale behind why your recommended requirements are advisable for an MVP</div>
+        <div class="item-desc">Thoroughly covered across multiple artifacts. The decision chain IS this deliverable.</div>
+      </div>
+      <span class="item-toggle">▼</span>
+    </div>
+    <div class="item-body">
+      <div class="sub-label artifacts">EXISTING ARTIFACTS</div>
+      <span class="artifact-tag">assumptions-chain.html</span>
+      <span class="artifact-tag">justworks-mvp-scoping.jsx</span>
+      <span class="artifact-tag">justworks-ice-scoring.jsx</span>
+      <span class="artifact-tag">justworks-prioritization.html</span>
+      <div class="body-text" style="margin-top:0.5rem">The decision chain traces 14 steps from prompt → problems → scoring → convergence → user stories → scoping cuts. The MVP scoping matrix provides quantitative justification. The ICE scoring shows why each problem is or isn't in scope. This is the strongest part of the preparation.</div>
+    </div>
+  </div>
+
+  <!-- 8. Out of Scope -->
+  <div class="item" data-status="partial" onclick="toggleItem(this)">
+    <div class="item-header">
+      <div class="item-status status-partial">🟡</div>
+      <div class="item-main">
+        <div class="item-req">PROMPT REQUIREMENT #8</div>
+        <div class="item-title">A list of what, if anything, is out of scope for now but worth revisiting</div>
+        <div class="item-desc">Covered in assumptions chain Step 11. Missing: clean formatted list with revisit criteria and phase assignment.</div>
+      </div>
+      <span class="item-toggle">▼</span>
+    </div>
+    <div class="item-body">
+      <div class="sub-label artifacts">EXISTING COVERAGE</div>
+      <span class="artifact-tag">assumptions-chain.html (Step 11)</span>
+      <div class="body-text" style="margin-top:0.5rem">Step 11 documents Phase 2 deferrals (composite health scoring, benefits life events, compliance guidance, ticket write-back) and Phase 3+ deferrals (AI summaries, pre-emptive identification, upsell recs). But it's narrative, not a scannable list.</div>
+      <div class="sub-label action">ACTION NEEDED</div>
+      <div class="body-text"><span class="action-tag">EXTRACT + FORMAT</span> <span class="effort-tag">~10 min</span> Pull out of scope items into a clean table: item, why deferred, when to revisit, what must be true to bring it in. Can be a section in the final written proposal rather than a standalone artifact.</div>
+    </div>
+  </div>
+
+  <!-- 9. Future Features -->
+  <div class="item" data-status="partial" onclick="toggleItem(this)">
+    <div class="item-header">
+      <div class="item-status status-partial">🟡</div>
+      <div class="item-main">
+        <div class="item-req">PROMPT REQUIREMENT #9</div>
+        <div class="item-title">A list of 2 or more feature requests you anticipate in future versions</div>
+        <div class="item-desc">Future features referenced throughout (health scoring, proactive alerts, upsell recs, AI intelligence). Missing: formal list with descriptions and value rationale.</div>
+      </div>
+      <span class="item-toggle">▼</span>
+    </div>
+    <div class="item-body">
+      <div class="sub-label artifacts">EXISTING COVERAGE</div>
+      <span class="artifact-tag">justworks-prioritization.html (phase 2-3 content)</span>
+      <span class="artifact-tag">assumptions-chain.html (Steps 3, 11)</span>
+      <div class="body-text" style="margin-top:0.5rem">Phase 2-3 features are discussed throughout but never assembled into a single, presentable list. The prep doc lists 4 future features (health score, proactive alerts, upsell recs, AI interaction intelligence).</div>
+      <div class="sub-label action">ACTION NEEDED</div>
+      <div class="body-text"><span class="action-tag">EXTRACT + FORMAT</span> <span class="effort-tag">~10 min</span> Compile a future features list with: feature name, description, which phase, business value, what MVP foundation enables it. Should be more than 2 — aim for 4-6 to show vision depth.</div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- WORKSHOP -->
+  <!-- ============================== -->
+  <div class="section-head">⬡ WORKSHOP FACILITATION (45 min — Part 2 of Interview)</div>
+
+  <div class="item" data-status="missing" onclick="toggleItem(this)">
+    <div class="item-header">
+      <div class="item-status status-missing">❌</div>
+      <div class="item-main">
+        <div class="item-req">PROMPT REQUIREMENT — WORKSHOP</div>
+        <div class="item-title">Design & Facilitate a Mini Workshop (45 minutes)</div>
+        <div class="item-desc">Referenced extensively in prep doc but no standalone artifact. This is 60% of the interview time and has no dedicated preparation material.</div>
+      </div>
+      <span class="item-toggle">▼</span>
+    </div>
+    <div class="item-body">
+      <div class="sub-label artifacts">EXISTING COVERAGE</div>
+      <div class="body-text">The research prep doc has an outline: Opening (5 min) → User Journey Mapping (10 min) → Data Prioritization (10 min) → Wireframe Sketching (10 min) → Scope Lock (5 min) → Closing (5 min). But this is a skeleton, not a facilitation plan.</div>
+      <div class="sub-label gaps">WHAT'S MISSING</div>
+      <span class="gap-tag">Detailed facilitation script with transitions</span>
+      <span class="gap-tag">Specific questions to ask each panelist</span>
+      <span class="gap-tag">Materials prep (what to pre-draw on whiteboard)</span>
+      <span class="gap-tag">Decision framework for the group (how to converge)</span>
+      <span class="gap-tag">Contingency plans (what if they disagree? what if one exercise runs long?)</span>
+      <span class="gap-tag">How the workshop connects to the presentation (transition strategy)</span>
+      <span class="gap-tag">Pre-prepared artifacts for workshop use (e.g., data categories for dot-voting)</span>
+      <div class="sub-label action">ACTION NEEDED</div>
+      <div class="body-text"><span class="action-tag">BUILD NEW ARTIFACT</span> <span class="effort-tag">~45 min</span> This is the highest-priority gap. The workshop is 45 of 75 interview minutes. Build: minute-by-minute facilitation plan, specific prompts per panelist, pre-prepared whiteboard layouts, decision-making framework, and contingency plans. Also: how to use the existing prototype and ICE scoring as workshop inputs (bring the panel INTO the artifacts).</div>
+      <div class="callout red"><strong>This is the #1 gap in the preparation.</strong> The scoring rubric says exceptional workshop facilitation means "each panelist contributes something meaningful" and "the group feels ownership over the MVP output." The workshop plan needs to orchestrate exactly how that happens.</div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- BONUS / BEYOND PROMPT -->
+  <!-- ============================== -->
+  <div class="section-head">◆ BEYOND THE PROMPT — Differentiating Work</div>
+
+  <div class="item" data-status="bonus" onclick="toggleItem(this)">
+    <div class="item-header">
+      <div class="item-status status-bonus">🟣</div>
+      <div class="item-main">
+        <div class="item-req">BONUS — NOT REQUIRED</div>
+        <div class="item-title">Decision Chain & Assumptions Documentation</div>
+        <div class="item-desc">14-step reasoning chain with 45 documented assumptions. This isn't required but demonstrates the thinking-behind-the-thinking that separates GPM candidates.</div>
+      </div>
+      <span class="item-toggle">▼</span>
+    </div>
+    <div class="item-body">
+      <div class="sub-label artifacts">EXISTING ARTIFACTS</div>
+      <span class="artifact-tag">assumptions-chain.html</span>
+      <div class="sub-label notes">STRATEGIC VALUE</div>
+      <div class="body-text">No other candidate will show their reasoning chain this explicitly. This demonstrates: intellectual humility (naming assumptions), structured thinking (each step earns the next), and validation discipline (knowing what you don't know). Renee's rubric scores "strategic thinking under ambiguity" — this IS that.</div>
+    </div>
+  </div>
+
+  <div class="item" data-status="bonus" onclick="toggleItem(this)">
+    <div class="item-header">
+      <div class="item-status status-bonus">🟣</div>
+      <div class="item-main">
+        <div class="item-req">BONUS — NOT REQUIRED</div>
+        <div class="item-title">Jobs to Be Done Framework (Prompt-Traced)</div>
+        <div class="item-desc">6 jobs derived directly from prompt language with interactive source highlighting. Shows you read their words, not just the question.</div>
+      </div>
+      <span class="item-toggle">▼</span>
+    </div>
+    <div class="item-body">
+      <div class="sub-label artifacts">EXISTING ARTIFACTS</div>
+      <span class="artifact-tag">justworks-jtbd.jsx</span>
+      <div class="sub-label notes">STRATEGIC VALUE</div>
+      <div class="body-text">The interactive highlighting — where clicking a job illuminates the exact prompt language it came from — demonstrates product rigor. Every job traces to their words, not invented requirements. This is a "show, don't tell" artifact for the panel.</div>
+    </div>
+  </div>
+
+  <div class="item" data-status="bonus" onclick="toggleItem(this)">
+    <div class="item-header">
+      <div class="item-status status-bonus">🟣</div>
+      <div class="item-main">
+        <div class="item-req">BONUS — NOT REQUIRED</div>
+        <div class="item-title">ICE Scoring with Problem Inventory</div>
+        <div class="item-desc">20 CSO problems + 12 health questions, scored and ranked. Shows you worked bottom-up from real problems, not top-down from feature wish lists.</div>
+      </div>
+      <span class="item-toggle">▼</span>
+    </div>
+    <div class="item-body">
+      <div class="sub-label artifacts">EXISTING ARTIFACTS</div>
+      <span class="artifact-tag">justworks-ice-scoring.jsx</span>
+      <div class="sub-label notes">STRATEGIC VALUE</div>
+      <div class="body-text">This is the "validation framework" artifact. In the workshop, you can say: "Here are the problems we think agents face most. Let's validate — where are we wrong?" It gives the panel something concrete to react to, which is better than starting from a blank whiteboard.</div>
+    </div>
+  </div>
+
+  <!-- ============================== -->
+  <!-- SUMMARY -->
+  <!-- ============================== -->
+  <div class="section-head" style="margin-top: 2rem">∑ WORK REMAINING — PRIORITY ORDER</div>
+
+  <div class="callout red" style="margin: 0.75rem 0">
+    <strong>Priority 1: Workshop Facilitation Plan</strong> — 45 min to build, 45 min of interview time. This is the single biggest gap and the highest-leverage thing to work on next.
+  </div>
+  <div class="callout amber" style="margin: 0.75rem 0">
+    <strong>Priority 2: Success Metrics + Data Requirements + Engineering Resources</strong> — ~75 min total to build all three. These are explicitly called out in the prompt and have no artifacts.
+  </div>
+  <div class="callout" style="margin: 0.75rem 0; border-left-color: var(--blue); background: var(--blue-dim)">
+    <strong>Priority 3: Phased Roadmap + Rollout Plan</strong> — ~50 min total. Content exists in fragments; needs consolidation into formal artifacts.
+  </div>
+  <div class="callout" style="margin: 0.75rem 0;">
+    <strong>Priority 4: Out of Scope + Future Features lists</strong> — ~20 min total. Extraction and formatting from existing content. Low effort, high signal.
+  </div>
+  <div class="callout" style="margin: 0.75rem 0;">
+    <strong>Priority 5: Open Questions (panel-ready)</strong> — ~15 min. Reformatting existing assumptions chain content.
+  </div>
+
+  <div class="callout green" style="margin: 1.5rem 0">
+    <strong>Total estimated work remaining: ~3.5 hours.</strong> After that, all prompt requirements are covered with standalone artifacts, plus 3 differentiating bonus deliverables. The final step would be assembling everything into a coherent written proposal document that the panel reads in advance.
+  </div>
+
+</div>
+
+<div class="footer">
+  Justworks GPM Case Study — Submission Packet Audit · Darrien Watson · February 2026
+</div>
+
+<script>
+function toggleItem(el) {
+  el.classList.toggle('open');
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    document.querySelectorAll('.item').forEach(item => {
+      if (filter === 'all') {
+        item.style.display = 'block';
+      } else {
+        const status = item.dataset.status;
+        const match = (filter === 'done' && status === 'done') ||
+                      (filter === 'partial' && status === 'partial') ||
+                      (filter === 'missing' && status === 'missing') ||
+                      (filter === 'bonus' && status === 'bonus');
+        item.style.display = match ? 'block' : 'none';
+      }
+    });
+  });
+});
+</script>
+
+</body>
+</html>

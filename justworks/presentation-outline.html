@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategic Proposal — Presentation Outline</title>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Overpass+Mono:wght@400;500;600;700&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #08090d;
+  --s1: #0e1017;
+  --s2: #14171f;
+  --s3: #1a1e2a;
+  --s4: #212636;
+  --bd: #272d40;
+  --bd2: #3a4260;
+  --t0: #f0f2f8;
+  --t1: #c8cee0;
+  --t2: #8a93ae;
+  --t3: #5e6880;
+  --t4: #3f4862;
+  --acc: #d4943c;
+  --acc2: #ebb044;
+  --g: #3dd68c;
+  --gbg: rgba(61,214,140,.05);
+  --gbd: rgba(61,214,140,.15);
+  --gbd2: rgba(61,214,140,.25);
+  --r: #ef6b6b;
+  --rbg: rgba(239,107,107,.05);
+  --rbd: rgba(239,107,107,.15);
+  --b: #5b9cf5;
+  --bbg: rgba(91,156,245,.05);
+  --bbd: rgba(91,156,245,.15);
+  --a: #e8b84a;
+  --abg: rgba(232,184,74,.05);
+  --abd: rgba(232,184,74,.15);
+  --p: #9b82f0;
+  --pbg: rgba(155,130,240,.05);
+  --pbd: rgba(155,130,240,.15);
+  --cy: #2cc5d6;
+  --cybg: rgba(44,197,214,.05);
+  --cybd: rgba(44,197,214,.15);
+  --w: #e8e0d4;
+  --wbg: rgba(232,224,212,.04);
+  --wbd: rgba(232,224,212,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--t1);line-height:1.7;-webkit-font-smoothing:antialiased;}
+.page{max-width:980px;margin:0 auto;padding:3.5rem 2rem 6rem;}
+
+/* ─── HEADER ─── */
+.hdr{margin-bottom:3rem;position:relative;}
+.hdr::after{content:'';display:block;width:60px;height:2px;background:var(--acc);margin-top:1.5rem;}
+.hdr-label{font-family:'Overpass Mono',monospace;font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--acc);margin-bottom:.8rem;}
+.hdr h1{font-family:'Newsreader',serif;font-size:clamp(2rem,4.5vw,2.8rem);font-weight:400;color:var(--t0);line-height:1.2;margin-bottom:.6rem;}
+.hdr h1 em{font-style:italic;color:var(--acc2);font-weight:300;}
+.hdr-sub{font-size:.95rem;color:var(--t2);font-weight:300;max-width:720px;line-height:1.75;}
+
+/* ─── NARRATIVE ARC ─── */
+.arc{background:var(--s1);border:1px solid var(--bd);border-radius:12px;padding:1.5rem 1.8rem;margin-bottom:3rem;position:relative;overflow:hidden;}
+.arc::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,var(--g),var(--b),var(--p),var(--a),var(--acc));}
+.arc-label{font-family:'Overpass Mono',monospace;font-size:.6rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--t3);margin-bottom:1rem;}
+.arc-flow{display:flex;align-items:center;gap:0;flex-wrap:wrap;}
+.arc-step{display:flex;align-items:center;gap:0;}
+.arc-node{padding:6px 14px;border-radius:6px;font-size:.78rem;font-weight:500;white-space:nowrap;}
+.arc-arrow{color:var(--t4);font-size:.7rem;padding:0 6px;font-family:'Overpass Mono',monospace;}
+.an1{background:var(--gbg);border:1px solid var(--gbd);color:var(--g);}
+.an2{background:var(--rbg);border:1px solid var(--rbd);color:var(--r);}
+.an3{background:var(--pbg);border:1px solid var(--pbd);color:var(--p);}
+.an4{background:var(--bbg);border:1px solid var(--bbd);color:var(--b);}
+.an5{background:var(--abg);border:1px solid var(--abd);color:var(--a);}
+.an6{background:var(--cybg);border:1px solid var(--cybd);color:var(--cy);}
+.an7{background:rgba(212,148,60,.08);border:1px solid rgba(212,148,60,.2);color:var(--acc);}
+.arc-logic{margin-top:1rem;font-size:.82rem;color:var(--t2);line-height:1.7;font-weight:300;font-style:italic;font-family:'Newsreader',serif;}
+
+/* ─── SECTION ─── */
+.sec{margin-bottom:3rem;}
+.sec-hdr{display:flex;align-items:baseline;gap:14px;margin-bottom:1.5rem;padding-bottom:.8rem;border-bottom:1px solid var(--bd);}
+.sec-num{font-family:'Overpass Mono',monospace;font-size:.6rem;letter-spacing:2px;color:var(--t4);text-transform:uppercase;}
+.sec-title{font-family:'Newsreader',serif;font-size:1.4rem;font-weight:400;color:var(--t0);}
+.sec-time{font-family:'Overpass Mono',monospace;font-size:.6rem;letter-spacing:1.5px;color:var(--t3);margin-left:auto;}
+
+/* ─── BEAT CARDS ─── */
+.beat{background:var(--s1);border:1px solid var(--bd);border-radius:10px;margin-bottom:.9rem;overflow:hidden;transition:border-color .2s;}
+.beat:hover{border-color:var(--bd2);}
+.beat.open .beat-body{display:block;}
+.beat.open .beat-tog{transform:rotate(180deg);}
+.beat-head{display:flex;align-items:flex-start;gap:14px;padding:1.1rem 1.4rem;cursor:pointer;user-select:none;}
+.beat-badge{font-family:'Overpass Mono',monospace;font-size:.58rem;letter-spacing:1.5px;padding:4px 10px;border-radius:5px;white-space:nowrap;flex-shrink:0;margin-top:2px;}
+.bb-speak{background:var(--gbg);border:1px solid var(--gbd);color:var(--g);}
+.bb-show{background:var(--bbg);border:1px solid var(--bbd);color:var(--b);}
+.bb-trans{background:var(--pbg);border:1px solid var(--pbd);color:var(--p);}
+.bb-demo{background:var(--cybg);border:1px solid var(--cybd);color:var(--cy);}
+.bb-engage{background:var(--abg);border:1px solid var(--abd);color:var(--a);}
+.bb-note{background:var(--wbg);border:1px solid var(--wbd);color:var(--w);}
+.beat-main{flex:1;min-width:0;}
+.beat-title{font-size:.95rem;font-weight:500;color:var(--t0);margin-bottom:.1rem;}
+.beat-sub{font-size:.78rem;color:var(--t2);font-weight:300;}
+.beat-tog{color:var(--t4);font-size:.7rem;transition:transform .25s;flex-shrink:0;margin-top:5px;}
+.beat-body{display:none;padding:0 1.4rem 1.3rem;border-top:1px solid var(--bd);padding-top:1.1rem;}
+
+/* ─── DETAIL BLOCKS ─── */
+.dg{display:grid;grid-template-columns:1fr;gap:.7rem;}
+@media(min-width:640px){.dg{grid-template-columns:1fr 1fr;}.dg .full{grid-column:1/-1;}}
+.db{background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:.85rem 1.1rem;}
+.db-label{font-family:'Overpass Mono',monospace;font-size:.52rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:.4rem;}
+.l-script{color:var(--g);}
+.l-show{color:var(--b);}
+.l-why{color:var(--p);}
+.l-panel{color:var(--a);}
+.l-avoid{color:var(--r);}
+.l-trans{color:var(--acc);}
+.l-artifact{color:var(--cy);}
+.l-note{color:var(--w);}
+.l-time{color:var(--t3);}
+.db p,.db ul{font-size:.82rem;color:var(--t1);line-height:1.65;font-weight:300;}
+.db p strong,.db ul strong{font-weight:500;color:var(--t0);}
+.db ul{padding-left:1.2rem;margin-top:.3rem;}
+.db li{margin-bottom:.25rem;}
+
+/* ─── CALLOUTS ─── */
+.co{border-radius:8px;padding:1rem 1.2rem;margin:.9rem 0;border-left:3px solid;}
+.co-g{background:var(--gbg);border-color:var(--g);}
+.co-a{background:var(--abg);border-color:var(--a);}
+.co-r{background:var(--rbg);border-color:var(--r);}
+.co-b{background:var(--bbg);border-color:var(--b);}
+.co-p{background:var(--pbg);border-color:var(--p);}
+.co-cy{background:var(--cybg);border-color:var(--cy);}
+.co p{font-size:.85rem;color:var(--t1);line-height:1.65;font-weight:300;}
+.co p strong{font-weight:500;color:var(--t0);}
+
+/* ─── PANEL BOXES ─── */
+.panel-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:1rem 0;}
+@media(max-width:700px){.panel-grid{grid-template-columns:1fr 1fr;}}
+.panel-box{border-radius:8px;padding:.7rem .85rem;text-align:center;}
+.panel-box .pb-name{font-size:.72rem;font-weight:500;color:var(--t0);margin-bottom:.2rem;}
+.panel-box .pb-hear{font-size:.68rem;color:var(--t2);line-height:1.45;font-weight:300;font-style:italic;}
+.pb-renee{background:var(--abg);border:1px solid var(--abd);}
+.pb-caroline{background:var(--pbg);border:1px solid var(--pbd);}
+.pb-annelise{background:var(--cybg);border:1px solid var(--cybd);}
+.pb-evan{background:var(--bbg);border:1px solid var(--bbd);}
+
+/* ─── TIMING BAR ─── */
+.timing-bar{display:flex;height:6px;border-radius:3px;overflow:hidden;margin:1rem 0;gap:1px;}
+.tb-seg{height:100%;}
+
+/* ─── FOOTER ─── */
+.footer{margin-top:3.5rem;padding-top:1.5rem;border-top:1px solid var(--bd);text-align:center;}
+.footer p{font-family:'Overpass Mono',monospace;font-size:.58rem;letter-spacing:2px;color:var(--t4);}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  HEADER                                                        -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="hdr">
+  <div class="hdr-label">Customer Central · Case Study Presentation · 20 Minutes</div>
+  <h1>Strategic Proposal <em>— Expanded Outline</em></h1>
+  <p class="hdr-sub">
+    This is your speaker's guide. Every beat is timed, every transition is scripted, every panelist engagement point is mapped. The presentation moves through seven sections — each one earning the right to the next. The panel has already read the proposal; the presentation is about the reasoning they can't get from the document.
+  </p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  NARRATIVE ARC                                                  -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="arc">
+  <div class="arc-label">Narrative Arc — The Story in 7 Beats</div>
+  <div class="arc-flow">
+    <div class="arc-step"><span class="arc-node an1">Feel the Pain</span><span class="arc-arrow">→</span></div>
+    <div class="arc-step"><span class="arc-node an2">Name the Problems</span><span class="arc-arrow">→</span></div>
+    <div class="arc-step"><span class="arc-node an3">Show the Logic</span><span class="arc-arrow">→</span></div>
+    <div class="arc-step"><span class="arc-node an4">Define the MVP</span><span class="arc-arrow">→</span></div>
+    <div class="arc-step"><span class="arc-node an5">Prove It's Buildable</span><span class="arc-arrow">→</span></div>
+    <div class="arc-step"><span class="arc-node an6">Show the Plan</span><span class="arc-arrow">→</span></div>
+    <div class="arc-step"><span class="arc-node an7">Invite Collaboration</span></div>
+  </div>
+  <div class="arc-logic">
+    Each section answers the question the previous one raises. "Feel the pain" creates urgency. "Name the problems" creates structure. "Show the logic" creates trust in the process. "Define the MVP" makes it concrete. "Prove it's buildable" removes doubt. "Show the plan" creates confidence. "Invite collaboration" transitions to the workshop.
+  </div>
+</div>
+
+<div class="co co-a">
+  <p><strong>Presentation principle:</strong> They've read the proposal. Don't re-read it to them. The presentation is about <strong>why</strong> — the reasoning behind decisions, the assumptions you're testing, and the tradeoffs you made. Move fast on facts. Go deep on thinking.</p>
+</div>
+
+<!-- Timing bar -->
+<div style="font-family:'Overpass Mono',monospace;font-size:.55rem;color:var(--t3);letter-spacing:1.5px;margin-bottom:.4rem;">TIMING BUDGET — 20 MINUTES</div>
+<div class="timing-bar">
+  <div class="tb-seg" style="flex:3;background:var(--g);"></div>
+  <div class="tb-seg" style="flex:3;background:var(--r);"></div>
+  <div class="tb-seg" style="flex:4;background:var(--p);"></div>
+  <div class="tb-seg" style="flex:3;background:var(--b);"></div>
+  <div class="tb-seg" style="flex:3;background:var(--a);"></div>
+  <div class="tb-seg" style="flex:2;background:var(--cy);"></div>
+  <div class="tb-seg" style="flex:2;background:var(--acc);"></div>
+</div>
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:2.5rem;">
+  <span style="font-family:'Overpass Mono',monospace;font-size:.52rem;color:var(--g);">■ §1 PAIN 3m</span>
+  <span style="font-family:'Overpass Mono',monospace;font-size:.52rem;color:var(--r);">■ §2 PROBLEMS 3m</span>
+  <span style="font-family:'Overpass Mono',monospace;font-size:.52rem;color:var(--p);">■ §3 LOGIC 4m</span>
+  <span style="font-family:'Overpass Mono',monospace;font-size:.52rem;color:var(--b);">■ §4 MVP 3m</span>
+  <span style="font-family:'Overpass Mono',monospace;font-size:.52rem;color:var(--a);">■ §5 DATA 3m</span>
+  <span style="font-family:'Overpass Mono',monospace;font-size:.52rem;color:var(--cy);">■ §6 PLAN 2m</span>
+  <span style="font-family:'Overpass Mono',monospace;font-size:.52rem;color:var(--acc);">■ §7 CLOSE 2m</span>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  SECTION 1: FEEL THE PAIN                                      -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="sec">
+  <div class="sec-hdr">
+    <span class="sec-num">Section 1</span>
+    <span class="sec-title">Feel the Pain — The Agent's Reality</span>
+    <span class="sec-time">0:00 – 3:00</span>
+  </div>
+
+  <div class="co co-g">
+    <p><strong>Purpose:</strong> Create emotional resonance before proposing anything. Make the room feel the problem from the agent's perspective. This is where Annelise leans in (user empathy) and Renee sees you understand the operation she's hiring you to improve.</p>
+  </div>
+
+  <!-- Beat 1.1 -->
+  <div class="beat" onclick="tog(this)">
+    <div class="beat-head">
+      <span class="beat-badge bb-speak">Speak</span>
+      <div class="beat-main">
+        <div class="beat-title">Opening Line — Frame the Presentation</div>
+        <div class="beat-sub">10 seconds. Set expectations for how you'll use the time.</div>
+      </div>
+      <span class="beat-tog">▼</span>
+    </div>
+    <div class="beat-body">
+      <div class="dg">
+        <div class="db full">
+          <div class="db-label l-script">Script</div>
+          <p>"Thank you for spending this time with me. You've all read the proposal, so I'm going to use these 20 minutes differently — I'll focus on the thinking behind the decisions, the assumptions I'm testing, and where I need your expertise to get sharper. Then we'll shift into a working session where we pressure-test and refine the MVP scope together."</p>
+        </div>
+        <div class="db">
+          <div class="db-label l-why">Why This Opening</div>
+          <p>Immediately signals: <strong>(1)</strong> you respect their time and won't re-read the doc, <strong>(2)</strong> you value their input over your polish, <strong>(3)</strong> the workshop is where the real work happens. Sets a collaborative tone from second one.</p>
+        </div>
+        <div class="db">
+          <div class="db-label l-note">Delivery Note</div>
+          <p>Make eye contact with Renee during "where I need your expertise." She's the hiring manager — you're telling her this is a partnership, not a pitch. Stand, don't sit. Own the room physically from the start.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Beat 1.2 -->
+  <div class="beat" onclick="tog(this)">
+    <div class="beat-head">
+      <span class="beat-badge bb-speak">Speak</span>
+      <div class="beat-main">
+        <div class="beat-title">The Encounter Narrative — Today's Reality</div>
+        <div class="beat-sub">90 seconds. Walk through the "before" scenario second by second.</div>
+      </div>
+      <span class="beat-tog">▼</span>
+    </div>
+    <div class="beat-body">
+      <div class="dg">
+        <div class="db full">
+          <div class="db-label l-script">Script</div>
+          <p>"Before the solution, the problem. Let me describe what I believe a CSO agent's experience looks like today — and I want you to correct me where I'm wrong.<br><br>
+          <strong>T+0 seconds:</strong> Phone rings. Agent sees a phone number — maybe just a number, maybe a name from caller ID. They answer.<br>
+          <strong>T+10s:</strong> 'Hi, this is Sarah from Acme Corp.' Agent types 'Acme Corp' into Salesforce. Waits.<br>
+          <strong>T+25s:</strong> Account loads. Agent scans for basic info. Opens Zendesk in a second tab. Searches for recent tickets.<br>
+          <strong>T+45s:</strong> Finds 3 tickets from last month. Clicks into the most recent one. Reads through it.<br>
+          <strong>T+60s:</strong> Sarah has been talking for 50 seconds, explaining her issue. The agent is half-listening, half-reading ticket history across two screens.<br>
+          <strong>T+90s:</strong> Agent opens the Justworks admin dashboard in a third tab to check payroll details.<br>
+          <strong>T+120s:</strong> Two minutes in. The agent finally has enough context to engage meaningfully.<br><br>
+          Sarah's experience? 'I've been explaining this for two minutes and I'm not sure they're even listening.'"</p>
+        </div>
+        <div class="db">
+          <div class="db-label l-panel">Who This Resonates With</div>
+          <p><strong>Annelise:</strong> Hears the UX problem — cognitive load, context-switching, time pressure. <strong>Renee:</strong> Hears the operational cost — 2 minutes × thousands of daily calls. <strong>Evan:</strong> Hears the technical problem — 3 systems, no integration. <strong>Caroline:</strong> Hears the data problem — Salesforce and Zendesk disconnected.</p>
+        </div>
+        <div class="db">
+          <div class="db-label l-note">Delivery Note</div>
+          <p>Narrate this like a story, not a bullet list. Slow down at "half-listening, half-reading" — that's the emotional pivot. Speed up through the system names to convey the frenzy. End with Sarah's quote in a slightly different voice — make the customer real.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Beat 1.3 -->
+  <div class="beat" onclick="tog(this)">
+    <div class="beat-head">
+      <span class="beat-badge bb-speak">Speak</span>
+      <div class="beat-main">
+        <div class="beat-title">The Ideal Encounter — The Vision</div>
+        <div class="beat-sub">40 seconds. The "after." Compact. Let them feel the contrast.</div>
+      </div>
+      <span class="beat-tog">▼</span>
+    </div>
+    <div class="beat-body">
+      <div class="dg">
+        <div class="db full">
+          <div class="db-label l-script">Script</div>
+          <p>"Now the ideal — what this should feel like with Customer Central.<br><br>
+          <strong>T+0s:</strong> Agent searches Sarah's name — or the phone number auto-matches. Customer Central populates instantly.<br>
+          <strong>T+3s:</strong> At a glance: Acme Corp, PEO Plus, 34 employees, billing current, next payroll Feb 28. Sarah is the primary admin, 2-year customer.<br>
+          <strong>T+8s:</strong> While Sarah starts talking, the agent scans the interaction timeline — Sarah emailed 3 days ago about a payroll discrepancy. Ticket's still open.<br>
+          <strong>T+15s:</strong> 'Sarah, I can see you reached out last week about the payroll issue with your new hire — are you calling to follow up on that?'<br>
+          <strong>T+18s:</strong> 'Yes! Exactly.'<br>
+          <strong>T+30s:</strong> Resolved. One screen. Thirty seconds.<br><br>
+          That's the experience that earns a +60 NPS at scale."</p>
+        </div>
+        <div class="db">
+          <div class="db-label l-why">Why the Contrast Matters</div>
+          <p>The before/after structure is the single most effective persuasion technique for internal tools. Decision-makers don't buy features — they buy the delta between pain and relief. By narrating both in seconds, you've made the value tangible without a single metric.</p>
+        </div>
+        <div class="db">
+          <div class="db-label l-avoid">What to Avoid</div>
+          <p>Don't belabor the ideal encounter. Keep it shorter than the "before" — the brevity IS the point. The whole thing resolves in 30 seconds. That asymmetry — 120s of pain vs. 30s of resolution — makes the argument visually.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Beat 1.4 -->
+  <div class="beat" onclick="tog(this)">
+    <div class="beat-head">
+      <span class="beat-badge bb-trans">Transition</span>
+      <div class="beat-main">
+        <div class="beat-title">Bridge to Section 2</div>
+        <div class="beat-sub">One sentence. Link the story to structured analysis.</div>
+      </div>
+      <span class="beat-tog">▼</span>
+    </div>
+    <div class="beat-body">
+      <div class="db full">
+        <div class="db-label l-trans">Transition Line</div>
+        <p>"That gap — between 120 seconds of fumbling and 30 seconds of resolution — is created by six specific, compounding problems. Let me name them."</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-grid">
+    <div class="panel-box pb-renee"><div class="pb-name">Renee</div><div class="pb-hear">Hears the operational cost + brand risk</div></div>
+    <div class="panel-box pb-annelise"><div class="pb-name">Annelise</div><div class="pb-hear">Hears the agent's lived experience</div></div>
+    <div class="panel-box pb-caroline"><div class="pb-name">Caroline</div><div class="pb-hear">Hears disconnected data systems</div></div>
+    <div class="panel-box pb-evan"><div class="pb-name">Evan</div><div class="pb-hear">Hears integration gaps to fix</div></div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  SECTION 2: NAME THE PROBLEMS                                  -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="sec">
+  <div class="sec-hdr">
+    <span class="sec-num">Section 2</span>
+    <span class="sec-title">Name the Problems — Structured Analysis</span>
+    <span class="sec-time">3:00 – 6:00</span>
+  </div>
+
+  <div class="co co-g">
+    <p><strong>Purpose:</strong> Impose structure on the messy problem space. Show you can decompose ambiguity into actionable categories. Name the business opportunity — revenue, retention, and scale.</p>
+  </div>
+
+  <div class="beat" onclick="tog(this)">
+    <div class="beat-head">
+      <span class="beat-badge bb-speak">Speak</span>
+      <div class="beat-main">
+        <div class="beat-title">The 6 Compounding Problems</div>
+        <div class="beat-sub">90 seconds. Name each quickly. Don't elaborate — the document has the detail.</div>
+      </div>
+      <span class="beat-tog">▼</span>
+    </div>
+    <div class="beat-body">
+      <div class="dg">
+        <div class="db full">
+          <div class="db-label l-script">Script</div>
+          <p>"I've identified six problems that compound on each other. Quick overview — the detail is in the proposal:<br><br>
+          <strong>One. The context-switching tax.</strong> Agents toggle between 5-6 systems during a single call. Each switch costs 10-15 seconds of cognitive load. Across thousands of daily interactions, this compounds into massive productivity loss.<br><br>
+          <strong>Two. The caller identity problem.</strong> When a call comes in, the agent doesn't know: is this an admin or an employee? What company? What history? The first 30-60 seconds are wasted on identification — and these two caller types need completely different information surfaced.<br><br>
+          <strong>Three. The 'repeat yourself' problem.</strong> A customer who emailed Monday, chatted Wednesday, and calls Friday has explained their issue three times. This is the number-one destroyer of the Justworks brand promise.<br><br>
+          <strong>Four. The knowledge gap.</strong> Payroll, benefits, HR, compliance across 50 states and multiple carriers. No agent can hold it all. When they don't know, they escalate — reducing first-contact resolution.<br><br>
+          <strong>Five. The proactive blindspot.</strong> The prompt explicitly asks for pre-emptive support. This doesn't exist today. The data for proactive insights is spread across systems, never synthesized into agent-facing signals.<br><br>
+          <strong>Six. The scaling threat.</strong> 10,000+ customers and growing. Tribal knowledge doesn't scale. Without tooling investment, quality degrades or headcount grows linearly. Neither is sustainable."</p>
+        </div>
+        <div class="db">
+          <div class="db-label l-note">Delivery Note</div>
+          <p>This is rapid-fire. Number each problem clearly. Use your fingers if standing. The energy here is analytical — you're imposing structure. Don't pause between problems; the momentum conveys that you've done the work.</p>
+        </div>
+        <div class="db">
+          <div class="db-label l-avoid">What to Avoid</div>
+          <p>Don't elaborate on each one — the document does that. Don't say "I assume" or "I think" — state them as hypotheses you're testing. "I've identified" is stronger than "I believe."</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="beat" onclick="tog(this)">
+    <div class="beat-head">
+      <span class="beat-badge bb-speak">Speak</span>
+      <div class="beat-main">
+        <div class="beat-title">The Business Opportunity — Why This Matters Strategically</div>
+        <div class="beat-sub">45 seconds. Connect problems to business outcomes.</div>
+      </div>
+      <span class="beat-tog">▼</span>
+    </div>
+    <div class="beat-body">
+      <div class="dg">
+        <div class="db full">
+          <div class="db-label l-script">Script</div>
+          <p>"These problems aren't just operational pain — they're strategic risk. Justworks' customer service is its primary market differentiator. Nine consecutive Stevie Awards, NPS of +60, referenced in every competitive analysis. <strong>That differentiator is currently held together by great people, not great tools.</strong> Great people with great tools is strictly better than great people with fragmented tools. And as Justworks scales from 10,000 to 50,000 customers, the moat either widens with tooling investment or erodes without it. Customer Central is how the moat widens."</p>
+        </div>
+        <div class="db">
+          <div class="db-label l-panel">Renee Hears</div>
+          <p>The strategic framing she needs for her VP conversations. This isn't a feature request — it's infrastructure for the competitive moat. She can picture using this exact language in a roadmap review with her peers.</p>
+        </div>
+        <div class="db">
+          <div class="db-label l-avoid">What to Avoid</div>
+          <p>Don't recite company facts back at them — they know their revenue and customer count. Don't mention salary context or your background here. The business opportunity speaks for itself when connected to their own stated differentiator.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="beat" onclick="tog(this)">
+    <div class="beat-head">
+      <span class="beat-badge bb-engage">Engage</span>
+      <div class="beat-main">
+        <div class="beat-title">Invitation to Validate</div>
+        <div class="beat-sub">15 seconds. Acknowledge these are hypotheses. Set up the workshop.</div>
+      </div>
+      <span class="beat-tog">▼</span>
+    </div>
+    <div class="beat-body">
+      <div class="db full">
+        <div class="db-label l-script">Script</div>
+        <p>"I want to be transparent: these problems are hypothesized from domain patterns and research. Several of you work with CSO daily and can tell me where I'm right and where I'm wrong. We'll validate these directly in the workshop. For now, let me show you how I went from these problems to an MVP scope."</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  SECTION 3: SHOW THE LOGIC                                     -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="sec">
+  <div class="sec-hdr">
+    <span class="sec-num">Section 3</span>
+    <span class="sec-title">Show the Logic — How I Got to the MVP</span>
+    <span class="sec-time">6:00 – 10:00</span>
+  </div>
+
+  <div class="co co-g">
+    <p><strong>Purpose:</strong> This is the section they can't get from the document. Show the reasoning chain — the methodology that converts ambiguity into a defensible scope. This is where Renee sees strategic thinking under ambiguity and Evan sees product craft.</p>
+  </div>
+
+  <div class="beat" onclick="tog(this)">
+    <div class="beat-head">
+      <span class="beat-badge bb-speak">Speak</span>
+      <div class="beat-main">
+        <div class="beat-title">The Methodology — Problems First, Features Never</div>
+        <div class="beat-sub">60 seconds. The philosophical frame that governed every decision.</div>
+      </div>
+      <span class="beat-tog">▼</span>
+    </div>
+    <div class="beat-body">
+      <div class="dg">
+        <div class="db full">
+          <div class="db-label l-script">Script</div>
+          <p>"I didn't start with features. I started with the prompt's own language. The case study describes 6 distinct jobs Customer Central needs to enable — from carrying out routine tasks to understanding customer profiles to pre-empting problems. I extracted those jobs, then asked: what specific problems prevent agents from doing each job today?<br><br>
+          That gave me 20 specific CSO problems and 12 health questions — not a feature wish list, but a <strong>problem inventory</strong>. I scored each on Impact, Confidence, and Ease — and discovered something I didn't expect."</p>
+        </div>
+        <div class="db">
+          <div class="db-label l-artifact">Reference Artifacts</div>
+          <p>The <strong>JTBD framework</strong> (justworks-jtbd.jsx) traces each job to exact prompt language. The <strong>ICE scoring matrix</strong> (justworks-ice-scoring.jsx) shows the full problem inventory with scores. Don't open these artifacts on screen unless someone asks — just reference them verbally. The thinking matters more than the spreadsheet.</p>
+        </div>
+        <div class="db">
+          <div class="db-label l-why">Why This Matters</div>
+          <p>Most candidates will propose features they think are cool. You're showing a rigorous methodology: prompt → jobs → problems → scoring → scope. That's the GPM thinking Renee is hiring for. Evan sees a PM who works from problems, not assumptions.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="beat" onclick="tog(this)">
+    <div class="beat-head">
+      <span class="beat-badge bb-show">Show</span>
+      <div class="beat-main">
+        <div class="beat-title">The Convergence Discovery</div>
+        <div class="beat-sub">60 seconds. The "aha" moment that validated the foundation.</div>
+      </div>
+      <span class="beat-tog">▼</span>
+    </div>
+    <div class="beat-body">
+      <div class="dg">
+        <div class="db full">
+          <div class="db-label l-script">Script</div>
+          <p>"When I scored everything, something interesting happened. The 20 CSO problems and the 12 health questions were scored independently — different lists, different lenses. But when I looked at what data categories both lists needed, <strong>they converged on the same 6 data foundations:</strong> company identity and plan, contact identity and role, interaction history, account billing status, recent activity events, and product configuration.<br><br>
+          Two independent analyses pointing to the same infrastructure. That convergence told me the foundation is sound — we're not building based on one perspective. The same data layer that enables reactive support also enables proactive health monitoring. That's not an accident; it's validation."</p>
+        </div>
+        <div class="db">
+          <div class="db-label l-panel">What Each Person Hears</div>
+          <p><strong>Renee:</strong> Rigorous process, not gut instinct. <strong>Caroline:</strong> Clear data categories she can map to sources. <strong>Evan:</strong> A PM who validates before committing. <strong>Annelise:</strong> User needs driving architecture, not the reverse.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="beat" onclick="tog(this)">
+    <div class="beat-head">
+      <span class="beat-badge bb-speak">Speak</span>
+      <div class="beat-main">
+        <div class="beat-title">The Trust Progression — Why Three Phases</div>
+        <div class="beat-sub">45 seconds. The strategic framework for phasing.</div>
+      </div>
+      <span class="beat-tog">▼</span>
+    </div>
+    <div class="beat-body">
+      <div class="dg">
+        <div class="db full">
+          <div class="db-label l-script">Script</div>
+          <p>"The three-phase roadmap isn't arbitrary. It follows a trust progression.<br><br>
+          <strong>Phase 1: Earn trust through accuracy.</strong> Show agents the data they already know is correct — their own company, their own interactions. If the data is right, they trust the tool. If it's wrong even once, they never come back.<br><br>
+          <strong>Phase 2: Earn trust through analysis.</strong> Once they trust the data, layer on health signals — composite scores, risk indicators. Trust in inputs precedes trust in outputs.<br><br>
+          <strong>Phase 3: Earn trust through prediction.</strong> Only after agents trust the data and the analysis will they act on predictions — proactive alerts, upsell signals. Premature predictions destroy credibility.<br><br>
+          Each phase earns the right to the next."</p>
+        </div>
+        <div class="db">
+          <div class="db-label l-why">Why This Framing Wins</div>
+          <p>It shows you understand internal tool adoption — the #1 risk. It also explains <strong>why</strong> health scoring isn't in MVP, which the prompt might have expected. The answer: because trust must be earned sequentially, not assumed.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="beat" onclick="tog(this)">
+    <div class="beat-head">
+      <span class="beat-badge bb-speak">Speak</span>
+      <div class="beat-main">
+        <div class="beat-title">The Tiebreaker Principle</div>
+        <div class="beat-sub">30 seconds. The architectural philosophy in one sentence.</div>
+      </div>
+      <span class="beat-tog">▼</span>
+    </div>
+    <div class="beat-body">
+      <div class="dg">
+        <div class="db full">
+          <div class="db-label l-script">Script</div>
+          <p>"One more principle that governed scoping decisions. When two features are equal on effort and near-term value, I pick the one that also builds toward the AI-native future. Structured interaction records over free-text notes. Normalized schema over flat aggregation. API-first service over monolithic dashboard. Same effort, wildly different future leverage. You're not building an AI system in Phase 1 — you're building the data foundation that makes Phase 3 inevitable rather than a rearchitecture."</p>
+        </div>
+        <div class="db">
+          <div class="db-label l-note">Delivery Note</div>
+          <p>This is the most quotable line in the presentation. Slow down on "same effort, wildly different future leverage." It's the kind of statement that Renee will remember. But land it once and move on — don't oversell the AI angle. The prompt says small businesses should work with real people.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  SECTION 4: DEFINE THE MVP                                     -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="sec">
+  <div class="sec-hdr">
+    <span class="sec-num">Section 4</span>
+    <span class="sec-title">Define the MVP — What We Build</span>
+    <span class="sec-time">10:00 – 13:00</span>
+  </div>
+
+  <div class="co co-g">
+    <p><strong>Purpose:</strong> Make the abstract concrete. Name the 9 features. Explain the Full Build vs. Deep Link framework. Demo the prototype for 60 seconds. This is where Evan evaluates requirements specificity and Annelise evaluates information design.</p>
+  </div>
+
+  <div class="beat" onclick="tog(this)">
+    <div class="beat-head">
+      <span class="beat-badge bb-speak">Speak</span>
+      <div class="beat-main">
+        <div class="beat-title">The 9 Features — Full Build vs. Deep Link</div>
+        <div class="beat-sub">90 seconds. Name them fast. Explain the framework.</div>
+      </div>
+      <span class="beat-tog">▼</span>
+    </div>
+    <div class="beat-body">
+      <div class="dg">
+        <div class="db full">
+          <div class="db-label l-script">Script</div>
+          <p>"Nine features in three categories. Three foundation stories that every interaction needs, and six problem-specific stories that address the highest-volume call drivers.<br><br>
+          <strong>Foundation stories — full builds:</strong> FS-1, Instant Caller Recognition — search by name, phone, email, results in under 2 seconds. FS-2, Complete Interaction History — merged timeline from Zendesk and Salesforce, all channels, all agents. FS-3, Account Status Strip — billing, payroll date, open tickets, recent changes at a glance.<br><br>
+          <strong>Problem stories — a mix of full builds and deep links:</strong> PS-1, Pay Stub Context — full build, because payroll discrepancies are the highest-volume call driver and the period-over-period delta highlighting is a novel capability. PS-2 through PS-5 — deep links. One click to the right screen in the right source system. Deep links deliver 80% of the value at 20% of the engineering cost.<br><br>
+          The acceptance criteria are in the document — specific thresholds Evan could write tickets from today. Search under 2 seconds. Dashboard load under 3 seconds. Data refresh every 5 minutes."</p>
+        </div>
+        <div class="db">
+          <div class="db-label l-why">Why "Full Build vs. Deep Link"</div>
+          <p>This is the MVP discipline the rubric evaluates. You're showing you can make hard cuts without cutting value. Deep links are still better than what agents have today — one click vs. manually navigating. This framework also gives Phase 2 a natural upgrade path: convert deep links to full builds based on usage data.</p>
+        </div>
+        <div class="db">
+          <div class="db-label l-avoid">What to Avoid</div>
+          <p>Don't read every acceptance criterion aloud. Don't explain each deep link in detail — the document does that. The phrase "Evan could write tickets from today" is a deliberate signal to Evan that you know what PM-Engineering collaboration looks like.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="beat" onclick="tog(this)">
+    <div class="beat-head">
+      <span class="beat-badge bb-demo">Demo</span>
+      <div class="beat-main">
+        <div class="beat-title">Prototype Walkthrough — The Sarah Chen Encounter</div>
+        <div class="beat-sub">60 seconds maximum. Show, don't tour.</div>
+      </div>
+      <span class="beat-tog">▼</span>
+    </div>
+    <div class="beat-body">
+      <div class="dg">
+        <div class="db full">
+          <div class="db-label l-script">Script + Actions</div>
+          <p>"Let me show you what this feels like."<br><br>
+          <strong>[Open customer-central.html]</strong> "This is a working prototype — interactive, with realistic data. Let me walk through Sarah's call."<br><br>
+          <strong>[Hit ⌘K, type 'Sarah']</strong> "Search — instant results, with role badges showing admin vs. employee."<br><br>
+          <strong>[Click Sarah Chen]</strong> "Dashboard loads. Identity card, status strip, interaction history — all in the first 3 seconds. The cognitive sequence matches how an agent's brain works: who is this, what's the context, what's happened before."<br><br>
+          <strong>[Click Payroll tab]</strong> "PS-1 — the pay stub viewer. Every row that changed from last period is highlighted in amber with a reason annotation. The agent sees immediately: new hire Marcus Johnson added, that's why the payroll total is different."<br><br>
+          <strong>[Click Billing tab briefly]</strong> "Status strip, invoice timeline, payment cascade — at a glance."<br><br>
+          "I built this from first principles, not from user research. Every layout decision is an assumption I want to test — particularly in the workshop with Annelise."</p>
+        </div>
+        <div class="db">
+          <div class="db-label l-note">Delivery Note</div>
+          <p><strong>60 seconds sharp.</strong> The temptation is to tour every feature — resist it. Show the encounter flow (search → profile → one problem panel) and stop. The workshop is where they explore it. By cutting the demo short, you demonstrate discipline and create anticipation.</p>
+        </div>
+        <div class="db">
+          <div class="db-label l-panel">The Last Line Matters</div>
+          <p>"Every layout decision is an assumption I want to test — particularly with Annelise." This does three things: <strong>(1)</strong> frames the prototype as a starting point, not a finished design, <strong>(2)</strong> names Annelise specifically, signaling you'll collaborate with design, <strong>(3)</strong> sets up the workshop wireframe exercise where she'll pick up the marker.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  SECTION 5: PROVE IT'S BUILDABLE                               -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="sec">
+  <div class="sec-hdr">
+    <span class="sec-num">Section 5</span>
+    <span class="sec-title">Prove It's Buildable — Data & Architecture</span>
+    <span class="sec-time">13:00 – 16:00</span>
+  </div>
+
+  <div class="co co-g">
+    <p><strong>Purpose:</strong> This is for Caroline and Evan. Show technical depth without over-engineering. Name the data sources, the integration approach, and the hardest problems. Ask questions that demonstrate you know what you don't know.</p>
+  </div>
+
+  <div class="beat" onclick="tog(this)">
+    <div class="beat-head">
+      <span class="beat-badge bb-speak">Speak</span>
+      <div class="beat-main">
+        <div class="beat-title">Data Architecture — 5 Sources, 1 API Layer</div>
+        <div class="beat-sub">90 seconds. The technical backbone.</div>
+      </div>
+      <span class="beat-tog">▼</span>
+    </div>
+    <div class="beat-body">
+      <div class="dg">
+        <div class="db full">
+          <div class="db-label l-script">Script</div>
+          <p>"Five source systems feed the MVP. <strong>Production DB</strong> — companies, members, payroll runs, billing. This is the source of truth for product data. <strong>Salesforce</strong> — Accounts, Contacts, Cases, Opportunities. The relationship layer, Caroline's domain. <strong>Zendesk</strong> — tickets, users, satisfaction ratings. The service layer. <strong>Application logs</strong> — login events, feature usage. And the <strong>billing system</strong> — payment status, invoice history.<br><br>
+          We don't query these systems live during a call — that's fragile and slow. Instead, we build a <strong>Customer Context API</strong> as an aggregation layer. Normalized schema, cached data with freshness timestamps, API-first so the same service can feed Sales tooling, RevOps reporting, and Product analytics. The CSO dashboard is the first consumer, not the only one."</p>
+        </div>
+        <div class="db">
+          <div class="db-label l-why">Why "API-First" Matters</div>
+          <p>This single architectural decision signals platform thinking to Renee. It also answers the question she'll have about the broader ITO mandate — the same data layer serves multiple teams. Caroline hears that you're building WITH Salesforce (as a source), not around it.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="beat" onclick="tog(this)">
+    <div class="beat-head">
+      <span class="beat-badge bb-engage">Engage</span>
+      <div class="beat-main">
+        <div class="beat-title">Plant the Open Questions — Caroline and Evan's Moments</div>
+        <div class="beat-sub">60 seconds. Ask the questions that show integration realism.</div>
+      </div>
+      <span class="beat-tog">▼</span>
+    </div>
+    <div class="beat-body">
+      <div class="dg">
+        <div class="db full">
+          <div class="db-label l-script">Script</div>
+          <p>"There are integration challenges I want to surface now — some of which you can likely answer.<br><br>
+          <strong>Caroline</strong> — the hardest integration is the Zendesk-to-Salesforce join. The unified interaction timeline depends on a clean mapping between Zendesk Organization IDs and Salesforce Account records. <strong>Is that mapping something your team has already built, or would we need to create it?</strong><br><br>
+          <strong>Evan</strong> — the payroll engine data is the long pole for PS-1, the pay stub viewer. I'd spike on that in Week 1 — if there's no clean API and we're looking at raw database queries, PS-1 might downgrade to a deep link for MVP. <strong>Do you know the current access pattern for payroll data from internal tools?</strong><br><br>
+          I've documented 14 open questions in the proposal, organized by who can answer them. Several of these we can resolve right here in the workshop."</p>
+        </div>
+        <div class="db">
+          <div class="db-label l-panel">Why Ask Questions During the Presentation</div>
+          <p><strong>Three effects at once.</strong> (1) It demonstrates integration realism — you're not hand-waving about "pulling data from systems." (2) It gives Caroline and Evan floor time early, which the rubric rewards. (3) If they answer, you get real information that sharpens the workshop. If they defer, you've still shown the right questions. Either outcome scores well.</p>
+        </div>
+        <div class="db">
+          <div class="db-label l-note">If They Answer</div>
+          <p>Listen. Don't rush past their answer to get back to your script. If Caroline says "yes, that mapping exists" — say "that's great news, it de-risks FS-2 significantly." If she says "it's messy" — say "good to know now rather than in Week 3. That's exactly why we spike in Week 1." Adapt in real-time. The presentation is a conversation, not a monologue.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  SECTION 6: SHOW THE PLAN                                      -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="sec">
+  <div class="sec-hdr">
+    <span class="sec-num">Section 6</span>
+    <span class="sec-title">Show the Plan — Roadmap, Resources, Rollout</span>
+    <span class="sec-time">16:00 – 18:00</span>
+  </div>
+
+  <div class="co co-g">
+    <p><strong>Purpose:</strong> Prove this is executable, not theoretical. Hit the three things they care about: timeline is realistic, hardest problems are front-loaded, stage gates prevent bad rollouts. Then metrics.</p>
+  </div>
+
+  <div class="beat" onclick="tog(this)">
+    <div class="beat-head">
+      <span class="beat-badge bb-speak">Speak</span>
+      <div class="beat-main">
+        <div class="beat-title">Timeline & Team — 7 Weeks, 4 Engineers + PM + Design</div>
+        <div class="beat-sub">45 seconds. Concise. Detail is in the document.</div>
+      </div>
+      <span class="beat-tog">▼</span>
+    </div>
+    <div class="beat-body">
+      <div class="dg">
+        <div class="db full">
+          <div class="db-label l-script">Script</div>
+          <p>"Seven calendar weeks, total. Week 0 is pure discovery — I'd spend the first 3 days shadowing CSO agents to validate everything I've proposed today. Week 1: four data access spikes to de-risk the hardest integrations before we commit scope. Weeks 2-4: build sprint. Week 5: alpha with 5 volunteer agents and daily feedback. Week 6: beta with a full team of 20-30 agents. Week 7: full rollout with training.<br><br>
+          Team: 1 backend engineer, 1 frontend engineer, 1 data engineer from Data Services — that's a critical resource I'd want to confirm availability for. 1 designer, ideally from Annelise's team, and me. QA shared.<br><br>
+          Two things make this realistic: the de-risking spikes in Week 1 determine final scope — we adjust based on reality, not assumptions. And the stage gates between alpha, beta, and rollout mean we don't scale until quality is proven."</p>
+        </div>
+        <div class="db">
+          <div class="db-label l-avoid">Keep Moving</div>
+          <p>Don't linger. The detail is in the phased-roadmap artifact. Hit the three signals: (1) discovery before building, (2) front-loaded risk, (3) quality gates. Then transition to metrics.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="beat" onclick="tog(this)">
+    <div class="beat-head">
+      <span class="beat-badge bb-speak">Speak</span>
+      <div class="beat-main">
+        <div class="beat-title">Success Metrics — How We Know It Worked</div>
+        <div class="beat-sub">45 seconds. Primary, guardrail, and the leading indicator.</div>
+      </div>
+      <span class="beat-tog">▼</span>
+    </div>
+    <div class="beat-body">
+      <div class="dg">
+        <div class="db full">
+          <div class="db-label l-script">Script</div>
+          <p>"Three layers of metrics. <strong>Primary:</strong> Average Handle Time — target 15-20% reduction within 90 days. First Contact Resolution — target 10% improvement. Tool adoption — over 80% daily active usage within 30 days. The tool must replace the existing workflow, not supplement it.<br><br>
+          <strong>Guardrails:</strong> NPS maintains at +60 or above. Data accuracy at 95% or better — agents seeing wrong data is worse than seeing no data.<br><br>
+          The <strong>leading indicator</strong> I'm watching closest: search-to-context time under 5 seconds. That's the moment the agent has what they need. If that metric is healthy, everything downstream follows."</p>
+        </div>
+        <div class="db">
+          <div class="db-label l-why">Why "Search-to-Context Time"</div>
+          <p>This metric is unusual — most candidates will list AHT and FCR and stop. Search-to-context time is a <strong>product metric</strong>, not just a business metric. It tells you whether the tool is working at the moment of truth. It's also the fastest feedback loop — measurable from Day 1 of alpha, unlike AHT which needs weeks of data for significance.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  SECTION 7: INVITE COLLABORATION                               -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="sec">
+  <div class="sec-hdr">
+    <span class="sec-num">Section 7</span>
+    <span class="sec-title">Invite Collaboration — Transition to Workshop</span>
+    <span class="sec-time">18:00 – 20:00</span>
+  </div>
+
+  <div class="co co-g">
+    <p><strong>Purpose:</strong> Close the presentation with intellectual honesty — name what you don't know. Then transition to the workshop as the natural next step. The closing should make the panel want to contribute, not just evaluate.</p>
+  </div>
+
+  <div class="beat" onclick="tog(this)">
+    <div class="beat-head">
+      <span class="beat-badge bb-speak">Speak</span>
+      <div class="beat-main">
+        <div class="beat-title">What I Don't Know — Intellectual Honesty</div>
+        <div class="beat-sub">30 seconds. Name the gaps. This is strength, not weakness.</div>
+      </div>
+      <span class="beat-tog">▼</span>
+    </div>
+    <div class="beat-body">
+      <div class="db full">
+        <div class="db-label l-script">Script</div>
+        <p>"I want to be direct about what I don't know. I haven't sat with a CSO agent. I don't know the actual top call drivers by volume — I've inferred them from domain patterns. I don't know the real data architecture — I've proposed based on what's typical for a Salesforce-centric stack. Every UX decision in that prototype is an informed assumption, not a validated design. The proposal is built to adapt when any of these assumptions are proven wrong. That's why Week 0 exists, and that's why the next 45 minutes matter."</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="beat" onclick="tog(this)">
+    <div class="beat-head">
+      <span class="beat-badge bb-trans">Transition</span>
+      <div class="beat-main">
+        <div class="beat-title">The Workshop Invitation</div>
+        <div class="beat-sub">30 seconds. Shift the energy from presenting to collaborating.</div>
+      </div>
+      <span class="beat-tog">▼</span>
+    </div>
+    <div class="beat-body">
+      <div class="dg">
+        <div class="db full">
+          <div class="db-label l-script">Script</div>
+          <p>"Everything I've shown you is a hypothesis built from first principles. Now I want to pressure-test it with the people in this room who have the context I don't. I have four exercises designed to validate the agent journey, prioritize features, lock scope, and identify risks — all collaboratively. By the end, we should have a shared view of what's in, what's out, and what comes next. Ready to build?"</p>
+        </div>
+        <div class="db">
+          <div class="db-label l-note">Delivery Note</div>
+          <p>"Ready to build?" is an energy shift line. Say it with a slight pause before it — let it land. If you're standing, this is the moment you move from the screen to the whiteboard. The physical movement signals the mode change.</p>
+        </div>
+        <div class="db">
+          <div class="db-label l-time">Timing Check</div>
+          <p>If you finish at 18:00, you have 10+ minutes for Q&A before the workshop. That's ideal — richer Q&A is better than padding the presentation. If you're at 20:00 sharp, the Q&A will naturally blend into the workshop opening. If you're past 20:00, cut Section 6 (metrics) — they can read it in the document.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel-grid">
+    <div class="panel-box pb-renee"><div class="pb-name">Renee</div><div class="pb-hear">"I can picture this person leading a roadmap review with my VP peers"</div></div>
+    <div class="panel-box pb-annelise"><div class="pb-name">Annelise</div><div class="pb-hear">"This person designs for real humans, not hypothetical users"</div></div>
+    <div class="panel-box pb-caroline"><div class="pb-name">Caroline</div><div class="pb-hear">"This person understands the data — and asks the right questions"</div></div>
+    <div class="panel-box pb-evan"><div class="pb-name">Evan</div><div class="pb-hear">"I could build from this spec. I'd enjoy working with this PM."</div></div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<!--  DELIVERY NOTES                                                 -->
+<!-- ═══════════════════════════════════════════════════════════════ -->
+<div class="sec">
+  <div class="sec-hdr">
+    <span class="sec-num">Reference</span>
+    <span class="sec-title">Delivery & Preparation Notes</span>
+  </div>
+
+  <div class="beat" onclick="tog(this)">
+    <div class="beat-head">
+      <span class="beat-badge bb-note">Prep</span>
+      <div class="beat-main">
+        <div class="beat-title">Before the Interview — Setup Checklist</div>
+      </div>
+      <span class="beat-tog">▼</span>
+    </div>
+    <div class="beat-body">
+      <div class="dg">
+        <div class="db">
+          <div class="db-label l-artifact">Tabs Pre-Loaded (In Order)</div>
+          <p><strong>Tab 1:</strong> customer-central.html (prototype — for the 60-second demo)<br><strong>Tab 2:</strong> feature-showcase.html (reference if anyone asks for feature detail)<br><strong>Tab 3:</strong> Any supporting artifacts you want available (data requirements, open questions)<br><br>Don't have 8 tabs open. Three is enough. The rest is in the written proposal they've already read.</p>
+        </div>
+        <div class="db">
+          <div class="db-label l-artifact">Whiteboard Pre-Drawn</div>
+          <p>Before anyone enters the room, draw the IN / LATER / OUT board for the workshop. This signals preparation and gives the group a visual anchor. Have markers in 3 colors (Annelise gets one, you get one, third is for anyone).</p>
+        </div>
+        <div class="db">
+          <div class="db-label l-note">Physical Setup</div>
+          <p>If onsite at 55 Water: stand during the presentation, sit during the workshop. Project the prototype on the monitor. If remote: screen-share the prototype, keep camera on, have Miro/FigJam ready for the workshop.</p>
+        </div>
+        <div class="db">
+          <div class="db-label l-note">Mental Setup</div>
+          <p>This is not a pitch. It's a working session with future colleagues. The confidence comes from the work you've done — 19 steps of systematic thinking. The humility comes from knowing the work isn't finished — the panel has context you need. Both are real.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="beat" onclick="tog(this)">
+    <div class="beat-head">
+      <span class="beat-badge bb-note">Prep</span>
+      <div class="beat-main">
+        <div class="beat-title">Artifact Map — What to Reference When</div>
+      </div>
+      <span class="beat-tog">▼</span>
+    </div>
+    <div class="beat-body">
+      <div class="dg">
+        <div class="db full">
+          <div class="db-label l-artifact">Artifacts by Section</div>
+          <p>
+          <strong>§1 (Pain):</strong> No artifact. This is pure narrative. Your voice is the medium.<br>
+          <strong>§2 (Problems):</strong> Reference the deep problem analysis verbally. Don't open it.<br>
+          <strong>§3 (Logic):</strong> Reference JTBD framework and ICE scoring verbally. If pressed, open ICE scoring to show the convergence.<br>
+          <strong>§4 (MVP):</strong> Open <strong>customer-central.html</strong> for the 60-second demo. Reference feature-showcase.html only if asked for per-feature detail.<br>
+          <strong>§5 (Data):</strong> Reference data-requirements and engineering-resources verbally. Open only if Caroline asks a specific question.<br>
+          <strong>§6 (Plan):</strong> Reference phased-roadmap and success-metrics verbally. Don't open — the document has the detail.<br>
+          <strong>§7 (Close):</strong> Reference open-questions verbally as the bridge to the workshop. "14 open questions organized by who can answer them."
+          </p>
+        </div>
+        <div class="db full">
+          <div class="db-label l-avoid">Rule of Thumb</div>
+          <p>Open one artifact on screen during the presentation (the prototype in §4). Reference everything else verbally. The temptation to show every artifact is strong — resist it. Showing everything dilutes the impact and eats time. The document is their reference. The presentation is your reasoning. The workshop is where they interact with the artifacts.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="beat" onclick="tog(this)">
+    <div class="beat-head">
+      <span class="beat-badge bb-note">Prep</span>
+      <div class="beat-main">
+        <div class="beat-title">If You Finish Early — What to Do With Extra Time</div>
+      </div>
+      <span class="beat-tog">▼</span>
+    </div>
+    <div class="beat-body">
+      <div class="db full">
+        <div class="db-label l-note">Options (In Priority Order)</div>
+        <p>
+        <strong>Best case: finish at 17-18 min.</strong> Open the floor: "I'd love to hear initial reactions before we shift into the workshop." This creates a natural Q&A that's more conversational than formal. If Renee has a question, she'll ask it now. If not, the extra time flows into the workshop, which can always use more time.<br><br>
+        <strong>Do NOT:</strong> pad by showing more artifacts, re-explaining features, or adding tangents. Conciseness is a signal of confidence. Filling time is a signal of anxiety.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="beat" onclick="tog(this)">
+    <div class="beat-head">
+      <span class="beat-badge bb-note">Prep</span>
+      <div class="beat-main">
+        <div class="beat-title">If You're Running Long — What to Cut</div>
+      </div>
+      <span class="beat-tog">▼</span>
+    </div>
+    <div class="beat-body">
+      <div class="db full">
+        <div class="db-label l-note">Cut Order (First to Cut → Last to Cut)</div>
+        <p>
+        <strong>First cut:</strong> §6 metrics detail — say "AHT, FCR, adoption — targets and rationale are in the document" (saves 45s).<br>
+        <strong>Second cut:</strong> §5 data questions — plant them in the workshop instead of the presentation (saves 60s).<br>
+        <strong>Third cut:</strong> §3 tiebreaker principle — skip it, weave it into the workshop naturally (saves 30s).<br><br>
+        <strong>Never cut:</strong> §1 (the encounter narrative — it's the emotional foundation), §4 (the prototype demo — it's the proof), or §7 (the workshop transition — it's the energy shift).
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>Customer Central — Strategic Proposal Presentation Outline · Darrien Watson · February 2026</p>
+</div>
+
+</div>
+
+<script>
+function tog(el){el.classList.toggle('open');}
+</script>
+
+</body>
+</html>

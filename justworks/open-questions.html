@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Open Questions & Dependencies — Customer Central</title>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Overpass+Mono:wght@400;500;600;700&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b0d11;
+  --s1: #11141b;
+  --s2: #171b25;
+  --s3: #1d222f;
+  --bd: #2a3148;
+  --bd2: #3d4a68;
+  --t0: #eef0f6;
+  --t1: #c4c9da;
+  --t2: #8790a8;
+  --t3: #5b657e;
+  --t4: #3c4560;
+  --acc: #d4943c;
+  --acc2: #e8a838;
+  --g: #3dd68c;
+  --gbg: rgba(61,214,140,.06);
+  --gbd: rgba(61,214,140,.18);
+  --r: #ef6b6b;
+  --rbg: rgba(239,107,107,.06);
+  --rbd: rgba(239,107,107,.18);
+  --b: #5b9cf5;
+  --bbg: rgba(91,156,245,.06);
+  --bbd: rgba(91,156,245,.18);
+  --a: #e8b84a;
+  --abg: rgba(232,184,74,.06);
+  --abd: rgba(232,184,74,.18);
+  --p: #9b82f0;
+  --pbg: rgba(155,130,240,.06);
+  --pbd: rgba(155,130,240,.18);
+  --cy: #2cc5d6;
+  --cybg: rgba(44,197,214,.06);
+  --cybd: rgba(44,197,214,.18);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  color: var(--t1);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page { max-width: 920px; margin: 0 auto; padding: 3.5rem 2rem 6rem; }
+
+/* Header */
+.hdr { margin-bottom: 2rem; }
+.hdr-label {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--acc);
+  margin-bottom: 0.75rem;
+}
+.hdr h1 {
+  font-family: 'Newsreader', serif;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 400;
+  color: var(--t0);
+  line-height: 1.25;
+  margin-bottom: 0.6rem;
+}
+.hdr h1 em { font-style: italic; color: var(--acc2); font-weight: 300; }
+.hdr-sub {
+  font-size: 0.95rem;
+  color: var(--t2);
+  font-weight: 300;
+  max-width: 700px;
+  line-height: 1.7;
+}
+
+/* Intro */
+.intro {
+  background: linear-gradient(135deg, rgba(212,148,60,.04) 0%, rgba(212,148,60,.01) 100%);
+  border: 1px solid rgba(212,148,60,.15);
+  border-left: 3px solid var(--acc);
+  border-radius: 8px;
+  padding: 1.4rem 1.6rem;
+  margin-bottom: 2.5rem;
+}
+.intro p {
+  font-size: 0.9rem;
+  color: var(--t1);
+  line-height: 1.7;
+  font-weight: 300;
+}
+.intro p strong { font-weight: 500; color: var(--t0); }
+
+/* Filter nav */
+.nav {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--bd);
+}
+.nav-btn {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 5px;
+  border: 1px solid var(--bd);
+  background: transparent;
+  color: var(--t3);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.nav-btn:hover { border-color: var(--bd2); color: var(--t2); }
+.nav-btn.active { background: var(--s2); border-color: var(--acc); color: var(--acc); }
+
+/* Section headers */
+.sec-hdr {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 2.5rem 0 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--bd);
+}
+.sec-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+.sec-title {
+  font-family: 'Newsreader', serif;
+  font-size: 1.35rem;
+  font-weight: 400;
+  color: var(--t0);
+}
+.sec-sub {
+  font-size: 0.78rem;
+  color: var(--t3);
+  font-weight: 300;
+  margin-left: auto;
+  font-family: 'Overpass Mono', monospace;
+  letter-spacing: 1px;
+}
+
+/* Question cards */
+.q-card {
+  background: var(--s1);
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  margin-bottom: 0.85rem;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.q-card:hover { border-color: var(--bd2); }
+.q-card.open .q-body { display: block; }
+.q-card.open .q-toggle { transform: rotate(180deg); }
+
+.q-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 1rem 1.3rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.q-impact {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 3px 7px;
+  border-radius: 4px;
+  white-space: nowrap;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+.impact-scope { background: var(--rbg); border: 1px solid var(--rbd); color: var(--r); }
+.impact-arch { background: var(--abg); border: 1px solid var(--abd); color: var(--a); }
+.impact-timeline { background: var(--bbg); border: 1px solid var(--bbd); color: var(--b); }
+.impact-info { background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.08); color: var(--t3); }
+
+.q-main { flex: 1; min-width: 0; }
+.q-text {
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--t0);
+  line-height: 1.5;
+}
+.q-toggle {
+  color: var(--t3);
+  font-size: 0.75rem;
+  transition: transform 0.25s;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.q-body {
+  display: none;
+  padding: 0 1.3rem 1.3rem;
+  border-top: 1px solid var(--bd);
+  padding-top: 1.1rem;
+}
+
+/* Detail boxes */
+.d-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.85rem;
+}
+@media (min-width: 640px) {
+  .d-grid { grid-template-columns: 1fr 1fr; }
+  .d-grid .d-full { grid-column: 1 / -1; }
+}
+.d-box {
+  background: var(--s2);
+  border: 1px solid var(--bd);
+  border-radius: 7px;
+  padding: 0.85rem 1rem;
+}
+.d-label {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+.d-label.assume { color: var(--a); }
+.d-label.ifyes { color: var(--g); }
+.d-label.ifno { color: var(--r); }
+.d-label.action { color: var(--cy); }
+.d-label.why { color: var(--p); }
+.d-label.who { color: var(--b); }
+
+.d-box p {
+  font-size: 0.82rem;
+  color: var(--t1);
+  line-height: 1.6;
+  font-weight: 300;
+}
+.d-box p strong { font-weight: 500; color: var(--t0); }
+
+/* Dependencies section */
+.dep-card {
+  background: var(--s1);
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  padding: 1.2rem 1.4rem;
+  margin-bottom: 0.85rem;
+}
+.dep-name {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--t0);
+  margin-bottom: 0.35rem;
+}
+.dep-desc {
+  font-size: 0.82rem;
+  color: var(--t2);
+  line-height: 1.6;
+  font-weight: 300;
+}
+.dep-desc strong { font-weight: 500; color: var(--t1); }
+.dep-owner {
+  display: inline-block;
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 2px 7px;
+  border-radius: 3px;
+  margin-top: 0.5rem;
+}
+
+/* Tags */
+.tag-person {
+  display: inline-block;
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 1px;
+  padding: 2px 7px;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+.tag-caroline { background: var(--pbg); border: 1px solid var(--pbd); color: var(--p); }
+.tag-evan { background: var(--bbg); border: 1px solid var(--bbd); color: var(--b); }
+.tag-renee { background: var(--abg); border: 1px solid var(--abd); color: var(--a); }
+.tag-annelise { background: var(--cybg); border: 1px solid var(--cybd); color: var(--cy); }
+.tag-cso { background: var(--gbg); border: 1px solid var(--gbd); color: var(--g); }
+.tag-andres { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); color: var(--t2); }
+
+/* Closing */
+.closing {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--bd);
+}
+.closing p {
+  font-family: 'Newsreader', serif;
+  font-size: 1rem;
+  color: var(--t2);
+  line-height: 1.8;
+  font-weight: 300;
+  font-style: italic;
+  max-width: 700px;
+}
+.closing p strong { font-weight: 500; font-style: normal; color: var(--t0); }
+
+.footer {
+  margin-top: 3rem;
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 1.5px;
+  color: var(--t4);
+  text-align: center;
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="hdr-label">Customer Central MVP · Prompt Requirement #4</div>
+    <h1>Open Questions <em>&</em> Dependencies</h1>
+    <p class="hdr-sub">
+      What we don't know, who can tell us, and what changes if the answer differs from our assumption. These questions are designed to be answered — many by the people in this room.
+    </p>
+  </div>
+
+  <!-- INTRO -->
+  <div class="intro">
+    <p>
+      This proposal is built on <strong>45 documented assumptions</strong>. Some are confirmed through public research. Most are inferred from domain patterns and the case study prompt. The questions below represent the assumptions with the <strong>highest impact if wrong</strong> — the ones that could change MVP scope, architecture decisions, or timeline. They're organized by who is best positioned to answer each one.
+    </p>
+  </div>
+
+  <!-- FILTER NAV -->
+  <div class="nav">
+    <button class="nav-btn active" data-f="all" onclick="filter(this)">All Questions</button>
+    <button class="nav-btn" data-f="caroline" onclick="filter(this)">Caroline</button>
+    <button class="nav-btn" data-f="evan" onclick="filter(this)">Evan</button>
+    <button class="nav-btn" data-f="renee" onclick="filter(this)">Renee</button>
+    <button class="nav-btn" data-f="annelise" onclick="filter(this)">Annelise</button>
+    <button class="nav-btn" data-f="cso" onclick="filter(this)">CSO Ops</button>
+    <button class="nav-btn" data-f="scope" onclick="filter(this)">Scope-Changing</button>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- CAROLINE — DATA ARCHITECTURE -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="sec-hdr" data-who="caroline">
+    <div class="sec-icon" style="background:var(--pbg);border:1px solid var(--pbd);">
+      <span style="color:var(--p);">C</span>
+    </div>
+    <span class="sec-title">Caroline Crossland</span>
+    <span class="sec-sub">Salesforce Solutions Architect</span>
+  </div>
+
+  <!-- C1 -->
+  <div class="q-card" data-who="caroline" data-scope="true" onclick="togq(this)">
+    <div class="q-head">
+      <span class="q-impact impact-scope">Scope</span>
+      <div class="q-main">
+        <div class="q-text">Is the Zendesk Organization ID mapped to the Salesforce Account ID today — and if so, how reliable is that mapping?</div>
+      </div>
+      <span class="q-toggle">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="d-grid">
+        <div class="d-box">
+          <div class="d-label why">Why This Matters</div>
+          <p>The unified interaction timeline (FS-2) merges Zendesk tickets with Salesforce Cases into a single chronological view. This is the <strong>hardest integration in the MVP</strong>. Without a clean join key, we can't reliably connect a customer's support tickets to their account record.</p>
+        </div>
+        <div class="d-box">
+          <div class="d-label assume">Our Assumption</div>
+          <p>We assume a shared key exists — likely Zendesk Organization ID mapped to Salesforce Account ID, or a shared external ID field. Confidence: <strong>Medium</strong>. Most Salesforce-heavy orgs implement this, but the mapping quality varies.</p>
+        </div>
+        <div class="d-box">
+          <div class="d-label ifyes">If the Mapping Exists & Is Clean</div>
+          <p>FS-2 proceeds as scoped. The aggregation layer joins on this key. Timeline is unaffected.</p>
+        </div>
+        <div class="d-box">
+          <div class="d-label ifno">If the Mapping Is Broken or Missing</div>
+          <p><strong>Scope change.</strong> FS-2 degrades to Zendesk-only interaction history in MVP. We'd need a Week 1 spike to build or repair the mapping — potentially a multi-week data cleanup effort. This is the single highest-risk integration question.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- C2 -->
+  <div class="q-card" data-who="caroline" data-scope="true" onclick="togq(this)">
+    <div class="q-head">
+      <span class="q-impact impact-arch">Architecture</span>
+      <div class="q-main">
+        <div class="q-text">What custom Salesforce objects exist for Justworks-specific entities (Plans, Members, Product Configurations)?</div>
+      </div>
+      <span class="q-toggle">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="d-grid">
+        <div class="d-box">
+          <div class="d-label why">Why This Matters</div>
+          <p>Our data requirements reference assumed custom objects like <strong>Plan__c</strong> and <strong>Member__c</strong>. If the actual schema uses different structures — or if plan data lives in the production DB rather than Salesforce — it changes which systems we query and how we join data.</p>
+        </div>
+        <div class="d-box">
+          <div class="d-label assume">Our Assumption</div>
+          <p>Plan type and product configuration are stored as custom Salesforce objects or fields on the Account record. Confidence: <strong>Medium-Low</strong>. Justworks' dedicated Salesforce Delivery Team suggests significant customization, but the specific schema is unknown.</p>
+        </div>
+        <div class="d-box d-full">
+          <div class="d-label ifno">If Plan Data Lives Elsewhere</div>
+          <p>If plan configuration is primarily in the production DB (not Salesforce), the company profile display (FS-1, FS-3) pulls from a different source than expected. This <strong>simplifies some integrations</strong> (less Salesforce dependency for real-time data) but changes the aggregation layer design. Week 1 data access spike would reveal this.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- C3 -->
+  <div class="q-card" data-who="caroline" onclick="togq(this)">
+    <div class="q-head">
+      <span class="q-impact impact-arch">Architecture</span>
+      <div class="q-main">
+        <div class="q-text">What is the current Salesforce API rate limit, and does an existing middleware or data warehouse sync layer exist?</div>
+      </div>
+      <span class="q-toggle">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="d-grid">
+        <div class="d-box">
+          <div class="d-label why">Why This Matters</div>
+          <p>Customer Central will query Salesforce on every call lookup. With thousands of daily interactions, <strong>direct real-time SOQL queries will hit rate limits</strong>. We need to know if there's already a middleware layer (MuleSoft, custom API, data warehouse sync) we should build on top of.</p>
+        </div>
+        <div class="d-box">
+          <div class="d-label assume">Our Assumption</div>
+          <p>We assume an aggregation layer that caches Salesforce data — not direct real-time queries. But if an existing sync pipeline or middleware exists, we should use it rather than building a parallel one.</p>
+        </div>
+        <div class="d-box d-full">
+          <div class="d-label action">Discovery Action</div>
+          <p>Week 1 spike: map existing data infrastructure. If a middleware layer exists, our aggregation service sits on top of it. If not, we build the sync pipeline as part of the data engineer's Week 1-2 work. Either way, <strong>we're not querying Salesforce live on every call.</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- C4 -->
+  <div class="q-card" data-who="caroline" onclick="togq(this)">
+    <div class="q-head">
+      <span class="q-impact impact-info">Informational</span>
+      <div class="q-main">
+        <div class="q-text">Are all Justworks product lines (Payroll, PEO Basic, PEO Plus, EOR, International Contractors) in a single Salesforce org?</div>
+      </div>
+      <span class="q-toggle">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="d-grid">
+        <div class="d-box">
+          <div class="d-label why">Why This Matters</div>
+          <p>If products are in separate orgs, querying a customer's complete product relationship requires cross-org API calls — significantly more complex. If they're in one org with custom objects per product line, it's a simpler query with filters.</p>
+        </div>
+        <div class="d-box">
+          <div class="d-label assume">Our Assumption</div>
+          <p>Single org. Confidence: <strong>Medium-High</strong>. Most mid-size SaaS companies consolidate into one org. Justworks' dedicated Salesforce team suggests a mature, centralized setup.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- EVAN — TECHNICAL PRODUCT -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="sec-hdr" data-who="evan">
+    <div class="sec-icon" style="background:var(--bbg);border:1px solid var(--bbd);">
+      <span style="color:var(--b);">E</span>
+    </div>
+    <span class="sec-title">Evan Lehrman</span>
+    <span class="sec-sub">Senior Technical Product Manager</span>
+  </div>
+
+  <!-- E1 -->
+  <div class="q-card" data-who="evan" data-scope="true" onclick="togq(this)">
+    <div class="q-head">
+      <span class="q-impact impact-scope">Scope</span>
+      <div class="q-main">
+        <div class="q-text">Can the payroll engine data (pay stubs, run history, withholdings) be accessed via internal API, or does it require direct database queries?</div>
+      </div>
+      <span class="q-toggle">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="d-grid">
+        <div class="d-box">
+          <div class="d-label why">Why This Matters</div>
+          <p>PS-1 (Pay Stub Context) is the <strong>highest-volume problem story</strong> in the MVP — "Why is my paycheck different?" is the #1 call driver. The feature's value depends on accessing the last 3 pay stubs with line-item detail and delta highlighting. If the payroll engine doesn't expose this data cleanly, the feature either gets simplified or the integration timeline extends.</p>
+        </div>
+        <div class="d-box">
+          <div class="d-label assume">Our Assumption</div>
+          <p>Internal API exists for payroll data. Confidence: <strong>Medium</strong>. The Justworks product dashboard already displays pay stubs to customers, so an API likely exists — but it may not expose the granularity we need (line-item detail, period-over-period comparison).</p>
+        </div>
+        <div class="d-box">
+          <div class="d-label ifyes">If Clean API Exists</div>
+          <p>PS-1 builds as scoped: last 3 stubs, line-item breakdown, delta highlighting. This is the feature that makes agents say "I can't go back." On-time delivery.</p>
+        </div>
+        <div class="d-box">
+          <div class="d-label ifno">If Only Raw Database Access</div>
+          <p><strong>Scope change.</strong> PS-1 could degrade to a deep link to the existing payroll view (like PS-2) rather than an embedded experience. Or the data engineer adds a payroll data API to the Week 1-2 sprint, extending the build. Either way, we need to know in Week 1.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- E2 -->
+  <div class="q-card" data-who="evan" onclick="togq(this)">
+    <div class="q-head">
+      <span class="q-impact impact-timeline">Timeline</span>
+      <div class="q-main">
+        <div class="q-text">What is the current data refresh latency from the production database to the data warehouse?</div>
+      </div>
+      <span class="q-toggle">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="d-grid">
+        <div class="d-box">
+          <div class="d-label why">Why This Matters</div>
+          <p>If the warehouse sync is batch (daily ETL), data in Customer Central could be <strong>up to 24 hours stale</strong>. An agent looking at "last payroll run" would see yesterday's data, not today's. For a live-call tool, that's unacceptable for some data points (billing status, open tickets) and tolerable for others (company profile, employee count).</p>
+        </div>
+        <div class="d-box">
+          <div class="d-label assume">Our Assumption</div>
+          <p>Mixed latency. The aggregation layer queries real-time sources (production DB via read replica, Zendesk API) for time-sensitive data and warehouse for stable data. We show freshness timestamps on every data point so agents know what they're looking at.</p>
+        </div>
+        <div class="d-box d-full">
+          <div class="d-label action">Architectural Response</div>
+          <p>The loading tier design already accounts for this: <strong>Tier 1 data (identity, status) must be near-real-time</strong>. Tier 3-4 data (benefits detail, pay stubs) can tolerate minutes of lag. Freshness indicators on the UI tell agents exactly when data was last updated — stale data is worse than no data only if the agent doesn't know it's stale.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- E3 -->
+  <div class="q-card" data-who="evan" onclick="togq(this)">
+    <div class="q-head">
+      <span class="q-impact impact-arch">Architecture</span>
+      <div class="q-main">
+        <div class="q-text">What is the billing system architecture — internal service, Stripe, or another payment processor?</div>
+      </div>
+      <span class="q-toggle">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="d-grid">
+        <div class="d-box">
+          <div class="d-label why">Why This Matters</div>
+          <p>FS-3 (Account Status Strip) and PS-6 (Payment Failure Cascade) both depend on billing data — payment status, outstanding balance, failed payment history. The integration approach differs dramatically between an internal billing service (direct API) and a third-party processor (webhook + API).</p>
+        </div>
+        <div class="d-box">
+          <div class="d-label assume">Our Assumption</div>
+          <p>Custom internal billing system, possibly with Stripe as the payment processor underneath. Confidence: <strong>Low</strong>. PEOs typically build custom billing due to the complexity of per-employee-per-month pricing across multiple product lines.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- RENEE — STRATEGY & OPERATIONS -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="sec-hdr" data-who="renee">
+    <div class="sec-icon" style="background:var(--abg);border:1px solid var(--abd);">
+      <span style="color:var(--a);">R</span>
+    </div>
+    <span class="sec-title">Renee Orser</span>
+    <span class="sec-sub">VP, Internal Tools & Operations</span>
+  </div>
+
+  <!-- R1 -->
+  <div class="q-card" data-who="renee" data-scope="true" onclick="togq(this)">
+    <div class="q-head">
+      <span class="q-impact impact-scope">Scope</span>
+      <div class="q-main">
+        <div class="q-text">Does CSO handle all product lines (Payroll, PEO, EOR) with the same agents, or are there specialized teams per product?</div>
+      </div>
+      <span class="q-toggle">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="d-grid">
+        <div class="d-box">
+          <div class="d-label why">Why This Matters</div>
+          <p>If agents are <strong>segmented by product line</strong>, the dashboard can be more focused — a Payroll agent doesn't need PEO benefits data. If agents handle all products, the dashboard must surface context across all product lines for any caller, which increases data complexity and UI surface area.</p>
+        </div>
+        <div class="d-box">
+          <div class="d-label assume">Our Assumption</div>
+          <p>Agents handle multiple product lines. Confidence: <strong>Medium</strong>. The prompt says "across our product offerings" and the 24/7 coverage model suggests generalist agents with specialist escalation paths.</p>
+        </div>
+        <div class="d-box">
+          <div class="d-label ifyes">If Generalist Agents</div>
+          <p>Dashboard must show the company's full product relationship and adapt context based on which products they use. The FS-3 status strip is designed for this — it surfaces the most relevant signals regardless of product line.</p>
+        </div>
+        <div class="d-box">
+          <div class="d-label ifno">If Specialized Teams</div>
+          <p>Opportunity to build product-specific dashboard views. Reduces UI complexity per agent but increases the number of views to design. The API-first architecture supports this — the data layer is the same, only the presentation changes.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- R2 -->
+  <div class="q-card" data-who="renee" onclick="togq(this)">
+    <div class="q-head">
+      <span class="q-impact impact-scope">Scope</span>
+      <div class="q-main">
+        <div class="q-text">What is CSO's current tooling workflow? Which systems do agents actually use and in what order?</div>
+      </div>
+      <span class="q-toggle">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="d-grid">
+        <div class="d-box">
+          <div class="d-label why">Why This Matters</div>
+          <p>Our entire problem framing — the 6 compounding problems, the context-switching tax, the 5-6 system toggle — is <strong>hypothesized based on typical support org patterns</strong>. If agents have already built effective workarounds, or if the pain is concentrated in different areas than we assume, the MVP priorities shift.</p>
+        </div>
+        <div class="d-box">
+          <div class="d-label assume">Our Assumption</div>
+          <p>Agents toggle between Zendesk, Salesforce, Justworks admin dashboard, internal knowledge base, Slack, and possibly Tableau. Context-switching is a primary pain point. Confidence: <strong>Medium-High</strong>. This pattern is near-universal in multi-product support orgs.</p>
+        </div>
+        <div class="d-box d-full">
+          <div class="d-label action">Day 1 Validation</div>
+          <p><strong>First action in the role: shadow 5-10 CSO agents for 2-3 days.</strong> Watch what they actually do — which systems they open, in what order, where they hesitate, where they put customers on hold. Observed behavior beats self-reported pain. This validates or invalidates the core problem framing within the first week.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- R3 -->
+  <div class="q-card" data-who="renee" onclick="togq(this)">
+    <div class="q-head">
+      <span class="q-impact impact-timeline">Timeline</span>
+      <div class="q-main">
+        <div class="q-text">What is the ITO team's current capacity? Are there competing initiatives that would affect resource allocation?</div>
+      </div>
+      <span class="q-toggle">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="d-grid">
+        <div class="d-box">
+          <div class="d-label why">Why This Matters</div>
+          <p>The engineering resource plan proposes 3 software engineers, 1 data engineer (from Data Services), and 1 designer. If the ITO team is already committed to other projects — Sales tooling, RevOps integrations — <strong>the timeline extends or the team composition changes</strong>.</p>
+        </div>
+        <div class="d-box">
+          <div class="d-label assume">Our Assumption</div>
+          <p>The role description says Customer Central is a priority initiative. We assume Renee can allocate a dedicated team for 5 weeks. But the JD also mentions Sales org tooling as part of ITO's mandate — those priorities may compete.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- R4 -->
+  <div class="q-card" data-who="renee" onclick="togq(this)">
+    <div class="q-head">
+      <span class="q-impact impact-info">Informational</span>
+      <div class="q-main">
+        <div class="q-text">Are there PII or compliance constraints on what customer data can be surfaced in a consolidated internal view?</div>
+      </div>
+      <span class="q-toggle">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="d-grid">
+        <div class="d-box">
+          <div class="d-label why">Why This Matters</div>
+          <p>Customer Central consolidates data from multiple systems — including payroll, benefits, and personal information. If there are <strong>access control requirements</strong> (e.g., not all agents can see salary data, or benefits information requires HIPAA-compliant handling), the data layer needs permission filtering and audit logging from day one.</p>
+        </div>
+        <div class="d-box">
+          <div class="d-label assume">Our Assumption</div>
+          <p>CSO agents already have access to this data across individual systems. Customer Central doesn't expand the access surface — it consolidates it. But we've included audit logging in the data performance design as a precaution.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- ANNELISE — DESIGN & UX -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="sec-hdr" data-who="annelise">
+    <div class="sec-icon" style="background:var(--cybg);border:1px solid var(--cybd);">
+      <span style="color:var(--cy);">A</span>
+    </div>
+    <span class="sec-title">Annelise Bryda</span>
+    <span class="sec-sub">Staff Experience Designer</span>
+  </div>
+
+  <!-- A1 -->
+  <div class="q-card" data-who="annelise" onclick="togq(this)">
+    <div class="q-head">
+      <span class="q-impact impact-arch">Architecture</span>
+      <div class="q-main">
+        <div class="q-text">What does a CSO agent's physical workspace look like — single monitor, dual monitor, screen size, browser vs. desktop app?</div>
+      </div>
+      <span class="q-toggle">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="d-grid">
+        <div class="d-box">
+          <div class="d-label why">Why This Matters</div>
+          <p>The information architecture assumes a <strong>single-screen, browser-based experience</strong> with progressive disclosure. If agents have dual monitors, the layout could be fundamentally different — status on one screen, detail on another. If they're on laptops (remote agents), screen real estate is constrained and the cognitive hierarchy becomes even more critical.</p>
+        </div>
+        <div class="d-box">
+          <div class="d-label assume">Our Assumption</div>
+          <p>Browser-based, single screen. The prototype is designed for ~1280px+ with responsive scaling. All UX decisions — tabs instead of side panels, progressive disclosure, the cognitive sequence flow — assume limited viewport. Confidence: <strong>Medium</strong>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- A2 -->
+  <div class="q-card" data-who="annelise" onclick="togq(this)">
+    <div class="q-head">
+      <span class="q-impact impact-scope">Scope</span>
+      <div class="q-main">
+        <div class="q-text">Are there existing design system components or patterns from other Justworks internal tools we should build on?</div>
+      </div>
+      <span class="q-toggle">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="d-grid">
+        <div class="d-box">
+          <div class="d-label why">Why This Matters</div>
+          <p>Building on an existing design system <strong>accelerates delivery and ensures consistency</strong> with other internal tools. Building from scratch gives design freedom but adds time and creates a parallel visual language. If the ITO team has established patterns, our prototype should adopt them.</p>
+        </div>
+        <div class="d-box">
+          <div class="d-label assume">Our Assumption</div>
+          <p>Some component library exists (React-based, given the confirmed tech stack) but may not have all the patterns we need. The prototype is designed as a <strong>starting point for discussion</strong>, not a final UI. Annelise would lead the design refinement in sprint 1.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- CSO OPS — WORKFLOW & ADOPTION -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="sec-hdr" data-who="cso">
+    <div class="sec-icon" style="background:var(--gbg);border:1px solid var(--gbd);">
+      <span style="color:var(--g);">O</span>
+    </div>
+    <span class="sec-title">CSO Operations</span>
+    <span class="sec-sub">Natalie Miranda's Team · Day 1 Discovery</span>
+  </div>
+
+  <!-- O1 -->
+  <div class="q-card" data-who="cso" onclick="togq(this)">
+    <div class="q-head">
+      <span class="q-impact impact-scope">Scope</span>
+      <div class="q-main">
+        <div class="q-text">What are the actual top 5 call drivers by volume? Do payroll discrepancies and benefits questions dominate as we assume?</div>
+      </div>
+      <span class="q-toggle">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="d-grid">
+        <div class="d-box">
+          <div class="d-label why">Why This Matters</div>
+          <p>Our ICE scoring ranked "Why is my paycheck different?" as the #1 problem by volume. If the actual data shows a different distribution — for example, if benefits questions or compliance issues outweigh payroll — the <strong>MVP feature prioritization changes</strong>. PS-1 (Pay Stub Context) is a full build based on the volume assumption.</p>
+        </div>
+        <div class="d-box">
+          <div class="d-label assume">Our Assumption</div>
+          <p>Payroll discrepancies and benefits questions are the top 2 call drivers. Inferred from Justworks' help center structure, PEO industry patterns, and the breadth of payroll-related content. Confidence: <strong>Medium</strong>.</p>
+        </div>
+        <div class="d-box d-full">
+          <div class="d-label action">Validation Method</div>
+          <p>Pull Zendesk ticket tag distribution for the last 90 days. Group by topic category. This data should be available within the <strong>first 48 hours of the role</strong> and would either confirm or redirect the feature prioritization.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- O2 -->
+  <div class="q-card" data-who="cso" onclick="togq(this)">
+    <div class="q-head">
+      <span class="q-impact impact-info">Informational</span>
+      <div class="q-main">
+        <div class="q-text">What telephony system does CSO use, and is there any existing CTI or screen-pop capability?</div>
+      </div>
+      <span class="q-toggle">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="d-grid">
+        <div class="d-box">
+          <div class="d-label why">Why This Matters</div>
+          <p>CTI screen-pop is deferred from MVP (the ⌘K search covers 95% of the value). But knowing the telephony vendor now informs whether Phase 2 CTI integration is a <strong>2-week project or a 2-month project</strong>. If a partial screen-pop already exists, we might incorporate it into MVP at low cost.</p>
+        </div>
+        <div class="d-box">
+          <div class="d-label assume">Our Assumption</div>
+          <p>No existing CTI integration with customer data. Search-based lookup is the MVP approach. If CTI already exists and just needs to be wired to Customer Central, that changes the equation.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- O3 -->
+  <div class="q-card" data-who="cso" onclick="togq(this)">
+    <div class="q-head">
+      <span class="q-impact impact-info">Informational</span>
+      <div class="q-main">
+        <div class="q-text">Who owns the Zendesk instance — CSO directly, or a shared ops team? Can we modify ticket fields and tags?</div>
+      </div>
+      <span class="q-toggle">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="d-grid">
+        <div class="d-box">
+          <div class="d-label why">Why This Matters</div>
+          <p>The Tiebreaker Principle calls for <strong>structured interaction records</strong> — tagged topics, resolution types, outcome codes — to feed Phase 3 AI. If we can add custom ticket fields in Zendesk, agents tag interactions as part of their natural workflow. If we can't modify Zendesk (shared ownership, change control), the structured data capture moves to Customer Central's own logging layer.</p>
+        </div>
+        <div class="d-box">
+          <div class="d-label assume">Our Assumption</div>
+          <p>CSO has influence over Zendesk configuration but may need to coordinate with a shared ops team. The aggregation layer captures structured data regardless — the question is whether Zendesk can also be enriched.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════ -->
+  <!-- DEPENDENCIES -->
+  <!-- ═══════════════════════════════════════════════════ -->
+  <div class="sec-hdr">
+    <div class="sec-icon" style="background:var(--abg);border:1px solid var(--abd);">
+      <span style="color:var(--a);">⚑</span>
+    </div>
+    <span class="sec-title">External Dependencies</span>
+    <span class="sec-sub">Blocking or Gating</span>
+  </div>
+
+  <div class="dep-card">
+    <div class="dep-name">Data Services Team Allocation</div>
+    <div class="dep-desc">The data engineer is likely a <strong>shared resource</strong> across multiple teams. Their availability in Weeks 1-3 is critical — the Salesforce sync pipeline, Zendesk integration, and production DB read replica setup are all on their plate. If unavailable, the core team can build against mock data but the integration timeline extends.</div>
+    <span class="dep-owner tag-person tag-renee">Owner: Renee</span>
+  </div>
+
+  <div class="dep-card">
+    <div class="dep-name">Salesforce Schema Documentation</div>
+    <div class="dep-desc">Caroline or her team needs to provide <strong>schema documentation or access to a sandbox</strong> for the Week 1 data access spikes. Without this, the engineering team is guessing at object names, field types, and relationship structures. This is a 2-hour investment that saves 2 weeks of trial and error.</div>
+    <span class="dep-owner tag-person tag-caroline">Owner: Caroline</span>
+  </div>
+
+  <div class="dep-card">
+    <div class="dep-name">CSO Leadership Buy-In for Alpha Testing</div>
+    <div class="dep-desc">Alpha testing requires <strong>5 volunteer agents pulled from production queue</strong> for daily feedback sessions in Week 4. CSO leadership (Natalie Miranda's team) must approve this — it means slightly reduced coverage during alpha. The agents selected should span experience levels and product line familiarity.</div>
+    <span class="dep-owner tag-person tag-renee">Owner: Renee → Natalie Miranda</span>
+  </div>
+
+  <div class="dep-card">
+    <div class="dep-name">Design Resources</div>
+    <div class="dep-desc">Annelise or a team member <strong>allocated for the full 5-week build</strong>. The prototype provides a starting point, but production design — component refinement, accessibility, edge case handling, responsive behavior — requires dedicated design time. Heaviest in Weeks 1-2 (layout decisions) and Week 4 (alpha feedback iteration).</div>
+    <span class="dep-owner tag-person tag-annelise">Owner: Annelise</span>
+  </div>
+
+  <div class="dep-card">
+    <div class="dep-name">Production DB Read Replica Access</div>
+    <div class="dep-desc">Customer Central must query production data (payroll runs, employee rosters, benefits elections) <strong>without impacting production database performance</strong>. This typically means a read replica. If one doesn't exist, the DB team needs to provision it — a 1-2 week setup that should start in Week 1.</div>
+    <span class="dep-owner tag-person tag-evan">Owner: Evan → DB Team</span>
+  </div>
+
+
+  <!-- CLOSING -->
+  <div class="closing">
+    <p>
+      <strong>These questions are features, not bugs.</strong> Presenting them demonstrates that we know the difference between what we've validated and what we've assumed. Many can be answered by the people in this room — and several are designed as workshop inputs. The proposal is built to adapt: if the answers shift a priority or invalidate an assumption, the phased architecture absorbs the change without a restart.
+    </p>
+  </div>
+
+  <div class="footer">
+    Customer Central MVP — Open Questions & Dependencies · Darrien Watson · February 2026
+  </div>
+
+</div>
+
+<script>
+function togq(el) { el.classList.toggle('open'); }
+
+function filter(btn) {
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const f = btn.dataset.f;
+
+  document.querySelectorAll('.q-card').forEach(c => {
+    if (f === 'all') {
+      c.style.display = '';
+    } else if (f === 'scope') {
+      c.style.display = c.dataset.scope === 'true' ? '' : 'none';
+    } else {
+      c.style.display = c.dataset.who === f ? '' : 'none';
+    }
+  });
+
+  document.querySelectorAll('.sec-hdr[data-who]').forEach(h => {
+    if (f === 'all' || f === 'scope') {
+      h.style.display = '';
+    } else {
+      h.style.display = h.dataset.who === f ? '' : 'none';
+    }
+  });
+
+  // Always show dependencies section when "all"
+  document.querySelectorAll('.dep-card').forEach(d => {
+    d.style.display = (f === 'all') ? '' : 'none';
+  });
+  // Show dep header only on 'all'
+  const depHeaders = document.querySelectorAll('.sec-hdr:not([data-who])');
+  depHeaders.forEach(h => {
+    h.style.display = (f === 'all') ? '' : 'none';
+  });
+}
+</script>
+
+</body>
+</html>

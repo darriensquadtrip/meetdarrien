@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presentation & Workshop Plan — Customer Central</title>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Overpass+Mono:wght@400;500;600;700&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b0d11;
+  --s1: #11141b;
+  --s2: #171b25;
+  --s3: #1d222f;
+  --bd: #2a3148;
+  --bd2: #3d4a68;
+  --t0: #eef0f6;
+  --t1: #c4c9da;
+  --t2: #8790a8;
+  --t3: #5b657e;
+  --t4: #3c4560;
+  --acc: #d4943c;
+  --acc2: #e8a838;
+  --g: #3dd68c;
+  --gbg: rgba(61,214,140,.06);
+  --gbd: rgba(61,214,140,.18);
+  --r: #ef6b6b;
+  --rbg: rgba(239,107,107,.06);
+  --rbd: rgba(239,107,107,.18);
+  --b: #5b9cf5;
+  --bbg: rgba(91,156,245,.06);
+  --bbd: rgba(91,156,245,.18);
+  --a: #e8b84a;
+  --abg: rgba(232,184,74,.06);
+  --abd: rgba(232,184,74,.18);
+  --p: #9b82f0;
+  --pbg: rgba(155,130,240,.06);
+  --pbd: rgba(155,130,240,.18);
+  --cy: #2cc5d6;
+  --cybg: rgba(44,197,214,.06);
+  --cybd: rgba(44,197,214,.18);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Outfit',sans-serif; background:var(--bg); color:var(--t1); line-height:1.65; -webkit-font-smoothing:antialiased; }
+.page { max-width:940px; margin:0 auto; padding:3.5rem 2rem 6rem; }
+
+.hdr { margin-bottom:2rem; }
+.hdr-label { font-family:'Overpass Mono',monospace; font-size:0.68rem; letter-spacing:3px; text-transform:uppercase; color:var(--acc); margin-bottom:0.75rem; }
+.hdr h1 { font-family:'Newsreader',serif; font-size:clamp(1.8rem,4vw,2.5rem); font-weight:400; color:var(--t0); line-height:1.25; margin-bottom:0.6rem; }
+.hdr h1 em { font-style:italic; color:var(--acc2); font-weight:300; }
+.hdr-sub { font-size:0.92rem; color:var(--t2); font-weight:300; max-width:700px; line-height:1.7; }
+
+/* Part tabs */
+.part-tabs { display:flex; gap:4px; margin-bottom:2.5rem; border-bottom:2px solid var(--bd); }
+.part-tab {
+  font-family:'Overpass Mono',monospace; font-size:0.65rem; letter-spacing:1.5px;
+  text-transform:uppercase; padding:10px 20px; cursor:pointer;
+  border-bottom:2px solid transparent; margin-bottom:-2px;
+  color:var(--t3); transition:all 0.2s; background:transparent; border-top:none; border-left:none; border-right:none;
+}
+.part-tab:hover { color:var(--t2); }
+.part-tab.active { color:var(--acc); border-bottom-color:var(--acc); }
+
+.part { display:none; }
+.part.visible { display:block; }
+
+/* Section headers */
+.sec-hdr {
+  display:flex; align-items:center; gap:12px;
+  margin:2.5rem 0 1.25rem; padding-bottom:0.75rem; border-bottom:1px solid var(--bd);
+}
+.sec-title { font-family:'Newsreader',serif; font-size:1.3rem; font-weight:400; color:var(--t0); }
+
+/* Timing badge */
+.time-badge {
+  font-family:'Overpass Mono',monospace; font-size:0.58rem; letter-spacing:1.5px;
+  padding:3px 10px; border-radius:5px; white-space:nowrap; margin-left:auto;
+}
+.time-pres { background:var(--gbg); border:1px solid var(--gbd); color:var(--g); }
+.time-qa { background:var(--abg); border:1px solid var(--abd); color:var(--a); }
+.time-ws { background:var(--bbg); border:1px solid var(--bbd); color:var(--b); }
+.time-trans { background:var(--pbg); border:1px solid var(--pbd); color:var(--p); }
+
+/* Slide cards */
+.slide {
+  background:var(--s1); border:1px solid var(--bd); border-radius:10px;
+  margin-bottom:0.85rem; overflow:hidden; transition:border-color 0.2s;
+}
+.slide:hover { border-color:var(--bd2); }
+.slide.open .sl-body { display:block; }
+.slide.open .sl-toggle { transform:rotate(180deg); }
+
+.sl-head { display:flex; align-items:flex-start; gap:12px; padding:1rem 1.3rem; cursor:pointer; user-select:none; }
+.sl-num {
+  font-family:'Overpass Mono',monospace; font-size:0.75rem; font-weight:600;
+  color:var(--acc); min-width:24px; margin-top:2px;
+}
+.sl-main { flex:1; min-width:0; }
+.sl-title { font-size:0.95rem; font-weight:500; color:var(--t0); margin-bottom:0.15rem; }
+.sl-sub { font-size:0.78rem; color:var(--t2); font-weight:300; }
+.sl-time {
+  font-family:'Overpass Mono',monospace; font-size:0.58rem; letter-spacing:1px;
+  color:var(--t3); white-space:nowrap; margin-top:3px;
+}
+.sl-toggle { color:var(--t3); font-size:0.75rem; transition:transform 0.25s; margin-top:4px; flex-shrink:0; }
+
+.sl-body { display:none; padding:0 1.3rem 1.3rem; border-top:1px solid var(--bd); padding-top:1.1rem; }
+
+/* Detail grid */
+.dg { display:grid; grid-template-columns:1fr; gap:0.7rem; }
+@media(min-width:640px) { .dg { grid-template-columns:1fr 1fr; } .dg .dg-full { grid-column:1/-1; } }
+.db {
+  background:var(--s2); border:1px solid var(--bd); border-radius:7px; padding:0.8rem 1rem;
+}
+.db-label {
+  font-family:'Overpass Mono',monospace; font-size:0.55rem; letter-spacing:2px;
+  text-transform:uppercase; margin-bottom:0.35rem;
+}
+.db-label.l-say { color:var(--g); }
+.db-label.l-show { color:var(--b); }
+.db-label.l-engage { color:var(--cy); }
+.db-label.l-avoid { color:var(--r); }
+.db-label.l-why { color:var(--p); }
+.db-label.l-artifact { color:var(--a); }
+.db-label.l-transition { color:var(--acc); }
+.db-label.l-ask { color:var(--cy); }
+.db-label.l-prompt { color:var(--g); }
+.db-label.l-capture { color:var(--a); }
+.db-label.l-contingency { color:var(--r); }
+.db-label.l-goal { color:var(--p); }
+.db-label.l-materials { color:var(--b); }
+.db-label.l-decision { color:var(--acc); }
+
+.db p { font-size:0.82rem; color:var(--t1); line-height:1.6; font-weight:300; }
+.db p strong { font-weight:500; color:var(--t0); }
+
+/* Callout */
+.callout {
+  border-radius:8px; padding:1rem 1.2rem; margin:1rem 0;
+  border-left:3px solid;
+}
+.callout.c-amber { background:var(--abg); border-color:var(--a); }
+.callout.c-green { background:var(--gbg); border-color:var(--g); }
+.callout.c-red { background:var(--rbg); border-color:var(--r); }
+.callout.c-blue { background:var(--bbg); border-color:var(--b); }
+.callout p { font-size:0.85rem; color:var(--t1); line-height:1.65; font-weight:300; }
+.callout p strong { font-weight:500; color:var(--t0); }
+
+/* Q&A cards */
+.qa-card {
+  background:var(--s1); border:1px solid var(--bd); border-radius:10px;
+  padding:1.1rem 1.3rem; margin-bottom:0.7rem;
+}
+.qa-from {
+  font-family:'Overpass Mono',monospace; font-size:0.55rem; letter-spacing:1.5px;
+  text-transform:uppercase; padding:2px 7px; border-radius:3px; display:inline-block;
+  margin-bottom:0.5rem;
+}
+.qa-renee { background:var(--abg); border:1px solid var(--abd); color:var(--a); }
+.qa-caroline { background:var(--pbg); border:1px solid var(--pbd); color:var(--p); }
+.qa-annelise { background:var(--cybg); border:1px solid var(--cybd); color:var(--cy); }
+.qa-evan { background:var(--bbg); border:1px solid var(--bbd); color:var(--b); }
+.qa-q { font-size:0.92rem; font-weight:500; color:var(--t0); margin-bottom:0.5rem; font-style:italic; }
+.qa-a { font-size:0.82rem; color:var(--t1); line-height:1.65; font-weight:300; }
+.qa-a strong { font-weight:500; color:var(--t0); }
+
+/* Workshop exercise cards */
+.ex-card {
+  background:var(--s1); border:1px solid var(--bd); border-radius:10px;
+  margin-bottom:0.85rem; overflow:hidden; transition:border-color 0.2s;
+}
+.ex-card:hover { border-color:var(--bd2); }
+.ex-card.open .ex-body { display:block; }
+.ex-card.open .ex-toggle { transform:rotate(180deg); }
+
+.ex-head { display:flex; align-items:flex-start; gap:12px; padding:1rem 1.3rem; cursor:pointer; user-select:none; }
+.ex-num {
+  font-family:'Overpass Mono',monospace; font-size:0.62rem; letter-spacing:1.5px;
+  padding:4px 10px; border-radius:5px; white-space:nowrap; flex-shrink:0;
+}
+.ex-main { flex:1; min-width:0; }
+.ex-title { font-size:0.95rem; font-weight:500; color:var(--t0); margin-bottom:0.15rem; }
+.ex-sub { font-size:0.78rem; color:var(--t2); font-weight:300; }
+.ex-toggle { color:var(--t3); font-size:0.75rem; transition:transform 0.25s; margin-top:4px; flex-shrink:0; }
+.ex-body { display:none; padding:0 1.3rem 1.3rem; border-top:1px solid var(--bd); padding-top:1.1rem; }
+
+/* Whiteboard layout */
+.wb-layout {
+  background:var(--s2); border:1px solid var(--bd); border-radius:10px;
+  padding:1.2rem 1.4rem; margin:1rem 0; font-family:'Overpass Mono',monospace;
+}
+.wb-title { font-size:0.6rem; letter-spacing:2px; text-transform:uppercase; color:var(--acc); margin-bottom:0.75rem; }
+.wb-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px; }
+.wb-col {
+  border:1px dashed var(--bd2); border-radius:6px; padding:8px 10px;
+  min-height:100px;
+}
+.wb-col-title { font-size:0.58rem; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:0.5rem; text-align:center; }
+.wb-col-title.col-in { color:var(--g); }
+.wb-col-title.col-out { color:var(--r); }
+.wb-col-title.col-later { color:var(--a); }
+.wb-item { font-size:0.65rem; color:var(--t2); padding:3px 0; line-height:1.5; }
+
+/* Footer */
+.footer { margin-top:3rem; font-family:'Overpass Mono',monospace; font-size:0.6rem; letter-spacing:1.5px; color:var(--t4); text-align:center; }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="hdr-label">Customer Central · Interview Game Plan</div>
+    <h1>Presentation Outline <em>&</em> Workshop Plan</h1>
+    <p class="hdr-sub">
+      75 minutes. Two modes. First you present, then you facilitate. The presentation earns permission to lead the workshop. The workshop is where the job is won.
+    </p>
+  </div>
+
+  <!-- PART TABS -->
+  <div class="part-tabs">
+    <button class="part-tab active" onclick="showPart('pres',this)">Part 1: Presentation (30 min)</button>
+    <button class="part-tab" onclick="showPart('qa',this)">Killer Q&A Prep (10 min)</button>
+    <button class="part-tab" onclick="showPart('ws',this)">Part 2: Workshop (45 min)</button>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- PART 1: PRESENTATION -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <div class="part visible" id="pres">
+
+    <div class="callout c-amber">
+      <p><strong>Key calibration:</strong> They've already read your proposal. Don't re-read it to them. The presentation is about <strong>the reasoning behind the decisions</strong> — the thinking they can't get from the document alone. Move fast on what they've seen. Go deep on why.</p>
+    </div>
+
+    <!-- SLIDE 1 -->
+    <div class="slide" onclick="tog(this)">
+      <div class="sl-head">
+        <span class="sl-num">01</span>
+        <div class="sl-main">
+          <div class="sl-title">The Agent's Reality — Lead With the Pain</div>
+          <div class="sl-sub">Set the emotional foundation. Make the room feel the problem before you propose anything.</div>
+        </div>
+        <span class="sl-time">3 min</span>
+        <span class="sl-toggle">▼</span>
+      </div>
+      <div class="sl-body">
+        <div class="dg">
+          <div class="db">
+            <div class="db-label l-say">What to Say</div>
+            <p>"Before I walk through the solution, I want to make sure we're grounded in the problem. I'm going to describe what I believe a CSO agent's day looks like today — and I want you to tell me in the workshop where I'm right and where I'm wrong."</p>
+          </div>
+          <div class="db">
+            <div class="db-label l-show">What to Show</div>
+            <p><strong>The encounter narrative.</strong> Walk through the "Today vs. Ideal" encounter — T+0s to T+120s of a call from Sarah at Acme Corp. Paint the picture: 6 tabs, 2 minutes of dead air, customer repeating themselves. Then the ideal: instant context, proactive acknowledgment, 30-second resolution.</p>
+          </div>
+          <div class="db dg-full">
+            <div class="db-label l-why">Why This Opening</div>
+            <p>The rubric scores <strong>user empathy for CSO agents</strong> (Annelise), <strong>operational impact thinking</strong> (Andres), and <strong>strategic vision connected to business outcomes</strong> (Renee). Starting with the agent's pain — not a product feature list — signals that you understand the human problem. It also frames every subsequent decision as "this solves THAT."</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div class="slide" onclick="tog(this)">
+      <div class="sl-head">
+        <span class="sl-num">02</span>
+        <div class="sl-main">
+          <div class="sl-title">Problem, Context & Business Opportunity</div>
+          <div class="sl-sub">The 6 compounding problems and why solving them is a strategic investment, not a feature request.</div>
+        </div>
+        <span class="sl-time">3 min</span>
+        <span class="sl-toggle">▼</span>
+      </div>
+      <div class="sl-body">
+        <div class="dg">
+          <div class="db">
+            <div class="db-label l-say">What to Say</div>
+            <p>Name the 6 compounding problems quickly — <strong>context-switching tax, caller identity, repeat yourself, knowledge gap, proactive blindspot, scaling threat</strong>. Don't elaborate on each. Say: "These are hypothesized based on domain patterns. Several of you work with CSO daily — I'll ask you to validate these in the workshop." Then connect to business: AHT reduction, FCR improvement, churn prevention, NPS defense, upsell enablement.</p>
+          </div>
+          <div class="db">
+            <div class="db-label l-engage">Panel Hooks</div>
+            <p><strong>Renee:</strong> "Customer service is Justworks' moat. The moat either widens with tooling or erodes without it." <strong>Annelise:</strong> "These agents are consultants, not call center reps. The tools should match their caliber." <strong>Caroline:</strong> "We have the data — it's just trapped in 5 systems." <strong>Evan:</strong> "Every problem traces to a specific data gap we can close."</p>
+          </div>
+          <div class="db dg-full">
+            <div class="db-label l-avoid">What to Avoid</div>
+            <p>Don't spend 5 minutes on company background. They know Justworks. Don't recite revenue numbers or product line details. State the strategic framing in 30 seconds and move to the problems — that's where your thinking shows.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div class="slide" onclick="tog(this)">
+      <div class="sl-head">
+        <span class="sl-num">03</span>
+        <div class="sl-main">
+          <div class="sl-title">How I Got to the MVP — The Decision Logic</div>
+          <div class="sl-sub">The part they can't read in the doc. Show the reasoning, not just the output.</div>
+        </div>
+        <span class="sl-time">4 min</span>
+        <span class="sl-toggle">▼</span>
+      </div>
+      <div class="sl-body">
+        <div class="dg">
+          <div class="db dg-full">
+            <div class="db-label l-say">What to Say</div>
+            <p>Walk through the logic chain at speed: "I started by extracting 6 jobs from the prompt language. I identified 20 specific problems CSO agents likely face and 12 health questions they need answered. I scored these on Impact, Confidence, and Ease — and discovered something interesting: <strong>both the problems and the health questions independently converge on the same 6 data categories</strong>. That convergence told me the foundation is sound. Then I applied a trust progression framework — agents must trust the data before they trust the analysis before they trust predictions. That gives us three phases, and each phase earns the right to the next."</p>
+          </div>
+          <div class="db">
+            <div class="db-label l-show">Key Artifacts to Reference</div>
+            <p>The <strong>ICE scoring matrix</strong> — show the convergence visually. The <strong>trust progression</strong> — Phase 1 (accurate data) → Phase 2 (meaningful signals) → Phase 3 (actionable predictions). The <strong>Tiebreaker Principle</strong>: "When two features are equal, pick the one that also builds toward the AI-native future."</p>
+          </div>
+          <div class="db">
+            <div class="db-label l-engage">What This Proves</div>
+            <p>This is the moment Renee sees <strong>strategic thinking under ambiguity</strong>. You didn't start with features — you started with problems, scored them, found convergence, and derived the scope. That's the GPM thinking she's hiring for.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4 -->
+    <div class="slide" onclick="tog(this)">
+      <div class="sl-head">
+        <span class="sl-num">04</span>
+        <div class="sl-main">
+          <div class="sl-title">The MVP Scope — 9 Features, 3 Foundation + 6 Problem Stories</div>
+          <div class="sl-sub">What's in, what's out, and why. This is where MVP discipline shows.</div>
+        </div>
+        <span class="sl-time">3 min</span>
+        <span class="sl-toggle">▼</span>
+      </div>
+      <div class="sl-body">
+        <div class="dg">
+          <div class="db">
+            <div class="db-label l-say">What to Say</div>
+            <p>Name the 9 features fast: <strong>FS-1</strong> Instant Caller Recognition, <strong>FS-2</strong> Complete Interaction History, <strong>FS-3</strong> Account Status Strip, <strong>PS-1</strong> Pay Stub Context (full build), <strong>PS-2</strong> Payroll Run Status (deep link), <strong>PS-3</strong> Tax Document Access (deep link), <strong>PS-4</strong> Benefits Quick-View (deep link), <strong>PS-5</strong> Invoice Timeline (deep link), <strong>PS-6</strong> Payment Cascade (deep link). Then explain the <strong>Full Build vs. Deep Link</strong> framework: "The 3 foundation features and PS-1 are full builds. The rest are deep links — one click to the source system. Deep links deliver 80% of the value at 20% of the cost."</p>
+          </div>
+          <div class="db">
+            <div class="db-label l-avoid">What to Avoid</div>
+            <p>Don't read acceptance criteria aloud — that's in the document. Don't defend every scoping decision proactively. <strong>Let the panel challenge your scope.</strong> When they do, you're ready with the rationale. Being challenged and responding well scores higher than not being challenged at all.</p>
+          </div>
+          <div class="db dg-full">
+            <div class="db-label l-transition">Transition to Demo</div>
+            <p>"Let me show you what this feels like in practice." → Open the prototype. Walk through the Sarah Chen encounter: search → profile → status strip → interaction history → pay stub tab. <strong>60 seconds maximum.</strong> It's a taste, not a tour — the workshop is where they'll explore it.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5 -->
+    <div class="slide" onclick="tog(this)">
+      <div class="sl-head">
+        <span class="sl-num">05</span>
+        <div class="sl-main">
+          <div class="sl-title">Data Architecture & Integration Realism</div>
+          <div class="sl-sub">This is for Caroline and Evan. Show you know where the data lives.</div>
+        </div>
+        <span class="sl-time">3 min</span>
+        <span class="sl-toggle">▼</span>
+      </div>
+      <div class="sl-body">
+        <div class="dg">
+          <div class="db">
+            <div class="db-label l-say">What to Say</div>
+            <p>"Five source systems: <strong>Production DB</strong> (companies, members, payroll, billing — source of truth), <strong>Salesforce</strong> (accounts, contacts, cases, opportunities — relationship layer), <strong>Zendesk</strong> (tickets, interactions — service layer), <strong>Application Logs</strong> (usage events), and <strong>Billing System</strong> (payment status). We don't query these live — we build a <strong>Customer Context API</strong> as an aggregation layer with caching. This is API-first so Sales, RevOps, and Product can consume the same data."</p>
+          </div>
+          <div class="db">
+            <div class="db-label l-engage">Questions to Plant</div>
+            <p>Look at Caroline: <strong>"The hardest integration is the Zendesk-to-Salesforce join. Is there a shared key today, or would we need to build that mapping?"</strong> This is the #1 open question — asking it demonstrates integration realism and gives Caroline a moment to contribute expertise. Then to Evan: "The payroll engine API is the long pole — I'd spike on that in Week 1."</p>
+          </div>
+          <div class="db dg-full">
+            <div class="db-label l-why">Why This Matters</div>
+            <p>Caroline's rubric evaluates <strong>data source awareness, integration realism, schema understanding, and build vs. buy awareness</strong>. Naming Salesforce objects (Account, Contact, Case), acknowledging rate limits, proposing the aggregation layer instead of direct queries — these are the signals that score 4-5 on her rubric.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6 -->
+    <div class="slide" onclick="tog(this)">
+      <div class="sl-head">
+        <span class="sl-num">06</span>
+        <div class="sl-main">
+          <div class="sl-title">Roadmap, Resources & Rollout</div>
+          <div class="sl-sub">Timeline, team, and how we go from "built" to "adopted."</div>
+        </div>
+        <span class="sl-time">2 min</span>
+        <span class="sl-toggle">▼</span>
+      </div>
+      <div class="sl-body">
+        <div class="dg">
+          <div class="db">
+            <div class="db-label l-say">What to Say</div>
+            <p>"<strong>7 weeks total.</strong> Week 0: discovery — shadow agents, validate assumptions, baseline metrics. Week 1: data access spikes to de-risk integrations. Weeks 2-4: build sprint. Week 5: alpha with 5 agents. Week 6: beta with a full pod. Week 7: full rollout with training. Team: 1 backend, 1 frontend, 1 data engineer from Data Services, 1 designer, and me. QA shared. The de-risking spikes in Week 1 determine final scope — if the Salesforce join key doesn't exist, FS-2 degrades to Zendesk-only. We adjust based on reality, not assumptions."</p>
+          </div>
+          <div class="db">
+            <div class="db-label l-avoid">Keep Moving</div>
+            <p>Don't linger on the resource plan — the detail is in the document. Hit the <strong>three things they care about</strong>: (1) the timeline is realistic, (2) the hardest problems are front-loaded, (3) there are explicit stage gates before scaling. Then transition to metrics.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 7 -->
+    <div class="slide" onclick="tog(this)">
+      <div class="sl-head">
+        <span class="sl-num">07</span>
+        <div class="sl-main">
+          <div class="sl-title">Success Metrics & What's Next</div>
+          <div class="sl-sub">How we know it worked + the Phase 2-3 vision, planted lightly.</div>
+        </div>
+        <span class="sl-time">2 min</span>
+        <span class="sl-toggle">▼</span>
+      </div>
+      <div class="sl-body">
+        <div class="dg">
+          <div class="db">
+            <div class="db-label l-say">What to Say</div>
+            <p>"Primary metrics: <strong>AHT reduction 15-20%</strong> (less context-switching), <strong>FCR improvement 10%</strong> (better information), <strong>Tool adoption &gt;80% daily active in 30 days</strong> (must replace, not supplement). Guardrails: NPS maintains +60, data accuracy ≥95%. The leading indicator I'm watching closest is <strong>search-to-context time under 5 seconds</strong> — that's the moment the agent knows they have what they need." Then one line on future: "Phase 2 adds health scoring and in-place actions. Phase 3 adds proactive intelligence. The API-first architecture means each phase builds on the last without rearchitecting."</p>
+          </div>
+          <div class="db">
+            <div class="db-label l-transition">Transition to Workshop</div>
+            <p>"Everything I've shown you is a hypothesis. I built it from first principles, not from sitting with your agents. <strong>Now I want to pressure-test it with the people in this room.</strong> Let's shift into workshop mode — I have 45 minutes and 4 exercises designed to validate, challenge, and refine this scope together."</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout c-green">
+      <p><strong>Total presentation time: ~20 minutes.</strong> That leaves 10 minutes for Q&A before the workshop. Don't rush to fill 20 minutes — finishing in 17-18 and having a richer Q&A is better than padding.</p>
+    </div>
+
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- Q&A PREP -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <div class="part" id="qa">
+
+    <div class="callout c-amber">
+      <p><strong>The Q&A is not a quiz — it's a performance.</strong> They're not testing whether you know the answer. They're testing how you think under pressure, whether you can defend decisions without being defensive, and whether you create space for their expertise.</p>
+    </div>
+
+    <div class="sec-hdr">
+      <span class="sec-title">Anticipated Killer Questions</span>
+      <span class="time-badge time-qa">10 min Q&A</span>
+    </div>
+
+    <!-- Renee -->
+    <div class="qa-card">
+      <span class="qa-from qa-renee">Renee Orser — VP, Hiring Manager</span>
+      <div class="qa-q">"If you had to cut half of your MVP scope, what goes and what stays?"</div>
+      <div class="qa-a"><strong>Answer framework:</strong> "The 3 foundation stories (FS-1, FS-2, FS-3) are non-negotiable — they ARE the product. Without instant caller recognition, interaction history, and account status, we haven't built anything worth opening. If I cut half of the problem stories, I keep <strong>PS-1 (Pay Stub Context)</strong> because payroll discrepancies are the highest-volume call driver and the delta highlighting is the 'wow' moment. Everything else becomes deep links — which still deliver 80% of the value. The architectural investment is identical either way; we're only cutting presentation-layer features, not the data foundation."</div>
+    </div>
+
+    <!-- Renee 2 -->
+    <div class="qa-card">
+      <span class="qa-from qa-renee">Renee Orser</span>
+      <div class="qa-q">"How does this connect to the broader ITO mandate? This case study is about CSO, but the role also covers Sales tooling."</div>
+      <div class="qa-a"><strong>Answer:</strong> "That's exactly why the architecture is API-first. The Customer Context API we're building for CSO is <strong>domain-agnostic at the data layer</strong>. The same company profiles, account health signals, and interaction history that power the CSO dashboard can feed Sales tooling, RevOps reporting, and Product analytics. We're not building a CSO dashboard — we're building a customer intelligence service. The CSO use case is the first consumer because the pain is most acute and the feedback loop is tightest."</div>
+    </div>
+
+    <!-- Caroline -->
+    <div class="qa-card">
+      <span class="qa-from qa-caroline">Caroline Crossland — Salesforce Architect</span>
+      <div class="qa-q">"You've listed 6 data sources for MVP. Which integration is the riskiest and how would you de-risk it?"</div>
+      <div class="qa-a"><strong>Answer:</strong> "The Zendesk-to-Salesforce join is the riskiest by far. Both systems store customer data, but if there's no clean shared key — like a mapping between Zendesk Organization ID and Salesforce Account ID — the unified interaction timeline breaks at the foundation. <strong>I'd de-risk it in Week 1:</strong> a spike where the data engineer queries both systems and attempts the join on a sample of 100 accounts. If the mapping is clean, we proceed. If it's messy, FS-2 degrades to Zendesk-only history in MVP and we add a data cleanup sprint. I'd rather know on Day 5 than Day 25." Then ask: <strong>"Is that mapping something your team has already built?"</strong></div>
+    </div>
+
+    <!-- Annelise -->
+    <div class="qa-card">
+      <span class="qa-from qa-annelise">Annelise Bryda — Staff Designer</span>
+      <div class="qa-q">"Walk me through what happens in the first 10 seconds after an agent opens this dashboard for a new call."</div>
+      <div class="qa-a"><strong>Answer:</strong> "Second 0-2: Agent hits ⌘K or clicks the search bar. Types a name, phone number, or company. Results appear instantly with role badges — admin vs. employee. Second 2-4: Agent clicks the match. The dashboard loads in three tiers — identity card first (name, role, company), then the status strip (plan type, billing, next payroll), then interaction history begins streaming in. Second 4-8: Agent scans left-to-right, top-to-bottom — the same cognitive sequence their brain already follows: WHO is this, WHAT'S the context, WHY might they be calling. By second 10, they can greet the customer by name, acknowledge their last interaction, and orient to their current situation. The information hierarchy mirrors the urgency hierarchy — the most time-critical data loads first."</div>
+    </div>
+
+    <!-- Evan -->
+    <div class="qa-card">
+      <span class="qa-from qa-evan">Evan Lehrman — Sr. Technical PM</span>
+      <div class="qa-q">"What's the first ticket you'd write for the engineering team on Day 1?"</div>
+      <div class="qa-a"><strong>Answer:</strong> "It's a spike, not a feature ticket. Title: <strong>'Spike: Validate Zendesk-Salesforce Account Mapping.'</strong> Acceptance criteria: (1) Query 100 Zendesk organizations and attempt to match each to a Salesforce Account record. (2) Document the match rate, the key used, and any data quality issues. (3) Produce a go/no-go recommendation for the unified interaction timeline. Time-boxed: 2 days. Why this first? Because it's the single decision with the highest scope impact. If the answer is 'clean mapping exists,' we build as planned. If not, we adjust MVP scope before committing engineering effort to the wrong path."</div>
+    </div>
+
+    <!-- Evan 2 -->
+    <div class="qa-card">
+      <span class="qa-from qa-evan">Evan Lehrman</span>
+      <div class="qa-q">"How do you prioritize — what framework do you use?"</div>
+      <div class="qa-a"><strong>Answer:</strong> "For this proposal I used ICE — Impact, Confidence, Ease. I chose it over RICE because <strong>Reach is misleading for internal tools</strong> — all agents are the audience, so reach is constant. But I adapted the framework to context: for an internal tool MVP, I weight 'agent workflow impact' higher than 'business intelligence value' because <strong>adoption is the biggest risk</strong>. The best health dashboard in the world fails if agents don't open it. So features that make the agent's core job faster and easier beat features that provide strategic insights — those come in Phase 2 after adoption is earned."</div>
+    </div>
+
+    <div class="callout c-blue">
+      <p><strong>Meta-strategy for all Q&A:</strong> When you don't know the answer, say so directly and turn it into a question: "That's exactly the kind of thing I'd want to discover in Week 0. What does that look like here?" Honesty + curiosity scores higher than confident guessing.</p>
+    </div>
+
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <!-- PART 2: WORKSHOP -->
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <div class="part" id="ws">
+
+    <div class="callout c-amber">
+      <p><strong>Mode shift:</strong> You are no longer the presenter. You are the facilitator. Your job is to create the conditions for the panel to contribute their expertise, arrive at a shared MVP definition, and feel ownership over the outcome. If you talk more than 30% of the workshop, you're doing it wrong.</p>
+    </div>
+
+    <div class="sec-hdr">
+      <span class="sec-title">Pre-Work: Whiteboard Setup</span>
+    </div>
+
+    <div class="callout c-green">
+      <p><strong>Before the interview starts,</strong> set up the whiteboard with 3 zones. This signals preparation and gives the group a visual anchor from minute one.</p>
+    </div>
+
+    <div class="wb-layout">
+      <div class="wb-title">Whiteboard Layout — Pre-Drawn</div>
+      <div class="wb-grid">
+        <div class="wb-col">
+          <div class="wb-col-title col-in">✅ IN (MVP)</div>
+          <div class="wb-item" style="color:var(--t4);font-style:italic;">← items move here during Exercise 3</div>
+        </div>
+        <div class="wb-col">
+          <div class="wb-col-title col-later">◐ LATER (Phase 2-3)</div>
+          <div class="wb-item" style="color:var(--t4);font-style:italic;">← deferred items with rationale</div>
+        </div>
+        <div class="wb-col">
+          <div class="wb-col-title col-out">✗ OUT (Not Building)</div>
+          <div class="wb-item" style="color:var(--t4);font-style:italic;">← explicit cuts with reason</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sec-hdr">
+      <span class="sec-title">Workshop Exercises — Minute by Minute</span>
+      <span class="time-badge time-ws">45 Minutes Total</span>
+    </div>
+
+    <!-- EXERCISE 0: OPENING -->
+    <div class="ex-card" onclick="tog(this)">
+      <div class="ex-head">
+        <span class="ex-num" style="background:var(--abg);border:1px solid var(--abd);color:var(--a);">0:00–3:00</span>
+        <div class="ex-main">
+          <div class="ex-title">Opening — Set the Frame</div>
+          <div class="ex-sub">Shift the energy from "watching a presentation" to "building together"</div>
+        </div>
+        <span class="ex-toggle">▼</span>
+      </div>
+      <div class="ex-body">
+        <div class="dg">
+          <div class="db dg-full">
+            <div class="db-label l-say">Script</div>
+            <p>"We've covered the strategy. Now I want to get practical — <strong>what's the smallest thing we can ship that delivers real value to CSO agents?</strong> I have a proposed MVP scope, but it's built on assumptions. Several of you have context I don't. So here's how I'd like to use the next 45 minutes: four exercises, each one building on the last, ending with a shared view of what's in, what's out, and what comes later. Ground rules: all ideas are valid, I'll capture everything on the whiteboard, and we'll converge at the end. Sound good?"</p>
+          </div>
+          <div class="db">
+            <div class="db-label l-goal">Goal</div>
+            <p>Permission to lead. Buy-in on the structure. Energy shift from passive to active. Engage <strong>Renee early</strong> — make eye contact when you say "sound good?" She's the decision-maker.</p>
+          </div>
+          <div class="db">
+            <div class="db-label l-contingency">If Energy Is Low</div>
+            <p>Don't ask "any questions before we start?" — that kills momentum. Instead go straight into Exercise 1 with a direct question to a specific person.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXERCISE 1: VALIDATE THE PROBLEM -->
+    <div class="ex-card" onclick="tog(this)">
+      <div class="ex-head">
+        <span class="ex-num" style="background:var(--gbg);border:1px solid var(--gbd);color:var(--g);">3:00–13:00</span>
+        <div class="ex-main">
+          <div class="ex-title">Exercise 1 — Validate the Agent Journey</div>
+          <div class="ex-sub">Map the current workflow, surface what you got right and wrong</div>
+        </div>
+        <span class="ex-toggle">▼</span>
+      </div>
+      <div class="ex-body">
+        <div class="dg">
+          <div class="db dg-full">
+            <div class="db-label l-prompt">Facilitation Prompts</div>
+            <p>Draw a simple timeline on the whiteboard: <strong>"Call comes in → Agent resolves → Call ends."</strong> Then ask targeted questions to specific people:</p>
+          </div>
+          <div class="db">
+            <div class="db-label l-ask">Ask Renee (first)</div>
+            <p>"Renee, you're closest to the CSO operation. When an agent picks up the phone today, <strong>what systems do they actually open?</strong> What's the first thing they do?" — This validates or invalidates the 5-6 system assumption. Let her talk. Write what she says on the whiteboard.</p>
+          </div>
+          <div class="db">
+            <div class="db-label l-ask">Ask Evan</div>
+            <p>"Evan, from the product side — <strong>where do agents get stuck?</strong> What's the most common point where they have to put a customer on hold or escalate?" — This validates the problem ranking. If he names something you didn't anticipate, write it down and say "that's a good one — let's factor that in."</p>
+          </div>
+          <div class="db">
+            <div class="db-label l-ask">Ask Caroline</div>
+            <p>"Caroline, the Salesforce data — <strong>does the CSO team interact with Salesforce directly today, or is it mainly used by Sales and RevOps?</strong>" — This reveals whether Salesforce is a current pain point for agents or just a data source.</p>
+          </div>
+          <div class="db">
+            <div class="db-label l-ask">Ask Annelise</div>
+            <p>"Annelise, have you done any research or observation with CSO agents? <strong>What's the biggest UX pain point you've seen?</strong>" — This gives the designer the floor and signals that you value her perspective. If she hasn't, that's fine — redirect to what she'd want to know.</p>
+          </div>
+          <div class="db dg-full">
+            <div class="db-label l-capture">What to Capture</div>
+            <p>On the whiteboard, annotate the timeline with the actual systems, pain points, and bottlenecks the panel identifies. <strong>Circle the 2-3 biggest pain points.</strong> These become the validation for your MVP scope — or the signal that you need to adjust it.</p>
+          </div>
+          <div class="db dg-full">
+            <div class="db-label l-contingency">If You Were Wrong About Something</div>
+            <p>This is <strong>the best possible outcome.</strong> Say: "That's different from what I assumed — and that's exactly why we do this exercise. Let me adjust." Write the correction on the whiteboard. The rubric says exceptional means "creates genuine collaborative energy" — learning in real-time from the panel IS that energy.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXERCISE 2: DATA PRIORITIZATION -->
+    <div class="ex-card" onclick="tog(this)">
+      <div class="ex-head">
+        <span class="ex-num" style="background:var(--bbg);border:1px solid var(--bbd);color:var(--b);">13:00–25:00</span>
+        <div class="ex-main">
+          <div class="ex-title">Exercise 2 — Data & Feature Prioritization</div>
+          <div class="ex-sub">Use the prototype as a reaction surface. Vote on what matters most.</div>
+        </div>
+        <span class="ex-toggle">▼</span>
+      </div>
+      <div class="ex-body">
+        <div class="dg">
+          <div class="db dg-full">
+            <div class="db-label l-say">Setup</div>
+            <p>"Based on what we just mapped, let me show you where I landed on MVP features — and I want your honest reaction." Pull up the <strong>prototype</strong> on screen. Walk through it briefly (2 min max), then shift to structured feedback.</p>
+          </div>
+          <div class="db">
+            <div class="db-label l-prompt">Structured Voting</div>
+            <p>Write 9 features on the whiteboard (FS-1, FS-2, FS-3, PS-1 through PS-6). Give each person 5 dots (use different-colored markers). <strong>"Put your dots on the features you believe deliver the most value to an agent's Day 1 experience."</strong> This surfaces disagreement productively — if Caroline puts all her dots on data features and Annelise puts hers on UX features, you have a conversation to facilitate.</p>
+          </div>
+          <div class="db">
+            <div class="db-label l-ask">After Voting — Probe the Divergences</div>
+            <p>Look for split votes. <strong>"Caroline, you put 3 dots on FS-2 — interaction history. Tell us why that's most important."</strong> Then: <strong>"Annelise, you weighted PS-1 — the pay stub viewer. What makes that the Day 1 win?"</strong> Each person explains their reasoning. You're not resolving the disagreement — you're surfacing the tradeoff and letting the group inform the decision.</p>
+          </div>
+          <div class="db">
+            <div class="db-label l-engage">Caroline's Moment</div>
+            <p>When data architecture comes up: <strong>"Caroline, which of these data sources can we access without building new integrations? Where do we need your team's help?"</strong> This gives her a concrete contribution and reveals real constraints.</p>
+          </div>
+          <div class="db">
+            <div class="db-label l-engage">Evan's Moment</div>
+            <p><strong>"Evan, gut check — could we ship the top-voted features in 5 weeks with 2 engineers and a data engineer?"</strong> This gives him the technical feasibility role. If he says "that's tight," ask "what would you cut to make it realistic?"</p>
+          </div>
+          <div class="db dg-full">
+            <div class="db-label l-contingency">If Panel Adds Features You Didn't Propose</div>
+            <p>Write them on the whiteboard in a "NEW" column. Say: "That's a great addition. Let's put it on the board and we'll decide in/out/later in Exercise 3." Never dismiss an idea — capture it and let the group decide its priority.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXERCISE 3: SCOPE LOCK -->
+    <div class="ex-card" onclick="tog(this)">
+      <div class="ex-head">
+        <span class="ex-num" style="background:var(--pbg);border:1px solid var(--pbd);color:var(--p);">25:00–37:00</span>
+        <div class="ex-main">
+          <div class="ex-title">Exercise 3 — Scope Lock & Wireframe Refinement</div>
+          <div class="ex-sub">Move items to IN/LATER/OUT. Hand Annelise the marker.</div>
+        </div>
+        <span class="ex-toggle">▼</span>
+      </div>
+      <div class="ex-body">
+        <div class="dg">
+          <div class="db dg-full">
+            <div class="db-label l-say">Setup</div>
+            <p>"Alright, we've validated the journey, we've voted on features. Now let's lock scope. I'm going to read each feature and we'll move it to IN, LATER, or OUT based on what we've discussed." Go through each feature. For anything with strong consensus, move it fast. For anything contentious, pause for 60 seconds of discussion and then make a call: <strong>"I'm hearing X and Y. For MVP, I'd propose [decision] because [rationale]. Does that work?"</strong></p>
+          </div>
+          <div class="db">
+            <div class="db-label l-engage">Annelise's Moment — The Marker</div>
+            <p>Once scope is roughly locked, hand Annelise a marker (or share the Miro board, if remote). Say: <strong>"Annelise, given what we've prioritized, how would you think about the information hierarchy? What should an agent see first, second, third?"</strong> Let her sketch. Ask questions, don't direct. If she draws something different from your prototype, say "I like that — the progressive disclosure there is better than what I had." Designers engage best when they're drawing, not listening.</p>
+          </div>
+          <div class="db">
+            <div class="db-label l-ask">Facilitation Questions During Sketch</div>
+            <p>While Annelise is drawing, ask the group: "What happens if the caller isn't in the system?" (edge case). "What if the company has 500 employees — does the UI scale?" (Evan's territory). "Should the layout change for inbound call vs. proactive outreach?" (Renee's territory). These questions keep everyone engaged while Annelise is at the board.</p>
+          </div>
+          <div class="db dg-full">
+            <div class="db-label l-contingency">If Time Is Running Short</div>
+            <p>Skip the wireframe refinement and focus on scope lock. A clear IN/LATER/OUT board with group consensus is more valuable than a partially-discussed sketch. Say: "Let's make sure we're aligned on scope — I can take the wireframe offline with Annelise."</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXERCISE 4: RISKS & CLOSE -->
+    <div class="ex-card" onclick="tog(this)">
+      <div class="ex-head">
+        <span class="ex-num" style="background:var(--cybg);border:1px solid var(--cybd);color:var(--cy);">37:00–45:00</span>
+        <div class="ex-main">
+          <div class="ex-title">Exercise 4 — Top Risks & Alignment</div>
+          <div class="ex-sub">Name the risks, confirm the scope, close strong.</div>
+        </div>
+        <span class="ex-toggle">▼</span>
+      </div>
+      <div class="ex-body">
+        <div class="dg">
+          <div class="db">
+            <div class="db-label l-prompt">Identify Top 3 Risks</div>
+            <p>"Before we close — <strong>what are the top 3 things that could derail this?</strong>" Go around the room. Write each risk on the whiteboard. You should have your own answers ready (Zendesk join key, payroll API access, agent adoption) but let the panel name theirs first. If they say something you didn't consider, that's gold — capture it visibly.</p>
+          </div>
+          <div class="db">
+            <div class="db-label l-decision">Alignment Check</div>
+            <p>Point to the IN/LATER/OUT board. Read back the MVP scope: "So our Phase 1 MVP is: [list the IN items]. We've deferred [list the LATER items] for Phase 2. And we've explicitly cut [OUT items]. <strong>Is everyone comfortable that this is the right starting point?</strong>" Pause for nods or objections. If someone pushes back, engage — don't steamroll. If there's genuine disagreement, say: "That's a valid tension. Here's how I'd resolve it in Week 1: [specific de-risking action]."</p>
+          </div>
+          <div class="db dg-full">
+            <div class="db-label l-say">Closing Statement (Final 60 Seconds)</div>
+            <p>"Thank you for this — genuinely. This is the kind of cross-functional scoping session that makes products better. What we've built in 45 minutes is a validated MVP scope, informed by the people who understand the data architecture, the design constraints, the technical feasibility, and the strategic context. My first action in the role would be the Week 0 discovery — <strong>shadow agents, validate today's work with real observation, and come back with an updated scope ready to sprint on.</strong> I'm excited about what this team can build together."</p>
+          </div>
+          <div class="db dg-full">
+            <div class="db-label l-goal">What "Exceptional" Looks Like (From the Rubric)</div>
+            <p>Renee sees: <strong>"I can picture this person running a roadmap review with my VP peers."</strong> Caroline, Annelise, and Evan each feel: <strong>"This person gets MY world."</strong> The group feels: <strong>"We own the MVP output — we weren't led to a predetermined answer."</strong> That's the target state. If the final scope differs from your proposal because the panel contributed new information, that's not a failure — it's the point.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- CONTINGENCY PLANS -->
+    <div class="sec-hdr">
+      <span class="sec-title">Contingency Plans</span>
+    </div>
+
+    <div class="ex-card" onclick="tog(this)">
+      <div class="ex-head">
+        <span class="ex-num" style="background:var(--rbg);border:1px solid var(--rbd);color:var(--r);">IF</span>
+        <div class="ex-main">
+          <div class="ex-title">One person dominates the conversation</div>
+        </div>
+        <span class="ex-toggle">▼</span>
+      </div>
+      <div class="ex-body">
+        <div class="db dg-full">
+          <div class="db-label l-contingency">Response</div>
+          <p>Acknowledge their point, then redirect: <strong>"That's a really strong point, [name]. I want to make sure we capture [other person]'s perspective too — [other person], how does that land from the [design/data/product] angle?"</strong> Use the structure to distribute airtime. The voting exercise naturally creates balanced contribution.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="ex-card" onclick="tog(this)">
+      <div class="ex-head">
+        <span class="ex-num" style="background:var(--rbg);border:1px solid var(--rbd);color:var(--r);">IF</span>
+        <div class="ex-main">
+          <div class="ex-title">The group disagrees sharply on scope</div>
+        </div>
+        <span class="ex-toggle">▼</span>
+      </div>
+      <div class="ex-body">
+        <div class="db dg-full">
+          <div class="db-label l-contingency">Response</div>
+          <p>Name the disagreement explicitly: <strong>"I'm hearing two perspectives — [X view] and [Y view]. Both are valid. Here's what I'd propose: let's put this in 'IN with a spike' — we build toward it but the Week 1 data access spike determines whether it ships in MVP or slides to Phase 2."</strong> Turn disagreements into de-risking actions, not debates to win.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="ex-card" onclick="tog(this)">
+      <div class="ex-head">
+        <span class="ex-num" style="background:var(--rbg);border:1px solid var(--rbd);color:var(--r);">IF</span>
+        <div class="ex-main">
+          <div class="ex-title">An exercise runs long and you're behind on time</div>
+        </div>
+        <span class="ex-toggle">▼</span>
+      </div>
+      <div class="ex-body">
+        <div class="db dg-full">
+          <div class="db-label l-contingency">Response</div>
+          <p><strong>Priority order if time is tight:</strong> (1) Exercise 1 (validate the journey) is non-negotiable — it earns credibility. (2) Exercise 3 (scope lock) is the deliverable — the group needs to leave with alignment. (3) Exercise 4 closing can be compressed to 2 minutes. What gets cut first: the wireframe refinement in Exercise 3 (Annelise can do it offline) and the formal dot-voting in Exercise 2 (switch to verbal prioritization). Never cut the closing — always read back the scope and ask for alignment.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="ex-card" onclick="tog(this)">
+      <div class="ex-head">
+        <span class="ex-num" style="background:var(--rbg);border:1px solid var(--rbd);color:var(--r);">IF</span>
+        <div class="ex-main">
+          <div class="ex-title">Someone reveals that an assumption is completely wrong</div>
+        </div>
+        <span class="ex-toggle">▼</span>
+      </div>
+      <div class="ex-body">
+        <div class="db dg-full">
+          <div class="db-label l-contingency">Response</div>
+          <p>Treat it as a gift, not a threat: <strong>"That changes things — and that's exactly why this workshop matters. Let me update the board."</strong> Cross out the wrong assumption. Write the correct information. Ask: "Given this, should we adjust the MVP scope? What moves?" The rubric scores how you handle surprise information — composure + adaptation is the top mark. The architecture is designed to absorb scope changes. That's the whole point of the phased, de-risked approach.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="ex-card" onclick="tog(this)">
+      <div class="ex-head">
+        <span class="ex-num" style="background:var(--rbg);border:1px solid var(--rbd);color:var(--r);">IF</span>
+        <div class="ex-main">
+          <div class="ex-title">They ask you to solve something on the spot you haven't prepared for</div>
+        </div>
+        <span class="ex-toggle">▼</span>
+      </div>
+      <div class="ex-body">
+        <div class="db dg-full">
+          <div class="db-label l-contingency">Response</div>
+          <p>Don't fake it. Say: <strong>"I don't have a prepared answer for that, but here's how I'd think about it..."</strong> then reason through it live. Use the whiteboard. Ask the panel for input. Transparent thinking under pressure scores higher than a polished but inauthentic answer. If it's a deep technical question outside your expertise, say: "That's a great question for the discovery sprint — I'd want to dig into that with [relevant expert] in Week 1."</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    Customer Central — Presentation & Workshop Plan · Darrien Watson · February 2026
+  </div>
+
+</div>
+
+<script>
+function tog(el) { el.classList.toggle('open'); }
+
+function showPart(id, btn) {
+  document.querySelectorAll('.part').forEach(p => p.classList.remove('visible'));
+  document.querySelectorAll('.part-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('visible');
+  btn.classList.add('active');
+}
+</script>
+
+</body>
+</html>

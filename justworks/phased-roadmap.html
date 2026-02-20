@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phased Roadmap — Customer Central</title>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Overpass+Mono:wght@400;500;600;700&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b0d11;
+  --s1: #11141b;
+  --s2: #171b25;
+  --s3: #1d222f;
+  --bd: #2a3148;
+  --bd2: #3d4a68;
+  --t0: #eef0f6;
+  --t1: #c4c9da;
+  --t2: #8790a8;
+  --t3: #5b657e;
+  --t4: #3c4560;
+  --acc: #d4943c;
+  --acc2: #e8a838;
+  --g: #3dd68c;
+  --gbg: rgba(61,214,140,.06);
+  --gbd: rgba(61,214,140,.18);
+  --r: #ef6b6b;
+  --rbg: rgba(239,107,107,.06);
+  --rbd: rgba(239,107,107,.18);
+  --b: #5b9cf5;
+  --bbg: rgba(91,156,245,.06);
+  --bbd: rgba(91,156,245,.18);
+  --a: #e8b84a;
+  --abg: rgba(232,184,74,.06);
+  --abd: rgba(232,184,74,.18);
+  --p: #9b82f0;
+  --pbg: rgba(155,130,240,.06);
+  --pbd: rgba(155,130,240,.18);
+  --cy: #2cc5d6;
+  --cybg: rgba(44,197,214,.06);
+  --cybd: rgba(44,197,214,.18);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  color: var(--t1);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+.page { max-width: 960px; margin: 0 auto; padding: 3.5rem 2rem 6rem; }
+
+/* Header */
+.hdr { margin-bottom: 2rem; }
+.hdr-label {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.68rem; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--acc); margin-bottom: 0.75rem;
+}
+.hdr h1 {
+  font-family: 'Newsreader', serif;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 400; color: var(--t0); line-height: 1.25; margin-bottom: 0.6rem;
+}
+.hdr h1 em { font-style: italic; color: var(--acc2); font-weight: 300; }
+.hdr-sub {
+  font-size: 0.92rem; color: var(--t2); font-weight: 300;
+  max-width: 700px; line-height: 1.7;
+}
+
+/* Phase overview cards */
+.phase-overview {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 3rem;
+}
+@media (max-width: 700px) {
+  .phase-overview { grid-template-columns: 1fr; }
+}
+.po-card {
+  border-radius: 10px;
+  padding: 1.25rem 1.3rem;
+  position: relative;
+  overflow: hidden;
+}
+.po-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+}
+.po-card.p1 { background: var(--gbg); border: 1px solid var(--gbd); }
+.po-card.p1::before { background: var(--g); }
+.po-card.p2 { background: var(--bbg); border: 1px solid var(--bbd); }
+.po-card.p2::before { background: var(--b); }
+.po-card.p3 { background: var(--pbg); border: 1px solid var(--pbd); }
+.po-card.p3::before { background: var(--p); }
+
+.po-label {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.58rem; letter-spacing: 2px;
+  text-transform: uppercase; margin-bottom: 0.5rem;
+}
+.po-card.p1 .po-label { color: var(--g); }
+.po-card.p2 .po-label { color: var(--b); }
+.po-card.p3 .po-label { color: var(--p); }
+
+.po-title {
+  font-family: 'Newsreader', serif;
+  font-size: 1.15rem; font-weight: 400; color: var(--t0);
+  margin-bottom: 0.25rem;
+}
+.po-time {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.65rem; color: var(--t3); letter-spacing: 1px;
+  margin-bottom: 0.6rem;
+}
+.po-desc {
+  font-size: 0.8rem; color: var(--t2); line-height: 1.6; font-weight: 300;
+}
+
+/* Section headers */
+.sec-hdr {
+  display: flex; align-items: center; gap: 12px;
+  margin: 2.5rem 0 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--bd);
+}
+.sec-title {
+  font-family: 'Newsreader', serif;
+  font-size: 1.35rem; font-weight: 400; color: var(--t0);
+}
+.sec-num {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.6rem; letter-spacing: 2px;
+  color: var(--t3); text-transform: uppercase; white-space: nowrap;
+}
+
+/* Gantt-style timeline */
+.gantt-container {
+  overflow-x: auto;
+  margin: 1.5rem 0 2.5rem;
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  background: var(--s1);
+}
+.gantt {
+  min-width: 800px;
+  padding: 0;
+}
+.gantt-header {
+  display: grid;
+  grid-template-columns: 180px repeat(7, 1fr);
+  border-bottom: 1px solid var(--bd);
+}
+.gantt-header .gh-label {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.58rem; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--t3);
+  padding: 10px 12px;
+  text-align: center;
+  border-right: 1px solid var(--bd);
+}
+.gantt-header .gh-label:first-child {
+  text-align: left; color: var(--t2);
+}
+.gantt-header .gh-label:last-child { border-right: none; }
+
+.gantt-row {
+  display: grid;
+  grid-template-columns: 180px repeat(7, 1fr);
+  border-bottom: 1px solid var(--bd);
+  min-height: 44px;
+  align-items: center;
+}
+.gantt-row:last-child { border-bottom: none; }
+
+.gr-label {
+  font-size: 0.78rem; color: var(--t1); font-weight: 400;
+  padding: 8px 12px;
+  border-right: 1px solid var(--bd);
+  display: flex; align-items: center; gap: 8px;
+}
+.gr-label .gr-role {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.5rem; letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 1px 5px; border-radius: 3px;
+  white-space: nowrap;
+}
+.role-be { background: rgba(91,156,245,.1); color: var(--b); border: 1px solid rgba(91,156,245,.2); }
+.role-fe { background: rgba(61,214,140,.1); color: var(--g); border: 1px solid rgba(61,214,140,.2); }
+.role-de { background: rgba(232,184,74,.1); color: var(--a); border: 1px solid rgba(232,184,74,.2); }
+.role-ds { background: rgba(155,130,240,.1); color: var(--p); border: 1px solid rgba(155,130,240,.2); }
+.role-pm { background: rgba(212,148,60,.1); color: var(--acc); border: 1px solid rgba(212,148,60,.2); }
+.role-qa { background: rgba(239,107,107,.1); color: var(--r); border: 1px solid rgba(239,107,107,.2); }
+
+.gr-cells {
+  display: contents;
+}
+.gr-cell {
+  padding: 6px 4px;
+  border-right: 1px solid var(--bd);
+  display: flex; align-items: center; justify-content: center;
+}
+.gr-cell:last-child { border-right: none; }
+
+.bar {
+  height: 24px;
+  border-radius: 4px;
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.52rem;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+.bar-be { background: rgba(91,156,245,.15); border: 1px solid rgba(91,156,245,.3); color: var(--b); }
+.bar-fe { background: rgba(61,214,140,.15); border: 1px solid rgba(61,214,140,.3); color: var(--g); }
+.bar-de { background: rgba(232,184,74,.15); border: 1px solid rgba(232,184,74,.3); color: var(--a); }
+.bar-ds { background: rgba(155,130,240,.15); border: 1px solid rgba(155,130,240,.3); color: var(--p); }
+.bar-pm { background: rgba(212,148,60,.15); border: 1px solid rgba(212,148,60,.3); color: var(--acc); }
+.bar-qa { background: rgba(239,107,107,.15); border: 1px solid rgba(239,107,107,.3); color: var(--r); }
+.bar-ms {
+  background: rgba(255,255,255,.06); border: 1px dashed rgba(255,255,255,.15); color: var(--t2);
+  font-size: 0.5rem;
+}
+
+/* Milestones row */
+.milestone-row {
+  display: grid;
+  grid-template-columns: 180px repeat(7, 1fr);
+  border-top: 2px solid var(--bd2);
+  background: rgba(255,255,255,.02);
+}
+.ms-label {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.55rem; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--acc);
+  padding: 10px 12px;
+  border-right: 1px solid var(--bd);
+}
+.ms-cell {
+  padding: 8px 4px;
+  border-right: 1px solid var(--bd);
+  display: flex; align-items: center; justify-content: center;
+}
+.ms-cell:last-child { border-right: none; }
+.ms-marker {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.52rem; color: var(--acc2);
+  text-align: center; line-height: 1.4;
+}
+
+/* Week detail cards */
+.week-card {
+  background: var(--s1);
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  margin-bottom: 0.85rem;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.week-card:hover { border-color: var(--bd2); }
+.week-card.open .wc-body { display: block; }
+.week-card.open .wc-toggle { transform: rotate(180deg); }
+
+.wc-head {
+  display: flex; align-items: center; gap: 12px;
+  padding: 1rem 1.3rem;
+  cursor: pointer; user-select: none;
+}
+.wc-week {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.62rem; letter-spacing: 1.5px;
+  padding: 4px 10px; border-radius: 5px;
+  white-space: nowrap; flex-shrink: 0;
+}
+.wc-week.w-disc { background: rgba(212,148,60,.1); border: 1px solid rgba(212,148,60,.2); color: var(--acc); }
+.wc-week.w-build { background: var(--gbg); border: 1px solid var(--gbd); color: var(--g); }
+.wc-week.w-alpha { background: var(--cybg); border: 1px solid var(--cybd); color: var(--cy); }
+.wc-week.w-beta { background: var(--bbg); border: 1px solid var(--bbd); color: var(--b); }
+.wc-week.w-launch { background: var(--pbg); border: 1px solid var(--pbd); color: var(--p); }
+
+.wc-main { flex: 1; min-width: 0; }
+.wc-title { font-size: 0.95rem; font-weight: 500; color: var(--t0); margin-bottom: 0.15rem; }
+.wc-sub { font-size: 0.78rem; color: var(--t2); font-weight: 300; }
+.wc-toggle {
+  color: var(--t3); font-size: 0.75rem;
+  transition: transform 0.25s; flex-shrink: 0;
+}
+
+.wc-body {
+  display: none;
+  padding: 0 1.3rem 1.3rem;
+  border-top: 1px solid var(--bd);
+  padding-top: 1.1rem;
+}
+
+/* Role work items */
+.role-work {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.7rem;
+  margin-bottom: 1rem;
+}
+@media (min-width: 640px) {
+  .role-work { grid-template-columns: 1fr 1fr; }
+  .role-work .rw-full { grid-column: 1 / -1; }
+}
+.rw-box {
+  background: var(--s2);
+  border: 1px solid var(--bd);
+  border-radius: 7px;
+  padding: 0.8rem 1rem;
+}
+.rw-role {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.55rem; letter-spacing: 2px;
+  text-transform: uppercase; margin-bottom: 0.35rem;
+}
+.rw-role.r-be { color: var(--b); }
+.rw-role.r-fe { color: var(--g); }
+.rw-role.r-de { color: var(--a); }
+.rw-role.r-ds { color: var(--p); }
+.rw-role.r-pm { color: var(--acc); }
+.rw-role.r-qa { color: var(--r); }
+
+.rw-box p {
+  font-size: 0.8rem; color: var(--t1);
+  line-height: 1.6; font-weight: 300;
+}
+.rw-box p strong { font-weight: 500; color: var(--t0); }
+
+/* Stage gate */
+.stage-gate {
+  background: linear-gradient(135deg, rgba(212,148,60,.05) 0%, rgba(212,148,60,.01) 100%);
+  border: 1px solid rgba(212,148,60,.2);
+  border-left: 3px solid var(--acc);
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  margin: 1rem 0;
+}
+.sg-label {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.58rem; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--acc);
+  margin-bottom: 0.4rem;
+}
+.stage-gate p {
+  font-size: 0.82rem; color: var(--t1);
+  line-height: 1.6; font-weight: 300;
+}
+.stage-gate p strong { font-weight: 500; color: var(--t0); }
+
+/* Rollout section */
+.rollout-card {
+  background: var(--s1);
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  padding: 1.3rem 1.4rem;
+  margin-bottom: 0.85rem;
+}
+.ro-head {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 0.8rem;
+}
+.ro-stage {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.58rem; letter-spacing: 1.5px;
+  text-transform: uppercase; padding: 3px 8px;
+  border-radius: 4px; white-space: nowrap;
+}
+.ro-title {
+  font-size: 1rem; font-weight: 500; color: var(--t0);
+}
+.ro-body {
+  display: grid; grid-template-columns: 1fr;
+  gap: 0.7rem;
+}
+@media (min-width: 640px) {
+  .ro-body { grid-template-columns: 1fr 1fr; }
+  .ro-body .rb-full { grid-column: 1 / -1; }
+}
+.rb-box {
+  background: var(--s2); border: 1px solid var(--bd);
+  border-radius: 7px; padding: 0.8rem 1rem;
+}
+.rb-label {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.55rem; letter-spacing: 2px;
+  text-transform: uppercase; margin-bottom: 0.35rem;
+}
+.rb-label.rl-who { color: var(--cy); }
+.rb-label.rl-what { color: var(--g); }
+.rb-label.rl-how { color: var(--b); }
+.rb-label.rl-gate { color: var(--acc); }
+.rb-label.rl-risk { color: var(--r); }
+
+.rb-box p {
+  font-size: 0.8rem; color: var(--t1);
+  line-height: 1.6; font-weight: 300;
+}
+.rb-box p strong { font-weight: 500; color: var(--t0); }
+
+/* Phase 2-3 summary */
+.future-phase {
+  background: var(--s1);
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  padding: 1.3rem 1.4rem;
+  margin-bottom: 0.85rem;
+}
+.fp-head {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 0.75rem;
+}
+.fp-tag {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.58rem; letter-spacing: 1.5px;
+  text-transform: uppercase; padding: 3px 8px;
+  border-radius: 4px; white-space: nowrap;
+}
+.fp-title { font-size: 1.05rem; font-weight: 500; color: var(--t0); }
+.fp-time {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.6rem; color: var(--t3); letter-spacing: 1px;
+  margin-left: auto;
+}
+.fp-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 0.7rem;
+}
+@media (max-width: 640px) {
+  .fp-grid { grid-template-columns: 1fr; }
+}
+.fp-item {
+  background: var(--s2); border: 1px solid var(--bd);
+  border-radius: 7px; padding: 0.75rem 1rem;
+}
+.fp-item-name {
+  font-size: 0.82rem; font-weight: 500; color: var(--t0);
+  margin-bottom: 0.2rem;
+}
+.fp-item-desc {
+  font-size: 0.75rem; color: var(--t2); line-height: 1.5; font-weight: 300;
+}
+
+/* Closing */
+.closing {
+  margin-top: 3rem; padding-top: 1.5rem;
+  border-top: 1px solid var(--bd);
+}
+.closing p {
+  font-family: 'Newsreader', serif;
+  font-size: 1rem; color: var(--t2); line-height: 1.8;
+  font-weight: 300; font-style: italic; max-width: 700px;
+}
+.closing p strong { font-weight: 500; font-style: normal; color: var(--t0); }
+
+.footer {
+  margin-top: 3rem;
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.6rem; letter-spacing: 1.5px;
+  color: var(--t4); text-align: center;
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="hdr-label">Customer Central MVP · Prompt Requirement #2 & #6</div>
+    <h1>Phased Roadmap <em>&</em> Rollout Plan</h1>
+    <p class="hdr-sub">
+      Three phases. Each earns the right to the next by proving accuracy, earning trust, and accumulating the structured data that makes the next capability possible.
+    </p>
+  </div>
+
+
+  <!-- ════════════════════ PHASE OVERVIEW ════════════════════ -->
+  <div class="phase-overview">
+    <div class="po-card p1">
+      <div class="po-label">Phase 1 · MVP</div>
+      <div class="po-title">Unified Context</div>
+      <div class="po-time">5 Weeks Build + 2 Weeks Rollout</div>
+      <div class="po-desc">Consolidated customer profile, interaction history, account status, and high-volume problem panels. Agents open one tool instead of six.</div>
+    </div>
+    <div class="po-card p2">
+      <div class="po-label">Phase 2 · Intelligence</div>
+      <div class="po-title">Health & Action</div>
+      <div class="po-time">8–12 Weeks Post-MVP</div>
+      <div class="po-desc">Composite health scoring, in-place actions, benefits life events, compliance guidance. The tool becomes the workspace, not just the reference.</div>
+    </div>
+    <div class="po-card p3">
+      <div class="po-label">Phase 3 · Proactive</div>
+      <div class="po-title">Prediction & Prevention</div>
+      <div class="po-time">Following Quarter</div>
+      <div class="po-desc">Proactive alerts, upsell intelligence, AI interaction summaries, agent copilot. CSO shifts from reactive support to proactive partnership.</div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════ PHASE 1 GANTT ════════════════════ -->
+  <div class="sec-hdr">
+    <span class="sec-num">Section 1</span>
+    <span class="sec-title">Phase 1 Timeline — Week by Week</span>
+  </div>
+
+  <div class="gantt-container">
+    <div class="gantt">
+      <!-- Header -->
+      <div class="gantt-header">
+        <div class="gh-label">Role</div>
+        <div class="gh-label">Wk 1</div>
+        <div class="gh-label">Wk 2</div>
+        <div class="gh-label">Wk 3</div>
+        <div class="gh-label">Wk 4</div>
+        <div class="gh-label">Wk 5</div>
+        <div class="gh-label">Wk 6</div>
+        <div class="gh-label">Wk 7</div>
+      </div>
+
+      <!-- PM -->
+      <div class="gantt-row">
+        <div class="gr-label"><span class="gr-role role-pm">PM</span> Product Manager</div>
+        <div class="gr-cell"><div class="bar bar-pm">Discovery</div></div>
+        <div class="gr-cell"><div class="bar bar-pm">Specs</div></div>
+        <div class="gr-cell"><div class="bar bar-pm">Build</div></div>
+        <div class="gr-cell"><div class="bar bar-pm">Alpha</div></div>
+        <div class="gr-cell"><div class="bar bar-pm">Iterate</div></div>
+        <div class="gr-cell"><div class="bar bar-pm">Beta</div></div>
+        <div class="gr-cell"><div class="bar bar-pm">Launch</div></div>
+      </div>
+
+      <!-- Designer -->
+      <div class="gantt-row">
+        <div class="gr-label"><span class="gr-role role-ds">DS</span> Designer</div>
+        <div class="gr-cell"><div class="bar bar-ds">IA + Flows</div></div>
+        <div class="gr-cell"><div class="bar bar-ds">Components</div></div>
+        <div class="gr-cell"><div class="bar bar-ds">Polish</div></div>
+        <div class="gr-cell"><div class="bar bar-ds">Feedback</div></div>
+        <div class="gr-cell"><div class="bar bar-ds">Iterate</div></div>
+        <div class="gr-cell"><div class="bar bar-ms">Support</div></div>
+        <div class="gr-cell"><div class="bar bar-ms">—</div></div>
+      </div>
+
+      <!-- Backend -->
+      <div class="gantt-row">
+        <div class="gr-label"><span class="gr-role role-be">BE</span> Backend Engineer</div>
+        <div class="gr-cell"><div class="bar bar-be">Spikes</div></div>
+        <div class="gr-cell"><div class="bar bar-be">API Core</div></div>
+        <div class="gr-cell"><div class="bar bar-be">Features</div></div>
+        <div class="gr-cell"><div class="bar bar-be">Features</div></div>
+        <div class="gr-cell"><div class="bar bar-be">Fixes</div></div>
+        <div class="gr-cell"><div class="bar bar-be">Scale</div></div>
+        <div class="gr-cell"><div class="bar bar-be">Support</div></div>
+      </div>
+
+      <!-- Frontend -->
+      <div class="gantt-row">
+        <div class="gr-label"><span class="gr-role role-fe">FE</span> Frontend Engineer</div>
+        <div class="gr-cell"><div class="bar bar-ms">Setup</div></div>
+        <div class="gr-cell"><div class="bar bar-fe">Shell + Search</div></div>
+        <div class="gr-cell"><div class="bar bar-fe">Panels</div></div>
+        <div class="gr-cell"><div class="bar bar-fe">Panels</div></div>
+        <div class="gr-cell"><div class="bar bar-fe">Polish</div></div>
+        <div class="gr-cell"><div class="bar bar-fe">Fixes</div></div>
+        <div class="gr-cell"><div class="bar bar-fe">Support</div></div>
+      </div>
+
+      <!-- Data Engineer -->
+      <div class="gantt-row">
+        <div class="gr-label"><span class="gr-role role-de">DE</span> Data Engineer</div>
+        <div class="gr-cell"><div class="bar bar-de">Schema</div></div>
+        <div class="gr-cell"><div class="bar bar-de">SF Sync</div></div>
+        <div class="gr-cell"><div class="bar bar-de">ZD Sync</div></div>
+        <div class="gr-cell"><div class="bar bar-de">Prod DB</div></div>
+        <div class="gr-cell"><div class="bar bar-de">Validate</div></div>
+        <div class="gr-cell"><div class="bar bar-ms">Monitor</div></div>
+        <div class="gr-cell"><div class="bar bar-ms">—</div></div>
+      </div>
+
+      <!-- QA -->
+      <div class="gantt-row">
+        <div class="gr-label"><span class="gr-role role-qa">QA</span> QA (Shared)</div>
+        <div class="gr-cell"><div class="bar bar-ms">—</div></div>
+        <div class="gr-cell"><div class="bar bar-ms">Plan</div></div>
+        <div class="gr-cell"><div class="bar bar-qa">Test</div></div>
+        <div class="gr-cell"><div class="bar bar-qa">Alpha QA</div></div>
+        <div class="gr-cell"><div class="bar bar-qa">Regression</div></div>
+        <div class="gr-cell"><div class="bar bar-qa">Beta QA</div></div>
+        <div class="gr-cell"><div class="bar bar-qa">Final</div></div>
+      </div>
+
+      <!-- Milestones -->
+      <div class="milestone-row">
+        <div class="ms-label">Milestones</div>
+        <div class="ms-cell"><div class="ms-marker">◆ Data<br>Access<br>Validated</div></div>
+        <div class="ms-cell"><div class="ms-marker">◆ API<br>Contract<br>Locked</div></div>
+        <div class="ms-cell"><div class="ms-marker">◆ Core<br>Features<br>Working</div></div>
+        <div class="ms-cell"><div class="ms-marker">◆ Alpha<br>Launch<br>(5 agents)</div></div>
+        <div class="ms-cell"><div class="ms-marker">◆ Alpha<br>Gate<br>Pass</div></div>
+        <div class="ms-cell"><div class="ms-marker">◆ Beta<br>Launch<br>(30 agents)</div></div>
+        <div class="ms-cell"><div class="ms-marker">◆ Full<br>Rollout<br>Go-Live</div></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════ WEEK DETAILS ════════════════════ -->
+  <div class="sec-hdr">
+    <span class="sec-num">Section 2</span>
+    <span class="sec-title">Week-by-Week Detail</span>
+  </div>
+
+  <!-- Week 0 -->
+  <div class="week-card" onclick="togw(this)">
+    <div class="wc-head">
+      <span class="wc-week w-disc">Pre-Work</span>
+      <div class="wc-main">
+        <div class="wc-title">Week 0 — Discovery & Validation</div>
+        <div class="wc-sub">Before writing a single line of code</div>
+      </div>
+      <span class="wc-toggle">▼</span>
+    </div>
+    <div class="wc-body">
+      <div class="role-work">
+        <div class="rw-box rw-full">
+          <div class="rw-role r-pm">PM — First 5 Days</div>
+          <p><strong>Shadow 5-10 CSO agents</strong> across shifts and product lines for 2-3 days. Watch what they actually do — which systems they open, where they hesitate, where they put customers on hold. Validate or invalidate the 6 compounding problems. Pull <strong>Zendesk ticket tag distribution</strong> for 90 days to confirm top call drivers. Meet with Caroline for Salesforce schema walkthrough. Meet with Natalie Miranda's team for CSO workflow mapping. Baseline current AHT, FCR, and agent satisfaction metrics.</p>
+        </div>
+      </div>
+      <div class="stage-gate">
+        <div class="sg-label">Gate → Start Build</div>
+        <p><strong>Must be true:</strong> Core problem framing validated (agents do context-switch across 4+ systems). Top 3 call drivers confirmed. Salesforce schema documented enough to start data access spikes. CSO leadership bought in to alpha testing plan.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Week 1 -->
+  <div class="week-card" onclick="togw(this)">
+    <div class="wc-head">
+      <span class="wc-week w-build">Week 1</span>
+      <div class="wc-main">
+        <div class="wc-title">Data Access Spikes & Foundation</div>
+        <div class="wc-sub">De-risk the hardest integrations before committing to scope</div>
+      </div>
+      <span class="wc-toggle">▼</span>
+    </div>
+    <div class="wc-body">
+      <div class="role-work">
+        <div class="rw-box">
+          <div class="rw-role r-be">Backend Engineer</div>
+          <p><strong>4 validation spikes:</strong> (1) Salesforce API access — confirm objects, rate limits, auth. (2) Zendesk API — ticket retrieval, join key to Salesforce. (3) Production DB read replica — payroll/billing data accessibility. (4) Event stream maturity — login events, feature usage. Each spike produces a go/no-go for the corresponding MVP feature.</p>
+        </div>
+        <div class="rw-box">
+          <div class="rw-role r-fe">Frontend Engineer</div>
+          <p>Project scaffolding — React app setup, routing, component library selection. Build <strong>against mock data</strong> from Day 1 so the frontend doesn't wait on backend integrations. Set up the dev environment and CI pipeline.</p>
+        </div>
+        <div class="rw-box">
+          <div class="rw-role r-de">Data Engineer</div>
+          <p><strong>Design the aggregation schema.</strong> Normalized tables for companies, contacts, interactions, events, billing. Define the caching strategy (what's cached vs. queried live). Start the Salesforce sync pipeline — this is the long pole.</p>
+        </div>
+        <div class="rw-box">
+          <div class="rw-role r-ds">Designer</div>
+          <p>Refine the information architecture based on Week 0 agent observations. <strong>Finalize the cognitive sequence layout:</strong> WHO → CONTEXT → HISTORY → PROBLEM-SPECIFIC. Build component specs for the status strip and search interface.</p>
+        </div>
+      </div>
+      <div class="stage-gate">
+        <div class="sg-label">Milestone → Data Access Validated</div>
+        <p><strong>End of Week 1 decision:</strong> Which data sources are accessible? If the Zendesk↔Salesforce join key doesn't exist, <strong>FS-2 degrades to Zendesk-only history</strong> and we add a cleanup sprint later. If payroll engine API doesn't exist, <strong>PS-1 degrades to deep link</strong>. Scope adjusts based on reality, not assumptions.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Week 2 -->
+  <div class="week-card" onclick="togw(this)">
+    <div class="wc-head">
+      <span class="wc-week w-build">Week 2</span>
+      <div class="wc-main">
+        <div class="wc-title">API Core & Search</div>
+        <div class="wc-sub">The aggregation layer and the most critical user interaction</div>
+      </div>
+      <span class="wc-toggle">▼</span>
+    </div>
+    <div class="wc-body">
+      <div class="role-work">
+        <div class="rw-box">
+          <div class="rw-role r-be">Backend Engineer</div>
+          <p><strong>Build the Customer Context API.</strong> Search endpoint (by name, email, phone — &lt;2s response). Company profile endpoint. Contact detail endpoint. API-first design — RESTful, versioned, documented. This service becomes the backbone for every downstream feature.</p>
+        </div>
+        <div class="rw-box">
+          <div class="rw-role r-fe">Frontend Engineer</div>
+          <p><strong>Build ⌘K search and the app shell.</strong> Search input with type-ahead, result cards showing company + person + plan. Navigation framework (tabs for problem-specific panels). Company profile card and caller card components. Wire to API as endpoints become available.</p>
+        </div>
+        <div class="rw-box">
+          <div class="rw-role r-de">Data Engineer</div>
+          <p><strong>Salesforce sync pipeline operational.</strong> Accounts, Contacts, Cases flowing into the aggregation layer. Begin Zendesk sync — tickets, users, satisfaction ratings. Data validation checks: are record counts matching? Are timestamps consistent?</p>
+        </div>
+        <div class="rw-box">
+          <div class="rw-role r-ds">Designer</div>
+          <p>Component library finalized — cards, badges, timeline items, tab navigation. <strong>Interaction spec for search:</strong> keyboard shortcuts, result ranking, disambiguation (admin vs. employee with same name). Edge case designs: no results, multiple matches, new company with no history.</p>
+        </div>
+      </div>
+      <div class="stage-gate">
+        <div class="sg-label">Milestone → API Contract Locked</div>
+        <p><strong>Frontend and backend agree on all API contracts.</strong> Swagger/OpenAPI spec published. Frontend can switch from mock data to live data seamlessly. Any contract change after this point requires a conversation.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Week 3-4 -->
+  <div class="week-card" onclick="togw(this)">
+    <div class="wc-head">
+      <span class="wc-week w-build">Weeks 3–4</span>
+      <div class="wc-main">
+        <div class="wc-title">Feature Build Sprint</div>
+        <div class="wc-sub">All 9 MVP features come online</div>
+      </div>
+      <span class="wc-toggle">▼</span>
+    </div>
+    <div class="wc-body">
+      <div class="role-work">
+        <div class="rw-box">
+          <div class="rw-role r-be">Backend Engineer</div>
+          <p><strong>Week 3:</strong> Interaction history API (merged Zendesk + Salesforce timeline), account status/billing endpoint, recent activity event feed. <strong>Week 4:</strong> Pay stub data endpoint, tax document listing, payment cascade logic, invoice/billing detail. Auto-refresh via WebSocket or polling.</p>
+        </div>
+        <div class="rw-box">
+          <div class="rw-role r-fe">Frontend Engineer</div>
+          <p><strong>Week 3:</strong> Interaction timeline component, status strip with RAG indicators, recent activity feed. <strong>Week 4:</strong> Tabbed problem panels — Pay Stubs (with delta highlighting), Tax Docs, Benefits quick-view, Invoices, Payment Cascade. Deep link handlers for Payroll Engine and Benefits portal.</p>
+        </div>
+        <div class="rw-box">
+          <div class="rw-role r-de">Data Engineer</div>
+          <p><strong>Week 3:</strong> Zendesk sync fully operational. Production DB read replica queries for payroll/billing data. Event stream capture for recent activity. <strong>Week 4:</strong> Data validation — compare aggregated counts to source systems. Fix discrepancies. Freshness monitoring dashboard.</p>
+        </div>
+        <div class="rw-box">
+          <div class="rw-role r-qa">QA (Shared)</div>
+          <p><strong>Begin systematic testing.</strong> Test each feature against acceptance criteria. Data accuracy validation — does what the dashboard shows match what Zendesk/Salesforce/production DB show? Performance testing — search &lt;2s, dashboard load &lt;3s. Edge cases: companies with 500+ employees, new accounts with zero history, data sync delays.</p>
+        </div>
+      </div>
+      <div class="stage-gate">
+        <div class="sg-label">Milestone → Core Features Working</div>
+        <p><strong>All 9 MVP features functional</strong> with real data from at least one test company. May have rough edges, but the core flow works: search → profile → history → problem panel. Ready for alpha.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Week 5 -->
+  <div class="week-card" onclick="togw(this)">
+    <div class="wc-head">
+      <span class="wc-week w-alpha">Week 5</span>
+      <div class="wc-main">
+        <div class="wc-title">Alpha — 5 Agents, Daily Feedback</div>
+        <div class="wc-sub">Real users, real calls, real friction</div>
+      </div>
+      <span class="wc-toggle">▼</span>
+    </div>
+    <div class="wc-body">
+      <div class="role-work">
+        <div class="rw-box rw-full">
+          <div class="rw-role r-pm">PM</div>
+          <p><strong>5 volunteer agents</strong> use Customer Central alongside their existing tools for one full week. Not replacing — supplementing. Daily 15-minute feedback standup: What worked? What was wrong? What was missing? PM sits with at least 2 agents during live calls to observe. Capture every "I had to switch to Zendesk because..." moment — those are Phase 1 gaps or bugs.</p>
+        </div>
+        <div class="rw-box">
+          <div class="rw-role r-be">Backend · <span style="color:var(--g)">FE</span> · <span style="color:var(--r)">QA</span></div>
+          <p><strong>Hot-fix mode.</strong> Data accuracy issues get fixed same-day. Performance issues get priority. UX friction gets logged and triaged. The goal: by end of week, alpha agents are choosing Customer Central over their current workflow for at least <strong>50% of interactions</strong>.</p>
+        </div>
+        <div class="rw-box">
+          <div class="rw-role r-ds">Designer</div>
+          <p>Observe agent sessions (via Hotjar or screen share). Identify where the information hierarchy fails — what do agents look for that isn't where they expect it? Where do they scroll when they should click? Produce a <strong>prioritized list of UX refinements</strong> for the iterate sprint.</p>
+        </div>
+      </div>
+      <div class="stage-gate">
+        <div class="sg-label">Alpha Gate → Proceed to Beta?</div>
+        <p><strong>Must be true to proceed:</strong> (1) Data accuracy ≥ 95% — agents trust what they see. (2) Core flow works without crashing or hanging. (3) At least 3 of 5 agents say they'd use it over current tools. (4) No critical data gaps identified that would erode trust at scale. <strong>If gate fails:</strong> Add 1 week to fix critical issues before beta.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Week 6 -->
+  <div class="week-card" onclick="togw(this)">
+    <div class="wc-head">
+      <span class="wc-week w-beta">Week 6</span>
+      <div class="wc-main">
+        <div class="wc-title">Beta — Full Team (20-30 Agents)</div>
+        <div class="wc-sub">Scale test + structured feedback</div>
+      </div>
+      <span class="wc-toggle">▼</span>
+    </div>
+    <div class="wc-body">
+      <div class="role-work">
+        <div class="rw-box rw-full">
+          <div class="rw-role r-pm">PM + CSO Team Lead</div>
+          <p>One full pod (20-30 agents) uses Customer Central as their <strong>primary tool</strong> for all interactions. Structured feedback via survey (mid-week + end-of-week). Hotjar session recordings for UX pattern analysis. Measure: AHT comparison (beta agents vs. non-beta agents), search-to-context time, feature usage heatmap. <strong>Identify 2-3 Champions</strong> — power users who naturally adopt and can train others.</p>
+        </div>
+        <div class="rw-box">
+          <div class="rw-role r-be">Backend · <span style="color:var(--g)">FE</span></div>
+          <p><strong>Performance at scale.</strong> 20-30 concurrent users — does the API layer hold? Caching strategy validated under real load. Fix any degradation. Data freshness under concurrent sessions — auto-refresh every 5 minutes without conflicts.</p>
+        </div>
+      </div>
+      <div class="stage-gate">
+        <div class="sg-label">Beta Gate → Proceed to Full Rollout?</div>
+        <p><strong>Must be true:</strong> (1) Agent satisfaction ≥ 3.5/5.0 on beta survey. (2) ≥ 70% of beta agents using Customer Central as primary tool by end of week. (3) No data accuracy regressions. (4) Performance holds under concurrent load. (5) Champions identified and willing to support rollout. <strong>If gate fails:</strong> Extend beta 1 week with targeted fixes.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Week 7 -->
+  <div class="week-card" onclick="togw(this)">
+    <div class="wc-head">
+      <span class="wc-week w-launch">Week 7</span>
+      <div class="wc-main">
+        <div class="wc-title">Full Rollout + Training</div>
+        <div class="wc-sub">All CSO agents, supported launch</div>
+      </div>
+      <span class="wc-toggle">▼</span>
+    </div>
+    <div class="wc-body">
+      <div class="role-work">
+        <div class="rw-box">
+          <div class="rw-role r-pm">Training Delivery</div>
+          <p><strong>3-layer training approach:</strong> (1) Live demo session (45 min, recorded) — walk through the core flow with real data. Show the "before and after" — old workflow vs. Customer Central. (2) Self-paced sandbox — test environment with sample data where agents can explore without risk. (3) Quick reference card — one-page PDF with keyboard shortcuts, panel descriptions, and "where to find X" guide.</p>
+        </div>
+        <div class="rw-box">
+          <div class="rw-role r-pm">Champions Program</div>
+          <p><strong>2-3 beta Champions</strong> serve as peer trainers and first-line support. They sit with new users during their first live calls with Customer Central. They collect feedback directly and escalate to PM. They get a dedicated Slack channel for real-time questions. Champions are recognized by CSO leadership — this isn't volunteer labor, it's a growth opportunity.</p>
+        </div>
+        <div class="rw-box rw-full">
+          <div class="rw-role r-pm">Ongoing Support</div>
+          <p><strong>Week 1-4 post-launch:</strong> Weekly office hours (30 min, drop-in) for questions and feedback. PM monitors adoption dashboard daily — who's using it, who isn't, and why. Follow up personally with low-adoption agents. <strong>Month 2+:</strong> Shift to monthly check-ins. Feature request intake opens for Phase 2 prioritization. Begin measuring AHT and FCR impact with enough data for statistical significance.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════ PHASE 2 & 3 ════════════════════ -->
+  <div class="sec-hdr">
+    <span class="sec-num">Section 3</span>
+    <span class="sec-title">Phase 2 & 3 — What Comes Next</span>
+  </div>
+
+  <div class="future-phase">
+    <div class="fp-head">
+      <span class="fp-tag" style="background:var(--bbg);border:1px solid var(--bbd);color:var(--b);">Phase 2</span>
+      <span class="fp-title">Health & Action</span>
+      <span class="fp-time">8–12 Weeks Post-MVP</span>
+    </div>
+    <div class="fp-grid">
+      <div class="fp-item">
+        <div class="fp-item-name">Composite Health Score</div>
+        <div class="fp-item-desc">Weighted RAG status per account. Configurable signals. Requires 60+ days of validated Phase 1 data.</div>
+      </div>
+      <div class="fp-item">
+        <div class="fp-item-name">In-Place Ticket Actions</div>
+        <div class="fp-item-desc">Create and update Zendesk tickets without leaving Customer Central. Requires proven read-path trust.</div>
+      </div>
+      <div class="fp-item">
+        <div class="fp-item-name">Benefits Life Event Flows</div>
+        <div class="fp-item-desc">Guided workflows for marriage, baby, divorce. Requires carrier API mapping and Benefits team partnership.</div>
+      </div>
+      <div class="fp-item">
+        <div class="fp-item-name">Proactive Alert System</div>
+        <div class="fp-item-desc">Rule-based flags for at-risk accounts. Requires 1+ quarter of structured interaction data for baselines.</div>
+      </div>
+      <div class="fp-item">
+        <div class="fp-item-name">CTI Screen-Pop</div>
+        <div class="fp-item-desc">Auto-populate customer profile when phone rings. Requires telephony vendor API integration.</div>
+      </div>
+      <div class="fp-item">
+        <div class="fp-item-name">Leadership Reporting</div>
+        <div class="fp-item-desc">Aggregate health dashboards for team leads and VP level. Data already flowing to warehouse via API-first architecture.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="future-phase">
+    <div class="fp-head">
+      <span class="fp-tag" style="background:var(--pbg);border:1px solid var(--pbd);color:var(--p);">Phase 3</span>
+      <span class="fp-title">Prediction & Prevention</span>
+      <span class="fp-time">Following Quarter</span>
+    </div>
+    <div class="fp-grid">
+      <div class="fp-item">
+        <div class="fp-item-name">Upsell & Cross-Sell Intelligence</div>
+        <div class="fp-item-desc">Contextual product suggestions. Requires CSO/Sales/RevOps alignment and historical conversion data.</div>
+      </div>
+      <div class="fp-item">
+        <div class="fp-item-name">AI Interaction Summaries</div>
+        <div class="fp-item-desc">NLP-generated summaries of past conversations. Trained on Phase 1's structured interaction records.</div>
+      </div>
+      <div class="fp-item">
+        <div class="fp-item-name">Interaction Intelligence</div>
+        <div class="fp-item-desc">Trending issues, sentiment analysis, resolution path optimization across the full interaction corpus.</div>
+      </div>
+      <div class="fp-item">
+        <div class="fp-item-name">Agent Copilot</div>
+        <div class="fp-item-desc">Real-time AI assistance during live calls. The culmination — Customer Central becomes the copilot, not just the workspace.</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════ RESOURCE SUMMARY ════════════════════ -->
+  <div class="sec-hdr">
+    <span class="sec-num">Section 4</span>
+    <span class="sec-title">Resource Summary</span>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:2rem;">
+    <div style="background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:1.1rem 1.2rem;">
+      <div style="font-family:'Overpass Mono',monospace;font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--t3);margin-bottom:0.5rem;">Core Team (Full-Time)</div>
+      <div style="font-size:0.82rem;color:var(--t1);line-height:1.7;font-weight:300;">
+        <strong style="color:var(--t0)">1</strong> Backend Engineer<br>
+        <strong style="color:var(--t0)">1</strong> Frontend Engineer<br>
+        <strong style="color:var(--t0)">1</strong> Data Engineer <span style="font-size:0.7rem;color:var(--a);">(Data Services)</span><br>
+        <strong style="color:var(--t0)">1</strong> PM <span style="font-size:0.7rem;color:var(--t3);">(you)</span>
+      </div>
+    </div>
+    <div style="background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:1.1rem 1.2rem;">
+      <div style="font-family:'Overpass Mono',monospace;font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--t3);margin-bottom:0.5rem;">Supporting (Part-Time)</div>
+      <div style="font-size:0.82rem;color:var(--t1);line-height:1.7;font-weight:300;">
+        <strong style="color:var(--t0)">1</strong> Designer <span style="font-size:0.7rem;color:var(--t3);">Wk 1-5 heavy, Wk 6-7 light</span><br>
+        <strong style="color:var(--t0)">1</strong> QA <span style="font-size:0.7rem;color:var(--t3);">Shared, Wk 3-7</span><br>
+        <strong style="color:var(--t0)">Caroline</strong> <span style="font-size:0.7rem;color:var(--t3);">SFDC guidance, Wk 0-2</span>
+      </div>
+    </div>
+    <div style="background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:1.1rem 1.2rem;">
+      <div style="font-family:'Overpass Mono',monospace;font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--t3);margin-bottom:0.5rem;">Total Investment</div>
+      <div style="font-size:0.82rem;color:var(--t1);line-height:1.7;font-weight:300;">
+        <strong style="color:var(--t0)">~21</strong> engineer-weeks<br>
+        <strong style="color:var(--t0)">~5</strong> design-weeks<br>
+        <strong style="color:var(--t0)">~3</strong> QA-weeks<br>
+        <strong style="color:var(--t0)">7</strong> calendar weeks total
+      </div>
+    </div>
+  </div>
+
+  <!-- CLOSING -->
+  <div class="closing">
+    <p>
+      <strong>The roadmap is designed to absorb uncertainty.</strong> Week 1 spikes determine which features build as full experiences vs. deep links. Alpha and beta gates ensure quality before scale. Each phase earns the right to the next. The hardest integrations are front-loaded so we know the real scope before we're committed.
+    </p>
+  </div>
+
+  <div class="footer">
+    Customer Central — Phased Roadmap & Rollout Plan · Darrien Watson · February 2026
+  </div>
+
+</div>
+
+<script>
+function togw(el) { el.classList.toggle('open'); }
+</script>
+
+</body>
+</html>

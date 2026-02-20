@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Performance Strategy — Customer Central</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500;600&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#090b10;--s1:#10131a;--s2:#161a24;--s3:#1c212e;--s4:#242a38;
+  --bd:#262e40;--bd2:#3a4560;
+  --t0:#f0f2f8;--t1:#c8cede;--t2:#8b95ae;--t3:#5a6580;--t4:#3a4258;
+  --acc:#e8a838;--acc2:#a07020;
+  --g:#34d399;--gbg:rgba(52,211,153,.06);--gbd:rgba(52,211,153,.2);
+  --r:#f87171;--rbg:rgba(248,113,113,.06);--rbd:rgba(248,113,113,.2);
+  --b:#60a5fa;--bbg:rgba(96,165,250,.06);--bbd:rgba(96,165,250,.2);
+  --a:#fbbf24;--abg:rgba(251,191,36,.06);--abd:rgba(251,191,36,.2);
+  --p:#a78bfa;--pbg:rgba(167,139,250,.06);--pbd:rgba(167,139,250,.2);
+  --c:#22d3ee;--cbg:rgba(34,211,238,.06);--cbd:rgba(34,211,238,.2);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--t1);line-height:1.6}
+
+.hdr{padding:2.5rem 2rem 1.5rem;border-bottom:1px solid var(--bd);text-align:center}
+.hdr h1{font-family:'DM Serif Display',serif;font-size:clamp(1.5rem,3.5vw,2.2rem);color:var(--acc);margin-bottom:.3rem}
+.hdr .sub{color:var(--t2);font-size:.88rem;font-weight:300;max-width:800px;margin:0 auto}
+
+.nav{position:sticky;top:0;z-index:100;background:rgba(9,11,16,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--bd);display:flex;gap:.2rem;padding:.4rem .8rem;overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav-btn{background:none;border:1px solid transparent;color:var(--t3);font-family:'JetBrains Mono',monospace;font-size:.6rem;padding:.3rem .55rem;border-radius:4px;cursor:pointer;white-space:nowrap;transition:all .2s}
+.nav-btn:hover{color:var(--t2);border-color:var(--bd)}
+.nav-btn.active{color:var(--acc);background:rgba(232,168,56,.07);border-color:var(--acc2)}
+
+.main{max-width:1150px;margin:0 auto;padding:1.5rem 1rem 4rem}
+
+.sec{margin-bottom:2.5rem}
+.sec-head{font-family:'JetBrains Mono',monospace;font-size:.68rem;font-weight:600;color:var(--acc);text-transform:uppercase;letter-spacing:.12em;padding-bottom:.5rem;border-bottom:1px solid var(--bd);margin-bottom:1rem}
+
+/* Cards */
+.card{background:var(--s1);border:1px solid var(--bd);border-radius:8px;margin-bottom:.75rem;overflow:hidden}
+.card-h{display:flex;align-items:center;gap:.75rem;padding:.85rem 1rem;cursor:pointer;user-select:none}
+.card-h:hover{background:var(--s2)}
+.card-h .tag{font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:600;padding:.1rem .4rem;border-radius:3px;flex-shrink:0}
+.tag-instant{color:var(--r);background:var(--rbg);border:1px solid var(--rbd)}
+.tag-fast{color:var(--a);background:var(--abg);border:1px solid var(--abd)}
+.tag-lazy{color:var(--b);background:var(--bbg);border:1px solid var(--bbd)}
+.tag-click{color:var(--p);background:var(--pbg);border:1px solid var(--pbd)}
+.tag-bg{color:var(--c);background:var(--cbg);border:1px solid var(--cbd)}
+.card-title{flex:1;font-size:.9rem;font-weight:600;color:var(--t0)}
+.card-sub{font-size:.75rem;color:var(--t3);margin-top:.1rem}
+.card-tog{color:var(--t3);font-size:.9rem;transition:transform .2s;flex-shrink:0}
+.card.open .card-tog{transform:rotate(180deg)}
+.card-body{display:none;border-top:1px solid var(--bd);padding:1rem}
+.card.open .card-body{display:block}
+.card-body p{font-size:.82rem;color:var(--t2);margin-bottom:.5rem}
+.card-body p strong{color:var(--t1)}
+
+/* Callouts */
+.co{background:var(--s2);border-left:3px solid var(--bd);padding:.7rem .9rem;margin:.6rem 0;font-size:.8rem;border-radius:0 6px 6px 0;color:var(--t2)}
+.co strong{color:var(--t1)}
+.co.r{border-left-color:var(--r);background:var(--rbg)}
+.co.g{border-left-color:var(--g);background:var(--gbg)}
+.co.b{border-left-color:var(--b);background:var(--bbg)}
+.co.a{border-left-color:var(--a);background:var(--abg)}
+
+/* Tables */
+.tbl{width:100%;border-collapse:collapse;font-size:.78rem;margin:.5rem 0}
+.tbl th{font-family:'JetBrains Mono',monospace;font-size:.58rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);text-align:left;padding:.45rem .6rem;border-bottom:2px solid var(--bd)}
+.tbl td{padding:.45rem .6rem;border-bottom:1px solid rgba(38,46,64,.5);color:var(--t2);vertical-align:top}
+.tbl tr:hover td{background:var(--s1)}
+.tbl code{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--t0);background:var(--s3);padding:.05rem .3rem;border-radius:2px}
+
+/* Diagram boxes */
+.diag{background:var(--s1);border:1px solid var(--bd);border-radius:8px;padding:1.25rem;margin:.75rem 0}
+.diag-title{font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;text-align:center;margin-bottom:.75rem}
+.tier-row{display:flex;gap:.4rem;margin:.4rem 0;flex-wrap:wrap;justify-content:center}
+.tier-box{background:var(--s3);border:1px solid var(--bd);border-radius:6px;padding:.45rem .65rem;text-align:center;min-width:100px;flex:1;max-width:200px}
+.tier-box .tb-name{font-family:'JetBrains Mono',monospace;font-size:.68rem;font-weight:600}
+.tier-box .tb-sub{font-size:.62rem;color:var(--t3);margin-top:.1rem}
+.tier-box .tb-size{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--t3);margin-top:.2rem;background:var(--s4);display:inline-block;padding:.05rem .3rem;border-radius:2px}
+.tb-instant .tb-name{color:var(--r)} .tb-fast .tb-name{color:var(--a)} .tb-lazy .tb-name{color:var(--b)} .tb-click .tb-name{color:var(--p)}
+
+.sub-h{font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin:1rem 0 .4rem}
+.sub-h:first-child{margin-top:0}
+
+/* Schema blocks */
+.schema{background:var(--s2);border:1px solid var(--bd);border-radius:6px;padding:.8rem 1rem;margin:.5rem 0;font-family:'JetBrains Mono',monospace;font-size:.7rem;line-height:1.8;color:var(--t2);overflow-x:auto}
+.schema .tname{color:var(--acc);font-weight:600}
+.schema .fname{color:var(--t0)}
+.schema .ftype{color:var(--t3)}
+.schema .idx{color:var(--g)}
+.schema .fk{color:var(--b)}
+.schema .comment{color:var(--t4);font-style:italic}
+
+.footer{text-align:center;padding:2rem;color:var(--t4);font-size:.7rem;border-top:1px solid var(--bd);margin-top:2rem}
+
+@media(max-width:700px){.tier-row{flex-direction:column;align-items:center}.tier-box{max-width:100%}}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <h1>Data Performance Strategy</h1>
+  <p class="sub">Loading tiers, database design, caching strategy, volume estimates, and query patterns — how we make a data-heavy dashboard feel instant on a live call</p>
+</div>
+
+<nav class="nav">
+  <button class="nav-btn active" data-v="all">FULL VIEW</button>
+  <button class="nav-btn" data-v="loading">LOADING TIERS</button>
+  <button class="nav-btn" data-v="schema">DATABASE DESIGN</button>
+  <button class="nav-btn" data-v="volume">VOLUME ESTIMATES</button>
+  <button class="nav-btn" data-v="cache">CACHING & REFRESH</button>
+  <button class="nav-btn" data-v="beyond">WHAT ELSE TO THINK ABOUT</button>
+</nav>
+
+<div class="main">
+
+<!-- ============================================ -->
+<!-- LOADING TIERS -->
+<!-- ============================================ -->
+<div class="sec" data-sec="loading">
+<div class="sec-head">◆ LOADING TIERS — WHAT LOADS WHEN</div>
+
+<p style="font-size:.85rem;color:var(--t2);margin-bottom:1rem">An agent picks up the phone and searches for the caller. From that moment, information needs to appear in a specific sequence matching urgency. Not everything loads at once — some data is pre-fetched, some arrives in the background, and some waits for the agent to ask for it.</p>
+
+<div class="diag">
+  <div class="diag-title">PAGE LOAD SEQUENCE — AFTER AGENT SELECTS AN ACCOUNT</div>
+  <div style="display:flex;align-items:center;gap:.3rem;justify-content:center;margin-bottom:.3rem;flex-wrap:wrap">
+    <span class="tag tag-instant" style="font-size:.55rem">T+0 → 500ms</span>
+    <span style="color:var(--t4)">→</span>
+    <span class="tag tag-fast" style="font-size:.55rem">T+500ms → 2s</span>
+    <span style="color:var(--t4)">→</span>
+    <span class="tag tag-lazy" style="font-size:.55rem">T+2s → 5s (background)</span>
+    <span style="color:var(--t4)">→</span>
+    <span class="tag tag-click" style="font-size:.55rem">ON INTERACTION</span>
+  </div>
+  <div class="tier-row">
+    <div class="tier-box tb-instant">
+      <div class="tb-name">Caller Identity</div>
+      <div class="tb-sub">Name, role, company, plan</div>
+      <div class="tb-size">~2 KB · from cache</div>
+    </div>
+    <div class="tier-box tb-instant">
+      <div class="tb-name">Status Strip</div>
+      <div class="tb-sub">Billing RAG, next payroll, open tickets count</div>
+      <div class="tb-size">~1 KB · from cache</div>
+    </div>
+  </div>
+  <div class="tier-row">
+    <div class="tier-box tb-fast">
+      <div class="tb-name">Interaction Timeline</div>
+      <div class="tb-sub">Last 10 interactions, open tickets pinned</div>
+      <div class="tb-size">~15 KB · Zendesk API</div>
+    </div>
+    <div class="tier-box tb-fast">
+      <div class="tb-name">Recent Changes</div>
+      <div class="tb-sub">7-day activity feed</div>
+      <div class="tb-size">~5 KB · event store</div>
+    </div>
+  </div>
+  <div class="tier-row">
+    <div class="tier-box" style="border-color:var(--bbd)">
+      <div class="tb-name" style="color:var(--b)">Tax Doc Badges</div>
+      <div class="tb-sub">W-2/1099 status — rarely changes</div>
+      <div class="tb-size">~0.5 KB · lazy OK</div>
+    </div>
+    <div class="tier-box" style="border-color:var(--bbd)">
+      <div class="tb-name" style="color:var(--b)">Benefits Summary</div>
+      <div class="tb-sub">Enrolled plans, enrollment window</div>
+      <div class="tb-size">~3 KB · lazy OK</div>
+    </div>
+  </div>
+  <div class="tier-row">
+    <div class="tier-box" style="border-color:var(--pbd)">
+      <div class="tb-name" style="color:var(--p)">Pay Stub Detail</div>
+      <div class="tb-sub">Period comparison + annotations</div>
+      <div class="tb-size">~20 KB · on tab click</div>
+    </div>
+    <div class="tier-box" style="border-color:var(--pbd)">
+      <div class="tb-name" style="color:var(--p)">Payment Cascade</div>
+      <div class="tb-sub">Failure chain + employee impact</div>
+      <div class="tb-size">~8 KB · on tab click</div>
+    </div>
+    <div class="tier-box" style="border-color:var(--pbd)">
+      <div class="tb-name" style="color:var(--p)">Invoice Detail</div>
+      <div class="tb-sub">Delta annotation + deep link</div>
+      <div class="tb-size">~5 KB · on tab click</div>
+    </div>
+  </div>
+</div>
+
+<!-- Tier detail cards -->
+<div class="card" id="tier-instant">
+  <div class="card-h" onclick="tog(this)">
+    <span class="tag tag-instant">INSTANT</span>
+    <div>
+      <div class="card-title">Tier 1: Pre-fetched from Local Cache — &lt;500ms</div>
+      <div class="card-sub">FS-1 (Caller ID) + FS-3 (Status Strip). The data that must be on screen before the agent finishes saying "Thank you for calling Justworks."</div>
+    </div>
+    <span class="card-tog">▼</span>
+  </div>
+  <div class="card-body">
+    <p><strong>What's in this tier:</strong> Caller name, role (admin/employee), company name, plan type, employee count, billing status (RAG), next payroll date, open ticket count, customer tenure. ~3 KB total.</p>
+    <p><strong>Why it must be instant:</strong> This is the agent's orientation data. Within the first 3 seconds of the call, they need to say the customer's name and demonstrate awareness. If this data takes even 2 seconds to appear, the agent is greeting blind.</p>
+    <p><strong>How we make it instant:</strong> This data is pre-fetched and cached in the aggregation layer. When the agent searches, the search results already carry enough metadata to populate Tier 1 without additional queries. The search response itself IS the Tier 1 payload — company profile, caller identity, and status indicators all come back as part of the search result, not as separate follow-up queries.</p>
+    <div class="co g"><strong>Implementation:</strong> The search endpoint returns a fat object — not just search matches, but the full Tier 1 payload for each match. One query, one response, zero follow-up requests. The frontend renders immediately on search-result click.</div>
+    <p><strong>Cache strategy:</strong> The aggregation layer pre-computes and caches account summary records. Cache key: <code>account:{company_id}:summary</code>. TTL: 5 minutes. Refreshed on any write event (payment, employee change, ticket update). This is the hot path — every account lookup hits this cache first.</p>
+  </div>
+</div>
+
+<div class="card" id="tier-fast">
+  <div class="card-h" onclick="tog(this)">
+    <span class="tag tag-fast">FAST</span>
+    <div>
+      <div class="card-title">Tier 2: Fetched on Load, Arrives by 2s — 500ms–2s</div>
+      <div class="card-sub">FS-2 (Interaction Timeline) + Recent Changes Feed. The context data the agent scans while the customer is still explaining why they called.</div>
+    </div>
+    <span class="card-tog">▼</span>
+  </div>
+  <div class="card-body">
+    <p><strong>What's in this tier:</strong> Last 10 interactions (merged Zendesk + Salesforce), 7-day activity feed (employee adds/removes, benefits changes, plan modifications). ~20 KB total.</p>
+    <p><strong>Why it's acceptable at 2s:</strong> The agent doesn't need the full interaction history in the first 500ms. They need it by the time the customer finishes their opening sentence — roughly 5-10 seconds into the call. A 2-second load time means this data arrives well before the agent needs it.</p>
+    <p><strong>How we achieve it:</strong> These are fired as parallel async requests the moment the agent clicks a search result. The frontend shows Tier 1 data immediately and renders Tier 2 as it arrives — skeleton placeholders (shimmer animation) that fill in. The agent sees the caller card and status strip first, then the timeline populates below.</p>
+    <div class="co a"><strong>The Zendesk latency problem:</strong> Zendesk's API is the slowest source. Fetching tickets by organization + sorting + enriching with comments can take 1-2s alone. Mitigation: pre-sync the most recent tickets for active accounts into the aggregation layer's local store. For accounts that haven't been synced recently, fall back to live Zendesk API call — this is the scenario where Tier 2 might take the full 2 seconds.</div>
+    <p><strong>Rendering strategy:</strong> Progressive — the timeline renders each interaction as it arrives. First 3-5 interactions appear within ~800ms (from local cache), remaining arrive from API within 2s. The agent can start reading before the full list loads.</p>
+  </div>
+</div>
+
+<div class="card" id="tier-lazy">
+  <div class="card-h" onclick="tog(this)">
+    <span class="tag tag-lazy">BACKGROUND</span>
+    <div>
+      <div class="card-title">Tier 3: Lazy-Loaded in Background — 2s–5s</div>
+      <div class="card-sub">PS-3 (Tax Badges), PS-4 (Benefits Summary). Useful but not urgent — can arrive after the page is already usable.</div>
+    </div>
+    <span class="card-tog">▼</span>
+  </div>
+  <div class="card-body">
+    <p><strong>What's in this tier:</strong> W-2/1099 document status badges, benefits enrollment summary card (enrolled plans, enrollment window status, dependents). ~3.5 KB total.</p>
+    <p><strong>Why it can be lazy:</strong> Tax document status is seasonal (Jan–Apr) and changes very rarely. Benefits summary is relevant only if the caller asks about benefits — not every call. Neither is needed for the agent's initial orientation. They're "nice to have visible" but don't block the conversation.</p>
+    <p><strong>How we implement it:</strong> Low-priority fetch after Tier 1+2 complete. Uses <code>requestIdleCallback</code> or equivalent — the browser fetches these once the critical rendering is done. If network is congested, these quietly wait. If the agent clicks on a benefits tab before the lazy load finishes, the click-to-load (Tier 4) takes over.</p>
+    <div class="co b"><strong>The elegance:</strong> These load silently. The agent never waits for them, never sees a spinner. They just appear. If they're slow, the agent doesn't notice because they're not looking at that part of the screen yet.</div>
+  </div>
+</div>
+
+<div class="card" id="tier-click">
+  <div class="card-h" onclick="tog(this)">
+    <span class="tag tag-click">ON CLICK</span>
+    <div>
+      <div class="card-title">Tier 4: Fetched on Interaction — User-Triggered</div>
+      <div class="card-sub">PS-1 (Pay Stubs), PS-6 (Payment Cascade), PS-5 (Invoice Detail). Heavy data that only loads when the agent actively needs it.</div>
+    </div>
+    <span class="card-tog">▼</span>
+  </div>
+  <div class="card-body">
+    <p><strong>What's in this tier:</strong> Full pay stub comparison with delta annotations (~20 KB), payment failure cascade with employee impact (~8 KB), invoice delta annotation (~5 KB).</p>
+    <p><strong>Why on-click:</strong> These are problem-specific. A payroll call doesn't need invoice data. A billing call doesn't need pay stubs. Loading all of these for every account would waste bandwidth and server resources — especially the pay stub query, which hits the production database for sensitive payroll data.</p>
+    <p><strong>How we implement it:</strong> Agent clicks a tab → loading skeleton appears → API call fires → data renders. Target: &lt;1.5s from click to render. These endpoints can be more expensive because they fire less frequently (only when relevant to the call topic).</p>
+    <div class="co r"><strong>Critical UX decision:</strong> The tab should show a loading state, NOT freeze the UI. The agent might click "Payroll" then realize they actually need "Billing" — they should be able to switch tabs while the first request is still in flight. Cancel abandoned requests with <code>AbortController</code>.</div>
+    <p><strong>Pre-fetch optimization:</strong> If the status strip shows billing is RED (past due), we can speculatively pre-fetch the payment cascade data (PS-6) in the background, anticipating the agent will look there. Same for active payroll alerts → pre-fetch pay stub data. This turns a Tier 4 into a de facto Tier 3 for the most common scenarios.</p>
+  </div>
+</div>
+
+<div class="co g" style="margin-top:1rem">
+  <strong>The loading sequence summary:</strong> Search click → Tier 1 renders instantly (identity + status from cache) → Tier 2 streams in (timeline + changes within 2s) → Tier 3 quietly appears (tax + benefits in background) → Tier 4 waits for agent action. The page is <em>usable</em> in &lt;500ms, <em>complete</em> in ~3s, and <em>fully loaded</em> only for what the specific call needs.
+</div>
+</div>
+
+<!-- ============================================ -->
+<!-- DATABASE DESIGN -->
+<!-- ============================================ -->
+<div class="sec" data-sec="schema">
+<div class="sec-head">◆ DATABASE DESIGN — THE AGGREGATION LAYER SCHEMA</div>
+
+<p style="font-size:.85rem;color:var(--t2);margin-bottom:1rem">The aggregation layer has its own database — a local, denormalized store optimized for fast reads. This is NOT a copy of the source systems. It's a purpose-built read model that holds exactly the data Customer Central needs, structured exactly how the UI queries it. Source systems remain authoritative; the aggregation layer is a materialized view.</p>
+
+<div class="co a"><strong>Key architectural decision: separate read store, not direct source queries.</strong> We do NOT query Salesforce, Zendesk, and the production DB in real-time for every page load. Instead, we sync relevant data into a local read-optimized store and serve from there. This means: (1) page loads are predictable regardless of source system latency, (2) we don't burn Salesforce API rate limits on agent queries, (3) we can denormalize aggressively for read performance without affecting source schemas.</div>
+
+<div class="sub-h">TABLE DESIGN</div>
+
+<div class="schema">
+<span class="comment">-- Core lookup table. One row per company. Serves Tier 1 (instant).</span><br>
+<span class="comment">-- Denormalized: plan name, billing status, employee count all on one row.</span><br>
+<span class="comment">-- Est. 10,000 rows (1 per customer). Tiny. Full table fits in memory.</span><br>
+<span class="tname">account_summaries</span><br>
+&nbsp;&nbsp;<span class="fname">company_id</span> <span class="ftype">UUID PK</span> <span class="idx">— indexed, primary lookup key</span><br>
+&nbsp;&nbsp;<span class="fname">company_name</span> <span class="ftype">VARCHAR</span> <span class="idx">— indexed for search</span><br>
+&nbsp;&nbsp;<span class="fname">plan_type</span> <span class="ftype">ENUM</span> <span class="comment">-- payroll | peo_basic | peo_plus | eor</span><br>
+&nbsp;&nbsp;<span class="fname">employee_count</span> <span class="ftype">INT</span><br>
+&nbsp;&nbsp;<span class="fname">billing_status</span> <span class="ftype">ENUM</span> <span class="comment">-- current | approaching_due | past_due</span><br>
+&nbsp;&nbsp;<span class="fname">billing_days_past_due</span> <span class="ftype">INT</span><br>
+&nbsp;&nbsp;<span class="fname">next_payroll_date</span> <span class="ftype">DATE</span><br>
+&nbsp;&nbsp;<span class="fname">open_ticket_count</span> <span class="ftype">INT</span><br>
+&nbsp;&nbsp;<span class="fname">recent_changes_count</span> <span class="ftype">INT</span> <span class="comment">-- 7-day window, recomputed on sync</span><br>
+&nbsp;&nbsp;<span class="fname">customer_since</span> <span class="ftype">DATE</span><br>
+&nbsp;&nbsp;<span class="fname">primary_admin_name</span> <span class="ftype">VARCHAR</span><br>
+&nbsp;&nbsp;<span class="fname">states_of_operation</span> <span class="ftype">VARCHAR[]</span><br>
+&nbsp;&nbsp;<span class="fname">salesforce_account_id</span> <span class="ftype">VARCHAR</span> <span class="fk">— FK to Salesforce</span><br>
+&nbsp;&nbsp;<span class="fname">zendesk_org_id</span> <span class="ftype">VARCHAR</span> <span class="fk">— FK to Zendesk</span><br>
+&nbsp;&nbsp;<span class="fname">last_synced_at</span> <span class="ftype">TIMESTAMP</span> <span class="comment">-- freshness indicator for UI</span><br>
+</div>
+
+<div class="schema">
+<span class="comment">-- People within companies. Serves FS-1 search results + caller card.</span><br>
+<span class="comment">-- Est. 500,000 rows (avg 50 employees × 10,000 companies). Medium.</span><br>
+<span class="comment">-- Indexed on company_id, email, phone, name for search.</span><br>
+<span class="tname">contacts</span><br>
+&nbsp;&nbsp;<span class="fname">contact_id</span> <span class="ftype">UUID PK</span><br>
+&nbsp;&nbsp;<span class="fname">company_id</span> <span class="ftype">UUID FK</span> <span class="idx">— indexed, partition key candidate</span><br>
+&nbsp;&nbsp;<span class="fname">full_name</span> <span class="ftype">VARCHAR</span> <span class="idx">— indexed, trigram for fuzzy search</span><br>
+&nbsp;&nbsp;<span class="fname">email</span> <span class="ftype">VARCHAR</span> <span class="idx">— indexed, unique</span><br>
+&nbsp;&nbsp;<span class="fname">phone</span> <span class="ftype">VARCHAR</span> <span class="idx">— indexed for CTI lookup</span><br>
+&nbsp;&nbsp;<span class="fname">role</span> <span class="ftype">ENUM</span> <span class="comment">-- admin | employee | bookkeeper</span><br>
+&nbsp;&nbsp;<span class="fname">is_primary_admin</span> <span class="ftype">BOOLEAN</span><br>
+&nbsp;&nbsp;<span class="fname">last_contact_date</span> <span class="ftype">TIMESTAMP</span><br>
+&nbsp;&nbsp;<span class="fname">last_contact_channel</span> <span class="ftype">ENUM</span> <span class="comment">-- phone | email | chat</span><br>
+&nbsp;&nbsp;<span class="fname">employment_start_date</span> <span class="ftype">DATE</span><br>
+&nbsp;&nbsp;<span class="fname">salesforce_contact_id</span> <span class="ftype">VARCHAR</span> <span class="fk">— FK to Salesforce</span><br>
+</div>
+
+<div class="schema">
+<span class="comment">-- Unified interaction records. Merged from Zendesk + Salesforce.</span><br>
+<span class="comment">-- Est. 2-5M rows (avg 500 interactions/company × 10,000 companies). LARGE.</span><br>
+<span class="comment">-- Query pattern: WHERE company_id = ? ORDER BY timestamp DESC LIMIT 10</span><br>
+<span class="comment">-- Partitioned by company_id. Only recent rows queried (last 10).</span><br>
+<span class="tname">interactions</span><br>
+&nbsp;&nbsp;<span class="fname">interaction_id</span> <span class="ftype">UUID PK</span><br>
+&nbsp;&nbsp;<span class="fname">company_id</span> <span class="ftype">UUID FK</span> <span class="idx">— indexed, partition key</span><br>
+&nbsp;&nbsp;<span class="fname">contact_id</span> <span class="ftype">UUID FK</span> <span class="comment">-- who was this interaction with</span><br>
+&nbsp;&nbsp;<span class="fname">channel</span> <span class="ftype">ENUM</span> <span class="comment">-- phone | email | chat | internal_note</span><br>
+&nbsp;&nbsp;<span class="fname">source_system</span> <span class="ftype">ENUM</span> <span class="comment">-- zendesk | salesforce</span><br>
+&nbsp;&nbsp;<span class="fname">source_id</span> <span class="ftype">VARCHAR</span> <span class="comment">-- original ticket/case ID for deep link</span><br>
+&nbsp;&nbsp;<span class="fname">timestamp</span> <span class="ftype">TIMESTAMP</span> <span class="idx">— indexed, composite with company_id</span><br>
+&nbsp;&nbsp;<span class="fname">subject</span> <span class="ftype">VARCHAR</span><br>
+&nbsp;&nbsp;<span class="fname">status</span> <span class="ftype">ENUM</span> <span class="comment">-- open | pending | resolved | closed</span><br>
+&nbsp;&nbsp;<span class="fname">priority</span> <span class="ftype">ENUM</span><br>
+&nbsp;&nbsp;<span class="fname">assigned_agent</span> <span class="ftype">VARCHAR</span><br>
+&nbsp;&nbsp;<span class="fname">csat_score</span> <span class="ftype">SMALLINT</span> <span class="comment">-- nullable</span><br>
+</div>
+
+<div class="schema">
+<span class="comment">-- Account change events. Powers the "recent changes" feed and annotations.</span><br>
+<span class="comment">-- Est. 1-3M rows. Write-heavy (events arrive continuously).</span><br>
+<span class="comment">-- Query pattern: WHERE company_id = ? AND timestamp > (now - 7 days)</span><br>
+<span class="comment">-- Partitioned by timestamp (time-series). Old events can be archived.</span><br>
+<span class="tname">account_events</span><br>
+&nbsp;&nbsp;<span class="fname">event_id</span> <span class="ftype">UUID PK</span><br>
+&nbsp;&nbsp;<span class="fname">company_id</span> <span class="ftype">UUID FK</span> <span class="idx">— indexed</span><br>
+&nbsp;&nbsp;<span class="fname">contact_id</span> <span class="ftype">UUID FK</span> <span class="comment">-- nullable, for person-level events</span><br>
+&nbsp;&nbsp;<span class="fname">event_type</span> <span class="ftype">ENUM</span> <span class="comment">-- employee_added | employee_removed | benefits_changed | plan_changed | payroll_submitted | w4_updated | address_changed</span><br>
+&nbsp;&nbsp;<span class="fname">timestamp</span> <span class="ftype">TIMESTAMP</span> <span class="idx">— indexed, composite with company_id</span><br>
+&nbsp;&nbsp;<span class="fname">description</span> <span class="ftype">VARCHAR</span> <span class="comment">-- human-readable: "Sarah Chen updated W-4 withholding"</span><br>
+&nbsp;&nbsp;<span class="fname">metadata</span> <span class="ftype">JSONB</span> <span class="comment">-- flexible payload: old_value, new_value, affected_fields</span><br>
+</div>
+
+<div class="co b" style="margin-top:1rem">
+  <strong>What about pay stubs, invoices, and benefits data?</strong> These are NOT stored in the aggregation layer's database. They're queried live from source systems (Tier 4 — on click) because: (1) they contain sensitive PII that shouldn't be replicated into additional stores, (2) they change with every payroll run and need to be current, and (3) the query frequency is low (only when agent clicks a specific tab). The aggregation API acts as a pass-through proxy — authenticating, transforming, and returning data without persisting it.
+</div>
+
+<div class="sub-h">WHY THIS TABLE DESIGN</div>
+
+<div class="card">
+  <div class="card-h" onclick="tog(this)">
+    <span class="tag" style="color:var(--acc);background:rgba(232,168,56,.07);border:1px solid var(--acc2)">RATIONALE</span>
+    <div>
+      <div class="card-title">Why separate tables instead of one big denormalized table?</div>
+    </div>
+    <span class="card-tog">▼</span>
+  </div>
+  <div class="card-body">
+    <p><strong>Different data has different write frequencies.</strong> <code>account_summaries</code> changes maybe once per day (billing status, employee count). <code>interactions</code> change multiple times per day as tickets are created and updated. <code>account_events</code> is append-only and write-heavy. Putting them in one table means every ticket update bloats the row that contains the company profile, and the index that makes search fast gets fragmented by frequent writes.</p>
+    <p><strong>Different query patterns.</strong> Search hits <code>account_summaries</code> and <code>contacts</code> together (small, cached). Timeline loads from <code>interactions</code> (large, recent-biased). Activity feed loads from <code>account_events</code> (time-windowed). These are different shapes of queries — wide reads vs. narrow time-sliced reads. Separate tables let us index and partition each for its specific query pattern.</p>
+    <p><strong>Different retention needs.</strong> <code>account_summaries</code> and <code>contacts</code> are current-state only — no history needed. <code>interactions</code> grows indefinitely but we only query the most recent 10-50. <code>account_events</code> is time-series and can be archived after 90 days. Separate tables make retention policies straightforward.</p>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-h" onclick="tog(this)">
+    <span class="tag" style="color:var(--acc);background:rgba(232,168,56,.07);border:1px solid var(--acc2)">RATIONALE</span>
+    <div>
+      <div class="card-title">Why not store pay stubs and invoices locally?</div>
+    </div>
+    <span class="card-tog">▼</span>
+  </div>
+  <div class="card-body">
+    <p><strong>PII liability.</strong> Every copy of sensitive payroll data is a compliance surface. If we replicate pay stubs into the aggregation layer, we now have SSN-adjacent data in two places instead of one. The production payroll database already has the access controls, encryption, and audit logging. Replicating means duplicating all of that governance.</p>
+    <p><strong>Freshness requirements.</strong> Pay stub data must be real-time accurate — an agent looking at a pay stub from 5 minutes ago could be looking at data from before a correction was made. Live pass-through guarantees the agent always sees the authoritative source.</p>
+    <p><strong>Volume trade-off.</strong> 10,000 companies × 50 employees × 26 pay periods/year = 13 million pay stub records per year. That's a large, growing dataset that we'd need to keep synced. Versus: query the source on demand, ~100-200 queries per hour (only when an agent actually clicks the Payroll tab).</p>
+  </div>
+</div>
+</div>
+
+<!-- ============================================ -->
+<!-- VOLUME ESTIMATES -->
+<!-- ============================================ -->
+<div class="sec" data-sec="volume">
+<div class="sec-head">◆ VOLUME ESTIMATES & QUERY PERFORMANCE</div>
+
+<table class="tbl">
+  <thead>
+    <tr><th>Table</th><th>Est. Rows</th><th>Growth Rate</th><th>Typical Query</th><th>Expected Latency</th><th>Index Strategy</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>account_summaries</code></td>
+      <td style="color:var(--g)">~10,000</td>
+      <td>+10-15%/yr</td>
+      <td><code>WHERE company_id = ?</code></td>
+      <td style="color:var(--g)">&lt;1ms</td>
+      <td>PK lookup. Entire table fits in memory (~5 MB). Effectively free.</td>
+    </tr>
+    <tr>
+      <td><code>contacts</code></td>
+      <td style="color:var(--a)">~500,000</td>
+      <td>+10-15%/yr</td>
+      <td><code>WHERE email ILIKE ? OR phone = ? OR name ILIKE ?</code></td>
+      <td style="color:var(--a)">&lt;50ms</td>
+      <td>B-tree on email, phone. pg_trgm GIN index on full_name for fuzzy search. Composite index on (company_id, role) for filtered lookups.</td>
+    </tr>
+    <tr>
+      <td><code>interactions</code></td>
+      <td style="color:var(--r)">2-5M</td>
+      <td>~1M/yr</td>
+      <td><code>WHERE company_id = ? ORDER BY timestamp DESC LIMIT 10</code></td>
+      <td style="color:var(--a)">&lt;20ms</td>
+      <td>Composite index on (company_id, timestamp DESC). Limit 10 means the DB only scans the most recent entries. Range partitioning by company_id if table exceeds 10M rows.</td>
+    </tr>
+    <tr>
+      <td><code>account_events</code></td>
+      <td style="color:var(--r)">1-3M</td>
+      <td>~500K/yr</td>
+      <td><code>WHERE company_id = ? AND timestamp > now() - '7d'</code></td>
+      <td style="color:var(--a)">&lt;15ms</td>
+      <td>Composite index on (company_id, timestamp DESC). Time partition: events older than 90 days archived to cold storage. Hot partition stays small.</td>
+    </tr>
+    <tr>
+      <td style="color:var(--t3)">Pay stubs (pass-through)</td>
+      <td style="color:var(--t3)">13M+/yr at source</td>
+      <td>linear</td>
+      <td style="color:var(--t3)">Source API: employee + pay period</td>
+      <td style="color:var(--a)">200ms-1s</td>
+      <td style="color:var(--t3)">Not our index — depends on production DB. Pass-through query only.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="co a">
+  <strong>The critical insight:</strong> The tables that need to be fast (<code>account_summaries</code>, <code>contacts</code>) are small. The tables that are large (<code>interactions</code>, <code>account_events</code>) are always filtered by company_id + time, which means the effective working set per query is tiny — 10-50 rows out of millions. The index on (company_id, timestamp DESC) makes this a single-digit-millisecond range scan regardless of total table size. Volume is only a problem if we query without a company_id filter, which we never do.
+</div>
+
+<div class="sub-h">CONCURRENT LOAD ESTIMATE</div>
+<table class="tbl">
+  <thead><tr><th>Metric</th><th>Estimate</th><th>Assumption</th></tr></thead>
+  <tbody>
+    <tr><td>CSO agents on shift</td><td>50-150</td><td>Based on 10K customers, 24/7 coverage, and typical PEO support ratios</td></tr>
+    <tr><td>Account lookups per agent per hour</td><td>8-15</td><td>~5 min avg handle time, some lookups without calls</td></tr>
+    <tr><td>Peak concurrent queries</td><td>50-75/min</td><td>~1 lookup/sec sustained, bursts to 2-3/sec</td></tr>
+    <tr><td>Tier 1 cache hit rate</td><td>>90%</td><td>Hot accounts (frequent callers) dominate. 80/20 rule: 20% of accounts generate 80% of lookups.</td></tr>
+    <tr><td>Zendesk API calls</td><td>~200-400/hr</td><td>Not every lookup requires live Zendesk fetch (cached interactions). But Tier 2 refreshes do.</td></tr>
+    <tr><td>Production DB pass-throughs</td><td>~50-100/hr</td><td>Only Tier 4 tab clicks. Payroll/billing tabs aren't clicked on every call.</td></tr>
+  </tbody>
+</table>
+
+<div class="co g"><strong>This is very manageable.</strong> 1-3 queries per second against a well-indexed PostgreSQL database is trivial. The bottleneck is not the aggregation layer — it's the upstream API calls to Zendesk, Salesforce, and the production DB. That's why caching and async sync are critical.</div>
+</div>
+
+<!-- ============================================ -->
+<!-- CACHING & REFRESH -->
+<!-- ============================================ -->
+<div class="sec" data-sec="cache">
+<div class="sec-head">◆ CACHING STRATEGY & REFRESH PATTERNS</div>
+
+<table class="tbl">
+  <thead><tr><th>Data</th><th>Cache Layer</th><th>TTL</th><th>Invalidation Trigger</th><th>Stale Data Risk</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><code>account_summaries</code></td>
+      <td>Redis (in-memory)</td>
+      <td>5 min</td>
+      <td>Webhook from billing system (payment), Salesforce (account update), production DB (employee change)</td>
+      <td style="color:var(--a)">Medium — billing status could change mid-cache. Agent sees "current" when payment just failed. Mitigated by freshness timestamp in UI.</td>
+    </tr>
+    <tr>
+      <td><code>contacts</code></td>
+      <td>PostgreSQL (local)</td>
+      <td>15 min or on-demand</td>
+      <td>Salesforce sync job (runs every 15 min) or on-demand refresh if contact not found</td>
+      <td style="color:var(--g)">Low — contact data changes rarely (new hire, role change). A 15-min lag on a new employee appearing is acceptable.</td>
+    </tr>
+    <tr>
+      <td><code>interactions</code></td>
+      <td>PostgreSQL (local) + Redis (last 5)</td>
+      <td>Continuous sync from Zendesk incremental export + event-driven for new tickets</td>
+      <td>Zendesk webhook on ticket create/update. Salesforce case sync on schedule.</td>
+      <td style="color:var(--a)">Medium — a ticket resolved 1 minute ago might still show as "open." Mitigated by showing "as of" timestamp. Manual refresh button available.</td>
+    </tr>
+    <tr>
+      <td><code>account_events</code></td>
+      <td>PostgreSQL (local)</td>
+      <td>Event-driven (append-only)</td>
+      <td>Events arrive from application event bus as they happen.</td>
+      <td style="color:var(--a)">Depends on event bus latency. If events arrive within seconds, low risk. If batched hourly, high risk — "recent changes" could be hours behind.</td>
+    </tr>
+    <tr>
+      <td>Pay stubs (Tier 4)</td>
+      <td>No cache</td>
+      <td>—</td>
+      <td>—</td>
+      <td style="color:var(--g)">None — always live from source. Trade-off: slower (200ms-1s) but always accurate.</td>
+    </tr>
+    <tr>
+      <td>Payment cascade (Tier 4)</td>
+      <td>No cache</td>
+      <td>—</td>
+      <td>—</td>
+      <td style="color:var(--g)">None — payment status must be real-time accurate. Stale cascade data could tell an agent "payroll is fine" when it's not.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="co r">
+  <strong>The hardest cache problem:</strong> Two agents looking at the same account. Agent A resolves a ticket in Zendesk. Agent B is still looking at Customer Central, which shows the ticket as open. How fast does Agent B's screen update? Options: (1) 5-minute polling — too slow, Agent B might tell the customer "you have an open ticket" when it's already resolved. (2) WebSocket push — Agent B's screen updates within seconds. (3) Manual refresh button — Agent B clicks "refresh" before referencing the data. MVP: option 3, with option 2 in Phase 2. The manual refresh button should be prominent and the UI should show "last updated: 2 min ago" to prompt the agent.
+</div>
+
+<div class="card">
+  <div class="card-h" onclick="tog(this)">
+    <span class="tag tag-fast">PATTERN</span>
+    <div>
+      <div class="card-title">Freshness Indicators in the UI</div>
+      <div class="card-sub">How the agent knows whether to trust what they're seeing</div>
+    </div>
+    <span class="card-tog">▼</span>
+  </div>
+  <div class="card-body">
+    <p><strong>Every data section should show its freshness.</strong> A small timestamp like "as of 1:47 PM" or a relative "2 min ago" in muted text. This is not optional for an internal tool — agents need to know if the billing status they're quoting is from 30 seconds ago or 5 minutes ago.</p>
+    <p><strong>Color-code staleness.</strong> Data synced in the last minute: no indicator (assumed fresh). 1-5 minutes: subtle gray timestamp. 5+ minutes: amber warning. 15+ minutes or source unavailable: red "data may be outdated" banner. This is cheap to build and dramatically increases agent trust in the tool.</p>
+    <p><strong>Per-section refresh button.</strong> The agent should be able to force-refresh any individual section (interactions, status strip, pay stubs) without reloading the entire page. "I know this ticket was just resolved, let me refresh just the timeline."</p>
+  </div>
+</div>
+</div>
+
+<!-- ============================================ -->
+<!-- WHAT ELSE TO THINK ABOUT -->
+<!-- ============================================ -->
+<div class="sec" data-sec="beyond">
+<div class="sec-head">◆ WHAT ELSE TO THINK ABOUT — THE GAPS YOU ASKED ABOUT</div>
+
+<div class="card">
+  <div class="card-h" onclick="tog(this)">
+    <span class="tag tag-instant">CRITICAL</span>
+    <div>
+      <div class="card-title">Graceful Degradation — What Happens When a Source Is Down?</div>
+      <div class="card-sub">If Zendesk is slow or Salesforce API is rate-limited, does the whole page break?</div>
+    </div>
+    <span class="card-tog">▼</span>
+  </div>
+  <div class="card-body">
+    <p><strong>The principle:</strong> No single source system failure should make the dashboard unusable. If Zendesk is down, the agent still sees the company profile, billing status, and payroll info. The interactions section shows "Unable to load interaction history — Zendesk temporarily unavailable" instead of a blank screen or a spinner that never resolves.</p>
+    <p><strong>Implementation:</strong> Each Tier 2+ data section is independently fetched with independent error handling and timeouts. If a request takes &gt;3 seconds, time out and show the degraded state. The agent can manually retry individual sections. Core identity (Tier 1) is served from local cache, so it survives any upstream outage.</p>
+    <div class="co r"><strong>The worst-case scenario to design for:</strong> Agent has a customer on the phone. Zendesk is returning 503s. The agent can still see WHO the customer is (from cache), their billing status (from cache), and can navigate to pay stub detail (from production DB). They just can't see the interaction history. That's a degraded experience, not a broken one. The agent adapts by saying "I don't have your recent ticket history in front of me — could you briefly fill me in?"</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-h" onclick="tog(this)">
+    <span class="tag tag-instant">CRITICAL</span>
+    <div>
+      <div class="card-title">Write-Back Path — Read Today, Write Tomorrow</div>
+      <div class="card-sub">MVP is read-only, but the architecture must anticipate writes in Phase 2</div>
+    </div>
+    <span class="card-tog">▼</span>
+  </div>
+  <div class="card-body">
+    <p><strong>The trap:</strong> If we build a pure read layer with no concept of source-of-truth routing, adding write-back in Phase 2 becomes a re-architecture. The agent clicks "Resolve Ticket" — where does that write go? Zendesk. "Update Billing" — where? The billing system. "Add Internal Note" — where? Salesforce Case. Each write targets a different source system.</p>
+    <p><strong>What to build now (Phase 1):</strong> The aggregation API should have a <code>source_system</code> and <code>source_id</code> attribute on every data record. When we add writes, the API knows which system to route the write to. This is a schema decision, not a feature — it costs nothing now and saves weeks later.</p>
+    <p><strong>What to build later (Phase 2):</strong> Write endpoints on the aggregation API that proxy updates to the correct source system, validate inputs, handle errors (what if the Zendesk write succeeds but the local cache isn't updated yet?), and maintain audit logs.</p>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-h" onclick="tog(this)">
+    <span class="tag tag-fast">IMPORTANT</span>
+    <div>
+      <div class="card-title">Multi-Agent Concurrency — Same Account, Different Agents</div>
+      <div class="card-sub">What happens when two agents look at the same account simultaneously?</div>
+    </div>
+    <span class="card-tog">▼</span>
+  </div>
+  <div class="card-body">
+    <p><strong>Scenario:</strong> Agent A is on a call with Acme Corp's admin. Agent B gets a call from an Acme Corp employee. Both are looking at the same account. Agent A updates a ticket. Agent B doesn't see the update.</p>
+    <p><strong>Why this matters:</strong> In a 24/7 operation with 50+ agents, this WILL happen daily. If Agent B tells the employee "I don't see any open issues on your account" while Agent A is actively working one, the customer loses trust.</p>
+    <p><strong>MVP approach:</strong> Acceptable latency is 5 minutes (cache TTL). Agent B would see Agent A's changes within 5 minutes. The freshness indicator helps — Agent B sees "last updated: 3 min ago" and can hit refresh. Not perfect, but functional.</p>
+    <p><strong>Phase 2 approach:</strong> Presence awareness. Agent B sees "Agent A is also viewing this account" with an indicator. Changes by either agent are pushed via WebSocket to the other's screen within seconds. This is the pattern used by tools like Salesforce Live Agent and Zendesk's agent workspace.</p>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-h" onclick="tog(this)">
+    <span class="tag tag-fast">IMPORTANT</span>
+    <div>
+      <div class="card-title">Search Performance at Scale — 500K Contacts</div>
+      <div class="card-sub">The search box is the entry point. If search is slow, nothing else matters.</div>
+    </div>
+    <span class="card-tog">▼</span>
+  </div>
+  <div class="card-body">
+    <p><strong>The query:</strong> Agent types "Sarah" or "acme" or "(212) 555-0147". The system needs to search across 500K contacts and 10K companies simultaneously and return ranked results in &lt;200ms.</p>
+    <p><strong>Naive approach (broken):</strong> <code>SELECT * FROM contacts WHERE full_name ILIKE '%sarah%'</code> — full table scan on 500K rows. Slow, ~500ms+, gets worse as the table grows.</p>
+    <p><strong>Correct approach:</strong> PostgreSQL trigram index (<code>pg_trgm</code> extension) on <code>full_name</code> enables fast fuzzy search with <code>ILIKE</code> in &lt;50ms. B-tree indexes on <code>email</code> and <code>phone</code> for exact match. Combine with <code>account_summaries</code> join for company-level search. Union query across contacts and accounts, deduplicate, rank by relevance.</p>
+    <p><strong>Even better:</strong> Elasticsearch or Typesense for the search index. Feed contacts + accounts into a dedicated search engine optimized for this exact pattern. This adds an infrastructure component but gives sub-20ms search with typo tolerance, prefix matching, and relevance ranking. Worth it if search is the front door.</p>
+    <div class="co a"><strong>MVP decision:</strong> Start with PostgreSQL trigram indexes. Measure. If search latency exceeds 200ms at production volume, add a dedicated search index in Phase 2. Don't over-engineer the search layer before measuring real-world performance.</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-h" onclick="tog(this)">
+    <span class="tag tag-fast">IMPORTANT</span>
+    <div>
+      <div class="card-title">Data Sync Orchestration — Keeping the Read Store Current</div>
+      <div class="card-sub">The aggregation layer is only as good as its sync pipeline. How does data flow from sources to the read store?</div>
+    </div>
+    <span class="card-tog">▼</span>
+  </div>
+  <div class="card-body">
+    <p><strong>Three sync patterns, each for different data:</strong></p>
+    <p><strong>1. Event-driven (near real-time):</strong> Zendesk ticket created/updated → webhook fires → aggregation layer ingests and updates <code>interactions</code> table + recalculates <code>open_ticket_count</code> on <code>account_summaries</code>. Latency: seconds. Used for: interactions, account events, billing status changes.</p>
+    <p><strong>2. Scheduled batch (periodic):</strong> Salesforce Bulk API export runs every 15 minutes → syncs Account and Contact changes to local <code>account_summaries</code> and <code>contacts</code> tables. Latency: up to 15 minutes. Used for: contact data, company profile, plan changes.</p>
+    <p><strong>3. On-demand pass-through (live):</strong> Agent clicks "Payroll" tab → aggregation API calls production DB payroll service → returns data → does not persist. Latency: 200ms-1s. Used for: pay stubs, invoice detail, payment cascade.</p>
+    <div class="co b"><strong>The Data Services team builds this.</strong> The sync orchestration (webhooks, batch jobs, monitoring, error handling, retry logic, dead letter queues) is infrastructure work that belongs to the Data Engineer on the team. This is 30-40% of the Phase 1 engineering effort — and it's the part most PMs underestimate.</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-h" onclick="tog(this)">
+    <span class="tag tag-lazy">THINK AHEAD</span>
+    <div>
+      <div class="card-title">Audit Logging — Who Viewed What, When?</div>
+      <div class="card-sub">Compliance and coaching both need to know which agents viewed which customer data</div>
+    </div>
+    <span class="card-tog">▼</span>
+  </div>
+  <div class="card-body">
+    <p><strong>Why this matters now:</strong> Customer Central will surface sensitive data — pay stubs, billing, benefits. In a regulated domain (PEO = financial services + healthcare + employment law), there needs to be a trail of who accessed what. This isn't a Phase 2 afterthought — the audit table should be in the Phase 1 schema.</p>
+    <p><strong>Implementation:</strong> Append-only <code>access_log</code> table. Every account lookup, every tab click, every data section load writes a row: agent_id, company_id, data_section, timestamp. Cheap, fire-and-forget, never queried in the hot path (it's for compliance and coaching reports, not real-time UI).</p>
+    <p><strong>Secondary value:</strong> This same audit log becomes the data source for team lead coaching. "Agent X looked up 40 accounts today but only resolved 12 tickets — what's happening?" "Agent Y accessed pay stub data 3x more than average — are they getting more payroll calls, or struggling with them?"</p>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-h" onclick="tog(this)">
+    <span class="tag tag-lazy">THINK AHEAD</span>
+    <div>
+      <div class="card-title">Data Correctness Guarantees — Which Source Wins?</div>
+      <div class="card-sub">When Salesforce says 35 employees and the production DB says 34, who's right?</div>
+    </div>
+    <span class="card-tog">▼</span>
+  </div>
+  <div class="card-body">
+    <p><strong>The problem:</strong> Multiple source systems inevitably drift. A company adds an employee in the Justworks app (production DB increments to 35), but the Salesforce sync runs 15 minutes later (still shows 34). Which number does the agent see?</p>
+    <p><strong>The rule: Define source-of-truth per field, not per system.</strong></p>
+    <table class="tbl">
+      <thead><tr><th>Data Field</th><th>Authoritative Source</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td>Employee count</td><td>Production DB</td><td>This is where employees are actually added/removed</td></tr>
+        <tr><td>Plan type</td><td>Production DB (via Salesforce sync)</td><td>Plan changes happen in product, sync to Salesforce for CRM</td></tr>
+        <tr><td>Billing status</td><td>Billing system</td><td>Payment processor is the source of truth for payment state</td></tr>
+        <tr><td>Account name, admin contact</td><td>Salesforce</td><td>CRM is system of record for relationship data</td></tr>
+        <tr><td>Interaction history</td><td>Zendesk (for tickets), Salesforce (for account notes)</td><td>Each system owns its own interaction type</td></tr>
+        <tr><td>Pay stub detail</td><td>Production DB / Payroll engine</td><td>Only source of actual payroll data</td></tr>
+      </tbody>
+    </table>
+    <div class="co a"><strong>When there's a conflict, show the authoritative source and flag the discrepancy.</strong> "Employee count: 35 (as of 1:48 PM)" — if we detect Salesforce shows 34, we don't average them or pick one silently. We show the authoritative value and, optionally, a small indicator that a sync discrepancy exists. This builds agent trust: they know the data is intentional, not arbitrary.</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-h" onclick="tog(this)">
+    <span class="tag tag-lazy">THINK AHEAD</span>
+    <div>
+      <div class="card-title">Structured Data for Future AI — The Tiebreaker in Action</div>
+      <div class="card-sub">How the schema we build today enables AI features in Phase 3 without re-architecture</div>
+    </div>
+    <span class="card-tog">▼</span>
+  </div>
+  <div class="card-body">
+    <p><strong>The interactions table uses structured enums, not free text.</strong> <code>channel</code>, <code>status</code>, and <code>priority</code> are enums. If we stored these as free-text (as they exist in Zendesk), Phase 3 AI would need to parse and categorize millions of text fields before it could do anything useful. Structured on ingest means the ML pipeline has clean training data from day one.</p>
+    <p><strong>The account_events table stores metadata as JSONB.</strong> Flexible enough to capture any event type, structured enough to query. When Phase 3 builds a health scoring model, it can query "how many employee_removed events in the last 90 days" without NLP — it's a SQL WHERE clause.</p>
+    <p><strong>The access_log table captures agent behavior.</strong> When Phase 3 builds an AI that predicts "this call is probably about payroll" and auto-navigates to the Payroll tab — it learns from access_log patterns: "when billing_status = past_due, agents click the Payment tab 80% of the time."</p>
+    <div class="co g"><strong>This is the Tiebreaker Principle applied to database design.</strong> Same MVP effort. Same agent experience today. But the schema decisions — structured enums over free text, JSONB metadata over flat fields, audit logging from day one — create an AI-ready data foundation that would cost months to retrofit later.</div>
+  </div>
+</div>
+
+</div>
+
+</div>
+
+<div class="footer">
+  Customer Central MVP — Data Performance Strategy · Darrien Watson · Justworks GPM Case Study · February 2026
+</div>
+
+<script>
+function tog(el){el.closest('.card').classList.toggle('open')}
+document.querySelectorAll('.nav-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.nav-btn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    const v=b.dataset.v;
+    document.querySelectorAll('.sec').forEach(s=>{
+      s.style.display=(v==='all'||s.dataset.sec===v)?'block':'none'
+    })
+  })
+})
+</script>
+</body>
+</html>
