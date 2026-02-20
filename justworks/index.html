@@ -454,20 +454,12 @@
     padding: 4px 0;
   }
 
-  .folder-file .ff-icon {
-    width: 18px;
-    height: 18px;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.55rem;
+  .folder-file .ff-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
     flex-shrink: 0;
-    font-weight: 700;
-    text-transform: uppercase;
   }
-
-  .ff-html { background: rgba(78, 140, 255, 0.15); color: var(--accent-blue); }
 
   .folder-file span { flex: 1; }
   .folder-file .ff-type { font-size: 0.6rem; font-weight: 600; color: var(--text-muted); opacity: 0.6; }
@@ -757,10 +749,10 @@
             </div>
           </div>
           <div class="folder-contents">
-            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>The Decision Chain</span><span class="ff-type">Interactive</span></div>
-            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>Prioritization Logic</span><span class="ff-type">Interactive</span></div>
-            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>ICE Problem Scoring</span><span class="ff-type">Interactive</span></div>
-            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>Success Metrics</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><span class="ff-dot" style="background:var(--accent-purple)"></span><span>The Decision Chain</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><span class="ff-dot" style="background:var(--accent-purple)"></span><span>Prioritization Logic</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><span class="ff-dot" style="background:var(--accent-purple)"></span><span>ICE Problem Scoring</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><span class="ff-dot" style="background:var(--accent-purple)"></span><span>Success Metrics</span><span class="ff-type">Interactive</span></div>
           </div>
         </div>
 
@@ -774,10 +766,10 @@
             </div>
           </div>
           <div class="folder-contents">
-            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>Feature Showcase</span><span class="ff-type">Interactive</span></div>
-            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>Data Model (ER Diagram)</span><span class="ff-type">Interactive</span></div>
-            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>Data Requirements Matrix</span><span class="ff-type">Interactive</span></div>
-            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>Data Performance Strategy</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><span class="ff-dot" style="background:var(--accent-green)"></span><span>Feature Showcase</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><span class="ff-dot" style="background:var(--accent-green)"></span><span>Data Model (ER Diagram)</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><span class="ff-dot" style="background:var(--accent-green)"></span><span>Data Requirements Matrix</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><span class="ff-dot" style="background:var(--accent-green)"></span><span>Data Performance Strategy</span><span class="ff-type">Interactive</span></div>
           </div>
         </div>
 
@@ -791,9 +783,9 @@
             </div>
           </div>
           <div class="folder-contents">
-            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>Phased Roadmap</span><span class="ff-type">Interactive</span></div>
-            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>Engineering Resources</span><span class="ff-type">Interactive</span></div>
-            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>Scope & Future Vision</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><span class="ff-dot" style="background:var(--accent-blue)"></span><span>Phased Roadmap</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><span class="ff-dot" style="background:var(--accent-blue)"></span><span>Engineering Resources</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><span class="ff-dot" style="background:var(--accent-blue)"></span><span>Scope & Future Vision</span><span class="ff-type">Interactive</span></div>
           </div>
         </div>
 
@@ -812,25 +804,24 @@
             </div>
           </div>
           <div class="folder-contents">
-            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>Workshop Board (45 min)</span><span class="ff-type">Interactive</span></div>
-            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>Open Questions</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><span class="ff-dot" style="background:var(--accent-amber)"></span><span>Workshop Board (45 min)</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><span class="ff-dot" style="background:var(--accent-amber)"></span><span>Open Questions</span><span class="ff-type">Interactive</span></div>
           </div>
         </div>
 
         <!-- Reference -->
         <div class="folder-card" onclick="openFolder('reference')">
           <div class="folder-card-header">
-            <div class="folder-icon muted">📁<span class="folder-count">4</span></div>
+            <div class="folder-icon muted">📁<span class="folder-count">3</span></div>
             <div class="folder-card-title">
               <h3>Reference</h3>
               <div class="folder-why">Supporting materials — not the main show, but there if you want the full depth.</div>
             </div>
           </div>
           <div class="folder-contents">
-            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>Presentation Outline</span><span class="ff-type">Interactive</span></div>
-            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>Workshop + Q&A Plan</span><span class="ff-type">Interactive</span></div>
-            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>Submission Checklist</span><span class="ff-type">Interactive</span></div>
-            <div class="folder-file"><span class="ff-icon ff-html">H</span><span>Prototype Test Guide</span><span class="ff-type">Document</span></div>
+            <div class="folder-file"><span class="ff-dot" style="background:var(--text-muted)"></span><span>Presentation Outline</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><span class="ff-dot" style="background:var(--text-muted)"></span><span>Workshop + Q&A Plan</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><span class="ff-dot" style="background:var(--text-muted)"></span><span>Submission Checklist</span><span class="ff-type">Interactive</span></div>
           </div>
         </div>
 
