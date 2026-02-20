@@ -284,13 +284,14 @@
     background: var(--bg-surface);
     border: 1px solid var(--border);
     border-radius: 14px;
-    cursor: pointer;
+    cursor: default;
     transition: all 0.2s;
     position: relative;
     overflow: hidden;
     text-decoration: none;
     color: inherit;
   }
+  a.hero-file { cursor: pointer; }
 
   .hero-file::before {
     content: '';
@@ -351,6 +352,24 @@
 
   .hero-file.pptx .hero-file-badge { background: rgba(234, 88, 12, 0.15); color: #fb923c; }
   .hero-file.proto .hero-file-badge { background: rgba(52, 211, 153, 0.15); color: var(--accent-green); }
+
+  .hero-file-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .hero-file-actions a {
+    padding: 7px 16px;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    white-space: nowrap;
+    text-decoration: none;
+    transition: opacity 0.15s;
+  }
+  .hero-file-actions a:hover { opacity: 0.85; }
+  .hero-file.pptx .hero-file-actions a { background: rgba(234, 88, 12, 0.15); color: #fb923c; }
+  .hero-file.pptx .hero-file-actions a.download-btn { background: rgba(234, 88, 12, 0.08); color: #fb923c; border: 1px solid rgba(234, 88, 12, 0.25); }
 
   /* ── Folder grid ── */
   .folder-grid {
@@ -458,7 +477,7 @@
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    flex-shrink: 0;
+    flex: 0 0 6px;
   }
 
   .folder-file span { flex: 1; }
@@ -715,15 +734,18 @@
       <!-- Hero files -->
       <div class="section-label">Start here</div>
       <div class="hero-files">
-        <a class="hero-file pptx" href="customer-central-presentation.pptx" download>
+        <div class="hero-file pptx">
           <div class="hero-file-icon">📊</div>
           <div class="hero-file-info">
             <div class="file-label">Presentation</div>
             <h3>Customer Central Presentation</h3>
             <p>12 slides &middot; Problem &rarr; Solution &rarr; Architecture &rarr; Roadmap</p>
           </div>
-          <div class="hero-file-badge">Download PPTX</div>
-        </a>
+          <div class="hero-file-actions">
+            <a href="https://docs.google.com/gview?url=https://meetdarrien.com/justworks/customer-central-presentation.pptx" target="_blank">View</a>
+            <a class="download-btn" href="customer-central-presentation.pptx" download>Download</a>
+          </div>
+        </div>
         <a class="hero-file proto" href="customer-central.html" target="_blank">
           <div class="hero-file-icon">🖥️</div>
           <div class="hero-file-info">
@@ -742,17 +764,16 @@
         <!-- How I Thought About It -->
         <div class="folder-card" onclick="openFolder('thinking')">
           <div class="folder-card-header">
-            <div class="folder-icon purple">📁<span class="folder-count">4</span></div>
+            <div class="folder-icon purple">📁<span class="folder-count">3</span></div>
             <div class="folder-card-title">
               <h3>How I Thought About It</h3>
               <div class="folder-why">The reasoning layer — shows the "why" behind every decision in the proposal.</div>
             </div>
           </div>
           <div class="folder-contents">
-            <div class="folder-file"><span class="ff-dot" style="background:var(--accent-purple)"></span><span>The Decision Chain</span><span class="ff-type">Interactive</span></div>
-            <div class="folder-file"><span class="ff-dot" style="background:var(--accent-purple)"></span><span>Prioritization Logic</span><span class="ff-type">Interactive</span></div>
-            <div class="folder-file"><span class="ff-dot" style="background:var(--accent-purple)"></span><span>ICE Problem Scoring</span><span class="ff-type">Interactive</span></div>
-            <div class="folder-file"><span class="ff-dot" style="background:var(--accent-purple)"></span><span>Success Metrics</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><div class="ff-dot" style="background:var(--accent-purple)"></div><span>The Decision Chain</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><div class="ff-dot" style="background:var(--accent-purple)"></div><span>Prioritization Logic</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><div class="ff-dot" style="background:var(--accent-purple)"></div><span>Success Metrics</span><span class="ff-type">Interactive</span></div>
           </div>
         </div>
 
@@ -766,10 +787,10 @@
             </div>
           </div>
           <div class="folder-contents">
-            <div class="folder-file"><span class="ff-dot" style="background:var(--accent-green)"></span><span>Feature Showcase</span><span class="ff-type">Interactive</span></div>
-            <div class="folder-file"><span class="ff-dot" style="background:var(--accent-green)"></span><span>Data Model (ER Diagram)</span><span class="ff-type">Interactive</span></div>
-            <div class="folder-file"><span class="ff-dot" style="background:var(--accent-green)"></span><span>Data Requirements Matrix</span><span class="ff-type">Interactive</span></div>
-            <div class="folder-file"><span class="ff-dot" style="background:var(--accent-green)"></span><span>Data Performance Strategy</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><div class="ff-dot" style="background:var(--accent-green)"></div><span>Feature Showcase</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><div class="ff-dot" style="background:var(--accent-green)"></div><span>Data Model (ER Diagram)</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><div class="ff-dot" style="background:var(--accent-green)"></div><span>Data Requirements Matrix</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><div class="ff-dot" style="background:var(--accent-green)"></div><span>Data Performance Strategy</span><span class="ff-type">Interactive</span></div>
           </div>
         </div>
 
@@ -783,9 +804,9 @@
             </div>
           </div>
           <div class="folder-contents">
-            <div class="folder-file"><span class="ff-dot" style="background:var(--accent-blue)"></span><span>Phased Roadmap</span><span class="ff-type">Interactive</span></div>
-            <div class="folder-file"><span class="ff-dot" style="background:var(--accent-blue)"></span><span>Engineering Resources</span><span class="ff-type">Interactive</span></div>
-            <div class="folder-file"><span class="ff-dot" style="background:var(--accent-blue)"></span><span>Scope & Future Vision</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><div class="ff-dot" style="background:var(--accent-blue)"></div><span>Phased Roadmap</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><div class="ff-dot" style="background:var(--accent-blue)"></div><span>Engineering Resources</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><div class="ff-dot" style="background:var(--accent-blue)"></div><span>Scope & Future Vision</span><span class="ff-type">Interactive</span></div>
           </div>
         </div>
 
@@ -804,13 +825,13 @@
             </div>
           </div>
           <div class="folder-contents">
-            <div class="folder-file"><span class="ff-dot" style="background:var(--accent-amber)"></span><span>Workshop Board (45 min)</span><span class="ff-type">Interactive</span></div>
-            <div class="folder-file"><span class="ff-dot" style="background:var(--accent-amber)"></span><span>Open Questions</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><div class="ff-dot" style="background:var(--accent-amber)"></div><span>Workshop Board (45 min)</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><div class="ff-dot" style="background:var(--accent-amber)"></div><span>Open Questions</span><span class="ff-type">Interactive</span></div>
           </div>
         </div>
 
-        <!-- Reference -->
-        <div class="folder-card" onclick="openFolder('reference')">
+        <!-- Reference (only visible with admin password) -->
+        <div class="folder-card admin-only" id="ref-folder" onclick="openFolder('reference')" style="display:none;">
           <div class="folder-card-header">
             <div class="folder-icon muted">📁<span class="folder-count">3</span></div>
             <div class="folder-card-title">
@@ -819,16 +840,16 @@
             </div>
           </div>
           <div class="folder-contents">
-            <div class="folder-file"><span class="ff-dot" style="background:var(--text-muted)"></span><span>Presentation Outline</span><span class="ff-type">Interactive</span></div>
-            <div class="folder-file"><span class="ff-dot" style="background:var(--text-muted)"></span><span>Workshop + Q&A Plan</span><span class="ff-type">Interactive</span></div>
-            <div class="folder-file"><span class="ff-dot" style="background:var(--text-muted)"></span><span>Submission Checklist</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><div class="ff-dot" style="background:var(--text-muted)"></div><span>Presentation Outline</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><div class="ff-dot" style="background:var(--text-muted)"></div><span>Workshop + Q&A Plan</span><span class="ff-type">Interactive</span></div>
+            <div class="folder-file"><div class="ff-dot" style="background:var(--text-muted)"></div><span>Submission Checklist</span><span class="ff-type">Interactive</span></div>
           </div>
         </div>
 
       </div>
 
       <div class="desktop-footer">
-        <p>Prepared by Darrien Watson &middot; <a href="/">meetdarrien.com</a></p>
+        <p>Prepared by Darrien Watson for Justworks</p>
       </div>
 
     </div>
@@ -877,11 +898,6 @@
       <a class="finder-row" href="justworks-prioritization.html" target="_blank">
         <div class="finder-row-icon" style="background:rgba(78,140,255,0.15)">🎯</div>
         <div class="finder-row-info"><h4>Prioritization Logic</h4><p>Dependency chain proving why Phase 1 must come before Phase 2</p></div>
-        <span class="finder-row-badge badge-interactive">Interactive</span>
-      </a>
-      <a class="finder-row" href="justworks-prioritization.html" target="_blank">
-        <div class="finder-row-icon" style="background:rgba(248,113,113,0.15)">📊</div>
-        <div class="finder-row-info"><h4>ICE Problem Scoring</h4><p>20 CSO problems scored by Impact, Confidence, and Ease</p></div>
         <span class="finder-row-badge badge-interactive">Interactive</span>
       </a>
       <a class="finder-row" href="success-metrics.html" target="_blank">
@@ -1000,7 +1016,8 @@
 
 <script>
   // ── Password gate ──
-  const HASH = '80107215236f645b8f39dac1653b79a7f70c0129ca571594dbf85a2e06739dca';
+  const HASH_STANDARD = '80107215236f645b8f39dac1653b79a7f70c0129ca571594dbf85a2e06739dca';
+  const HASH_ADMIN = '10ebc6a77ba980649d3ad8f01674a589c3e3feae814ee0542ac08a24ffc2873a';
   const SESSION_KEY = 'jw_access';
 
   async function sha256(message) {
@@ -1010,23 +1027,34 @@
     return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
   }
 
-  function unlock() {
-    document.getElementById('gate').classList.add('unlocked');
-    document.getElementById('content').classList.add('visible');
-    sessionStorage.setItem(SESSION_KEY, '1');
+  function showAdminContent() {
+    document.querySelectorAll('.admin-only').forEach(el => el.style.display = '');
   }
 
-  if (sessionStorage.getItem(SESSION_KEY) === '1') {
-    unlock();
+  function unlock(isAdmin) {
+    document.getElementById('gate').classList.add('unlocked');
+    document.getElementById('content').classList.add('visible');
+    sessionStorage.setItem(SESSION_KEY, isAdmin ? 'admin' : '1');
+    if (isAdmin) showAdminContent();
+  }
+
+  const stored = sessionStorage.getItem(SESSION_KEY);
+  if (stored === 'admin') {
+    unlock(true);
+  } else if (stored === '1') {
+    unlock(false);
   }
 
   document.getElementById('gate-form').addEventListener('submit', async function() {
     const input = document.getElementById('gate-password');
     const errorEl = document.getElementById('gate-error');
     const hash = await sha256(input.value);
-    if (hash === HASH) {
+    if (hash === HASH_ADMIN) {
       errorEl.textContent = '';
-      unlock();
+      unlock(true);
+    } else if (hash === HASH_STANDARD) {
+      errorEl.textContent = '';
+      unlock(false);
     } else {
       input.classList.add('error');
       errorEl.textContent = 'Incorrect password. Please try again.';

@@ -548,10 +548,10 @@ body {
       The conventional approach for internal tool MVPs is 6-8 weeks with a team of 5-6. That's too slow. <strong>Two weeks to get working software in front of real CSO agents. Three more weeks to polish, test, and roll out.</strong> Total: 5 weeks from kickoff to full deployment.
     </p>
     <p>
-      This isn't wishful thinking — it's a reflection of how modern product teams ship when they have clear requirements and use AI-assisted development. The frontend is a React dashboard with known data contracts. With AI coding tools, an experienced frontend engineer builds that in 4-5 days, not 4-5 weeks. The backend is an API aggregation layer over existing systems — the data already exists, we're assembling it, not creating it.
+      This isn't wishful thinking — it's a reflection of how modern product teams ship when they have clear requirements and use AI-assisted development. And it works because we're splitting work by <strong>component, not by layer</strong>. Each engineer owns their feature vertical end-to-end — database queries, API endpoints, and UI — so there are no handoffs between a "backend person" and a "frontend person." One engineer builds search and it works. The other builds panels and they work. They integrate at the data layer, not at an API contract boundary.
     </p>
     <p>
-      <strong>The trap is over-resourcing.</strong> More engineers doesn't mean faster at this scale — it means more coordination overhead. Justworks engineers are full-stack — they work across the entire stack within their product area, not in frontend/backend silos. Two full-stack software engineers with different focus areas (API layer vs. UI), plus a Data Services engineer for the Salesforce pipeline, can work in true parallel. And because they're full-stack, they can flex across the boundary during iteration weeks when speed matters more than specialization. Keep the team small, the scope tight, and the feedback loops fast.
+      <strong>The trap is over-resourcing.</strong> More engineers doesn't mean faster at this scale — it means more coordination overhead. Justworks engineers are full-stack — they work across the entire stack within their product area, not in frontend/backend silos. Two full-stack engineers each owning a distinct feature vertical, plus a Data Services engineer for the Salesforce pipeline, can work in true parallel with minimal coordination. Keep the team small, the scope tight, and the feedback loops fast.
     </p>
   </div>
 
@@ -559,16 +559,16 @@ body {
   <div class="section">
     <div class="section-label">01</div>
     <div class="section-title">Team Composition</div>
-    <p class="section-desc">Five dedicated people plus one shared resource. Justworks engineers are full-stack — they own their product area across the entire stack. We're not hiring backend and frontend specialists; we're assigning two software engineers with different focus areas for this project, plus a Data Services engineer for the Salesforce pipeline. Clear domains, no ambiguous ownership.</p>
+    <p class="section-desc">Five dedicated people plus one shared resource. Justworks engineers are full-stack — they own their product area across the entire stack. We split work by component, not by layer: each engineer owns a feature vertical end-to-end (API + DB + UI), plus a Data Services engineer for the Salesforce pipeline. Clear domains, no handoff waste.</p>
 
     <div class="team-grid">
 
-      <!-- Software Engineer — API & Data Layer -->
+      <!-- Software Engineer — Search & Identity -->
       <div class="team-card" onclick="toggleCard(this)">
         <div class="tc-header">
           <div class="tc-icon" style="background: var(--blue-bg); border: 1px solid var(--blue-bdr);">⚙</div>
           <div class="tc-info">
-            <div class="tc-role">Software Engineer — API & Data Layer Focus</div>
+            <div class="tc-role">Software Engineer — Search & Identity</div>
             <div class="tc-person">Full-stack · Dedicated · Full-time</div>
           </div>
           <div class="tc-badges">
@@ -578,46 +578,46 @@ body {
           <span class="tc-chevron">▼</span>
         </div>
         <div class="tc-body">
-          <div class="tc-section-label">Owns</div>
-          <p>The Customer Context Service — the API layer that sits between the dashboard UI and all data sources. This is the single service the UI calls; it handles orchestration, caching, and data merging from Zendesk, the production DB, and the Salesforce integration pipeline. This is a full-stack engineer leaning into the API and data aggregation side of the project — consistent with how Justworks structures teams around product areas, not frontend/backend silos.</p>
+          <div class="tc-section-label">Owns (Full Vertical)</div>
+          <p>Everything the agent sees first: ⌘K search, company profile card, caller identity, and the status indicator strip. Owns these features end-to-end — the database queries, the API endpoints, the caching layer, AND the React UI components. This is the "front door" of Customer Central: search → who is this person → what's their status. One engineer, one vertical, zero handoffs.</p>
           <div class="tc-section-label">Week-by-Week</div>
           <ul>
-            <li><strong>Days 1-2:</strong> Data access spikes — validate API connectivity to Zendesk and production DB read replica. Confirm response shapes, auth, rate limits. This is the de-risking move.</li>
-            <li><strong>Days 3-5:</strong> Build the Customer Context Service skeleton with API contracts. The UI-focused engineer starts building against these contracts immediately.</li>
-            <li><strong>Week 2:</strong> Integrate real data sources. Zendesk integration (tickets, interactions), production DB queries (company profile, member data, billing status, payroll dates). Wire up caching layer.</li>
-            <li><strong>Weeks 3-5:</strong> Harden integrations, error handling, graceful degradation, performance optimization. Work with QA on data accuracy testing. Can flex into UI work as integrations stabilize.</li>
+            <li><strong>Days 1-2:</strong> Data access spikes — validate API connectivity to production DB (company profiles, member data, billing status) and Zendesk (for open ticket counts in the status strip). Confirm response shapes, auth, rate limits. Measure latency for each call — we need Tier 1 data in &lt;500ms.</li>
+            <li><strong>Days 3-5:</strong> Build the search endpoint and company profile API. Stand these up as runnable integration tests with measured response times — prove the data layer works before touching any UI.</li>
+            <li><strong>Week 2:</strong> Build the full search UI, company profile card, caller card, and status strip. Wire to live APIs. End of week: an agent can search for a company and see a complete, real-data profile in under 500ms.</li>
+            <li><strong>Weeks 3-5:</strong> Iterate based on alpha/beta feedback — search ranking, fuzzy matching, edge cases (new companies with no history, multiple contacts with same name). Performance tuning under concurrent load.</li>
           </ul>
-          <div class="tc-section-label">Why This Person Is Critical</div>
-          <p>Everything depends on the data flowing correctly. If the API layer is delayed, the UI can still be built against mock data — but nothing ships to real users until real data is connected. This is why this engineer starts on Day 1 with data access spikes, not architecture documents. As a full-stack engineer, they can also support the UI side during Weeks 3-5 as the data layer stabilizes — this flexibility is a feature of Justworks' engineering culture, not a workaround.</p>
+          <div class="tc-section-label">Why This Vertical Is Critical</div>
+          <p>Search is the entry point for every single interaction. If search is slow, nothing else matters. If the company profile is wrong, agent trust is destroyed on the first call. This engineer owns the highest-stakes, highest-frequency path in the product — and because they own it end-to-end (API through UI), they can optimize the full pipeline without waiting on anyone.</p>
         </div>
       </div>
 
-      <!-- Software Engineer — UI & Experience Focus -->
+      <!-- Software Engineer — Panels & History -->
       <div class="team-card" onclick="toggleCard(this)">
         <div class="tc-header">
           <div class="tc-icon" style="background: var(--green-bg); border: 1px solid var(--green-bdr);">◻</div>
           <div class="tc-info">
-            <div class="tc-role">Software Engineer — UI & Experience Focus</div>
+            <div class="tc-role">Software Engineer — Panels & History</div>
             <div class="tc-person">Full-stack · Dedicated · Full-time</div>
           </div>
           <div class="tc-badges">
-            <span class="tc-badge" style="background: var(--green-bg); border: 1px solid var(--green-bdr); color: var(--green);">4-5 DAYS BUILD</span>
-            <span class="tc-badge" style="background: var(--amber-bg); border: 1px solid var(--amber-bdr); color: var(--amber);">AFTER DESIGN</span>
+            <span class="tc-badge" style="background: var(--green-bg); border: 1px solid var(--green-bdr); color: var(--green);">MOST FEATURES</span>
+            <span class="tc-badge" style="background: var(--amber-bg); border: 1px solid var(--amber-bdr); color: var(--amber);">HEAVIEST DATA</span>
           </div>
           <span class="tc-chevron">▼</span>
         </div>
         <div class="tc-body">
-          <div class="tc-section-label">Owns</div>
-          <p>The React-based Customer Central dashboard UI. Search, company profile card, caller card, interaction timeline, open issues panel, recent activity feed, and all interactive elements (click-to-expand, tab navigation, auto-refresh). As a full-stack engineer with React/JavaScript strength, this person leads the UI but can also contribute to API contract design and integration testing — they're not siloed from the data layer.</p>
+          <div class="tc-section-label">Owns (Full Vertical)</div>
+          <p>Everything the agent digs into after identifying the caller: interaction timeline, recent activity feed, and all problem-specific panels — pay stubs, tax docs, benefits, invoices, payment cascade. Owns these end-to-end — the Zendesk integration, the production DB pass-through queries, the API endpoints, AND the React UI (timeline component, tabbed panels, deep links). This is where the data complexity lives: cross-system merges, 4-tier loading, and the heaviest payloads.</p>
           <div class="tc-section-label">Week-by-Week</div>
           <ul>
-            <li><strong>Week 1, Days 1-3:</strong> Works with designer to finalize component specs and interaction patterns. Collaborates with the API-focused engineer on API contracts. Sets up project scaffolding and component library.</li>
-            <li><strong>Week 1, Days 3-5 + Week 2:</strong> Builds the full dashboard UI against mock data + agreed API contracts. With AI-assisted development, this is 4-5 days of focused work, not weeks. The data shapes are known, the layout is defined, the interactions are standard (search, tabs, expand/collapse, auto-refresh).</li>
-            <li><strong>Week 2, end:</strong> Connects to real APIs as they come online. Integration testing.</li>
-            <li><strong>Weeks 3-5:</strong> Iteration based on alpha/beta feedback. Accessibility, responsive refinements, edge case handling, loading states, error states. Can also pick up API-side work as needed.</li>
+            <li><strong>Days 1-2:</strong> Data access spikes — validate Zendesk API for ticket retrieval and the production DB for payroll/billing data. Measure response times. The critical question: can we merge Zendesk tickets with Salesforce case data, and how fast?</li>
+            <li><strong>Days 3-5:</strong> Build the interaction timeline API and the first problem panel endpoint (pay stubs). Stand these up as integration tests — run the API calls, log response times, flag anything over 500ms. Scaffold the app shell and component library alongside Eng 1.</li>
+            <li><strong>Week 2:</strong> Build the timeline UI, activity feed, and tabbed problem panels. Wire to live APIs. Each panel follows the same pattern: API call → loading skeleton → render. End of week: an agent can see a full interaction history and click into any problem panel with real data.</li>
+            <li><strong>Weeks 3-5:</strong> Iterate based on alpha/beta feedback — data accuracy in the timeline merge, loading performance for heavy panels (pay stubs at ~20KB), graceful degradation when Zendesk is slow. Performance tuning on the Tier 2/3/4 loading sequence.</li>
           </ul>
-          <div class="tc-section-label">Why 4-5 Days Is Realistic</div>
-          <p>This is a React dashboard with well-defined data contracts, not a novel interaction paradigm. The components are: a search bar, card layouts, a timeline list, tabs, and data tables. An experienced engineer with AI coding tools builds this faster than traditional estimation assumes. The complexity isn't in the UI — it's in the data integrations behind it. And because both engineers are full-stack, they can swarm on whichever layer needs attention during alpha/beta iterations.</p>
+          <div class="tc-section-label">Why This Vertical Is the Heaviest</div>
+          <p>This engineer owns the most features (6 of 9 MVP features) and touches the most data sources. The interaction timeline alone merges Zendesk and Salesforce records, the pay stub panel queries the production DB in real-time, and the status indicators hit all 5 sources in parallel. But because one person owns the full vertical — API through UI — they can optimize the loading sequence holistically: pre-fetch what's likely needed, lazy-load what's not, and cancel abandoned requests when the agent switches tabs. No one else needs to be in the loop for those decisions.</p>
         </div>
       </div>
 
@@ -640,7 +640,7 @@ body {
           <p>Salesforce integration pipeline. Works with Caroline Crossland's Salesforce team to establish API queries (SOQL), handle data mapping between Salesforce objects (Accounts, Contacts, Cases, Opportunities, Activity History) and the Customer Context Service's normalized schema. Resolves the Zendesk-Salesforce join problem — identifying and validating the shared key between these systems.</p>
           <div class="tc-section-label">Week-by-Week</div>
           <ul>
-            <li><strong>Days 1-2:</strong> Paired spike with backend engineer and Caroline's team. Map Salesforce objects, confirm API access, identify the Zendesk-Salesforce shared key (email? external ID? custom field?). This is the single riskiest unknown in the project.</li>
+            <li><strong>Days 1-2:</strong> Paired spike with both engineers and Caroline's team. Map Salesforce objects, confirm API access, identify the Zendesk-Salesforce shared key (email? external ID? custom field?). This is the single riskiest unknown in the project.</li>
             <li><strong>Week 1-2:</strong> Build the Salesforce query layer. Establish the data pipeline that feeds account context, sales history, and opportunity data into the Customer Context Service. Handle data mapping and normalization.</li>
             <li><strong>Weeks 3-4:</strong> Data quality validation, sync monitoring, edge case handling (companies with multiple Salesforce accounts, migrated records, data inconsistencies between Salesforce and production DB).</li>
             <li><strong>Week 5:</strong> Available for production support and monitoring during full rollout.</li>
@@ -738,8 +738,8 @@ body {
 
     <!-- Team Size Justification -->
     <div class="callout callout-amber" style="margin-top: 24px;">
-      <h4>Why 2 Software Engineers + 1 Data Engineer, Not 5 Specialists</h4>
-      <p>Justworks engineers are full-stack — they work across the entire stack within their product area, not in frontend/backend silos. That's an advantage here. Two full-stack engineers with different focus areas (API layer vs. UI) can work in true parallel because their domains are distinct, but they can also flex across the boundary during alpha/beta when iteration speed matters more than specialization. The Data Engineer from Data Services brings Salesforce pipeline expertise that would take a general engineer weeks to ramp on. Adding a fourth or fifth engineer introduces coordination overhead — shared code reviews, merge conflicts, daily syncs — that slows everyone down. Small team, clear domains, full-stack flexibility.</p>
+      <h4>Why Component Ownership, Not Layer Ownership</h4>
+      <p>The traditional approach splits work by layer: one person builds APIs, another builds UI, and they coordinate via API contracts. That creates a handoff bottleneck — the frontend waits for the backend, API contracts change mid-sprint, integration bugs fall between two owners. Instead, we split by <strong>component vertical</strong>: Engineer 1 owns Search & Identity end-to-end (DB → API → UI), Engineer 2 owns Panels & History end-to-end. Each engineer can validate their API calls, measure latency, and build UI without waiting on anyone. The Data Engineer from Data Services brings Salesforce pipeline expertise that feeds both verticals. This mirrors how Justworks already works — full-stack engineers owning product areas, not layers.</p>
     </div>
   </div>
 
@@ -776,8 +776,8 @@ body {
 
     <!-- Legend -->
     <div class="legend">
-      <div class="legend-item"><div class="legend-dot" style="background: var(--blue);"></div> SWE — API</div>
-      <div class="legend-item"><div class="legend-dot" style="background: var(--green);"></div> SWE — UI</div>
+      <div class="legend-item"><div class="legend-dot" style="background: var(--blue);"></div> Eng 1 — Search & Identity</div>
+      <div class="legend-item"><div class="legend-dot" style="background: var(--green);"></div> Eng 2 — Panels & History</div>
       <div class="legend-item"><div class="legend-dot" style="background: var(--purple);"></div> Data Eng</div>
       <div class="legend-item"><div class="legend-dot" style="background: var(--cyan);"></div> Design</div>
       <div class="legend-item"><div class="legend-dot" style="background: var(--orange);"></div> PM</div>
@@ -801,12 +801,13 @@ body {
           <span class="wk-phase" style="color: var(--green);">de-risk</span>
         </div>
         <div class="week-content">
-          <div class="task-chip chip-be">Zendesk + prod DB access spikes<span class="who">SWE–API · Days 1-2</span></div>
+          <div class="task-chip chip-be">Spike: prod DB access — profiles, billing, status<span class="who">ENG 1 · Days 1-2</span></div>
+          <div class="task-chip chip-fe">Spike: Zendesk API — tickets, interactions, latency<span class="who">ENG 2 · Days 1-2</span></div>
           <div class="task-chip chip-de">Salesforce object mapping w/ Caroline<span class="who">DATA ENG · Days 1-2</span></div>
           <div class="task-chip chip-ds">Design sprint: info hierarchy + components<span class="who">DESIGNER · Days 1-3</span></div>
           <div class="task-chip chip-pm">CSO shadowing (2 days on the floor)<span class="who">PM · Days 1-2</span></div>
-          <div class="task-chip chip-be">Customer Context Service API contracts<span class="who">SWE–API · Days 3-5</span></div>
-          <div class="task-chip chip-fe">Project scaffold + component library<span class="who">SWE–UI · Days 3-5</span></div>
+          <div class="task-chip chip-be">Search endpoint + company profile API<span class="who">ENG 1 · Days 3-5</span></div>
+          <div class="task-chip chip-fe">Timeline API + app scaffold + component library<span class="who">ENG 2 · Days 3-5</span></div>
           <div class="task-chip chip-de">Salesforce query layer + shared key validation<span class="who">DATA ENG · Days 3-5</span></div>
           <div class="task-chip chip-pm">Stakeholder alignment w/ CSO leadership<span class="who">PM · Days 3-5</span></div>
         </div>
@@ -830,8 +831,8 @@ body {
           <span class="wk-phase" style="color: var(--green);">build</span>
         </div>
         <div class="week-content">
-          <div class="task-chip chip-fe">Full dashboard UI (mock data → real APIs)<span class="who">SWE–UI · 4-5 days</span></div>
-          <div class="task-chip chip-be">Zendesk + prod DB integrations live<span class="who">SWE–API · Full week</span></div>
+          <div class="task-chip chip-be">Search UI + profile card + status strip (end-to-end)<span class="who">ENG 1 · Full week</span></div>
+          <div class="task-chip chip-fe">Timeline UI + problem panels (end-to-end)<span class="who">ENG 2 · Full week</span></div>
           <div class="task-chip chip-de">Salesforce pipeline feeding Context Service<span class="who">DATA ENG · Full week</span></div>
           <div class="task-chip chip-qa">Data accuracy test plans written<span class="who">QA · Ramps in</span></div>
           <div class="task-chip chip-pm">Alpha user recruitment (5 CSO volunteers)<span class="who">PM · Parallel</span></div>
@@ -845,7 +846,7 @@ body {
         <div class="week-content">
           <div class="gate-box" style="width: 100%;">
             <h4><span style="color: var(--red);">⬥</span> Week 2 Gate: Is It Usable?</h4>
-            <p>Can an agent search for a company and see a complete profile with real data? Does the interaction timeline merge Zendesk and Salesforce records correctly? Does it load in under 3 seconds? If yes → alpha starts Monday. If data is incomplete but the UI works, alpha with partial data (clearly labeled) is still valuable.</p>
+            <p>Can an agent search for a company and see a complete profile with real data (Eng 1's vertical)? Does the interaction timeline merge Zendesk and Salesforce records correctly (Eng 2's vertical)? Does the full page load in under 3 seconds? If yes → alpha starts Monday. If one vertical is ready and the other isn't, alpha with partial features is still valuable.</p>
           </div>
         </div>
       </div>
@@ -864,8 +865,8 @@ body {
         <div class="week-content">
           <div class="task-chip chip-all">Alpha: 5 CSO agents using it on real calls<span class="who">ALL · Full week</span></div>
           <div class="task-chip chip-pm">Daily 15-min feedback sessions w/ alpha users<span class="who">PM · Every day</span></div>
-          <div class="task-chip chip-fe">Rapid iteration on UX feedback<span class="who">SWE–UI · Responsive</span></div>
-          <div class="task-chip chip-be">Fix data accuracy issues surfaced by agents<span class="who">SWE–API · Responsive</span></div>
+          <div class="task-chip chip-be">Fix search/profile issues surfaced by agents<span class="who">ENG 1 · Responsive</span></div>
+          <div class="task-chip chip-fe">Fix timeline/panel data accuracy issues<span class="who">ENG 2 · Responsive</span></div>
           <div class="task-chip chip-qa">Cross-reference testing: dashboard vs source<span class="who">QA · Full week</span></div>
           <div class="task-chip chip-ds">Observe agent usage, refine interactions<span class="who">DESIGNER · 3 days</span></div>
         </div>
@@ -891,8 +892,8 @@ body {
         <div class="week-content">
           <div class="task-chip chip-all">Beta: Full CSO team (20-30 agents)<span class="who">ALL · Full week</span></div>
           <div class="task-chip chip-pm">Structured feedback surveys + Hotjar recordings<span class="who">PM · Parallel</span></div>
-          <div class="task-chip chip-fe">Performance optimization under full load<span class="who">SWE–UI · Parallel</span></div>
-          <div class="task-chip chip-be">Scale testing, caching tuning<span class="who">SWE–API · Parallel</span></div>
+          <div class="task-chip chip-be">Search performance + caching under load<span class="who">ENG 1 · Parallel</span></div>
+          <div class="task-chip chip-fe">Panel loading optimization + Tier 2-4 tuning<span class="who">ENG 2 · Parallel</span></div>
           <div class="task-chip chip-qa">Full regression, edge case testing<span class="who">QA · Full week</span></div>
           <div class="task-chip chip-pm">Identify 2-3 power users as champions<span class="who">PM · End of week</span></div>
         </div>
@@ -913,7 +914,7 @@ body {
           <div class="task-chip chip-all">Full rollout to all CSO agents<span class="who">ALL · Monday</span></div>
           <div class="task-chip chip-pm">Live training sessions (demo + Q&A)<span class="who">PM + DESIGNER · Mon-Tue</span></div>
           <div class="task-chip chip-pm">Champions program kickoff (peer trainers)<span class="who">PM · Wednesday</span></div>
-          <div class="task-chip chip-be">Production monitoring, incident response<span class="who">BOTH SWEs + DATA ENG · All week</span></div>
+          <div class="task-chip chip-be">Production monitoring, incident response<span class="who">BOTH ENGINEERS + DATA ENG · All week</span></div>
           <div class="task-chip chip-pm">Weekly office hours established<span class="who">PM · Ongoing</span></div>
         </div>
       </div>
@@ -967,7 +968,7 @@ body {
     <div class="callout callout-red">
       <h4>Risk #1: Salesforce Integration Complexity</h4>
       <p><strong>What could go wrong:</strong> Salesforce org has custom objects, non-standard relationships, or API rate limits that make real-time querying infeasible. The Zendesk-Salesforce shared key doesn't exist or is unreliable.</p>
-      <p style="margin-top: 8px;"><strong>De-risk move:</strong> Day 1-2 paired spike with Data Engineer + Caroline's team. Don't write production code — just prove we can pull Account, Contact, and Case data via API and join it to a Zendesk ticket. If we can't, we know on Day 2 and can adjust scope (e.g., Salesforce data in Phase 2, MVP uses only Zendesk + prod DB).</p>
+      <p style="margin-top: 8px;"><strong>De-risk move:</strong> Day 1-2 paired spike with both engineers + Data Engineer + Caroline's team. Don't write production code — just prove we can pull Account, Contact, and Case data via API and join it to a Zendesk ticket. If we can't, we know on Day 2 and can adjust scope (e.g., Salesforce data in Phase 2, MVP uses only Zendesk + prod DB).</p>
     </div>
 
     <div class="callout callout-amber">
@@ -1006,18 +1007,18 @@ body {
       </thead>
       <tbody>
         <tr>
-          <td class="role-col">Software Engineer (API focus)</td>
+          <td class="role-col">Software Engineer (Search & Identity)</td>
           <td>Internal Tools team</td>
           <td>100% · 5 weeks</td>
-          <td style="color: var(--green);">Week 1-2 (integrations)</td>
-          <td>Data freshness, API performance, service reliability</td>
+          <td style="color: var(--green);">Week 1-2 (search + profile end-to-end)</td>
+          <td>Search &lt;200ms, profile accuracy, Tier 1 cache performance</td>
         </tr>
         <tr>
-          <td class="role-col">Software Engineer (UI focus)</td>
+          <td class="role-col">Software Engineer (Panels & History)</td>
           <td>Internal Tools team</td>
           <td>100% · 5 weeks</td>
-          <td style="color: var(--green);">Week 2 (build), Week 3 (iteration)</td>
-          <td>Load time &lt;3s, agent UX, accessibility</td>
+          <td style="color: var(--green);">Week 1-2 (timeline + panels end-to-end)</td>
+          <td>Data merge accuracy, Tier 2-4 loading, Zendesk latency</td>
         </tr>
         <tr>
           <td class="role-col">Data Engineer</td>
@@ -1055,7 +1056,7 @@ body {
         Total: 5 dedicated people + 1 shared QA for 5 weeks.
       </p>
       <p style="font-size: 14px; color: var(--text2); line-height: 1.7;">
-        That's roughly <strong style="color: var(--text);">22 person-weeks of effort</strong> — equivalent to about 5.5 person-months. For context, the traditional 6-8 week estimate with siloed backend/frontend teams would be 30-40 person-weeks with sequential handoffs. We're not cutting scope — we're leveraging Justworks' full-stack engineering culture to eliminate the handoff waste that inflates timelines. Both software engineers work in parallel with different focus areas but can flex across the stack. Design and data spikes happen simultaneously. Alpha starts the moment something is usable, not the moment everything is perfect.
+        That's roughly <strong style="color: var(--text);">22 person-weeks of effort</strong> — equivalent to about 5.5 person-months. For context, the traditional 6-8 week estimate with siloed backend/frontend teams would be 30-40 person-weeks with sequential handoffs. We're not cutting scope — we're leveraging Justworks' full-stack engineering culture to eliminate the handoff waste that inflates timelines. Both engineers work in parallel on distinct feature verticals — Search & Identity and Panels & History — each owning their component from database to UI. No API contract negotiations, no "I'm blocked waiting for the backend." Design and data spikes happen simultaneously. Alpha starts the moment something is usable, not the moment everything is perfect.
       </p>
       <p style="font-size: 14px; color: var(--text2); line-height: 1.7; margin-top: 12px;">
         <strong style="color: var(--green);">The question for the room:</strong> "Who from Data Services would be the right person for the Salesforce integration? And Caroline — can we get API access confirmed in the first two days so we de-risk the data pipeline before writing any production code?"

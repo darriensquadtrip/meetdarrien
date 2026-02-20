@@ -549,25 +549,25 @@ body {
         <div class="gr-cell"><div class="bar bar-ms">—</div></div>
       </div>
 
-      <!-- Backend -->
+      <!-- Eng 1: Search & Identity -->
       <div class="gantt-row">
-        <div class="gr-label"><span class="gr-role role-be">BE</span> Backend Engineer</div>
+        <div class="gr-label"><span class="gr-role role-be">E1</span> Search & Identity</div>
         <div class="gr-cell"><div class="bar bar-be">Spikes</div></div>
-        <div class="gr-cell"><div class="bar bar-be">API Core</div></div>
-        <div class="gr-cell"><div class="bar bar-be">Features</div></div>
-        <div class="gr-cell"><div class="bar bar-be">Features</div></div>
+        <div class="gr-cell"><div class="bar bar-be">End-to-End</div></div>
+        <div class="gr-cell"><div class="bar bar-be">Integrate</div></div>
+        <div class="gr-cell"><div class="bar bar-be">Alpha</div></div>
         <div class="gr-cell"><div class="bar bar-be">Fixes</div></div>
         <div class="gr-cell"><div class="bar bar-be">Scale</div></div>
         <div class="gr-cell"><div class="bar bar-be">Support</div></div>
       </div>
 
-      <!-- Frontend -->
+      <!-- Eng 2: Panels & History -->
       <div class="gantt-row">
-        <div class="gr-label"><span class="gr-role role-fe">FE</span> Frontend Engineer</div>
-        <div class="gr-cell"><div class="bar bar-ms">Setup</div></div>
-        <div class="gr-cell"><div class="bar bar-fe">Shell + Search</div></div>
-        <div class="gr-cell"><div class="bar bar-fe">Panels</div></div>
-        <div class="gr-cell"><div class="bar bar-fe">Panels</div></div>
+        <div class="gr-label"><span class="gr-role role-fe">E2</span> Panels & History</div>
+        <div class="gr-cell"><div class="bar bar-fe">Spikes</div></div>
+        <div class="gr-cell"><div class="bar bar-fe">End-to-End</div></div>
+        <div class="gr-cell"><div class="bar bar-fe">Integrate</div></div>
+        <div class="gr-cell"><div class="bar bar-fe">Alpha</div></div>
         <div class="gr-cell"><div class="bar bar-fe">Polish</div></div>
         <div class="gr-cell"><div class="bar bar-fe">Fixes</div></div>
         <div class="gr-cell"><div class="bar bar-fe">Support</div></div>
@@ -655,12 +655,12 @@ body {
     <div class="wc-body">
       <div class="role-work">
         <div class="rw-box">
-          <div class="rw-role r-be">Backend Engineer</div>
-          <p><strong>4 validation spikes:</strong> (1) Salesforce API access — confirm objects, rate limits, auth. (2) Zendesk API — ticket retrieval, join key to Salesforce. (3) Production DB read replica — payroll/billing data accessibility. (4) Event stream maturity — login events, feature usage. Each spike produces a go/no-go for the corresponding MVP feature.</p>
+          <div class="rw-role r-be">Eng 1 — Search & Identity</div>
+          <p><strong>Data access spikes for search vertical:</strong> (1) Production DB read replica — company profiles, member data, billing status. (2) Validate search query performance against 500K contacts. Build search endpoint + company profile API as runnable integration tests. <strong>Measure response times</strong> — Tier 1 must be &lt;500ms. Prove the data layer works before touching UI.</p>
         </div>
         <div class="rw-box">
-          <div class="rw-role r-fe">Frontend Engineer</div>
-          <p>Project scaffolding — React app setup, routing, component library selection. Build <strong>against mock data</strong> from Day 1 so the frontend doesn't wait on backend integrations. Set up the dev environment and CI pipeline.</p>
+          <div class="rw-role r-fe">Eng 2 — Panels & History</div>
+          <p><strong>Data access spikes for panel vertical:</strong> (1) Zendesk API — ticket retrieval, join key to Salesforce. (2) Production DB — payroll/billing data pass-through. (3) Event stream maturity. Build timeline API as integration test, measure Zendesk latency. Scaffold app shell + component library in parallel.</p>
         </div>
         <div class="rw-box">
           <div class="rw-role r-de">Data Engineer</div>
@@ -691,12 +691,12 @@ body {
     <div class="wc-body">
       <div class="role-work">
         <div class="rw-box">
-          <div class="rw-role r-be">Backend Engineer</div>
-          <p><strong>Build the Customer Context API.</strong> Search endpoint (by name, email, phone — &lt;2s response). Company profile endpoint. Contact detail endpoint. API-first design — RESTful, versioned, documented. This service becomes the backbone for every downstream feature.</p>
+          <div class="rw-role r-be">Eng 1 — Search & Identity (End-to-End)</div>
+          <p><strong>Build the full search vertical:</strong> ⌘K search endpoint + UI (type-ahead, result cards), company profile card (API + component), caller identity card, status indicator strip. Wire to live production DB data. End of week: an agent can search and see a real, complete profile in &lt;500ms.</p>
         </div>
         <div class="rw-box">
-          <div class="rw-role r-fe">Frontend Engineer</div>
-          <p><strong>Build ⌘K search and the app shell.</strong> Search input with type-ahead, result cards showing company + person + plan. Navigation framework (tabs for problem-specific panels). Company profile card and caller card components. Wire to API as endpoints become available.</p>
+          <div class="rw-role r-fe">Eng 2 — Panels & History (End-to-End)</div>
+          <p><strong>Build the full panels vertical:</strong> Interaction timeline (API + UI — merged Zendesk + Salesforce), recent activity feed, tabbed problem panels (pay stubs, tax docs, benefits, invoices, payment cascade). Each panel follows the same pattern: API call → skeleton → render. Wire to live Zendesk + prod DB data.</p>
         </div>
         <div class="rw-box">
           <div class="rw-role r-de">Data Engineer</div>
@@ -727,12 +727,12 @@ body {
     <div class="wc-body">
       <div class="role-work">
         <div class="rw-box">
-          <div class="rw-role r-be">Backend Engineer</div>
-          <p><strong>Week 3:</strong> Interaction history API (merged Zendesk + Salesforce timeline), account status/billing endpoint, recent activity event feed. <strong>Week 4:</strong> Pay stub data endpoint, tax document listing, payment cascade logic, invoice/billing detail. Auto-refresh via WebSocket or polling.</p>
+          <div class="rw-role r-be">Eng 1 — Search & Identity</div>
+          <p><strong>Week 3:</strong> Integrate Salesforce data into company profiles (from DE pipeline). Fuzzy search tuning, edge cases (companies with 500+ employees, new accounts with zero history). <strong>Week 4:</strong> Alpha feedback fixes — search ranking, profile accuracy, status strip caching under concurrent load. Performance optimization.</p>
         </div>
         <div class="rw-box">
-          <div class="rw-role r-fe">Frontend Engineer</div>
-          <p><strong>Week 3:</strong> Interaction timeline component, status strip with RAG indicators, recent activity feed. <strong>Week 4:</strong> Tabbed problem panels — Pay Stubs (with delta highlighting), Tax Docs, Benefits quick-view, Invoices, Payment Cascade. Deep link handlers for Payroll Engine and Benefits portal.</p>
+          <div class="rw-role r-fe">Eng 2 — Panels & History</div>
+          <p><strong>Week 3:</strong> Polish timeline merge logic (Zendesk + Salesforce deduplication). Deep link handlers for Payroll Engine and Benefits portal. Auto-refresh via polling. <strong>Week 4:</strong> Alpha feedback fixes — data accuracy in panels, loading performance for heavy payloads (pay stubs at ~20KB), graceful degradation when sources are slow.</p>
         </div>
         <div class="rw-box">
           <div class="rw-role r-de">Data Engineer</div>
@@ -767,8 +767,8 @@ body {
           <p><strong>5 volunteer agents</strong> use Customer Central alongside their existing tools for one full week. Not replacing — supplementing. Daily 15-minute feedback standup: What worked? What was wrong? What was missing? PM sits with at least 2 agents during live calls to observe. Capture every "I had to switch to Zendesk because..." moment — those are Phase 1 gaps or bugs.</p>
         </div>
         <div class="rw-box">
-          <div class="rw-role r-be">Backend · <span style="color:var(--g)">FE</span> · <span style="color:var(--r)">QA</span></div>
-          <p><strong>Hot-fix mode.</strong> Data accuracy issues get fixed same-day. Performance issues get priority. UX friction gets logged and triaged. The goal: by end of week, alpha agents are choosing Customer Central over their current workflow for at least <strong>50% of interactions</strong>.</p>
+          <div class="rw-role r-be">Both Engineers · <span style="color:var(--r)">QA</span></div>
+          <p><strong>Hot-fix mode.</strong> Each engineer fixes issues in their vertical — Eng 1 handles search/profile bugs, Eng 2 handles timeline/panel bugs. Data accuracy issues get fixed same-day. Performance issues get priority. The goal: by end of week, alpha agents are choosing Customer Central over their current workflow for at least <strong>50% of interactions</strong>.</p>
         </div>
         <div class="rw-box">
           <div class="rw-role r-ds">Designer</div>
@@ -799,8 +799,8 @@ body {
           <p>One full pod (20-30 agents) uses Customer Central as their <strong>primary tool</strong> for all interactions. Structured feedback via survey (mid-week + end-of-week). Hotjar session recordings for UX pattern analysis. Measure: AHT comparison (beta agents vs. non-beta agents), search-to-context time, feature usage heatmap. <strong>Identify 2-3 Champions</strong> — power users who naturally adopt and can train others.</p>
         </div>
         <div class="rw-box">
-          <div class="rw-role r-be">Backend · <span style="color:var(--g)">FE</span></div>
-          <p><strong>Performance at scale.</strong> 20-30 concurrent users — does the API layer hold? Caching strategy validated under real load. Fix any degradation. Data freshness under concurrent sessions — auto-refresh every 5 minutes without conflicts.</p>
+          <div class="rw-role r-be">Both Engineers</div>
+          <p><strong>Performance at scale.</strong> 20-30 concurrent users — does each vertical hold? Eng 1 validates search + profile caching under load. Eng 2 validates timeline + panel loading under load. Data freshness under concurrent sessions — auto-refresh every 5 minutes without conflicts.</p>
         </div>
       </div>
       <div class="stage-gate">
@@ -916,8 +916,8 @@ body {
     <div style="background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:1.1rem 1.2rem;">
       <div style="font-family:'Overpass Mono',monospace;font-size:0.55rem;letter-spacing:2px;text-transform:uppercase;color:var(--t3);margin-bottom:0.5rem;">Core Team (Full-Time)</div>
       <div style="font-size:0.82rem;color:var(--t1);line-height:1.7;font-weight:300;">
-        <strong style="color:var(--t0)">1</strong> Backend Engineer<br>
-        <strong style="color:var(--t0)">1</strong> Frontend Engineer<br>
+        <strong style="color:var(--t0)">1</strong> SWE — Search & Identity<br>
+        <strong style="color:var(--t0)">1</strong> SWE — Panels & History<br>
         <strong style="color:var(--t0)">1</strong> Data Engineer <span style="font-size:0.7rem;color:var(--a);">(Data Services)</span><br>
         <strong style="color:var(--t0)">1</strong> PM <span style="font-size:0.7rem;color:var(--t3);">(you)</span>
       </div>
