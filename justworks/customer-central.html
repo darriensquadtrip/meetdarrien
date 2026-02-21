@@ -248,7 +248,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg0);color:var(--t1);heig
   <div class="logo"><span class="logo-dot"></span>CUSTOMER CENTRAL</div>
   <div class="search-wrap">
     <span class="search-ico">⌕</span>
-    <input class="search-in" id="searchIn" type="text" placeholder="Search by company, name, email, or phone... (⌘K)" autocomplete="off">
+    <input class="search-in" id="searchIn" type="text" placeholder="Search by company, name, email, or phone... (⌘K)" autocomplete="off" value="Sarah Chen · Acme Corp">
     <div class="search-dd" id="searchDD">
       <div class="sr" onclick="loadCustomer()">
         <div class="av" style="background:var(--gb);color:var(--g)">SC</div>
@@ -280,7 +280,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg0);color:var(--t1);heig
   <div class="si" onclick="showModal('newTicket')"><span class="ic">＋</span>New Ticket</div>
   <div class="si" onclick="showModal('logInt')"><span class="ic">✎</span>Log Interaction</div>
   <div class="si" onclick="toast('📋 Escalation form copied')"><span class="ic">↗</span>Escalate</div>
-  <div id="sideAcct">
+  <div id="sideAcct" style="display:block">
     <div class="sl">Account</div>
     <div class="si" onclick="showTab('overview')"><span class="ic">◈</span>Overview</div>
     <div class="si" onclick="showTab('history')"><span class="ic">◷</span>History<span class="ct">10</span></div>
@@ -292,14 +292,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg0);color:var(--t1);heig
 
 <!-- MAIN -->
 <main class="main">
-<div class="empty" id="emptyState">
+<div class="empty" id="emptyState" style="display:none">
   <div class="ei">⌕</div>
   <h2>Search for a customer to get started</h2>
   <p>Type a company name, person name, email, or phone number above.</p>
   <div class="ek">⌘K to focus search</div>
 </div>
 
-<div class="dash" id="dash">
+<div class="dash vis" id="dash">
 <!-- FS-3: STATUS STRIP -->
 <div class="strip">
   <div class="strip-i" onclick="showTab('billing')">
