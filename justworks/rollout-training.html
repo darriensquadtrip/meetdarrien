@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rollout & Training Plan — Customer Central</title>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Overpass+Mono:wght@400;500;600;700&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0b0d11;
+  --s1: #11141b;
+  --s2: #171b25;
+  --s3: #1d222f;
+  --bd: #2a3148;
+  --bd2: #3d4a68;
+  --t0: #eef0f6;
+  --t1: #c4c9da;
+  --t2: #8790a8;
+  --t3: #8b8fa8;
+  --t4: #8b8fa8;
+  --acc: #d4943c;
+  --acc2: #e8a838;
+  --g: #3dd68c;
+  --gbg: rgba(61,214,140,.12);
+  --gbd: rgba(61,214,140,.18);
+  --r: #ef6b6b;
+  --rbg: rgba(239,107,107,.12);
+  --rbd: rgba(239,107,107,.18);
+  --b: #5b9cf5;
+  --bbg: rgba(91,156,245,.12);
+  --bbd: rgba(91,156,245,.18);
+  --a: #e8b84a;
+  --abg: rgba(232,184,74,.12);
+  --abd: rgba(232,184,74,.18);
+  --p: #9b82f0;
+  --pbg: rgba(155,130,240,.12);
+  --pbd: rgba(155,130,240,.18);
+  --cy: #2cc5d6;
+  --cybg: rgba(44,197,214,.12);
+  --cybd: rgba(44,197,214,.18);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  color: var(--t1);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+.page { max-width: 960px; margin: 0 auto; padding: 3.5rem 2rem 6rem; }
+
+/* Header */
+.hdr { margin-bottom: 2rem; }
+.hdr-label {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--acc); margin-bottom: 0.75rem;
+}
+.hdr h1 {
+  font-family: 'Newsreader', serif;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 400; color: var(--t0); line-height: 1.25; margin-bottom: 0.6rem;
+}
+.hdr h1 em { font-style: italic; color: var(--acc2); font-weight: 300; }
+.hdr-sub {
+  font-size: 0.92rem; color: var(--t2); font-weight: 300;
+  max-width: 700px; line-height: 1.7;
+}
+
+/* Summary stats */
+.summary-stats {
+  display: flex; gap: 12px; flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+}
+.ss-pill {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.72rem; letter-spacing: 1px;
+  padding: 6px 14px; border-radius: 6px;
+  white-space: nowrap;
+}
+.ss-pill.ss-cy { background: var(--cybg); border: 1px solid var(--cybd); color: var(--cy); }
+.ss-pill.ss-g { background: var(--gbg); border: 1px solid var(--gbd); color: var(--g); }
+.ss-pill.ss-b { background: var(--bbg); border: 1px solid var(--bbd); color: var(--b); }
+.ss-pill.ss-p { background: var(--pbg); border: 1px solid var(--pbd); color: var(--p); }
+
+/* Section headers */
+.sec-hdr {
+  display: flex; align-items: center; gap: 12px;
+  margin: 2.5rem 0 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--bd);
+}
+.sec-title {
+  font-family: 'Newsreader', serif;
+  font-size: 1.35rem; font-weight: 400; color: var(--t0);
+}
+.sec-num {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 2px;
+  color: var(--t3); text-transform: uppercase; white-space: nowrap;
+}
+
+/* Callout */
+.callout {
+  background: linear-gradient(135deg, rgba(212,148,60,.08) 0%, rgba(212,148,60,.04) 100%);
+  border: 1px solid rgba(212,148,60,.18);
+  border-left: 3px solid var(--acc);
+  border-radius: 8px;
+  padding: 1.1rem 1.3rem;
+  margin: 1.25rem 0;
+}
+.callout p {
+  font-family: 'Newsreader', serif;
+  font-size: 0.95rem; color: var(--t1);
+  line-height: 1.75; font-weight: 300; font-style: italic;
+}
+.callout p strong { font-weight: 500; font-style: normal; color: var(--t0); }
+
+/* Prose */
+.prose {
+  font-size: 0.88rem; color: var(--t1);
+  line-height: 1.75; font-weight: 300;
+  max-width: 760px;
+}
+.prose strong { font-weight: 500; color: var(--t0); }
+
+/* Cards (collapsible) */
+.card {
+  background: var(--s1);
+  border: 1px solid var(--bd);
+  border-radius: 10px;
+  margin-bottom: 0.85rem;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.card:hover { border-color: var(--bd2); }
+.card.open .card-body { display: block; }
+.card.open .card-toggle { transform: rotate(180deg); }
+
+.card-head {
+  display: flex; align-items: center; gap: 12px;
+  padding: 1rem 1.3rem;
+  cursor: pointer; user-select: none;
+}
+.card-tag {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 1.5px;
+  padding: 4px 10px; border-radius: 5px;
+  white-space: nowrap; flex-shrink: 0;
+  text-transform: uppercase;
+}
+.tag-alpha { background: var(--cybg); border: 1px solid var(--cybd); color: var(--cy); }
+.tag-beta { background: var(--bbg); border: 1px solid var(--bbd); color: var(--b); }
+.tag-launch { background: var(--pbg); border: 1px solid var(--pbd); color: var(--p); }
+.tag-pre { background: rgba(212,148,60,.1); border: 1px solid rgba(212,148,60,.2); color: var(--acc); }
+.tag-gate { background: rgba(212,148,60,.1); border: 1px solid rgba(212,148,60,.2); color: var(--acc); }
+.tag-layer { background: var(--gbg); border: 1px solid var(--gbd); color: var(--g); }
+.tag-risk { background: var(--rbg); border: 1px solid var(--rbd); color: var(--r); }
+.tag-comm { background: var(--abg); border: 1px solid var(--abd); color: var(--a); }
+
+.card-main { flex: 1; min-width: 0; }
+.card-title { font-size: 0.95rem; font-weight: 500; color: var(--t0); margin-bottom: 0.15rem; }
+.card-sub { font-size: 0.78rem; color: var(--t2); font-weight: 300; }
+.card-toggle {
+  color: var(--t3); font-size: 0.75rem;
+  transition: transform 0.25s; flex-shrink: 0;
+}
+
+.card-body {
+  display: none;
+  padding: 0 1.3rem 1.3rem;
+  border-top: 1px solid var(--bd);
+  padding-top: 1.1rem;
+}
+
+/* Inner boxes */
+.inner-grid {
+  display: grid; grid-template-columns: 1fr;
+  gap: 0.7rem; margin-bottom: 0.75rem;
+}
+@media (min-width: 640px) {
+  .inner-grid { grid-template-columns: 1fr 1fr; }
+  .inner-grid .ig-full { grid-column: 1 / -1; }
+}
+.inner-box {
+  background: var(--s2);
+  border: 1px solid var(--bd);
+  border-radius: 7px;
+  padding: 0.8rem 1rem;
+}
+.ib-label {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 2px;
+  text-transform: uppercase; margin-bottom: 0.35rem;
+}
+.ib-label.l-cy { color: var(--cy); }
+.ib-label.l-g { color: var(--g); }
+.ib-label.l-b { color: var(--b); }
+.ib-label.l-p { color: var(--p); }
+.ib-label.l-a { color: var(--a); }
+.ib-label.l-r { color: var(--r); }
+.ib-label.l-acc { color: var(--acc); }
+
+.inner-box p {
+  font-size: 0.8rem; color: var(--t1);
+  line-height: 1.6; font-weight: 300;
+}
+.inner-box p strong { font-weight: 500; color: var(--t0); }
+
+/* Criteria list */
+.criteria-list {
+  list-style: none; padding: 0; margin: 0.5rem 0 0;
+}
+.criteria-list li {
+  font-size: 0.8rem; color: var(--t1);
+  line-height: 1.6; font-weight: 300;
+  padding: 3px 0 3px 20px;
+  position: relative;
+}
+.criteria-list li::before {
+  content: '✓';
+  position: absolute; left: 0;
+  color: var(--g); font-weight: 600;
+}
+.criteria-list li strong { font-weight: 500; color: var(--t0); }
+
+/* Fail criteria */
+.fail-box {
+  background: var(--rbg);
+  border: 1px solid var(--rbd);
+  border-radius: 6px;
+  padding: 0.6rem 0.9rem;
+  margin-top: 0.6rem;
+}
+.fail-box p {
+  font-size: 0.78rem; color: var(--r);
+  line-height: 1.5; font-weight: 400;
+}
+.fail-box p strong { font-weight: 600; color: var(--r); }
+
+/* Stage gate (inline) */
+.stage-gate {
+  background: linear-gradient(135deg, rgba(212,148,60,.12) 0%, rgba(212,148,60,.06) 100%);
+  border: 1px solid rgba(212,148,60,.2);
+  border-left: 3px solid var(--acc);
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  margin: 0.75rem 0 0;
+}
+.sg-label {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--acc);
+  margin-bottom: 0.4rem;
+}
+.stage-gate p {
+  font-size: 0.82rem; color: var(--t1);
+  line-height: 1.6; font-weight: 300;
+}
+.stage-gate p strong { font-weight: 500; color: var(--t0); }
+
+/* Timeline visual */
+.timeline-visual {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin: 1.25rem 0 1.5rem;
+}
+@media (max-width: 700px) {
+  .timeline-visual { grid-template-columns: 1fr; }
+}
+.tv-card {
+  border-radius: 10px;
+  padding: 1.25rem 1.3rem;
+  position: relative;
+  overflow: hidden;
+}
+.tv-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+}
+.tv-card.tv-alpha { background: var(--cybg); border: 1px solid var(--cybd); }
+.tv-card.tv-alpha::before { background: var(--cy); }
+.tv-card.tv-beta { background: var(--bbg); border: 1px solid var(--bbd); }
+.tv-card.tv-beta::before { background: var(--b); }
+.tv-card.tv-full { background: var(--pbg); border: 1px solid var(--pbd); }
+.tv-card.tv-full::before { background: var(--p); }
+
+.tv-label {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 2px;
+  text-transform: uppercase; margin-bottom: 0.5rem;
+}
+.tv-alpha .tv-label { color: var(--cy); }
+.tv-beta .tv-label { color: var(--b); }
+.tv-full .tv-label { color: var(--p); }
+
+.tv-title {
+  font-family: 'Newsreader', serif;
+  font-size: 1.1rem; font-weight: 400; color: var(--t0);
+  margin-bottom: 0.2rem;
+}
+.tv-num {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.72rem; color: var(--t3); letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+}
+.tv-desc {
+  font-size: 0.8rem; color: var(--t2); line-height: 1.6; font-weight: 300;
+}
+
+/* Communication timeline */
+.comm-list {
+  list-style: none; padding: 0; margin: 0;
+}
+.comm-item {
+  display: flex; gap: 14px;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--bd);
+  align-items: flex-start;
+}
+.comm-item:last-child { border-bottom: none; }
+.comm-when {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 1px;
+  color: var(--acc); white-space: nowrap;
+  min-width: 72px; padding-top: 2px;
+  flex-shrink: 0;
+}
+.comm-what {
+  font-size: 0.82rem; color: var(--t1);
+  line-height: 1.55; font-weight: 300;
+}
+.comm-what strong { font-weight: 500; color: var(--t0); }
+
+/* Adoption curve */
+.adopt-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.75rem 0;
+}
+.adopt-table th {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--t3);
+  text-align: left; padding: 8px 12px;
+  border-bottom: 1px solid var(--bd2);
+}
+.adopt-table td {
+  font-size: 0.82rem; color: var(--t1);
+  padding: 8px 12px; font-weight: 300;
+  border-bottom: 1px solid var(--bd);
+}
+.adopt-table td strong { font-weight: 500; color: var(--t0); }
+.adopt-table td:first-child {
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.75rem; color: var(--t2);
+  letter-spacing: 0.5px;
+}
+.adopt-pct {
+  font-family: 'Overpass Mono', monospace;
+  font-weight: 600;
+}
+.adopt-pct.pct-hi { color: var(--g); }
+.adopt-pct.pct-md { color: var(--b); }
+.adopt-pct.pct-lo { color: var(--cy); }
+
+/* Closing / Footer */
+.closing {
+  margin-top: 3rem; padding-top: 1.5rem;
+  border-top: 1px solid var(--bd);
+}
+.closing p {
+  font-family: 'Newsreader', serif;
+  font-size: 1rem; color: var(--t2); line-height: 1.8;
+  font-weight: 300; font-style: italic; max-width: 700px;
+}
+.closing p strong { font-weight: 500; font-style: normal; color: var(--t0); }
+.closing a { color: var(--b); text-decoration: none; }
+.closing a:hover { text-decoration: underline; }
+
+.footer {
+  margin-top: 3rem;
+  font-family: 'Overpass Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 1.5px;
+  color: var(--t4); text-align: center;
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="hdr-label">Customer Central MVP · Prompt Requirement #6</div>
+    <h1>Rollout <em>&</em> Training Plan</h1>
+    <p class="hdr-sub">
+      From 5 alpha agents to full CSO adoption in 3 weeks. A pull-based rollout that earns adoption through a clearly better tool — not a mandate.
+    </p>
+  </div>
+
+  <div class="summary-stats">
+    <span class="ss-pill ss-cy">3 Stages</span>
+    <span class="ss-pill ss-g">5 Gate Criteria</span>
+    <span class="ss-pill ss-b">3 Training Layers</span>
+    <span class="ss-pill ss-p">2–3 Champions</span>
+  </div>
+
+
+  <!-- ════════════════════ SECTION 1: PHILOSOPHY ════════════════════ -->
+  <div class="sec-hdr">
+    <span class="sec-num">Section 1</span>
+    <span class="sec-title">Rollout Philosophy</span>
+  </div>
+
+  <p class="prose">
+    <strong>Before we build, it must be clear that what we are building is much better than the current solution.</strong> If we've done our job right, we won't need to push adoption — we'll have eager testers who see the difference immediately. They adopt, they help us make tweaks, and then they train the others. The rollout isn't about convincing people to use something new. It's about proving the tool is so much better that agents <em>want</em> to switch — then getting out of their way.
+  </p>
+
+  <div class="callout">
+    <p><strong>The rollout strategy is pull, not push.</strong> Build something clearly better → find your first believers → let them refine it → let them spread it. Forced adoption kills internal tools. Earned adoption compounds.</p>
+  </div>
+
+
+  <!-- ════════════════════ SECTION 2: 3-STAGE ROLLOUT ════════════════════ -->
+  <div class="sec-hdr">
+    <span class="sec-num">Section 2</span>
+    <span class="sec-title">The 3-Stage Rollout</span>
+  </div>
+
+  <div class="timeline-visual">
+    <div class="tv-card tv-alpha">
+      <div class="tv-label">Alpha · Week 5</div>
+      <div class="tv-title">First Believers</div>
+      <div class="tv-num">5 hand-picked agents</div>
+      <div class="tv-desc">Agents who feel the pain most. If it's clearly better for them, they become our first believers. Alongside existing tools — supplementing, not replacing.</div>
+    </div>
+    <div class="tv-card tv-beta">
+      <div class="tv-label">Beta · Week 6</div>
+      <div class="tv-title">Pod Expansion</div>
+      <div class="tv-num">1 full pod (20–30 agents)</div>
+      <div class="tv-desc">Alpha believers help us refine. Structured surveys, AHT comparison, feature heatmap. Champion identification — the agents who naturally lean in hardest.</div>
+    </div>
+    <div class="tv-card tv-full">
+      <div class="tv-label">Full Rollout · Week 7</div>
+      <div class="tv-title">All CSO Agents</div>
+      <div class="tv-num">Full team supported launch</div>
+      <div class="tv-desc">Champions (the early believers) train the rest. 3-layer training support. Old tools stay accessible for 30 days — no agent is ever without a working tool.</div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════ SECTION 3: STAGE GATES ════════════════════ -->
+  <div class="sec-hdr">
+    <span class="sec-num">Section 3</span>
+    <span class="sec-title">Stage Gates</span>
+  </div>
+
+  <!-- Pre-Alpha Gate -->
+  <div class="card" onclick="tog(this)">
+    <div class="card-head">
+      <span class="card-tag tag-pre">Pre-Alpha</span>
+      <div class="card-main">
+        <div class="card-title">Gate → Start Alpha</div>
+        <div class="card-sub">Must be true before any agent touches the tool</div>
+      </div>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <ul class="criteria-list">
+        <li><strong>Core problem framing validated</strong> — agents context-switch across 4+ systems (confirmed via shadowing)</li>
+        <li><strong>Top 3 call drivers confirmed</strong> — Zendesk ticket tag distribution pulled for 90 days</li>
+        <li><strong>Salesforce schema documented</strong> — enough to build data access spikes</li>
+        <li><strong>CSO leadership bought in</strong> — Renee/Director level aware and supportive of alpha plan</li>
+      </ul>
+      <div class="stage-gate">
+        <div class="sg-label">Gate Logic</div>
+        <p>All four criteria must be met. This gate exists to prevent building the wrong thing. If shadowing reveals a different problem than expected, the product scope changes before code is written.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alpha → Beta Gate -->
+  <div class="card" onclick="tog(this)">
+    <div class="card-head">
+      <span class="card-tag tag-gate">Alpha → Beta</span>
+      <div class="card-main">
+        <div class="card-title">Gate → Expand to Pod</div>
+        <div class="card-sub">5 agents have used the tool for 1 full week</div>
+      </div>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <ul class="criteria-list">
+        <li><strong>Data accuracy ≥ 95%</strong> — agents trust what they see (validated against source systems)</li>
+        <li><strong>Core flow works without crashing</strong> — search → profile → history → problem panel</li>
+        <li><strong>≥ 3 of 5 agents prefer it</strong> over current tools for majority of interactions</li>
+        <li><strong>No critical data gaps</strong> — nothing missing that would erode trust at scale</li>
+      </ul>
+      <div class="fail-box">
+        <p><strong>If gate fails:</strong> +1 week to fix critical issues. PM diagnoses root cause (data accuracy? performance? UX?) and engineers hot-fix. Re-evaluate at end of extension week.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Beta → Full Gate -->
+  <div class="card" onclick="tog(this)">
+    <div class="card-head">
+      <span class="card-tag tag-gate">Beta → Full</span>
+      <div class="card-main">
+        <div class="card-title">Gate → Full Rollout</div>
+        <div class="card-sub">20-30 agents have used the tool as their primary tool for 1 week</div>
+      </div>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <ul class="criteria-list">
+        <li><strong>Agent satisfaction ≥ 3.5/5.0</strong> on structured beta survey</li>
+        <li><strong>≥ 70% of beta agents</strong> using Customer Central as primary tool by end of week</li>
+        <li><strong>No data accuracy regressions</strong> from alpha baseline</li>
+        <li><strong>Performance holds under concurrent load</strong> — 20-30 simultaneous users, no degradation</li>
+        <li><strong>Champions identified and willing</strong> — 2-3 power users ready to support rollout</li>
+      </ul>
+      <div class="fail-box">
+        <p><strong>If gate fails:</strong> Extend beta 1 week with targeted fixes. Champions continue collecting feedback. If satisfaction is below 3.0, escalate to leadership with honest assessment and revised timeline.</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════ SECTION 4: TRAINING PLAN ════════════════════ -->
+  <div class="sec-hdr">
+    <span class="sec-num">Section 4</span>
+    <span class="sec-title">Training Plan — 3 Layers</span>
+  </div>
+
+  <!-- Layer 1 -->
+  <div class="card" onclick="tog(this)">
+    <div class="card-head">
+      <span class="card-tag tag-layer">Layer 1</span>
+      <div class="card-main">
+        <div class="card-title">Live Demo Session</div>
+        <div class="card-sub">45 minutes, recorded — facilitator: PM + 1 Champion</div>
+      </div>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="inner-grid">
+        <div class="inner-box">
+          <div class="ib-label l-cy">Structure</div>
+          <p><strong>5 min</strong> — Context: why this exists, what problem it solves<br>
+          <strong>20 min</strong> — Live walkthrough with real data<br>
+          <strong>10 min</strong> — Q&A<br>
+          <strong>10 min</strong> — Hands-on: agents try it themselves</p>
+        </div>
+        <div class="inner-box">
+          <div class="ib-label l-g">Demo Flow</div>
+          <p><strong>Cmd+K Search</strong> → Company Profile → History Timeline → Pay Stub Viewer → Billing Risk Cascade. Each step shows the "before and after" — old workflow vs. Customer Central.</p>
+        </div>
+        <div class="inner-box ig-full">
+          <div class="ib-label l-b">Details</div>
+          <p><strong>"Before and after" comparison</strong> is the centerpiece — show the agent doing a common task the old way (4 tabs, 3 systems, 90 seconds), then the new way (1 search, 15 seconds). Recording available for async viewing. Sessions run in groups of 10-15 agents to keep Q&A productive.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Layer 2 -->
+  <div class="card" onclick="tog(this)">
+    <div class="card-head">
+      <span class="card-tag tag-layer">Layer 2</span>
+      <div class="card-main">
+        <div class="card-title">Self-Paced Sandbox</div>
+        <div class="card-sub">Test environment with sample data — risk-free exploration</div>
+      </div>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="inner-grid">
+        <div class="inner-box">
+          <div class="ib-label l-g">Environment</div>
+          <p>Test environment pre-loaded with <strong>sample data</strong> (Acme Corp, same data as prototype). No impact on real customer data. Agents can explore, break things, and build muscle memory without risk.</p>
+        </div>
+        <div class="inner-box">
+          <div class="ib-label l-b">Guided Tasks</div>
+          <p><strong>"Find Sarah Chen's last interaction"</strong><br>
+          <strong>"Check Marcus Johnson's pay stub"</strong><br>
+          <strong>"View Acme's billing status"</strong><br>
+          Each task maps to a core user story, building familiarity with the real workflow.</p>
+        </div>
+        <div class="inner-box ig-full">
+          <div class="ib-label l-p">Availability</div>
+          <p>Sandbox stays available for <strong>2 weeks post-training</strong>. Agents can return any time to practice. After 2 weeks, agents have enough real usage that the sandbox is no longer needed.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Layer 3 -->
+  <div class="card" onclick="tog(this)">
+    <div class="card-head">
+      <span class="card-tag tag-layer">Layer 3</span>
+      <div class="card-main">
+        <div class="card-title">Quick Reference Card</div>
+        <div class="card-sub">1-page PDF — printed and posted at each workstation</div>
+      </div>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="inner-grid">
+        <div class="inner-box">
+          <div class="ib-label l-cy">Keyboard Shortcuts</div>
+          <p><strong>Cmd+K</strong> — Open search<br>
+          <strong>Escape</strong> — Close panels/modals<br>
+          <strong>Tab</strong> — Navigate between sections<br>
+          <strong>Arrow keys</strong> — Navigate search results</p>
+        </div>
+        <div class="inner-box">
+          <div class="ib-label l-g">Panel Guide</div>
+          <p><strong>Overview</strong> — Company identity + status strip<br>
+          <strong>History</strong> — Merged interaction timeline<br>
+          <strong>Pay Stubs</strong> — Employee payroll records<br>
+          <strong>Billing</strong> — Invoice + payment cascade<br>
+          <strong>Tax Docs</strong> — W-2, 1099 status</p>
+        </div>
+        <div class="inner-box ig-full">
+          <div class="ib-label l-b">"Where to Find X" Guide</div>
+          <p>Common lookup scenarios mapped to UI location: <strong>"Client's last call?"</strong> → History tab, filter by type. <strong>"Is payroll running?"</strong> → Overview status strip. <strong>"Why was an invoice late?"</strong> → Billing tab, payment cascade. <strong>"Employee's benefits status?"</strong> → Benefits tab, coverage summary.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════ SECTION 5: CHAMPIONS ════════════════════ -->
+  <div class="sec-hdr">
+    <span class="sec-num">Section 5</span>
+    <span class="sec-title">Champions Program</span>
+  </div>
+
+  <p class="prose" style="margin-bottom:1rem;">
+    <strong>Champions aren't assigned — they self-select.</strong> If the tool is clearly better, some agents will naturally lean in harder, give more feedback, and start showing teammates. Those are your champions. You don't recruit them. You recognize them.
+  </p>
+
+  <div class="inner-grid">
+    <div class="inner-box">
+      <div class="ib-label l-cy">Selection</div>
+      <p><strong>2-3 power users</strong> identified during beta — highest adoption rate, most feedback submitted, most enthusiasm in standup sessions. They emerge organically. PM confirms willingness and formalizes the role.</p>
+    </div>
+    <div class="inner-box">
+      <div class="ib-label l-g">Role</div>
+      <p><strong>Peer trainers</strong> and first-line support. They train the rest because they believe in the tool. They sit with new users during first live calls. They collect feedback directly and escalate to PM.</p>
+    </div>
+    <div class="inner-box">
+      <div class="ib-label l-b">Support</div>
+      <p><strong>Dedicated Slack channel</strong> for real-time questions. Champions are the first responders — if they can't answer, PM steps in. Available during all shift hours for the first 4 weeks post-launch.</p>
+    </div>
+    <div class="inner-box">
+      <div class="ib-label l-p">Recognition</div>
+      <p><strong>Acknowledged by CSO leadership</strong> — this is a growth opportunity, not volunteer labor. Champions are highlighted in team meetings. Role transitions to feature advocate after 4 weeks post-launch.</p>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════ SECTION 6: COMMUNICATION ════════════════════ -->
+  <div class="sec-hdr">
+    <span class="sec-num">Section 6</span>
+    <span class="sec-title">Communication Plan</span>
+  </div>
+
+  <div class="card open">
+    <div class="card-head" onclick="tog(this.parentElement)">
+      <span class="card-tag tag-comm">Timeline</span>
+      <div class="card-main">
+        <div class="card-title">Who Hears What, When</div>
+        <div class="card-sub">Building anticipation through transparency — no surprises</div>
+      </div>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <ul class="comm-list">
+        <li class="comm-item">
+          <span class="comm-when">Week 3</span>
+          <span class="comm-what"><strong>CSO leadership briefed</strong> on upcoming tool. Renee/Director level — set expectations for alpha timeline and what success looks like.</span>
+        </li>
+        <li class="comm-item">
+          <span class="comm-when">Week 4</span>
+          <span class="comm-what"><strong>Alpha agents personally invited</strong> by PM. 1-on-1 context setting — why they were chosen, what to expect, how their feedback shapes the tool.</span>
+        </li>
+        <li class="comm-item">
+          <span class="comm-when">Week 5</span>
+          <span class="comm-what"><strong>Alpha results shared</strong> with broader team. Build anticipation: "5 of your teammates tested a new tool — here's what they said." No hype, just honest results.</span>
+        </li>
+        <li class="comm-item">
+          <span class="comm-when">Week 6</span>
+          <span class="comm-what"><strong>Beta team announcement</strong> — "your pod is next." Team lead co-delivers the message. Agents know what's coming and why.</span>
+        </li>
+        <li class="comm-item">
+          <span class="comm-when">Week 7, Day 1</span>
+          <span class="comm-what"><strong>All-hands announcement + live demo.</strong> Champion co-presents with PM. Show real results from alpha and beta — real agent quotes, real time savings.</span>
+        </li>
+        <li class="comm-item">
+          <span class="comm-when">Week 7, Day 2–3</span>
+          <span class="comm-what"><strong>Small-group training sessions</strong> — 10-15 agents per session. Live demo + sandbox time. Champions available for questions.</span>
+        </li>
+        <li class="comm-item">
+          <span class="comm-when">Week 7, Day 5</span>
+          <span class="comm-what"><strong>Office hours</strong> — 30-minute drop-in for any remaining questions. PM + Champions available. Low-pressure, high-support.</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════ SECTION 7: ADOPTION METRICS ════════════════════ -->
+  <div class="sec-hdr">
+    <span class="sec-num">Section 7</span>
+    <span class="sec-title">Adoption Metrics & Monitoring</span>
+  </div>
+
+  <div class="inner-grid" style="margin-bottom:1.25rem;">
+    <div class="inner-box ig-full">
+      <div class="ib-label l-b">Daily Dashboard</div>
+      <p>Active users, sessions per agent, features used, search queries. PM monitors daily during rollout weeks. This isn't surveillance — it's knowing where agents need help before they ask.</p>
+    </div>
+  </div>
+
+  <div class="card open">
+    <div class="card-head" onclick="tog(this.parentElement)">
+      <span class="card-tag tag-beta">Targets</span>
+      <div class="card-main">
+        <div class="card-title">Target Adoption Curve</div>
+        <div class="card-sub">Expected adoption % at each milestone — realistic, not aspirational</div>
+      </div>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <table class="adopt-table">
+        <thead>
+          <tr>
+            <th>Milestone</th>
+            <th>Target</th>
+            <th>What It Means</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Week 5 (Alpha)</td>
+            <td><span class="adopt-pct pct-hi">100%</span></td>
+            <td><strong>5/5 agents</strong> using alongside existing tools</td>
+          </tr>
+          <tr>
+            <td>Week 6 (Beta)</td>
+            <td><span class="adopt-pct pct-md">70%+</span></td>
+            <td><strong>20+/30 agents</strong> using as primary tool</td>
+          </tr>
+          <tr>
+            <td>Week 7 + 1</td>
+            <td><span class="adopt-pct pct-lo">60%</span></td>
+            <td>Majority of CSO agents onboarded and active</td>
+          </tr>
+          <tr>
+            <td>Week 7 + 2</td>
+            <td><span class="adopt-pct pct-md">80%</span></td>
+            <td>Late adopters coming on after seeing peer success</td>
+          </tr>
+          <tr>
+            <td>Month 2</td>
+            <td><span class="adopt-pct pct-hi">90%+</span></td>
+            <td>Sustained daily usage — Customer Central is the default</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="inner-grid" style="margin-top:1rem;">
+        <div class="inner-box">
+          <div class="ib-label l-acc">Intervention Trigger</div>
+          <p>If any agent hasn't logged in after <strong>3 days post-training</strong>, PM follows up personally. Not punitive — diagnostic. "What's blocking you? What do you need?"</p>
+        </div>
+        <div class="inner-box">
+          <div class="ib-label l-r">Anti-Metric</div>
+          <p>Don't optimize for login count alone. Track whether agents are actually <strong>faster (AHT)</strong> and <strong>resolving more (FCR)</strong>. A tool that gets opens but doesn't improve outcomes is a distraction, not a solution.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════ SECTION 8: RISK & ROLLBACK ════════════════════ -->
+  <div class="sec-hdr">
+    <span class="sec-num">Section 8</span>
+    <span class="sec-title">Risk Mitigation & Rollback</span>
+  </div>
+
+  <!-- Risk 1 -->
+  <div class="card" onclick="tog(this)">
+    <div class="card-head">
+      <span class="card-tag tag-risk">Risk 1</span>
+      <div class="card-main">
+        <div class="card-title">Agents don't trust the data</div>
+        <div class="card-sub">If the dashboard shows something different from Zendesk/Salesforce, agents stop using it</div>
+      </div>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="inner-grid">
+        <div class="inner-box">
+          <div class="ib-label l-g">Mitigation</div>
+          <p>Alpha tests with <strong>real production data</strong> — not test data. Data accuracy is an explicit gate criterion (≥ 95%). Daily validation during alpha: compare dashboard output to source systems for 10 random accounts.</p>
+        </div>
+        <div class="inner-box">
+          <div class="ib-label l-r">Rollback</div>
+          <p><strong>Fix data issues before proceeding.</strong> If accuracy is below 95% after alpha week, delay beta by 1 week. Data engineer prioritizes sync pipeline fixes. No agent is exposed to bad data at scale.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Risk 2 -->
+  <div class="card" onclick="tog(this)">
+    <div class="card-head">
+      <span class="card-tag tag-risk">Risk 2</span>
+      <div class="card-main">
+        <div class="card-title">Tool is slower than current workflow</div>
+        <div class="card-sub">If Customer Central adds time to calls, agents will revert</div>
+      </div>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="inner-grid">
+        <div class="inner-box">
+          <div class="ib-label l-g">Mitigation</div>
+          <p><strong>Performance testing in beta</strong> — AHT comparison between beta agents and non-beta agents. Search must return in &lt;2s, dashboard load in &lt;3s. Performance under 20-30 concurrent users validated before full rollout.</p>
+        </div>
+        <div class="inner-box">
+          <div class="ib-label l-r">Rollback</div>
+          <p><strong>Old tools stay accessible in parallel</strong> during rollout. If any agent finds the tool slower for a specific workflow, they use the old tool for that workflow while we fix it. No forced switching.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Risk 3 -->
+  <div class="card" onclick="tog(this)">
+    <div class="card-head">
+      <span class="card-tag tag-risk">Risk 3</span>
+      <div class="card-main">
+        <div class="card-title">Resistance to change</div>
+        <div class="card-sub">"I know my current tools" — familiarity bias is real</div>
+      </div>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="inner-grid">
+        <div class="inner-box">
+          <div class="ib-label l-g">Mitigation</div>
+          <p><strong>Champions as peer advocates.</strong> Hearing "this is better" from a teammate who does the same job is 10x more convincing than hearing it from PM. "Before and after" demo shows concrete time savings. No forced adoption initially — let the tool earn its place.</p>
+        </div>
+        <div class="inner-box">
+          <div class="ib-label l-r">Rollback</div>
+          <p><strong>Agents can use both tools</strong> during the 30-day transition period. Old tools remain fully accessible. If an agent prefers the old workflow for specific tasks, that's valid feedback — we improve the new tool, not mandate compliance.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Risk 4 -->
+  <div class="card" onclick="tog(this)">
+    <div class="card-head">
+      <span class="card-tag tag-risk">Risk 4</span>
+      <div class="card-main">
+        <div class="card-title">Leadership loses patience</div>
+        <div class="card-sub">Adoption curves take time — leadership needs context, not just numbers</div>
+      </div>
+      <span class="card-toggle">▼</span>
+    </div>
+    <div class="card-body">
+      <div class="inner-grid">
+        <div class="inner-box ig-full">
+          <div class="ib-label l-g">Mitigation</div>
+          <p><strong>Set expectations upfront.</strong> Share adoption curve targets with Renee before launch — "here's what 60% at Week 1 looks like, here's what 90% at Month 2 looks like." Weekly adoption reports to leadership with context, not just numbers. Include agent quotes, before/after comparisons, and concrete AHT improvements.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Full rollback -->
+  <div class="stage-gate" style="margin-top:1.25rem;">
+    <div class="sg-label">Full Rollback Procedure</div>
+    <p><strong>If satisfaction drops below 3.0/5.0 at any point post-launch</strong>, pause rollout, diagnose, and fix. Old tools remain accessible throughout. No agent is ever without a working tool. The worst outcome isn't slow adoption — it's breaking the tool agents already rely on.</p>
+  </div>
+
+
+  <!-- ════════════════════ SECTION 9: POST-LAUNCH ════════════════════ -->
+  <div class="sec-hdr">
+    <span class="sec-num">Section 9</span>
+    <span class="sec-title">Post-Launch Support</span>
+  </div>
+
+  <div class="inner-grid">
+    <div class="inner-box">
+      <div class="ib-label l-cy">Weeks 1–4</div>
+      <p><strong>Weekly office hours</strong> (30 min drop-in) for questions and feedback. PM monitors adoption dashboard daily — who's using it, who isn't, and why. Follow up personally with low-adoption agents.</p>
+    </div>
+    <div class="inner-box">
+      <div class="ib-label l-b">Month 2+</div>
+      <p><strong>Monthly check-ins.</strong> Feature request intake opens for Phase 2 prioritization. Begin measuring AHT and FCR impact with enough data for statistical significance.</p>
+    </div>
+    <div class="inner-box ig-full">
+      <div class="ib-label l-g">Ongoing</div>
+      <p><strong>Champions channel stays active.</strong> Quarterly satisfaction survey. Champions transition from support role to feature advocate — helping shape Phase 2 priorities based on daily usage patterns.</p>
+    </div>
+  </div>
+
+
+  <!-- CLOSING -->
+  <div class="closing">
+    <p>
+      <strong>The best rollout is one where agents are asking "when can I get it?" before launch day.</strong> Every decision in this plan — from hand-picking alpha agents to keeping old tools accessible — is designed to earn trust, not mandate compliance. If the tool is clearly better, adoption follows.
+    </p>
+    <p style="margin-top:1rem;">
+      See the <a href="phased-roadmap.html">Phased Roadmap</a> for the full 7-week build timeline and week-by-week engineering detail.
+    </p>
+  </div>
+
+  <div class="footer">
+    Rollout & Training Plan · Darrien Watson · February 2026
+  </div>
+
+</div>
+
+<script>
+function tog(el) { el.classList.toggle('open'); }
+</script>
+
+</body>
+</html>
