@@ -9,29 +9,29 @@
 :root {
   --bg:#090b10;--s1:#10131a;--s2:#161a24;--s3:#1c212e;--s4:#242a38;
   --bd:#262e40;--bd2:#3a4560;
-  --t0:#f0f2f8;--t1:#c8cede;--t2:#8b95ae;--t3:#5a6580;--t4:#3a4258;
+  --t0:#f0f2f8;--t1:#c8cede;--t2:#8b95ae;--t3:#8b8fa8;--t4:#6a7a94;
   --acc:#34d399;--acc2:#059669;
-  --g:#34d399;--gbg:rgba(52,211,153,.06);--gbd:rgba(52,211,153,.2);
-  --r:#f87171;--rbg:rgba(248,113,113,.06);--rbd:rgba(248,113,113,.2);
-  --b:#60a5fa;--bbg:rgba(96,165,250,.06);--bbd:rgba(96,165,250,.2);
-  --a:#fbbf24;--abg:rgba(251,191,36,.06);--abd:rgba(251,191,36,.2);
-  --p:#a78bfa;--pbg:rgba(167,139,250,.06);--pbd:rgba(167,139,250,.2);
+  --g:#34d399;--gbg:rgba(52,211,153,.12);--gbd:rgba(52,211,153,.2);
+  --r:#f87171;--rbg:rgba(248,113,113,.12);--rbd:rgba(248,113,113,.2);
+  --b:#60a5fa;--bbg:rgba(96,165,250,.12);--bbd:rgba(96,165,250,.2);
+  --a:#fbbf24;--abg:rgba(251,191,36,.12);--abd:rgba(251,191,36,.2);
+  --p:#a78bfa;--pbg:rgba(167,139,250,.12);--pbd:rgba(167,139,250,.2);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--t1);line-height:1.65}
 .main{max-width:880px;margin:0 auto;padding:3rem 1.5rem 5rem}
 .hdr{margin-bottom:2.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--bd)}
-.hdr-label{font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:600;color:var(--acc);text-transform:uppercase;letter-spacing:.15em;margin-bottom:.5rem}
+.hdr-label{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;color:var(--acc);text-transform:uppercase;letter-spacing:.15em;margin-bottom:.5rem}
 .hdr h1{font-family:'DM Serif Display',serif;font-size:clamp(1.6rem,4vw,2.2rem);color:var(--t0);margin-bottom:.75rem;line-height:1.2}
 .hdr h1 em{color:var(--acc);font-style:normal}
 .hdr-meta{display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:.75rem}
-.hdr-meta-item{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--t3)}
+.hdr-meta-item{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--t3)}
 .hdr-meta-item strong{color:var(--t2)}
-.sh{font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:600;color:var(--acc);text-transform:uppercase;letter-spacing:.12em;padding-bottom:.45rem;border-bottom:1px solid var(--bd);margin:2.5rem 0 1rem}
+.sh{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;color:var(--acc);text-transform:uppercase;letter-spacing:.12em;padding-bottom:.45rem;border-bottom:1px solid var(--bd);margin:2.5rem 0 1rem}
 .story{background:var(--s1);border:1px solid var(--bd);border-radius:8px;margin-bottom:1.25rem;overflow:hidden}
 .story-top{padding:1.15rem 1.25rem;cursor:pointer;display:flex;align-items:flex-start;gap:.75rem;transition:background .15s}
 .story-top:hover{background:var(--s2)}
-.story-id{font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:600;color:var(--acc);background:var(--gbg);border:1px solid var(--gbd);padding:.15rem .5rem;border-radius:3px;white-space:nowrap;flex-shrink:0;margin-top:.15rem}
+.story-id{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;color:var(--acc);background:var(--gbg);border:1px solid var(--gbd);padding:.15rem .5rem;border-radius:3px;white-space:nowrap;flex-shrink:0;margin-top:.15rem}
 .story-id.problem{color:var(--a);background:var(--abg);border-color:var(--abd)}
 .story-info{flex:1}
 .story-name{font-size:1rem;font-weight:700;color:var(--t0);margin-bottom:.25rem}
@@ -40,7 +40,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--t1)
 .story.open .story-arrow{transform:rotate(180deg)}
 .story-body{display:none;border-top:1px solid var(--bd);padding:1.15rem 1.25rem}
 .story.open .story-body{display:block}
-.body-sh{font-family:'JetBrains Mono',monospace;font-size:.58rem;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin:1.25rem 0 .5rem}
+.body-sh{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin:1.25rem 0 .5rem}
 .body-sh:first-child{margin-top:0}
 .step{font-size:.84rem;color:var(--t2);margin-bottom:.35rem;padding-left:1.25rem;position:relative}
 .step::before{content:attr(data-n);position:absolute;left:0;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;color:var(--acc)}
@@ -52,11 +52,11 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--t1)
 .note.design{border-left-color:var(--acc)}
 .tbl-wrap{overflow-x:auto;margin:.75rem 0}
 .tbl{width:100%;border-collapse:collapse;font-size:.78rem}
-.tbl th{font-family:'JetBrains Mono',monospace;font-size:.56rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);text-align:left;padding:.45rem .55rem;border-bottom:2px solid var(--bd);white-space:nowrap}
+.tbl th{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);text-align:left;padding:.45rem .55rem;border-bottom:2px solid var(--bd);white-space:nowrap}
 .tbl td{padding:.45rem .55rem;border-bottom:1px solid rgba(38,46,64,.5);color:var(--t2);vertical-align:top}
 .tbl tr:hover td{background:var(--s1)}
 .tbl td:first-child{color:var(--t1);font-weight:500}
-.status-pill{font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:600;padding:.1rem .4rem;border-radius:3px;white-space:nowrap}
+.status-pill{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;padding:.1rem .4rem;border-radius:3px;white-space:nowrap}
 .s-yes{color:var(--g);background:var(--gbg);border:1px solid var(--gbd)}
 .s-partial{color:var(--a);background:var(--abg);border:1px solid var(--abd)}
 .s-no{color:var(--r);background:var(--rbg);border:1px solid var(--rbd)}
@@ -68,7 +68,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--t1)
 .extras h4:first-of-type{margin-top:.5rem}
 .extras li{font-size:.82rem;color:var(--t2);margin-bottom:.3rem;margin-left:1rem}
 .extras li strong{color:var(--t1)}
-.footer{text-align:center;padding:2rem;color:var(--t4);font-size:.68rem;border-top:1px solid var(--bd);margin-top:3rem}
+.footer{text-align:center;padding:2rem;color:var(--t4);font-size:.7rem;border-top:1px solid var(--bd);margin-top:3rem}
 </style>
 </head>
 <body>

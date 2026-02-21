@@ -17,31 +17,31 @@
   --t0: #f0f2f8;
   --t1: #c8cee0;
   --t2: #8a93ae;
-  --t3: #5e6880;
+  --t3: #8b8fa8;
   --t4: #3f4862;
   --acc: #d4943c;
   --acc2: #ebb044;
   --g: #3dd68c;
-  --gbg: rgba(61,214,140,.05);
+  --gbg: rgba(61,214,140,.12);
   --gbd: rgba(61,214,140,.15);
   --gbd2: rgba(61,214,140,.25);
   --r: #ef6b6b;
-  --rbg: rgba(239,107,107,.05);
+  --rbg: rgba(239,107,107,.12);
   --rbd: rgba(239,107,107,.15);
   --b: #5b9cf5;
-  --bbg: rgba(91,156,245,.05);
+  --bbg: rgba(91,156,245,.12);
   --bbd: rgba(91,156,245,.15);
   --a: #e8b84a;
-  --abg: rgba(232,184,74,.05);
+  --abg: rgba(232,184,74,.12);
   --abd: rgba(232,184,74,.15);
   --p: #9b82f0;
-  --pbg: rgba(155,130,240,.05);
+  --pbg: rgba(155,130,240,.12);
   --pbd: rgba(155,130,240,.15);
   --cy: #2cc5d6;
-  --cybg: rgba(44,197,214,.05);
+  --cybg: rgba(44,197,214,.12);
   --cybd: rgba(44,197,214,.15);
   --w: #e8e0d4;
-  --wbg: rgba(232,224,212,.04);
+  --wbg: rgba(232,224,212,.12);
   --wbd: rgba(232,224,212,.12);
 }
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -51,7 +51,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--t1);line-h
 /* ─── HEADER ─── */
 .hdr{margin-bottom:3rem;position:relative;}
 .hdr::after{content:'';display:block;width:60px;height:2px;background:var(--acc);margin-top:1.5rem;}
-.hdr-label{font-family:'Overpass Mono',monospace;font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--acc);margin-bottom:.8rem;}
+.hdr-label{font-family:'Overpass Mono',monospace;font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--acc);margin-bottom:.8rem;}
 .hdr h1{font-family:'Newsreader',serif;font-size:clamp(2rem,4.5vw,2.8rem);font-weight:400;color:var(--t0);line-height:1.2;margin-bottom:.6rem;}
 .hdr h1 em{font-style:italic;color:var(--acc2);font-weight:300;}
 .hdr-sub{font-size:.95rem;color:var(--t2);font-weight:300;max-width:720px;line-height:1.75;}
@@ -59,7 +59,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--t1);line-h
 /* ─── NARRATIVE ARC ─── */
 .arc{background:var(--s1);border:1px solid var(--bd);border-radius:12px;padding:1.5rem 1.8rem;margin-bottom:3rem;position:relative;overflow:hidden;}
 .arc::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,var(--g),var(--b),var(--p),var(--a),var(--acc));}
-.arc-label{font-family:'Overpass Mono',monospace;font-size:.6rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--t3);margin-bottom:1rem;}
+.arc-label{font-family:'Overpass Mono',monospace;font-size:.7rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--t3);margin-bottom:1rem;}
 .arc-flow{display:flex;align-items:center;gap:0;flex-wrap:wrap;}
 .arc-step{display:flex;align-items:center;gap:0;}
 .arc-node{padding:6px 14px;border-radius:6px;font-size:.78rem;font-weight:500;white-space:nowrap;}
@@ -70,15 +70,15 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--t1);line-h
 .an4{background:var(--bbg);border:1px solid var(--bbd);color:var(--b);}
 .an5{background:var(--abg);border:1px solid var(--abd);color:var(--a);}
 .an6{background:var(--cybg);border:1px solid var(--cybd);color:var(--cy);}
-.an7{background:rgba(212,148,60,.08);border:1px solid rgba(212,148,60,.2);color:var(--acc);}
+.an7{background:rgba(212,148,60,.12);border:1px solid rgba(212,148,60,.2);color:var(--acc);}
 .arc-logic{margin-top:1rem;font-size:.82rem;color:var(--t2);line-height:1.7;font-weight:300;font-style:italic;font-family:'Newsreader',serif;}
 
 /* ─── SECTION ─── */
 .sec{margin-bottom:3rem;}
 .sec-hdr{display:flex;align-items:baseline;gap:14px;margin-bottom:1.5rem;padding-bottom:.8rem;border-bottom:1px solid var(--bd);}
-.sec-num{font-family:'Overpass Mono',monospace;font-size:.6rem;letter-spacing:2px;color:var(--t4);text-transform:uppercase;}
+.sec-num{font-family:'Overpass Mono',monospace;font-size:.7rem;letter-spacing:2px;color:var(--t4);text-transform:uppercase;}
 .sec-title{font-family:'Newsreader',serif;font-size:1.4rem;font-weight:400;color:var(--t0);}
-.sec-time{font-family:'Overpass Mono',monospace;font-size:.6rem;letter-spacing:1.5px;color:var(--t3);margin-left:auto;}
+.sec-time{font-family:'Overpass Mono',monospace;font-size:.7rem;letter-spacing:1.5px;color:var(--t3);margin-left:auto;}
 
 /* ─── BEAT CARDS ─── */
 .beat{background:var(--s1);border:1px solid var(--bd);border-radius:10px;margin-bottom:.9rem;overflow:hidden;transition:border-color .2s;}
@@ -86,7 +86,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--t1);line-h
 .beat.open .beat-body{display:block;}
 .beat.open .beat-tog{transform:rotate(180deg);}
 .beat-head{display:flex;align-items:flex-start;gap:14px;padding:1.1rem 1.4rem;cursor:pointer;user-select:none;}
-.beat-badge{font-family:'Overpass Mono',monospace;font-size:.58rem;letter-spacing:1.5px;padding:4px 10px;border-radius:5px;white-space:nowrap;flex-shrink:0;margin-top:2px;}
+.beat-badge{font-family:'Overpass Mono',monospace;font-size:.7rem;letter-spacing:1.5px;padding:4px 10px;border-radius:5px;white-space:nowrap;flex-shrink:0;margin-top:2px;}
 .bb-speak{background:var(--gbg);border:1px solid var(--gbd);color:var(--g);}
 .bb-show{background:var(--bbg);border:1px solid var(--bbd);color:var(--b);}
 .bb-trans{background:var(--pbg);border:1px solid var(--pbd);color:var(--p);}
@@ -103,7 +103,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--t1);line-h
 .dg{display:grid;grid-template-columns:1fr;gap:.7rem;}
 @media(min-width:640px){.dg{grid-template-columns:1fr 1fr;}.dg .full{grid-column:1/-1;}}
 .db{background:var(--s2);border:1px solid var(--bd);border-radius:8px;padding:.85rem 1.1rem;}
-.db-label{font-family:'Overpass Mono',monospace;font-size:.52rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:.4rem;}
+.db-label{font-family:'Overpass Mono',monospace;font-size:.7rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:.4rem;}
 .l-script{color:var(--g);}
 .l-show{color:var(--b);}
 .l-why{color:var(--p);}
@@ -134,7 +134,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--t1);line-h
 @media(max-width:700px){.panel-grid{grid-template-columns:1fr 1fr;}}
 .panel-box{border-radius:8px;padding:.7rem .85rem;text-align:center;}
 .panel-box .pb-name{font-size:.72rem;font-weight:500;color:var(--t0);margin-bottom:.2rem;}
-.panel-box .pb-hear{font-size:.68rem;color:var(--t2);line-height:1.45;font-weight:300;font-style:italic;}
+.panel-box .pb-hear{font-size:.7rem;color:var(--t2);line-height:1.45;font-weight:300;font-style:italic;}
 .pb-renee{background:var(--abg);border:1px solid var(--abd);}
 .pb-caroline{background:var(--pbg);border:1px solid var(--pbd);}
 .pb-annelise{background:var(--cybg);border:1px solid var(--cybd);}
@@ -146,7 +146,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--t1);line-h
 
 /* ─── FOOTER ─── */
 .footer{margin-top:3.5rem;padding-top:1.5rem;border-top:1px solid var(--bd);text-align:center;}
-.footer p{font-family:'Overpass Mono',monospace;font-size:.58rem;letter-spacing:2px;color:var(--t4);}
+.footer p{font-family:'Overpass Mono',monospace;font-size:.7rem;letter-spacing:2px;color:var(--t4);}
 </style>
 </head>
 <body>
@@ -188,7 +188,7 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--t1);line-h
 </div>
 
 <!-- Timing bar -->
-<div style="font-family:'Overpass Mono',monospace;font-size:.55rem;color:var(--t3);letter-spacing:1.5px;margin-bottom:.4rem;">TIMING BUDGET — 20 MINUTES</div>
+<div style="font-family:'Overpass Mono',monospace;font-size:.7rem;color:var(--t3);letter-spacing:1.5px;margin-bottom:.4rem;">TIMING BUDGET — 20 MINUTES</div>
 <div class="timing-bar">
   <div class="tb-seg" style="flex:3;background:var(--g);"></div>
   <div class="tb-seg" style="flex:3;background:var(--r);"></div>
@@ -199,13 +199,13 @@ body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--t1);line-h
   <div class="tb-seg" style="flex:2;background:var(--acc);"></div>
 </div>
 <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:2.5rem;">
-  <span style="font-family:'Overpass Mono',monospace;font-size:.52rem;color:var(--g);">■ §1 PAIN 3m</span>
-  <span style="font-family:'Overpass Mono',monospace;font-size:.52rem;color:var(--r);">■ §2 PROBLEMS 3m</span>
-  <span style="font-family:'Overpass Mono',monospace;font-size:.52rem;color:var(--p);">■ §3 LOGIC 4m</span>
-  <span style="font-family:'Overpass Mono',monospace;font-size:.52rem;color:var(--b);">■ §4 MVP 3m</span>
-  <span style="font-family:'Overpass Mono',monospace;font-size:.52rem;color:var(--a);">■ §5 DATA 3m</span>
-  <span style="font-family:'Overpass Mono',monospace;font-size:.52rem;color:var(--cy);">■ §6 PLAN 2m</span>
-  <span style="font-family:'Overpass Mono',monospace;font-size:.52rem;color:var(--acc);">■ §7 CLOSE 2m</span>
+  <span style="font-family:'Overpass Mono',monospace;font-size:.7rem;color:var(--g);">■ §1 PAIN 3m</span>
+  <span style="font-family:'Overpass Mono',monospace;font-size:.7rem;color:var(--r);">■ §2 PROBLEMS 3m</span>
+  <span style="font-family:'Overpass Mono',monospace;font-size:.7rem;color:var(--p);">■ §3 LOGIC 4m</span>
+  <span style="font-family:'Overpass Mono',monospace;font-size:.7rem;color:var(--b);">■ §4 MVP 3m</span>
+  <span style="font-family:'Overpass Mono',monospace;font-size:.7rem;color:var(--a);">■ §5 DATA 3m</span>
+  <span style="font-family:'Overpass Mono',monospace;font-size:.7rem;color:var(--cy);">■ §6 PLAN 2m</span>
+  <span style="font-family:'Overpass Mono',monospace;font-size:.7rem;color:var(--acc);">■ §7 CLOSE 2m</span>
 </div>
 
 

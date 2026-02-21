@@ -9,14 +9,14 @@
 :root {
   --bg:#090b10;--s1:#10131a;--s2:#161a24;--s3:#1c212e;--s4:#242a38;
   --bd:#262e40;--bd2:#3a4560;
-  --t0:#f0f2f8;--t1:#c8cede;--t2:#8b95ae;--t3:#5a6580;--t4:#3a4258;
+  --t0:#f0f2f8;--t1:#c8cede;--t2:#8b95ae;--t3:#8b8fa8;--t4:#6a7a94;
   --acc:#e8a838;--acc2:#a07020;
-  --g:#34d399;--gbg:rgba(52,211,153,.06);--gbd:rgba(52,211,153,.2);
-  --r:#f87171;--rbg:rgba(248,113,113,.06);--rbd:rgba(248,113,113,.2);
-  --b:#60a5fa;--bbg:rgba(96,165,250,.06);--bbd:rgba(96,165,250,.2);
-  --a:#fbbf24;--abg:rgba(251,191,36,.06);--abd:rgba(251,191,36,.2);
-  --p:#a78bfa;--pbg:rgba(167,139,250,.06);--pbd:rgba(167,139,250,.2);
-  --c:#22d3ee;--cbg:rgba(34,211,238,.06);--cbd:rgba(34,211,238,.2);
+  --g:#34d399;--gbg:rgba(52,211,153,.12);--gbd:rgba(52,211,153,.2);
+  --r:#f87171;--rbg:rgba(248,113,113,.12);--rbd:rgba(248,113,113,.2);
+  --b:#60a5fa;--bbg:rgba(96,165,250,.12);--bbd:rgba(96,165,250,.2);
+  --a:#fbbf24;--abg:rgba(251,191,36,.12);--abd:rgba(251,191,36,.2);
+  --p:#a78bfa;--pbg:rgba(167,139,250,.12);--pbd:rgba(167,139,250,.2);
+  --c:#22d3ee;--cbg:rgba(34,211,238,.12);--cbd:rgba(34,211,238,.2);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--t1);line-height:1.6}
@@ -27,20 +27,20 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--t1)
 
 .nav{position:sticky;top:0;z-index:100;background:rgba(9,11,16,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--bd);display:flex;gap:.2rem;padding:.4rem .8rem;overflow-x:auto;scrollbar-width:none}
 .nav::-webkit-scrollbar{display:none}
-.nav-btn{background:none;border:1px solid transparent;color:var(--t3);font-family:'JetBrains Mono',monospace;font-size:.6rem;padding:.3rem .55rem;border-radius:4px;cursor:pointer;white-space:nowrap;transition:all .2s}
+.nav-btn{background:none;border:1px solid transparent;color:var(--t3);font-family:'JetBrains Mono',monospace;font-size:.7rem;padding:.3rem .55rem;border-radius:4px;cursor:pointer;white-space:nowrap;transition:all .2s}
 .nav-btn:hover{color:var(--t2);border-color:var(--bd)}
 .nav-btn.active{color:var(--acc);background:rgba(232,168,56,.07);border-color:var(--acc2)}
 
 .main{max-width:1150px;margin:0 auto;padding:1.5rem 1rem 4rem}
 
 .sec{margin-bottom:2.5rem}
-.sec-head{font-family:'JetBrains Mono',monospace;font-size:.68rem;font-weight:600;color:var(--acc);text-transform:uppercase;letter-spacing:.12em;padding-bottom:.5rem;border-bottom:1px solid var(--bd);margin-bottom:1rem}
+.sec-head{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;color:var(--acc);text-transform:uppercase;letter-spacing:.12em;padding-bottom:.5rem;border-bottom:1px solid var(--bd);margin-bottom:1rem}
 
 /* Cards */
 .card{background:var(--s1);border:1px solid var(--bd);border-radius:8px;margin-bottom:.75rem;overflow:hidden}
 .card-h{display:flex;align-items:center;gap:.75rem;padding:.85rem 1rem;cursor:pointer;user-select:none}
 .card-h:hover{background:var(--s2)}
-.card-h .tag{font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:600;padding:.1rem .4rem;border-radius:3px;flex-shrink:0}
+.card-h .tag{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;padding:.1rem .4rem;border-radius:3px;flex-shrink:0}
 .tag-instant{color:var(--r);background:var(--rbg);border:1px solid var(--rbd)}
 .tag-fast{color:var(--a);background:var(--abg);border:1px solid var(--abd)}
 .tag-lazy{color:var(--b);background:var(--bbg);border:1px solid var(--bbd)}
@@ -65,22 +65,22 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--t1)
 
 /* Tables */
 .tbl{width:100%;border-collapse:collapse;font-size:.78rem;margin:.5rem 0}
-.tbl th{font-family:'JetBrains Mono',monospace;font-size:.58rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);text-align:left;padding:.45rem .6rem;border-bottom:2px solid var(--bd)}
+.tbl th{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);text-align:left;padding:.45rem .6rem;border-bottom:2px solid var(--bd)}
 .tbl td{padding:.45rem .6rem;border-bottom:1px solid rgba(38,46,64,.5);color:var(--t2);vertical-align:top}
 .tbl tr:hover td{background:var(--s1)}
-.tbl code{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--t0);background:var(--s3);padding:.05rem .3rem;border-radius:2px}
+.tbl code{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--t0);background:var(--s3);padding:.05rem .3rem;border-radius:2px}
 
 /* Diagram boxes */
 .diag{background:var(--s1);border:1px solid var(--bd);border-radius:8px;padding:1.25rem;margin:.75rem 0}
-.diag-title{font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;text-align:center;margin-bottom:.75rem}
+.diag-title{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;text-align:center;margin-bottom:.75rem}
 .tier-row{display:flex;gap:.4rem;margin:.4rem 0;flex-wrap:wrap;justify-content:center}
 .tier-box{background:var(--s3);border:1px solid var(--bd);border-radius:6px;padding:.45rem .65rem;text-align:center;min-width:100px;flex:1;max-width:200px}
-.tier-box .tb-name{font-family:'JetBrains Mono',monospace;font-size:.68rem;font-weight:600}
-.tier-box .tb-sub{font-size:.62rem;color:var(--t3);margin-top:.1rem}
-.tier-box .tb-size{font-family:'JetBrains Mono',monospace;font-size:.58rem;color:var(--t3);margin-top:.2rem;background:var(--s4);display:inline-block;padding:.05rem .3rem;border-radius:2px}
+.tier-box .tb-name{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600}
+.tier-box .tb-sub{font-size:.7rem;color:var(--t3);margin-top:.1rem}
+.tier-box .tb-size{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--t3);margin-top:.2rem;background:var(--s4);display:inline-block;padding:.05rem .3rem;border-radius:2px}
 .tb-instant .tb-name{color:var(--r)} .tb-fast .tb-name{color:var(--a)} .tb-lazy .tb-name{color:var(--b)} .tb-click .tb-name{color:var(--p)}
 
-.sub-h{font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin:1rem 0 .4rem}
+.sub-h{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin:1rem 0 .4rem}
 .sub-h:first-child{margin-top:0}
 
 /* Schema blocks */
@@ -126,13 +126,13 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--t1)
 <div class="diag">
   <div class="diag-title">PAGE LOAD SEQUENCE — AFTER AGENT SELECTS AN ACCOUNT</div>
   <div style="display:flex;align-items:center;gap:.3rem;justify-content:center;margin-bottom:.3rem;flex-wrap:wrap">
-    <span class="tag tag-instant" style="font-size:.55rem">T+0 → 500ms</span>
+    <span class="tag tag-instant" style="font-size:.7rem">T+0 → 500ms</span>
     <span style="color:var(--t4)">→</span>
-    <span class="tag tag-fast" style="font-size:.55rem">T+500ms → 2s</span>
+    <span class="tag tag-fast" style="font-size:.7rem">T+500ms → 2s</span>
     <span style="color:var(--t4)">→</span>
-    <span class="tag tag-lazy" style="font-size:.55rem">T+2s → 5s (background)</span>
+    <span class="tag tag-lazy" style="font-size:.7rem">T+2s → 5s (background)</span>
     <span style="color:var(--t4)">→</span>
-    <span class="tag tag-click" style="font-size:.55rem">ON INTERACTION</span>
+    <span class="tag tag-click" style="font-size:.7rem">ON INTERACTION</span>
   </div>
   <div class="tier-row">
     <div class="tier-box tb-instant">

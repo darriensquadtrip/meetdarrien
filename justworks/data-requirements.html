@@ -19,21 +19,21 @@
   --accent: #e8a838;
   --accent-dim: #a07020;
   --green: #34d399;
-  --green-bg: rgba(52, 211, 153, 0.07);
+  --green-bg: rgba(52, 211, 153, 0.12);
   --green-bdr: rgba(52, 211, 153, 0.2);
   --red: #f87171;
-  --red-bg: rgba(248, 113, 113, 0.07);
+  --red-bg: rgba(248, 113, 113, 0.12);
   --red-bdr: rgba(248, 113, 113, 0.2);
   --blue: #60a5fa;
-  --blue-bg: rgba(96, 165, 250, 0.07);
+  --blue-bg: rgba(96, 165, 250, 0.12);
   --blue-bdr: rgba(96, 165, 250, 0.2);
   --amber: #fbbf24;
-  --amber-bg: rgba(251, 191, 36, 0.07);
+  --amber-bg: rgba(251, 191, 36, 0.12);
   --amber-bdr: rgba(251, 191, 36, 0.2);
   --purple: #a78bfa;
-  --purple-bg: rgba(167, 139, 250, 0.07);
+  --purple-bg: rgba(167, 139, 250, 0.12);
   --cyan: #22d3ee;
-  --cyan-bg: rgba(34, 211, 238, 0.07);
+  --cyan-bg: rgba(34, 211, 238, 0.12);
   --cyan-bdr: rgba(34, 211, 238, 0.2);
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -82,7 +82,7 @@ body {
 }
 .hdr-stat .lbl {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.58rem;
+  font-size: 0.7rem;
   color: var(--text-dim);
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -109,7 +109,7 @@ body {
   border: 1px solid transparent;
   color: var(--text-dim);
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.62rem;
+  font-size: 0.7rem;
   padding: 0.35rem 0.6rem;
   border-radius: 4px;
   cursor: pointer;
@@ -117,7 +117,7 @@ body {
   transition: all 0.2s;
 }
 .nav-btn:hover { color: var(--text-muted); border-color: var(--border); }
-.nav-btn.active { color: var(--accent); background: rgba(232, 168, 56, 0.08); border-color: var(--accent-dim); }
+.nav-btn.active { color: var(--accent); background: rgba(232, 168, 56, 0.12); border-color: var(--accent-dim); }
 
 .main { max-width: 1200px; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
 
@@ -127,7 +127,7 @@ body {
 }
 .sec-head {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   font-weight: 600;
   color: var(--accent);
   text-transform: uppercase;
@@ -173,7 +173,7 @@ body {
 }
 .src-method {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.62rem;
+  font-size: 0.7rem;
   color: var(--text-dim);
   background: var(--surface-2);
   display: inline-block;
@@ -192,7 +192,7 @@ body {
 }
 .matrix thead th {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -217,7 +217,7 @@ body {
 }
 .matrix .feat-id {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   font-weight: 600;
   white-space: nowrap;
 }
@@ -230,7 +230,7 @@ body {
 }
 .matrix .field-list li {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.68rem;
+  font-size: 0.7rem;
   color: var(--text-muted);
   padding: 0.1rem 0;
 }
@@ -239,14 +239,14 @@ body {
   background: var(--surface-3);
   padding: 0.05rem 0.3rem;
   border-radius: 2px;
-  font-size: 0.65rem;
+  font-size: 0.7rem;
 }
 
 /* Source badge */
 .src-badge {
   display: inline-block;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.58rem;
+  font-size: 0.7rem;
   font-weight: 600;
   padding: 0.1rem 0.35rem;
   border-radius: 3px;
@@ -255,14 +255,14 @@ body {
 }
 .src-badge.sf { color: var(--blue); background: var(--blue-bg); border: 1px solid var(--blue-bdr); }
 .src-badge.zd { color: var(--green); background: var(--green-bg); border: 1px solid var(--green-bdr); }
-.src-badge.prod { color: var(--purple); background: rgba(167,139,250,0.07); border: 1px solid rgba(167,139,250,0.2); }
+.src-badge.prod { color: var(--purple); background: rgba(167,139,250,0.12); border: 1px solid rgba(167,139,250,0.2); }
 .src-badge.bill { color: var(--amber); background: var(--amber-bg); border: 1px solid var(--amber-bdr); }
 .src-badge.logs { color: var(--cyan); background: var(--cyan-bg); border: 1px solid var(--cyan-bdr); }
 
 /* Freshness badge */
 .fresh-badge {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   font-weight: 500;
   padding: 0.1rem 0.35rem;
   border-radius: 3px;
@@ -275,7 +275,7 @@ body {
 /* Risk badge */
 .risk-badge {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.58rem;
+  font-size: 0.7rem;
   font-weight: 600;
   padding: 0.1rem 0.35rem;
   border-radius: 3px;
@@ -331,7 +331,7 @@ body {
   font-weight: 600;
 }
 .arch-node .an-sub {
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   color: var(--text-dim);
 }
 .arch-node.sf .an-name { color: var(--blue); }
@@ -340,7 +340,7 @@ body {
 .arch-node.bill .an-name { color: var(--amber); }
 .arch-node.logs .an-name { color: var(--cyan); }
 .arch-node.api .an-name { color: var(--accent); }
-.arch-node.api { border-color: var(--accent-dim); background: rgba(232,168,56,0.06); }
+.arch-node.api { border-color: var(--accent-dim); background: rgba(232,168,56,0.12); }
 .arch-node.ui { border-color: var(--green-bdr); }
 .arch-arrow {
   color: var(--text-dim);
@@ -367,7 +367,7 @@ body {
 .detail-header:hover { background: var(--surface-2); }
 .dh-id {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   font-weight: 600;
   flex-shrink: 0;
 }
@@ -402,7 +402,7 @@ body {
 }
 .field-table th {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.58rem;
+  font-size: 0.7rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -426,7 +426,7 @@ body {
 
 .sfobj {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.65rem;
+  font-size: 0.7rem;
   color: var(--blue);
   background: var(--blue-bg);
   padding: 0.05rem 0.3rem;
@@ -435,7 +435,7 @@ body {
 
 .sub-head {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.6rem;
+  font-size: 0.7rem;
   font-weight: 600;
   color: var(--text-dim);
   text-transform: uppercase;
@@ -492,7 +492,7 @@ body {
 
     <div class="arch-box">
       <div style="text-align:center; margin-bottom:0.75rem">
-        <span style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; color:var(--text-dim)">PRESENTATION LAYER</span>
+        <span style="font-family:'JetBrains Mono',monospace; font-size:0.7rem; color:var(--text-dim)">PRESENTATION LAYER</span>
       </div>
       <div class="arch-row">
         <div class="arch-node ui">
@@ -502,7 +502,7 @@ body {
       </div>
       <div class="arch-row"><span class="arch-arrow">↑ JSON responses</span></div>
       <div style="text-align:center; margin:0.5rem 0 0.25rem">
-        <span style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; color:var(--text-dim)">AGGREGATION LAYER</span>
+        <span style="font-family:'JetBrains Mono',monospace; font-size:0.7rem; color:var(--text-dim)">AGGREGATION LAYER</span>
       </div>
       <div class="arch-row">
         <div class="arch-node api">
@@ -512,7 +512,7 @@ body {
       </div>
       <div class="arch-row"><span class="arch-arrow">↑ Queries from 5 sources</span></div>
       <div style="text-align:center; margin:0.5rem 0 0.25rem">
-        <span style="font-family:'JetBrains Mono',monospace; font-size:0.65rem; color:var(--text-dim)">SOURCE SYSTEMS</span>
+        <span style="font-family:'JetBrains Mono',monospace; font-size:0.7rem; color:var(--text-dim)">SOURCE SYSTEMS</span>
       </div>
       <div class="arch-row">
         <div class="arch-node sf"><div class="an-name">Salesforce</div><div class="an-sub">Account & relationship data</div></div>
