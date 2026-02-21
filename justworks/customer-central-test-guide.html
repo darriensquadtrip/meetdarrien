@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prototype Test Guide — Customer Central</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=JetBrains+Mono:wght@400;500;600&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#090b10;--s1:#10131a;--s2:#161a24;--s3:#1c212e;--s4:#242a38;
+  --bd:#262e40;--bd2:#3a4560;
+  --t0:#f0f2f8;--t1:#c8cede;--t2:#8b95ae;--t3:#5a6580;--t4:#3a4258;
+  --acc:#34d399;--acc2:#059669;
+  --g:#34d399;--gbg:rgba(52,211,153,.06);--gbd:rgba(52,211,153,.2);
+  --r:#f87171;--rbg:rgba(248,113,113,.06);--rbd:rgba(248,113,113,.2);
+  --b:#60a5fa;--bbg:rgba(96,165,250,.06);--bbd:rgba(96,165,250,.2);
+  --a:#fbbf24;--abg:rgba(251,191,36,.06);--abd:rgba(251,191,36,.2);
+  --p:#a78bfa;--pbg:rgba(167,139,250,.06);--pbd:rgba(167,139,250,.2);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--t1);line-height:1.65}
+.main{max-width:880px;margin:0 auto;padding:3rem 1.5rem 5rem}
+.hdr{margin-bottom:2.5rem;padding-bottom:1.5rem;border-bottom:1px solid var(--bd)}
+.hdr-label{font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:600;color:var(--acc);text-transform:uppercase;letter-spacing:.15em;margin-bottom:.5rem}
+.hdr h1{font-family:'DM Serif Display',serif;font-size:clamp(1.6rem,4vw,2.2rem);color:var(--t0);margin-bottom:.75rem;line-height:1.2}
+.hdr h1 em{color:var(--acc);font-style:normal}
+.hdr-meta{display:flex;gap:1.5rem;flex-wrap:wrap;margin-top:.75rem}
+.hdr-meta-item{font-family:'JetBrains Mono',monospace;font-size:.68rem;color:var(--t3)}
+.hdr-meta-item strong{color:var(--t2)}
+.sh{font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:600;color:var(--acc);text-transform:uppercase;letter-spacing:.12em;padding-bottom:.45rem;border-bottom:1px solid var(--bd);margin:2.5rem 0 1rem}
+.story{background:var(--s1);border:1px solid var(--bd);border-radius:8px;margin-bottom:1.25rem;overflow:hidden}
+.story-top{padding:1.15rem 1.25rem;cursor:pointer;display:flex;align-items:flex-start;gap:.75rem;transition:background .15s}
+.story-top:hover{background:var(--s2)}
+.story-id{font-family:'JetBrains Mono',monospace;font-size:.65rem;font-weight:600;color:var(--acc);background:var(--gbg);border:1px solid var(--gbd);padding:.15rem .5rem;border-radius:3px;white-space:nowrap;flex-shrink:0;margin-top:.15rem}
+.story-id.problem{color:var(--a);background:var(--abg);border-color:var(--abd)}
+.story-info{flex:1}
+.story-name{font-size:1rem;font-weight:700;color:var(--t0);margin-bottom:.25rem}
+.story-us{font-size:.82rem;color:var(--t2);font-style:italic;line-height:1.55}
+.story-arrow{color:var(--t3);font-size:.75rem;flex-shrink:0;transition:transform .2s;margin-top:.25rem}
+.story.open .story-arrow{transform:rotate(180deg)}
+.story-body{display:none;border-top:1px solid var(--bd);padding:1.15rem 1.25rem}
+.story.open .story-body{display:block}
+.body-sh{font-family:'JetBrains Mono',monospace;font-size:.58rem;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin:1.25rem 0 .5rem}
+.body-sh:first-child{margin-top:0}
+.step{font-size:.84rem;color:var(--t2);margin-bottom:.35rem;padding-left:1.25rem;position:relative}
+.step::before{content:attr(data-n);position:absolute;left:0;font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:600;color:var(--acc)}
+.step strong{color:var(--t1)}
+.sub{font-size:.8rem;color:var(--t3);padding-left:2.25rem;margin-bottom:.2rem}
+.sub strong{color:var(--t2)}
+.note{background:var(--s2);border-left:3px solid var(--bd2);padding:.65rem .85rem;margin:.75rem 0;font-size:.82rem;border-radius:0 6px 6px 0;color:var(--t2)}
+.note strong{color:var(--t1)}
+.note.design{border-left-color:var(--acc)}
+.tbl-wrap{overflow-x:auto;margin:.75rem 0}
+.tbl{width:100%;border-collapse:collapse;font-size:.78rem}
+.tbl th{font-family:'JetBrains Mono',monospace;font-size:.56rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--t3);text-align:left;padding:.45rem .55rem;border-bottom:2px solid var(--bd);white-space:nowrap}
+.tbl td{padding:.45rem .55rem;border-bottom:1px solid rgba(38,46,64,.5);color:var(--t2);vertical-align:top}
+.tbl tr:hover td{background:var(--s1)}
+.tbl td:first-child{color:var(--t1);font-weight:500}
+.status-pill{font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:600;padding:.1rem .4rem;border-radius:3px;white-space:nowrap}
+.s-yes{color:var(--g);background:var(--gbg);border:1px solid var(--gbd)}
+.s-partial{color:var(--a);background:var(--abg);border:1px solid var(--abd)}
+.s-no{color:var(--r);background:var(--rbg);border:1px solid var(--rbd)}
+.getting-started{background:var(--s1);border:1px solid var(--bd);border-radius:8px;padding:1.25rem;margin-bottom:1.5rem}
+.getting-started h3{font-size:.95rem;font-weight:700;color:var(--t0);margin-bottom:.75rem}
+.extras{background:var(--s1);border:1px solid var(--bd);border-radius:8px;padding:1.25rem;margin-bottom:1rem}
+.extras h3{font-size:.95rem;font-weight:700;color:var(--t0);margin-bottom:.5rem}
+.extras h4{font-size:.85rem;font-weight:600;color:var(--t1);margin:1rem 0 .35rem}
+.extras h4:first-of-type{margin-top:.5rem}
+.extras li{font-size:.82rem;color:var(--t2);margin-bottom:.3rem;margin-left:1rem}
+.extras li strong{color:var(--t1)}
+.footer{text-align:center;padding:2rem;color:var(--t4);font-size:.68rem;border-top:1px solid var(--bd);margin-top:3rem}
+</style>
+</head>
+<body>
+<div class="main">
+
+<div class="hdr">
+  <div class="hdr-label">Prototype Test Guide</div>
+  <h1>Story-by-story walkthrough of the <em>Customer Central</em> prototype</h1>
+  <div class="hdr-meta">
+    <div class="hdr-meta-item"><strong>Prototype:</strong> customer-central.html</div>
+    <div class="hdr-meta-item"><strong>Scenario:</strong> Sarah Chen (Admin) at Acme Corp</div>
+    <div class="hdr-meta-item"><strong>Plan:</strong> PEO Plus, 34 employees, NY/CA/TX</div>
+  </div>
+</div>
+
+<!-- Getting Started -->
+<div class="getting-started">
+  <h3>Getting Started</h3>
+  <div class="step" data-n="1.">Open the prototype in a browser</div>
+  <div class="step" data-n="2.">You'll see an empty state with a search bar prompt</div>
+  <div class="step" data-n="3.">Press <strong>Cmd+K</strong> (Mac) or <strong>Ctrl+K</strong> (Windows) to focus the search bar — or click it directly</div>
+  <div class="step" data-n="4.">Type any character (e.g., "acme" or "sarah") — the search dropdown appears</div>
+  <div class="step" data-n="5.">Click any search result to load the Acme Corp dashboard</div>
+  <div class="note design">The entire dashboard loads on click. A green toast notification confirms: "Loaded Acme Corp — Sarah Chen (Admin)." The sidebar expands to show account-specific navigation.</div>
+</div>
+
+<!-- ======== FOUNDATION STORIES ======== -->
+<div class="sh">Foundation Stories</div>
+
+<!-- FS-1 -->
+<div class="story" id="fs1">
+  <div class="story-top" onclick="toggle('fs1')">
+    <span class="story-id">FS-1</span>
+    <div class="story-info">
+      <div class="story-name">Instant Caller Recognition</div>
+      <div class="story-us">As a CSO agent receiving an inbound call, I want to immediately see who this person is, what company they belong to, what product they're on, and whether they're an admin — so that I can greet them by name within the first 3 seconds.</div>
+    </div>
+    <span class="story-arrow">&#9660;</span>
+  </div>
+  <div class="story-body">
+    <div class="body-sh">How to Test</div>
+    <div class="step" data-n="1.">From the empty state, click the search bar and type anything</div>
+    <div class="step" data-n="2.">The <strong>search dropdown</strong> appears showing three results:</div>
+    <div class="sub"><strong>Sarah Chen</strong> — Admin · Acme Corp · PEO Plus (green "Active" badge)</div>
+    <div class="sub"><strong>Acme Corp</strong> — PEO Plus · 34 employees · Since Jan 2022 (green "Current" badge)</div>
+    <div class="sub"><strong>Marcus Johnson</strong> — Employee · Acme Corp · Engineering · CA (blue "Employee" badge)</div>
+    <div class="step" data-n="3.">Click any result — the full dashboard populates instantly</div>
+    <div class="step" data-n="4.">The <strong>Caller Card</strong> (green-bordered section below the company header) shows name, role, contact info, admin badge with tenure</div>
+
+    <div class="body-sh">Acceptance Criteria</div>
+    <div class="tbl-wrap"><table class="tbl">
+      <tr><th>Criteria</th><th>Status</th><th>Notes</th></tr>
+      <tr><td>Search by name/email/phone returns results &lt;2s</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Dropdown appears on any keystroke. In production, this would be an API call with &lt;2s SLA.</td></tr>
+      <tr><td>Displays person name, role, company, plan, employee count, tenure</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Caller card shows name + role + admin badge + tenure. Company header shows plan, employee count, states.</td></tr>
+      <tr><td>Admin visible if caller is employee</td><td><span class="status-pill s-partial">Partial</span></td><td>Search results differentiate admin vs. employee, but clicking Marcus loads the same dashboard. A production version would show Marcus's caller card.</td></tr>
+      <tr><td>Disambiguation for common names</td><td><span class="status-pill s-partial">Not testable</span></td><td>Only one dataset. The search dropdown structure supports disambiguation (each result shows company context).</td></tr>
+      <tr><td>Works for terminated employees</td><td><span class="status-pill s-no">Not shown</span></td><td>No terminated employee in sample data. Would need a search result with "Terminated" badge.</td></tr>
+    </table></div>
+  </div>
+</div>
+
+<!-- FS-2 -->
+<div class="story" id="fs2">
+  <div class="story-top" onclick="toggle('fs2')">
+    <span class="story-id">FS-2</span>
+    <div class="story-info">
+      <div class="story-name">Complete Interaction History</div>
+      <div class="story-us">As a CSO agent with a returning customer, I want to see every prior interaction across phone, email, and chat in a single timeline — so that I never ask the customer to repeat themselves.</div>
+    </div>
+    <span class="story-arrow">&#9660;</span>
+  </div>
+  <div class="story-body">
+    <div class="body-sh">How to Test</div>
+    <div class="step" data-n="1.">After loading the dashboard, click the <strong>"History"</strong> tab</div>
+    <div class="step" data-n="2.">The <strong>Full Interaction Timeline</strong> shows 10 interactions spanning Feb 2026 to Aug 2025</div>
+    <div class="step" data-n="3.">Each interaction shows channel badge (color-coded), date/time, status badge, topic summary, agent name</div>
+    <div class="step" data-n="4."><strong>Filter buttons</strong> in the top-right: click phone, email, or chat icons to filter by channel. Click "All" to reset.</div>
+    <div class="step" data-n="5.">The open ticket (Feb 8 email about payroll discrepancy) shows with an amber OPEN badge</div>
+    <div class="note">Also visible on the <strong>Overview tab:</strong> "Open Tickets" section shows the pinned open ticket with priority, assignee, age, and action buttons. "View Full Ticket" opens a modal with the full ticket body, agent notes, and a "Take Over Ticket" button.</div>
+
+    <div class="body-sh">Acceptance Criteria</div>
+    <div class="tbl-wrap"><table class="tbl">
+      <tr><th>Criteria</th><th>Status</th><th>Notes</th></tr>
+      <tr><td>Last 10 interactions across all channels</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>10 interactions: 5 phone, 3 email, 2 chat, spanning 6 months</td></tr>
+      <tr><td>Shows date, channel, agent, topic summary, resolution status</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Every interaction has all five data points</td></tr>
+      <tr><td>Open tickets pinned at top</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>On Overview tab, open ticket is in a dedicated pinned section. On History tab, it's the first item.</td></tr>
+      <tr><td>Click for full detail</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>"View Full Ticket" opens modal with email body, agent notes, and actions</td></tr>
+      <tr><td>Includes person AND company interaction history</td><td><span class="status-pill s-partial">Partial</span></td><td>All interactions shown are for Sarah Chen. A production version would toggle between person and company interactions.</td></tr>
+      <tr><td>Filter by channel/date</td><td><span class="status-pill s-partial">Partial</span></td><td>Channel filter works. Date filter is not implemented — would need a date range picker.</td></tr>
+      <tr><td>Auto-refreshes during session</td><td><span class="status-pill s-no">Not shown</span></td><td>Static prototype. 5-minute auto-refresh is an acceptance criterion for production.</td></tr>
+    </table></div>
+  </div>
+</div>
+
+<!-- FS-3 -->
+<div class="story" id="fs3">
+  <div class="story-top" onclick="toggle('fs3')">
+    <span class="story-id">FS-3</span>
+    <div class="story-info">
+      <div class="story-name">Account Status at a Glance</div>
+      <div class="story-us">As a CSO agent during any interaction, I want to see key health indicators without clicking — billing status, next payroll date, recent changes — so that I can understand urgency and context before the customer finishes explaining their issue.</div>
+    </div>
+    <span class="story-arrow">&#9660;</span>
+  </div>
+  <div class="story-body">
+    <div class="body-sh">How to Test</div>
+    <div class="step" data-n="1.">After loading the dashboard, the <strong>Status Strip</strong> is immediately visible — five indicators in a horizontal row:</div>
+    <div class="sub"><strong>Billing:</strong> Green dot + "Current" + last payment amount and date</div>
+    <div class="sub"><strong>Next Payroll:</strong> "Feb 28" in amber + frequency, deadline, countdown</div>
+    <div class="sub"><strong>Open Tickets:</strong> Amber dot + "1 Open" + ticket summary and age</div>
+    <div class="sub"><strong>Recent Changes:</strong> "3" + "Last 14 days · 2 hires"</div>
+    <div class="sub"><strong>Customer Since:</strong> "Jan 2022" + "3 yrs · PEO Plus since '23"</div>
+    <div class="step" data-n="2.">Each status item is <strong>clickable</strong> — clicking navigates to the corresponding tab</div>
+    <div class="step" data-n="3.">The <strong>Overview tab</strong> also shows the "Recent Changes (14 days)" feed on the right side</div>
+
+    <div class="body-sh">Acceptance Criteria</div>
+    <div class="tbl-wrap"><table class="tbl">
+      <tr><th>Criteria</th><th>Status</th><th>Notes</th></tr>
+      <tr><td>Billing status indicator (current/upcoming/past due)</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Green "Current" with "$12,480" and date. At-risk scenario shows red "Past Due (8 days)".</td></tr>
+      <tr><td>Next payroll with countdown and deadline</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Shows date, frequency, deadline, and countdown</td></tr>
+      <tr><td>Recent changes feed (14 days)</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Four changes shown on Overview tab with what/when detail</td></tr>
+      <tr><td>Shows what/when/who for changes</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Each change shows entity, action, and date</td></tr>
+      <tr><td>Critical alert if past due AND payroll within 48 hours</td><td><span class="status-pill s-partial">Partial</span></td><td>At-risk scenario shows risk cascade. Status strip doesn't dynamically change for compound alerts in prototype.</td></tr>
+    </table></div>
+  </div>
+</div>
+
+<!-- ======== PROBLEM STORIES ======== -->
+<div class="sh">Problem Stories</div>
+
+<!-- PS-1 -->
+<div class="story" id="ps1">
+  <div class="story-top" onclick="toggle('ps1')">
+    <span class="story-id problem">PS-1</span>
+    <div class="story-info">
+      <div class="story-name">Paycheck Discrepancy Resolution</div>
+      <div class="story-us">As a CSO agent helping an employee whose paycheck looks different, I want to see recent pay history with period-over-period comparison highlighting changes — so that I can explain the difference in &lt;60 seconds.</div>
+    </div>
+    <span class="story-arrow">&#9660;</span>
+  </div>
+  <div class="story-body">
+    <div class="note design"><strong>ICE 54 — Full Build.</strong> This is the #1 call driver for CSO agents.</div>
+    <div class="body-sh">How to Test</div>
+    <div class="step" data-n="1.">Click the <strong>"Payroll"</strong> tab</div>
+    <div class="step" data-n="2.">The <strong>Pay Stub Viewer</strong> shows Marcus Johnson's pay comparison by default</div>
+    <div class="step" data-n="3.">A <strong>scenario toggle</strong> lets you switch between "Marcus Johnson" and "Sarah Chen"</div>
+    <div class="step" data-n="4.">Marcus Johnson's view shows the <strong>full delta comparison:</strong></div>
+    <div class="sub">Current period (Jan 16-31) vs Previous period (Jan 1-15)</div>
+    <div class="sub">Net pay prominently displayed ($3,847.23) with delta in red (-$142.50)</div>
+    <div class="sub">Line-by-line comparison: Current | Previous | Delta columns</div>
+    <div class="sub"><strong>Three highlighted rows</strong> with delta annotations:</div>
+    <div class="sub">State Income Tax: +$59.77 with "WHY" badge — withholding changed NY to CA</div>
+    <div class="sub">CA SDI: +$55.00 with "NEW" badge — mandatory for CA employees</div>
+    <div class="sub">Dental: +$27.73 with "NEW" badge — enrollment effective Jan 16</div>
+    <div class="step" data-n="5.">A <strong>summary section</strong> explains in plain language: "Net pay decreased $142.50 due to: CA state tax, CA SDI, dental enrollment."</div>
+    <div class="step" data-n="6."><strong>Action buttons:</strong> Download PDF, Copy Summary (both show toast confirmations)</div>
+    <div class="step" data-n="7."><strong>Switch to Sarah Chen</strong> — her pay stub shows zero changes with a green "No changes" summary</div>
+
+    <div class="body-sh">Acceptance Criteria</div>
+    <div class="tbl-wrap"><table class="tbl">
+      <tr><th>Criteria</th><th>Status</th><th>Notes</th></tr>
+      <tr><td>Last 3 pay stubs accessible</td><td><span class="status-pill s-partial">Partial</span></td><td>Shows 2-period comparison. Third pay stub would need a period selector.</td></tr>
+      <tr><td>Itemized gross/deductions/taxes/net</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Full itemization: gross, federal, state, FICA, benefits, 401(k), net</td></tr>
+      <tr><td>Period-over-period comparison with delta highlighting</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Side-by-side columns with highlighted rows and delta amounts</td></tr>
+      <tr><td>Auto-annotation linking change to paycheck impact</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Three annotations with WHY/NEW badges explaining the cause of each change.</td></tr>
+      <tr><td>Recent changes flag linking change to paycheck impact</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Annotations reference specific dates that correspond to the Overview tab's recent changes feed.</td></tr>
+      <tr><td>Payroll schedule context visible</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>PS-2 alert bar shows last payroll date, employee count, and total.</td></tr>
+    </table></div>
+  </div>
+</div>
+
+<!-- PS-2 -->
+<div class="story" id="ps2">
+  <div class="story-top" onclick="toggle('ps2')">
+    <span class="story-id problem">PS-2</span>
+    <div class="story-info">
+      <div class="story-name">Payroll Failure Triage</div>
+      <div class="story-us">As a CSO agent receiving an urgent call about payroll not running correctly, I want to immediately see payroll run status, processing errors, and upcoming payroll risk — so that I can assess severity in 10 seconds.</div>
+    </div>
+    <span class="story-arrow">&#9660;</span>
+  </div>
+  <div class="story-body">
+    <div class="note design"><strong>ICE 45 — Deep Link + Alert.</strong> Scoped as alert + deep link for MVP; full diagnostic panel is Phase 2 once the payroll data API is proven.</div>
+    <div class="body-sh">How to Test</div>
+    <div class="step" data-n="1.">Click the <strong>"Payroll"</strong> tab</div>
+    <div class="step" data-n="2.">The <strong>green alert banner</strong> shows: "Last payroll ran successfully · Jan 31 · 32 employees · $148,230"</div>
+    <div class="step" data-n="3.">The <strong>"View Payroll Details"</strong> deep link button shows a toast simulating navigation to the admin dashboard</div>
+    <div class="step" data-n="4.">The <strong>status strip</strong> (always visible) shows: "Next Payroll: Feb 28 · Bi-weekly · Deadline Feb 26 · 17 days"</div>
+
+    <div class="body-sh">Acceptance Criteria</div>
+    <div class="tbl-wrap"><table class="tbl">
+      <tr><th>Criteria</th><th>Status</th><th>Notes</th></tr>
+      <tr><td>Payroll schedule visible (frequency/next run/deadline)</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Status strip shows frequency, next date, deadline, and countdown</td></tr>
+      <tr><td>Last 3 run statuses</td><td><span class="status-pill s-partial">Partial</span></td><td>Alert shows the most recent run only. Last 3 runs scoped for Phase 2.</td></tr>
+      <tr><td>Failed run error reason</td><td><span class="status-pill s-no">Not shown</span></td><td>Deep link approach defers diagnostics to admin dashboard. Full panel is Phase 2.</td></tr>
+      <tr><td>Payment processing status</td><td><span class="status-pill s-no">Not shown</span></td><td>Deferred to PS-6 billing panel and the admin dashboard deep link</td></tr>
+      <tr><td>Critical alert if deadline within 24 hours</td><td><span class="status-pill s-partial">Not testable</span></td><td>Sample data has 17 days until deadline. Alert styling would change to red/urgent within 24 hours.</td></tr>
+    </table></div>
+  </div>
+</div>
+
+<!-- PS-3 -->
+<div class="story" id="ps3">
+  <div class="story-top" onclick="toggle('ps3')">
+    <span class="story-id problem">PS-3</span>
+    <div class="story-info">
+      <div class="story-name">Tax Document Lookup</div>
+      <div class="story-us">As a CSO agent helping a caller who can't find their W-2 or 1099, I want to instantly confirm whether the document has been generated, when it was delivered, and how to access it — so that I can resolve this call in &lt;90 seconds.</div>
+    </div>
+    <span class="story-arrow">&#9660;</span>
+  </div>
+  <div class="story-body">
+    <div class="note design"><strong>ICE 40 — Build (it's cheap).</strong> High-volume, low-complexity call type.</div>
+    <div class="body-sh">How to Test</div>
+    <div class="step" data-n="1.">After loading the dashboard, look directly below the <strong>Caller Card</strong> — two badges are visible:</div>
+    <div class="sub">Green: <strong>"W-2s Available · Issued Jan 31"</strong></div>
+    <div class="sub">Amber: <strong>"1099s: 8 of 10 complete"</strong></div>
+    <div class="step" data-n="2.">These are always visible regardless of which tab you're on (they're above the tab bar)</div>
+
+    <div class="body-sh">Acceptance Criteria</div>
+    <div class="tbl-wrap"><table class="tbl">
+      <tr><th>Criteria</th><th>Status</th><th>Notes</th></tr>
+      <tr><td>Tax document status visible (W-2 generated, delivery date)</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Green badge confirms W-2s available with issue date</td></tr>
+      <tr><td>Expected timeline if not generated</td><td><span class="status-pill s-partial">Partial</span></td><td>1099 badge shows progress (8 of 10) but no expected completion date</td></tr>
+      <tr><td>Direct link/instructions if generated</td><td><span class="status-pill s-no">Missing</span></td><td>Badges are display-only. Should link to document center or offer to send a direct link.</td></tr>
+      <tr><td>1099 status for admins with completion percentage</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>"8 of 10 complete" shows progress</td></tr>
+      <tr><td>Correction history if W-2c issued</td><td><span class="status-pill s-no">Not shown</span></td><td>No W-2 correction scenario in sample data</td></tr>
+    </table></div>
+  </div>
+</div>
+
+<!-- PS-4 -->
+<div class="story" id="ps4">
+  <div class="story-top" onclick="toggle('ps4')">
+    <span class="story-id problem">PS-4</span>
+    <div class="story-info">
+      <div class="story-name">Benefits Enrollment Guidance</div>
+      <div class="story-us">As a CSO agent helping an employee enroll in or change benefits, I want to see the company's benefit offerings, current elections, and enrollment window status — so that I can guide them to the right decision.</div>
+    </div>
+    <span class="story-arrow">&#9660;</span>
+  </div>
+  <div class="story-body">
+    <div class="note design"><strong>ICE 40 — Quick-View.</strong> Shows what you're enrolled in + enrollment window + carrier contacts + deep link for management.</div>
+    <div class="body-sh">How to Test</div>
+    <div class="step" data-n="1.">Click the <strong>"Benefits"</strong> tab</div>
+    <div class="step" data-n="2.">At the top: Enrollment status — <strong>"Open enrollment closes Feb 15"</strong></div>
+    <div class="step" data-n="3.">A <strong>"Manage Benefits"</strong> deep link button for full admin access</div>
+    <div class="step" data-n="4."><strong>Benefits grid</strong> (2 columns) showing 6 cards:</div>
+    <div class="sub">Medical: Aetna PPO, Employee + Spouse, $373/mo, employer pays $280</div>
+    <div class="sub">Dental: Delta Dental PPO, Employee Only, $27.73/mo</div>
+    <div class="sub">Vision: VSP Choice, Employee + Spouse, $18.50/mo</div>
+    <div class="sub">401(k): 8% contribution, Slavic401k, employer match info</div>
+    <div class="sub">Life Insurance: Basic Life, 1x Salary, employer paid</div>
+    <div class="sub">FSA/HSA: "Not enrolled" with dashed border + "Enroll" button</div>
+    <div class="step" data-n="5."><strong>Dependents section</strong> below: David Chen (Spouse), covered Medical and Vision</div>
+    <div class="step" data-n="6.">Clicking <strong>"Aetna Contact"</strong> shows toast with the Aetna member services number</div>
+
+    <div class="body-sh">Acceptance Criteria</div>
+    <div class="tbl-wrap"><table class="tbl">
+      <tr><th>Criteria</th><th>Status</th><th>Notes</th></tr>
+      <tr><td>Company benefits offerings visible (plan types, carriers)</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>All 6 benefit categories shown with plan names and carriers</td></tr>
+      <tr><td>Employee current elections (plan/coverage/cost)</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Each card shows plan name, coverage level, cost, and employer contribution</td></tr>
+      <tr><td>Enrollment window status</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>"Open enrollment closes Feb 15" prominently displayed</td></tr>
+      <tr><td>Dependents enrolled if applicable</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>David Chen (Spouse) shown with coverage and DOB</td></tr>
+      <tr><td>Available plan options if in enrollment window</td><td><span class="status-pill s-partial">Partial</span></td><td>FSA/HSA shows "Not enrolled" with Enroll button. Plan comparison deferred to Phase 2.</td></tr>
+      <tr><td>Link to enrollment flow</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>"Manage Benefits" deep link and "Enroll" button on FSA/HSA</td></tr>
+    </table></div>
+  </div>
+</div>
+
+<!-- PS-5 -->
+<div class="story" id="ps5">
+  <div class="story-top" onclick="toggle('ps5')">
+    <span class="story-id problem">PS-5</span>
+    <div class="story-info">
+      <div class="story-name">Invoice Explanation</div>
+      <div class="story-us">As a CSO agent handling an admin who says their invoice looks wrong, I want to see recent invoices alongside headcount changes that explain amount differences — so that I can resolve billing confusion in one call.</div>
+    </div>
+    <span class="story-arrow">&#9660;</span>
+  </div>
+  <div class="story-body">
+    <div class="note design"><strong>ICE 43 — Deep Link</strong> with inline annotation. The annotation logic is shown in simplified form; full build is Phase 2.</div>
+    <div class="body-sh">How to Test</div>
+    <div class="step" data-n="1.">Click the <strong>"Billing"</strong> tab, scroll past the payment status section</div>
+    <div class="step" data-n="2."><strong>Recent Invoices</strong> section shows 3 invoice rows:</div>
+    <div class="sub">February 2026: $12,480 (Paid) — <strong>+$720</strong></div>
+    <div class="sub">January 2026: $11,760 (Paid) — no change</div>
+    <div class="sub">December 2025: $11,760 (Paid) — no change</div>
+    <div class="step" data-n="3.">A <strong>summary line</strong> explains: "Feb invoice +$720 vs Jan. Reason: +2 employees at $360/employee PEO Plus rate."</div>
+    <div class="step" data-n="4.">Click any invoice row — a <strong>modal</strong> opens with line-item breakdown. New employee line items are highlighted in amber.</div>
+    <div class="step" data-n="5."><strong>"View All Invoices"</strong> deep link for full billing dashboard access</div>
+    <div class="note">The inline annotation and modal detail deliver most of the full build's value. Phase 2 adds automatic annotation across more change types (rate changes, plan upgrades, mid-month terminations) and a side-by-side visual comparison.</div>
+
+    <div class="body-sh">Acceptance Criteria</div>
+    <div class="tbl-wrap"><table class="tbl">
+      <tr><th>Criteria</th><th>Status</th><th>Notes</th></tr>
+      <tr><td>Last 3 invoices visible (date/amount/payment status)</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Three invoices with all fields shown</td></tr>
+      <tr><td>Each expandable for line items</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Click opens modal with full line-item breakdown</td></tr>
+      <tr><td>Headcount changes during billing period highlighted</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>New employee line items highlighted in amber</td></tr>
+      <tr><td>Delta explained if amount differs from prior month</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Both inline summary and modal explain +$720 with specific names and rates</td></tr>
+      <tr><td>Payment status visible</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Green "Paid" badge on each invoice</td></tr>
+    </table></div>
+  </div>
+</div>
+
+<!-- PS-6 -->
+<div class="story" id="ps6">
+  <div class="story-top" onclick="toggle('ps6')">
+    <span class="story-id problem">PS-6</span>
+    <div class="story-info">
+      <div class="story-name">Payment Failure Response</div>
+      <div class="story-us">As a CSO agent receiving a call about a failed payment or past-due account, I want to see the failure reason, account balance, and whether the next payroll is at risk — so that I can assess the crisis and guide the admin to resolution.</div>
+    </div>
+    <span class="story-arrow">&#9660;</span>
+  </div>
+  <div class="story-body">
+    <div class="note design"><strong>ICE 50 — Full Build.</strong> The risk cascade connects a billing failure to its downstream payroll and employee impact in a single visual — use the at-risk scenario toggle to see this in action.</div>
+    <div class="body-sh">How to Test</div>
+    <div class="step" data-n="1.">Click the <strong>"Billing"</strong> tab</div>
+    <div class="step" data-n="2.">By default, the "Current (Acme)" scenario shows a <strong>green "All Payments Current"</strong> status</div>
+    <div class="step" data-n="3.">Click <strong>"At-Risk Scenario"</strong> toggle — the view transforms:</div>
+    <div class="sub"><strong>Red payment status card:</strong> "Payment Failed — $12,480 Past Due (8 days)" with failure reason, bank info, and "Update Payment Method" button</div>
+    <div class="sub"><strong>Risk Cascade</strong> panel with three numbered steps:</div>
+    <div class="sub">Step 1 (red): Payment failed — $12,480 ACH rejected, 8 days past due</div>
+    <div class="sub">Step 2 (amber): Next payroll at risk — if not resolved by Feb 21, payroll blocked</div>
+    <div class="sub">Step 3 (amber): 34 employees affected across NY, CA, TX</div>
+    <div class="sub"><strong>Resolution footer:</strong> Deadline (Feb 21), "Update Payment Method" button, "Escalate to Billing" button</div>
+    <div class="step" data-n="4.">Click <strong>"Update Payment Method"</strong> — modal opens with current method (shown as failed) and fields for new routing/account number</div>
+    <div class="step" data-n="5.">Click <strong>"Payment History"</strong> (on healthy scenario) — modal shows 5 months of payment history</div>
+
+    <div class="body-sh">Acceptance Criteria</div>
+    <div class="tbl-wrap"><table class="tbl">
+      <tr><th>Criteria</th><th>Status</th><th>Notes</th></tr>
+      <tr><td>Current balance and days past due</td><td><span class="status-pill s-partial">Partial</span></td><td>Billing tab shows past-due amount and days. Status strip doesn't dynamically switch in prototype.</td></tr>
+      <tr><td>Last 3 payment attempts (date/amount/status/failure reason)</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Payment history modal shows history. At-risk view shows failed payment with reason.</td></tr>
+      <tr><td>Bank account status (last 4, bank name)</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Shows "Chase ···4892" on the failed payment card</td></tr>
+      <tr><td>Impact assessment (is next payroll at risk?)</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Risk cascade Step 2 explicitly connects failed payment to payroll deadline</td></tr>
+      <tr><td>Resolution path (update payment, retry, escalation)</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>"Update Payment Method" modal with retry, "Escalate to Billing" button</td></tr>
+      <tr><td>Risk flag if 3+ failed payments in 6 months</td><td><span class="status-pill s-no">Not shown</span></td><td>Only one failure scenario in sample data</td></tr>
+    </table></div>
+  </div>
+</div>
+
+<!-- ======== ADDITIONAL ELEMENTS ======== -->
+<div class="sh">Additional Interactive Elements</div>
+
+<div class="extras">
+  <h3>Quick Actions (Sidebar)</h3>
+  <ul>
+    <li><strong>New Ticket</strong> — Opens modal with company pre-filled, subject field, priority selector, and description. Click "Create Ticket" for toast confirmation.</li>
+    <li><strong>Log Interaction</strong> — Opens modal with channel selector (Phone/Email/Chat), topic, resolution selector (Resolved/Pending/Escalated), and notes.</li>
+    <li><strong>Escalate</strong> — Toast: "Escalation form copied to clipboard"</li>
+  </ul>
+
+  <h4>Company-Level Actions (Header)</h4>
+  <ul>
+    <li><strong>Salesforce</strong> — Toast simulating external navigation</li>
+    <li><strong>+ Log Interaction</strong> — Same modal as sidebar</li>
+  </ul>
+
+  <h4>Keyboard Shortcuts</h4>
+  <ul>
+    <li><strong>Cmd+K / Ctrl+K</strong> — Focus search bar</li>
+    <li><strong>Escape</strong> — Close search dropdown or modal</li>
+  </ul>
+</div>
+
+<div class="footer">Customer Central — Prototype Test Guide</div>
+
+</div>
+
+<script>
+function toggle(id){
+  document.getElementById(id).classList.toggle('open');
+}
+</script>
+</body>
+</html>
