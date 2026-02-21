@@ -692,7 +692,7 @@ body {
       <div class="role-work">
         <div class="rw-box">
           <div class="rw-role r-be">Eng 1 — Search & Identity (End-to-End)</div>
-          <p><strong>Build the full search vertical:</strong> ⌘K search endpoint + UI (type-ahead, result cards), company profile card (API + component), caller identity card, status indicator strip. Wire to live production DB data. <strong>Health score computation logic (~2 days):</strong> implement rule-based weighted formula — (Billing x 0.30) + (Payroll x 0.25) + (Support x 0.20) + (Satisfaction x 0.15) + (Activity x 0.10). Health band classification (Green/Light Green/Amber/Orange/Red). Signal decomposition API for breakdown card. End of week: an agent can search and see a real, complete profile with health score in &lt;500ms.</p>
+          <p><strong>Build the full search vertical:</strong> ⌘K search endpoint + UI (type-ahead, result cards), company profile card (API + component), caller identity card, status indicator strip. Wire to live production DB data. <strong>Health score computation logic (~2 days):</strong> implement rule-based weighted formula — Base = (Billing x 0.30) + (Payroll x 0.25) + (Support x 0.20) + (Satisfaction x 0.15) + (Activity x 0.10), then Final = Base x Tenure Factor (Tenure Factor: &lt;30 days = 0.75, 30-90 days = 0.85, 90-180 days = 0.95, 180+ days = 1.00). Health band classification (Green/Light Green/Amber/Orange/Red). Signal decomposition API for breakdown card. End of week: an agent can search and see a real, complete profile with health score in &lt;500ms.</p>
         </div>
         <div class="rw-box">
           <div class="rw-role r-fe">Eng 2 — Panels & History (End-to-End)</div>

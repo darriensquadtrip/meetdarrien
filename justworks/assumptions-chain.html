@@ -1032,7 +1032,7 @@ body {
             </div>
           </div>
           <div class="highlight-box green">
-            <strong>The insight:</strong> Company profile, plan type, billing status, interaction history, open tickets, and recent changes appear in BOTH lists. Building the data layer that serves these 6 data categories simultaneously solves the top problems AND answers the top health questions. <strong>These same 6 data categories also produce a composite health score</strong> — a rule-based weighted computation (Billing x 0.30, Payroll x 0.25, Support x 0.20, Satisfaction x 0.15, Activity x 0.10) that gives agents and leadership an at-a-glance account health assessment. The convergence is threefold: same data serves status display, problem resolution, AND health scoring. That's the MVP scope — derived from the bottom up, not imposed from the top down.
+            <strong>The insight:</strong> Company profile, plan type, billing status, interaction history, open tickets, and recent changes appear in BOTH lists. Building the data layer that serves these 6 data categories simultaneously solves the top problems AND answers the top health questions. <strong>These same 6 data categories also produce a composite health score</strong> — a rule-based weighted computation: Base = (Billing x 0.30) + (Payroll x 0.25) + (Support x 0.20) + (Satisfaction x 0.15) + (Activity x 0.10), then Final = Base × Tenure Factor. Tenure Factor: &lt;30 days = 0.75, 30-90 days = 0.85, 90-180 days = 0.95, 180+ days = 1.00. This gives agents and leadership an at-a-glance account health assessment. The convergence is threefold: same data serves status display, problem resolution, AND health scoring. That's the MVP scope — derived from the bottom up, not imposed from the top down.
           </div>
         </div>
       </div>
@@ -1094,7 +1094,7 @@ body {
             <div class="story-card">
               <div class="story-id">HS-1 <span class="phase-badge mvp">FULL BUILD</span></div>
               <div class="story-name">Lightweight Health Score</div>
-              <div class="story-scope">Rule-based weighted composite score: (Billing x 0.30) + (Payroll x 0.25) + (Support x 0.20) + (Satisfaction x 0.15) + (Activity x 0.10). Health badge in status strip with signal breakdown card. Transparent, decomposable, agent-verifiable. No ML — simple rules on Day 1.</div>
+              <div class="story-scope">Rule-based weighted composite score: Base = (Billing x 0.30) + (Payroll x 0.25) + (Support x 0.20) + (Satisfaction x 0.15) + (Activity x 0.10), then Final = Base × Tenure Factor. Health badge in status strip with signal breakdown card. Transparent, decomposable, agent-verifiable. No ML — simple rules on Day 1.</div>
             </div>
             <div class="story-card">
               <div class="story-id">HS-2 <span class="phase-badge mvp">FULL BUILD</span></div>
@@ -1200,7 +1200,7 @@ body {
       <div class="decision-section">
         <div class="section-label label-decision">⬡ DEFERRED TO PHASE 2</div>
         <div class="section-content">
-          <p><strong>Composite Health Scoring (H10)</strong> — <em>Included as lightweight rule-based score in MVP (HS-1, HS-2);</em> ML-based adaptive scoring remains Phase 2. We CAN score with simple, transparent rules on Day 1 — the formula is (Billing x 0.30) + (Payroll x 0.25) + (Support x 0.20) + (Satisfaction x 0.15) + (Activity x 0.10), producing bands agents can verify against their own intuition. What requires validated data is ML-weighted scoring where agents can't verify the logic themselves. Week 2 manual validation with 5 experienced agents targets >=80% alignment with agent intuition.</p>
+          <p><strong>Composite Health Scoring (H10)</strong> — <em>Included as lightweight rule-based score in MVP (HS-1, HS-2);</em> ML-based adaptive scoring remains Phase 2. We CAN score with simple, transparent rules on Day 1 — the formula is Base = (Billing x 0.30) + (Payroll x 0.25) + (Support x 0.20) + (Satisfaction x 0.15) + (Activity x 0.10), then Final = Base × Tenure Factor, producing bands agents can verify against their own intuition. What requires validated data is ML-weighted scoring where agents can't verify the logic themselves. Week 2 manual validation with 5 experienced agents targets >=80% alignment with agent intuition.</p>
           <p><strong>Benefits Life Event Flows (B2)</strong> — Marriage/baby/divorce triggers cross multiple carriers, state rules, and enrollment systems. Most complex call type but lowest frequency × highest integration cost. Deep domain expertise required to build correctly.</p>
           <p><strong>Compliance Contextual Guidance (C1)</strong> — State-specific rules surfaced in context. Requires a compliance knowledge engine that doesn't exist yet. The data source is a knowledge base, not a database.</p>
           <p><strong>In-place Ticket Creation/Updates</strong> — Agents should eventually create and update Zendesk tickets from within Customer Central. Deferred because the read path (viewing tickets) must be proven before the write path (creating tickets). Write-path errors are more dangerous.</p>

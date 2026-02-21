@@ -342,7 +342,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--t1);height
   <div class="hs-badge" id="hsBadge" onclick="toggleHealthBreakdown(event)">
     <div class="strip-l">Health Score</div>
     <div class="hs-score" id="hsScore" style="color:#4caf50"><span class="sdot" style="background:#4caf50"></span><span id="hsScoreNum">82</span> <span class="hs-band" id="hsBand">— Good</span></div>
-    <div class="strip-s" id="hsSubtext">5 signals · Rule-based</div>
+    <div class="strip-s" id="hsSubtext">5 signals + tenure · Rule-based</div>
     <div class="hs-breakdown" id="hsBreakdown">
       <div class="hs-breakdown-title">Health Score Breakdown</div>
       <div class="hs-row"><span class="hs-row-label">Billing</span><div><span class="hs-row-score" style="color:var(--g)" id="hsBilling">100</span><span class="hs-row-detail" id="hsBillingDetail">Current — paid Feb 1</span></div></div>
@@ -350,6 +350,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--t1);height
       <div class="hs-row"><span class="hs-row-label">Support</span><div><span class="hs-row-score" style="color:var(--a)" id="hsSupport">72</span><span class="hs-row-detail" id="hsSupportDetail">1 open ticket, 3 days old, medium</span></div></div>
       <div class="hs-row"><span class="hs-row-label">Satisfaction</span><div><span class="hs-row-score" style="color:var(--g)" id="hsSatisfaction">85</span><span class="hs-row-detail" id="hsSatisfactionDetail">Last 3 CSAT avg</span></div></div>
       <div class="hs-row"><span class="hs-row-label">Activity</span><div><span class="hs-row-score" style="color:var(--g)" id="hsActivity">80</span><span class="hs-row-detail" id="hsActivityDetail">Moderate — 3 changes in 14 days</span></div></div>
+      <div class="hs-row" id="hsTenureRow" style="border-top:1px dashed var(--b2);margin-top:4px;padding-top:8px"><span class="hs-row-label" style="color:var(--bl)">Tenure Factor</span><div><span class="hs-row-score" style="color:var(--bl)" id="hsTenureFactor">×1.00</span><span class="hs-row-detail" id="hsTenureDetail">Customer since Jan 2022 (180+ days)</span></div></div>
       <div class="hs-row hs-row-overall" id="hsOverallRow"><span>Overall</span><span class="hs-row-score" id="hsOverallScore" style="color:#4caf50">82 — Good</span></div>
     </div>
   </div>
@@ -695,7 +696,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--t1);height
 <div class="portfolio-view" id="portfolioView">
   <div class="port-header">
     <h2>Portfolio Health Overview</h2>
-    <p>Health distribution across all managed accounts. Scores are rule-based: (Billing x 0.30) + (Payroll x 0.25) + (Support x 0.20) + (Satisfaction x 0.15) + (Activity x 0.10)</p>
+    <p>Health distribution across all managed accounts. Scores are rule-based: Base = (Billing × 0.30) + (Payroll × 0.25) + (Support × 0.20) + (Satisfaction × 0.15) + (Activity × 0.10), then Final = Base × Tenure Factor<br><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--t4);margin-top:4px;display:inline-block">Tenure Factor: &lt;30 days = 0.75, 30-90 days = 0.85, 90-180 days = 0.95, 180+ days = 1.00</span></p>
   </div>
   <div class="port-dist">
     <div class="port-dist-item" style="background:rgba(76,175,80,0.08);color:#388e3c;border:1px solid rgba(76,175,80,0.2)"><span class="port-dist-count">487</span>Healthy</div>
@@ -742,12 +743,12 @@ body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--t1);height
         <td class="port-risk-signal">CSAT below 60 (2 negative surveys)</td>
       </tr>
       <tr style="cursor:pointer" onclick="toast('→ Opening Massive Dynamic profile...')">
-        <td style="font-weight:500">Massive Dynamic</td>
+        <td style="font-weight:500">Massive Dynamic <span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:2px 6px;border-radius:3px;background:rgba(79,70,229,0.08);color:var(--bl);border:1px solid rgba(79,70,229,0.15);margin-left:4px;font-weight:400">NEW — Feb 2026</span></td>
         <td>PEO Plus</td>
         <td>87</td>
-        <td><span class="port-score" style="color:#689f38">76</span></td>
-        <td><span class="port-band" style="background:rgba(139,195,74,0.12);color:#689f38;border:1px solid rgba(139,195,74,0.2)">Good</span></td>
-        <td class="port-risk-signal">Payroll run had 2 warnings last cycle</td>
+        <td><span class="port-score" style="color:var(--a)">53</span> <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t4)">(base 70 × 0.75)</span></td>
+        <td><span class="port-band" style="background:var(--ab);color:var(--a);border:1px solid var(--ad)">Attention</span></td>
+        <td class="port-risk-signal">New customer (&lt;30 days) — tenure factor 0.75 applied</td>
       </tr>
       <tr style="cursor:pointer" onclick="toast('→ Opening Prestige Worldwide profile...')">
         <td style="font-weight:500">Prestige Worldwide</td>
@@ -893,24 +894,38 @@ function updateHealthScore(mode){
   const billingDetail=document.getElementById('hsBillingDetail');
   const overallScore=document.getElementById('hsOverallScore');
   const subtextEl=document.getElementById('hsSubtext');
+  const tenureFactorEl=document.getElementById('hsTenureFactor');
+  const tenureDetailEl=document.getElementById('hsTenureDetail');
+  // Acme Corp: customer since Jan 2022 (180+ days) → tenure factor 1.00
+  const tenureFactor=1.00;
   if(mode==='risk'){
-    scoreEl.textContent='34';
+    // Risk mode: billing drops to 0, base score ~34, × tenure 1.00 = 34
+    const baseScore=34;
+    const finalScore=Math.round(baseScore*tenureFactor);
+    scoreEl.textContent=String(finalScore);
     bandEl.textContent='— At Risk';
     scoreWrap.style.color='#ea580c';
     dotEl.style.background='#ea580c';
     billingScore.textContent='0';billingScore.style.color='var(--r)';
     billingDetail.textContent='Past due 8 days — ACH failed';
-    overallScore.textContent='34 — At Risk';overallScore.style.color='#ea580c';
+    overallScore.textContent=finalScore+' — At Risk';overallScore.style.color='#ea580c';
     subtextEl.textContent='Billing signal critical';
+    tenureFactorEl.textContent='×'+tenureFactor.toFixed(2);
+    tenureDetailEl.textContent='Customer since Jan 2022 (180+ days)';
   } else {
-    scoreEl.textContent='82';
+    // Normal mode: base score 82, × tenure 1.00 = 82
+    const baseScore=82;
+    const finalScore=Math.round(baseScore*tenureFactor);
+    scoreEl.textContent=String(finalScore);
     bandEl.textContent='— Good';
     scoreWrap.style.color='#4caf50';
     dotEl.style.background='#4caf50';
     billingScore.textContent='100';billingScore.style.color='var(--g)';
     billingDetail.textContent='Current — paid Feb 1';
-    overallScore.textContent='82 — Good';overallScore.style.color='#4caf50';
-    subtextEl.textContent='5 signals · Rule-based';
+    overallScore.textContent=finalScore+' — Good';overallScore.style.color='#4caf50';
+    subtextEl.textContent='5 signals + tenure · Rule-based';
+    tenureFactorEl.textContent='×'+tenureFactor.toFixed(2);
+    tenureDetailEl.textContent='Customer since Jan 2022 (180+ days)';
   }
 }
 

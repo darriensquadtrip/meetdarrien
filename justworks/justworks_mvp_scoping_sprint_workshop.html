@@ -1138,7 +1138,7 @@
         <div class="vote-dots"><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div></div>
         <div class="card-category issues">Health Signals</div>
         <h5>Lightweight Health Score (HS-1)</h5>
-        <div class="card-detail">Lightweight rule-based score using billing, payroll, support, satisfaction, and activity signals. Transparent and agent-verifiable. Formula: (Billing x 0.30) + (Payroll x 0.25) + (Support x 0.20) + (Satisfaction x 0.15) + (Activity x 0.10). Five color bands: Green (90-100), Light Green (70-89), Amber (50-69), Orange (30-49), Red (0-29).</div>
+        <div class="card-detail">Lightweight rule-based score using billing, payroll, support, satisfaction, and activity signals. Transparent and agent-verifiable. Formula: Base = (Billing x 0.30) + (Payroll x 0.25) + (Support x 0.20) + (Satisfaction x 0.15) + (Activity x 0.10), then Final = Base × Tenure Factor. Tenure Factor: &lt;30 days = 0.75, 30-90 days = 0.85, 90-180 days = 0.95, 180+ days = 1.00. Five color bands: Green (90-100), Light Green (70-89), Amber (50-69), Orange (30-49), Red (0-29).</div>
         <div class="card-footer">
           <span class="card-source">Status strip signals + rule-based model</span>
           <span class="card-effort med">Med Effort</span>

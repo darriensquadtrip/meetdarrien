@@ -909,24 +909,29 @@ body {
           <tr><td>open_ticket_count, avg_ticket_age, highest_ticket_priority</td><td><span class="src-badge zd">ZENDESK</span></td><td>0 open=100, scales down by count/age/severity. Weight: 20%</td></tr>
           <tr><td>csat_scores (last 3)</td><td><span class="src-badge zd">ZENDESK</span></td><td>Avg of last 3 CSAT scores, missing=neutral (70). Weight: 15%</td></tr>
           <tr><td>recent_changes_count, customer_tenure</td><td><span class="src-badge logs">EVENTS</span></td><td>Moderate activity=100, zero=70, spikes=50. Weight: 10%</td></tr>
+          <tr><td>customer_tenure</td><td><span class="src-badge sf">SF</span> <span class="sfobj">Account.CreatedDate</span></td><td>Days since account creation. Used to derive tenure_factor.</td></tr>
+          <tr><td>tenure_factor</td><td>Computed</td><td>Multiplier applied after base score: &lt;30d=0.75, 30-90d=0.85, 90-180d=0.95, 180+d=1.00</td></tr>
         </table>
         <div class="sub-head">SCORING FORMULA</div>
         <div class="risk-text" style="font-family:'JetBrains Mono',monospace; font-size:0.75rem; margin-bottom:0.5rem">
-          Health Score = (Billing x 0.30) + (Payroll x 0.25) + (Support x 0.20) + (Satisfaction x 0.15) + (Activity x 0.10)
+          Base = (Billing x 0.30) + (Payroll x 0.25) + (Support x 0.20) + (Satisfaction x 0.15) + (Activity x 0.10), then Final = Base x Tenure Factor
+        </div>
+        <div class="risk-text" style="margin-bottom:0.5rem">
+          <strong>Tenure Factor Brackets:</strong> &lt;30 days = 0.75, 30-90 days = 0.85, 90-180 days = 0.95, 180+ days = 1.00. New customers start with a lower ceiling, reflecting that early-lifecycle accounts haven't yet established stable patterns.
         </div>
         <div class="risk-text">
           <strong>Health Bands:</strong> 90-100 Green (Healthy) · 70-89 Light Green (Good) · 50-69 Amber (Attention) · 30-49 Orange (At Risk) · 0-29 Red (Critical)
         </div>
         <div class="sub-head">INTEGRATION NOTES</div>
         <div class="callout green">
-          <strong>All data comes from the existing aggregation layer — no new integrations required.</strong> The health score is a computation layer on signals already collected for FS-3 (Account Status at a Glance). Billing status, payroll run status, open ticket count, CSAT scores, and activity events are all fields the aggregation API already queries. The health score engine applies a weighted formula and stores the result on <code>account_summaries</code>.
+          <strong>All data comes from the existing aggregation layer — no new integrations required.</strong> The health score is a computation layer on signals already collected for FS-3 (Account Status at a Glance). Billing status, payroll run status, open ticket count, CSAT scores, and activity events are all fields the aggregation API already queries. The health score engine applies a weighted formula, then multiplies by a tenure factor based on customer age, and stores the result on <code>account_summaries</code>.
         </div>
         <div class="sub-head">KEY DESIGN PRINCIPLES</div>
         <div class="risk-text">
           Score must be <strong>decomposable</strong> — agent clicks badge to see each signal's individual score with plain-language explanation. Score is <strong>transparent</strong> — not a black box; agents can verify it matches reality. Score is <strong>rule-based</strong> — no ML in Phase 1; ML-weighted adaptive scoring is Phase 2. Weights are <strong>configurable</strong> — calibrated during Week 2 validation exercise.
         </div>
         <div class="sub-head">ACCEPTANCE CRITERIA</div>
-        <div class="risk-text">Score computes in &lt;100ms. Decomposable by signal — clicking the badge shows 5 component scores. Matches experienced agent intuition &ge;80% in Week 2 validation exercise.</div>
+        <div class="risk-text">Score computes in &lt;100ms. Decomposable by signal — clicking the badge shows 5 component scores plus the tenure adjustment. Matches experienced agent intuition &ge;80% in Week 2 validation exercise.</div>
       </div>
     </div>
 

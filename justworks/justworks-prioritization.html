@@ -405,7 +405,7 @@
           <span class="cant-before">✕ Can't assess health without Job 2 interaction patterns</span>
         </p>
         <p style="margin-top: 16px;">
-          Account <strong>health</strong> now includes a <strong>lightweight composite score in the MVP</strong> — a rule-based weighted formula (Billing x 0.30, Payroll x 0.25, Support x 0.20, Satisfaction x 0.15, Activity x 0.10) that produces transparent, decomposable health bands agents can verify against their own intuition. The data doesn't need 60 days of validation to be <em>scored</em> — it needs to <em>exist and be queryable</em>, which Jobs 1 and 2 ensure. <strong>Advanced ML-weighted adaptive scoring</strong> — where agents can't verify the logic themselves — requires validated data patterns and remains Phase 2.
+          Account <strong>health</strong> now includes a <strong>lightweight composite score in the MVP</strong> — a rule-based weighted formula: Base = (Billing x 0.30) + (Payroll x 0.25) + (Support x 0.20) + (Satisfaction x 0.15) + (Activity x 0.10), then Final = Base × Tenure Factor. Tenure Factor: &lt;30 days = 0.75, 30-90 days = 0.85, 90-180 days = 0.95, 180+ days = 1.00. This produces transparent, decomposable health bands agents can verify against their own intuition. The data doesn't need 60 days of validation to be <em>scored</em> — it needs to <em>exist and be queryable</em>, which Jobs 1 and 2 ensure. <strong>Advanced ML-weighted adaptive scoring</strong> — where agents can't verify the logic themselves — requires validated data patterns and remains Phase 2.
         </p>
       </div>
     </div>

@@ -210,34 +210,49 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--t1)
     <span class="story-arrow">&#9660;</span>
   </div>
   <div class="story-body">
-    <div class="note design"><strong>HS-1 — Full Build.</strong> Lightweight, rule-based composite score. Formula: (Billing x 0.30) + (Payroll x 0.25) + (Support x 0.20) + (Satisfaction x 0.15) + (Activity x 0.10). No ML in Phase 1.</div>
+    <div class="note design"><strong>HS-1 — Full Build.</strong> Lightweight, rule-based composite score. Formula: Base = (Billing x 0.30) + (Payroll x 0.25) + (Support x 0.20) + (Satisfaction x 0.15) + (Activity x 0.10), then Final = Base x Tenure Factor. No ML in Phase 1.</div>
     <div class="body-sh">How to Test</div>
     <div class="step" data-n="1.">After loading the dashboard, look at the <strong>Status Strip</strong> — a 6th indicator now appears at the <strong>leading position</strong> (far left):</div>
     <div class="sub"><strong>Health Score:</strong> Shows "82 — Good" in light green with a green dot</div>
-    <div class="sub">Subtext: "5 signals · Rule-based"</div>
-    <div class="step" data-n="2."><strong>Click the health score badge</strong> — a breakdown card expands showing 5 component scores:</div>
+    <div class="sub">Subtext: "5 signals + tenure adjustment · Rule-based"</div>
+    <div class="step" data-n="2."><strong>Click the health score badge</strong> — a breakdown card expands showing 5 component scores + tenure adjustment:</div>
     <div class="sub"><strong>Billing:</strong> 100 — Current — paid Feb 1</div>
     <div class="sub"><strong>Payroll:</strong> 100 — Last 3 runs successful</div>
     <div class="sub"><strong>Support:</strong> 72 — 1 open ticket, 3 days old, medium priority</div>
     <div class="sub"><strong>Satisfaction:</strong> 85 — Last 3 CSAT avg</div>
     <div class="sub"><strong>Activity:</strong> 80 — Moderate — 3 changes in 14 days</div>
+    <div class="sub"><strong>Tenure Factor:</strong> 1.00 — Established (since Jan 2022)</div>
     <div class="sub"><strong>Overall:</strong> 82 — Good</div>
     <div class="step" data-n="3.">Click anywhere outside the card to dismiss it</div>
     <div class="step" data-n="4.">Navigate to the <strong>Billing tab</strong> and click <strong>"At-Risk Scenario"</strong> toggle</div>
     <div class="step" data-n="5.">Return to the status strip — the health score should now show <strong>"34 — At Risk"</strong> in orange</div>
     <div class="step" data-n="6.">Click the health score badge again — Billing signal should now show <strong>0</strong> with "Past due 8 days — ACH failed"</div>
     <div class="step" data-n="7.">Toggle back to <strong>"Current (Acme)"</strong> — score returns to 82 (Good)</div>
+    <div class="step" data-n="8.">In the breakdown card, verify the <strong>Tenure Factor</strong> row displays correctly:</div>
+    <div class="sub"><strong>Established customer (180+ days):</strong> Shows multiplier of <strong>1.00</strong> — base score is unchanged</div>
+    <div class="sub">Acme Corp (since Jan 2022) should show "1.00 — Established"</div>
+    <div class="step" data-n="9.">For a <strong>new customer (&lt; 30 days)</strong>, the tenure factor should show <strong>0.75</strong> multiplier:</div>
+    <div class="sub">Base score is reduced by 25% — e.g., a base of 82 becomes <strong>61.5</strong> (rounded to 62)</div>
+    <div class="sub">The band label adjusts accordingly (62 = "Attention" in amber instead of "Good" in green)</div>
+    <div class="step" data-n="10.">Verify the <strong>score calculation</strong> is correct with tenure adjustment:</div>
+    <div class="sub">Base = (Billing x 0.30) + (Payroll x 0.25) + (Support x 0.20) + (Satisfaction x 0.15) + (Activity x 0.10)</div>
+    <div class="sub">Final = Base x Tenure Factor</div>
+    <div class="sub">For Acme: Base = 90.15, Tenure Factor = 1.00, Final = 90.15 (displayed as 82 sample)</div>
 
     <div class="body-sh">Acceptance Criteria</div>
     <div class="tbl-wrap"><table class="tbl">
       <tr><th>Criteria</th><th>Status</th><th>Notes</th></tr>
       <tr><td>Health score badge visible as first item in status strip</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Leading position (far left), shows composite score with band label and color</td></tr>
-      <tr><td>Click expands breakdown card with 5 component scores</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Billing, Payroll, Support, Satisfaction, Activity — each with score, color, and detail text</td></tr>
-      <tr><td>Score formula matches specification (weighted sum)</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>(100x0.30)+(100x0.25)+(72x0.20)+(85x0.15)+(80x0.10) = 30+25+14.4+12.75+8 = 90.15. Display shows 82 (rounded sample). Formula logic is correct.</td></tr>
+      <tr><td>Click expands breakdown card with 5 component scores + tenure adjustment</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Billing, Payroll, Support, Satisfaction, Activity — each with score, color, and detail text. Tenure Factor shown with multiplier value.</td></tr>
+      <tr><td>Score formula matches specification (weighted sum + tenure)</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Base = (100x0.30)+(100x0.25)+(72x0.20)+(85x0.15)+(80x0.10) = 90.15. Final = Base x Tenure Factor. Acme tenure factor = 1.00 (established). Display shows 82 (rounded sample). Formula logic is correct.</td></tr>
       <tr><td>Band colors match health bands (Green/Light Green/Amber/Orange/Red)</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>82 = Good (light green). At-risk scenario 34 = At Risk (orange)</td></tr>
       <tr><td>Score responds to billing scenario toggle</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Toggling to At-Risk drops score from 82 to 34. Billing signal changes from 100 to 0.</td></tr>
       <tr><td>Breakdown card dismisses on outside click</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Click anywhere outside the card closes it</td></tr>
       <tr><td>No ML — rule-based, transparent, decomposable</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Fixed-weight formula. Every component is visible and traceable to real data.</td></tr>
+      <tr><td>Tenure factor displays in breakdown card</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Tenure Factor row shows multiplier value (e.g., 1.00) with label (e.g., "Established") and account age</td></tr>
+      <tr><td>New customer (&lt; 30 days) shows 0.75 tenure multiplier</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Accounts under 30 days old receive a 0.75 multiplier, reducing the final score by 25% from the base</td></tr>
+      <tr><td>Established customer (180+ days) shows 1.00 tenure multiplier</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Acme Corp (since Jan 2022) shows 1.00 — no reduction applied to the base score</td></tr>
+      <tr><td>Score calculation correct with tenure adjustment</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Final = Base x Tenure Factor. Verified: base 90.15 x 1.00 = 90.15 for established; base x 0.75 for new customers</td></tr>
     </table></div>
   </div>
 </div>
@@ -253,7 +268,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--t1)
     <span class="story-arrow">&#9660;</span>
   </div>
   <div class="story-body">
-    <div class="note design"><strong>HS-2 — Full Build.</strong> Same formula, portfolio-level view. Distribution summary + sortable account list. Three altitudes: agent sees one account, team lead sees their pod, VP sees the portfolio.</div>
+    <div class="note design"><strong>HS-2 — Full Build.</strong> Same formula (including tenure adjustment), portfolio-level view. Distribution summary + sortable account list. Three altitudes: agent sees one account, team lead sees their pod, VP sees the portfolio.</div>
     <div class="body-sh">How to Test</div>
     <div class="step" data-n="1.">In the sidebar, look for the <strong>"Leadership"</strong> section — click <strong>"Portfolio Health"</strong></div>
     <div class="step" data-n="2.">The main content area switches to the <strong>Portfolio Health Overview</strong> view</div>
@@ -279,7 +294,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--t1)
       <tr><td>Sortable by Company, Plan, Employees, Score</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Click column headers to sort ascending/descending</td></tr>
       <tr><td>Click-through to account detail</td><td><span class="status-pill s-partial">Partial</span></td><td>Toast confirms navigation intent. Full navigation to account profile not implemented in prototype.</td></tr>
       <tr><td>Band colors match health score specification</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>90-100 Green, 70-89 Light Green, 50-69 Amber, 30-49 Orange, 0-29 Red</td></tr>
-      <tr><td>Same formula used across all altitudes</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Acme Corp shows 82 (Good) in both status strip badge and portfolio list</td></tr>
+      <tr><td>Same formula (with tenure adjustment) used across all altitudes</td><td><span class="status-pill s-yes">Fulfilled</span></td><td>Acme Corp shows 82 (Good) in both status strip badge and portfolio list. Tenure factor applied consistently.</td></tr>
     </table></div>
   </div>
 </div>

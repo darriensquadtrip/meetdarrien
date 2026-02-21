@@ -728,7 +728,7 @@ body {
             <li><strong>Freshness validation:</strong> Confirm data refresh cadence meets requirements (billing: real-time, interactions: near-real-time, activity: daily).</li>
             <li><strong>Edge cases:</strong> New companies with no history, companies that migrated between plans, employees with multiple roles, Zendesk downtime behavior.</li>
             <li><strong>Performance:</strong> Dashboard loads in &lt;3 seconds, search returns in &lt;2 seconds under realistic data volumes.</li>
-            <li><strong>Health score accuracy:</strong> Cross-reference computed scores against source system data — verify that the weighted formula (Billing 0.30, Payroll 0.25, Support 0.20, Satisfaction 0.15, Activity 0.10) produces scores that align with source fields.</li>
+            <li><strong>Health score accuracy:</strong> Cross-reference computed scores against source system data — verify that the weighted formula — Base = (Billing 0.30) + (Payroll 0.25) + (Support 0.20) + (Satisfaction 0.15) + (Activity 0.10), then Final = Base × Tenure Factor (Tenure Factor: &lt;30 days = 0.75, 30-90 days = 0.85, 90-180 days = 0.95, 180+ days = 1.00) — produces scores that align with source fields.</li>
           </ul>
           <div class="tc-section-label">Why Shared</div>
           <p>QA ramps in Week 2 once there's something to test. They don't need to be full-time — they need focused bursts during integration testing and pre-launch validation. A shared resource with clear test plans is more effective than a dedicated QA engineer with idle time.</p>
