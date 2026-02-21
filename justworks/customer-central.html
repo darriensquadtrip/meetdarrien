@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Customer Central</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -18,41 +18,41 @@
   --p:#db2777;--pb:rgba(219,39,119,0.08);
   --o:#ea580c;
 }
-body{font-family:'DM Sans',sans-serif;background:var(--bg0);color:var(--t1);height:100vh;overflow:hidden}
-.app{display:grid;grid-template-columns:210px 1fr;grid-template-rows:52px 1fr;height:100vh}
+body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--t1);height:100vh;overflow:hidden}
+.app{display:grid;grid-template-columns:230px 1fr;grid-template-rows:56px 1fr;height:100vh}
 
 /* NAV */
 .nav{grid-column:1/-1;background:#ffffff;border-bottom:1px solid rgba(0,0,0,0.08);display:flex;align-items:center;padding:0 20px;gap:16px;z-index:100}
-.logo{font-family:'DM Mono',monospace;font-size:12px;font-weight:500;letter-spacing:1.5px;color:var(--t1);display:flex;align-items:center;gap:8px;flex-shrink:0}
+.logo{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:500;letter-spacing:1.5px;color:var(--t1);display:flex;align-items:center;gap:8px;flex-shrink:0}
 .logo-dot{width:7px;height:7px;border-radius:50%;background:var(--g);box-shadow:0 0 8px rgba(5,150,105,0.3);animation:pulse 2s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 .search-wrap{flex:1;max-width:460px;position:relative}
-.search-in{width:100%;padding:7px 12px 7px 32px;background:#f5f6f8;border:1px solid rgba(0,0,0,0.1);border-radius:7px;color:var(--t1);font-family:'DM Sans',sans-serif;font-size:12px;outline:none;transition:all .2s}
+.search-in{width:100%;padding:8px 14px 8px 34px;background:#f5f6f8;border:1px solid rgba(0,0,0,0.1);border-radius:7px;color:var(--t1);font-family:'Inter',sans-serif;font-size:14px;outline:none;transition:all .2s}
 .search-in:focus{border-color:var(--g);background:#ffffff}
 .search-in::placeholder{color:var(--t4)}
-.search-ico{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--t4);font-size:13px}
+.search-ico{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--t4);font-size:15px}
 .search-dd{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#ffffff;border:1px solid rgba(0,0,0,0.1);border-radius:10px;overflow:hidden;display:none;z-index:200;box-shadow:0 12px 40px rgba(0,0,0,.12)}
 .search-dd.vis{display:block}
-.sr{padding:10px 14px;cursor:pointer;display:flex;align-items:center;gap:10px;transition:background .12s;border-bottom:1px solid var(--b0)}
+.sr{padding:11px 16px;cursor:pointer;display:flex;align-items:center;gap:10px;transition:background .12s;border-bottom:1px solid var(--b0)}
 .sr:last-child{border:none}
 .sr:hover{background:var(--bg4)}
-.av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}
+.av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0}
 .sr-info{flex:1}
-.sr-name{font-size:12px;font-weight:500}
-.sr-det{font-size:11px;color:var(--t3);margin-top:1px}
-.sr-badge{font-family:'DM Mono',monospace;font-size:11px;padding:2px 7px;border-radius:4px}
-.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:11px;color:var(--t1)}
-.nav-av{width:26px;height:26px;border-radius:50%;background:var(--blb);border:1px solid var(--bld);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--bl)}
+.sr-name{font-size:14px;font-weight:500}
+.sr-det{font-size:12px;color:var(--t3);margin-top:2px}
+.sr-badge{font-family:'JetBrains Mono',monospace;font-size:12px;padding:3px 8px;border-radius:4px}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--t1)}
+.nav-av{width:30px;height:30px;border-radius:50%;background:var(--blb);border:1px solid var(--bld);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--bl)}
 
 /* SIDEBAR */
-.side{background:var(--bg1);border-right:none;padding:14px 0;overflow-y:auto}
-.sl{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;color:rgba(255,255,255,0.35);text-transform:uppercase;padding:0 20px;margin-bottom:6px;margin-top:14px}
+.side{background:var(--bg1);border-right:none;padding:16px 0;overflow-y:auto}
+.sl{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:2px;color:rgba(255,255,255,0.35);text-transform:uppercase;padding:0 20px;margin-bottom:8px;margin-top:18px}
 .sl:first-child{margin-top:0}
-.si{display:flex;align-items:center;gap:9px;padding:7px 14px;margin:0 6px;border-radius:0 7px 7px 0;border-left:3px solid transparent;cursor:pointer;font-size:12px;color:rgba(255,255,255,0.55);transition:all .12s}
+.si{display:flex;align-items:center;gap:10px;padding:9px 16px;margin:0 6px;border-radius:0 7px 7px 0;border-left:3px solid transparent;cursor:pointer;font-size:14px;color:rgba(255,255,255,0.55);transition:all .12s}
 .si:hover{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.85)}
 .si.act{background:rgba(5,150,105,0.15);color:#6ee7b7;border-left-color:#6ee7b7}
-.si .ic{font-size:13px;width:18px;text-align:center}
-.si .ct{margin-left:auto;font-family:'DM Mono',monospace;font-size:11px;background:rgba(255,255,255,0.08);padding:1px 6px;border-radius:3px;color:rgba(255,255,255,0.5)}
+.si .ic{font-size:14px;width:20px;text-align:center}
+.si .ct{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:12px;background:rgba(255,255,255,0.08);padding:2px 7px;border-radius:3px;color:rgba(255,255,255,0.5)}
 .si.act .ct{background:rgba(5,150,105,0.25);color:#6ee7b7}
 #sideAcct{display:none}
 
@@ -60,10 +60,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg0);color:var(--t1);heig
 .main{overflow-y:auto;position:relative}
 /* Empty */
 .empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;padding:40px}
-.empty .ei{font-size:40px;margin-bottom:16px;opacity:.25}
-.empty h2{font-size:16px;font-weight:500;color:var(--t2);margin-bottom:6px}
-.empty p{font-size:12px;color:var(--t3);max-width:280px}
-.empty .ek{margin-top:14px;font-family:'DM Mono',monospace;font-size:11px;color:var(--t3);background:#ffffff;padding:5px 12px;border-radius:5px;border:1px solid rgba(0,0,0,0.1)}
+.empty .ei{font-size:48px;margin-bottom:18px;opacity:.25}
+.empty h2{font-size:20px;font-weight:500;color:var(--t2);margin-bottom:8px}
+.empty p{font-size:14px;color:var(--t3);max-width:320px}
+.empty .ek{margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--t3);background:#ffffff;padding:6px 14px;border-radius:5px;border:1px solid rgba(0,0,0,0.1)}
 
 /* DASHBOARD */
 .dash{display:none;height:100%;overflow-y:auto}
@@ -71,53 +71,53 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg0);color:var(--t1);heig
 
 /* Status Strip (FS-3) */
 .strip{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:rgba(0,0,0,0.06);border-bottom:1px solid rgba(0,0,0,0.08)}
-.strip-i{background:#ffffff;padding:10px 14px;cursor:pointer;transition:background .12s}
+.strip-i{background:#ffffff;padding:12px 16px;cursor:pointer;transition:background .12s}
 .strip-i:hover{background:#f8f9fb}
-.strip-l{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--t4);text-transform:uppercase;margin-bottom:3px}
-.strip-v{font-size:14px;font-weight:600;display:flex;align-items:center;gap:5px}
-.strip-s{font-size:11px;color:var(--t3);margin-top:1px}
+.strip-l{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--t4);text-transform:uppercase;margin-bottom:4px}
+.strip-v{font-size:16px;font-weight:600;display:flex;align-items:center;gap:5px}
+.strip-s{font-size:12px;color:var(--t3);margin-top:2px}
 .sdot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
 
 /* Company Header */
-.co-head{padding:16px 20px;background:#ffffff;border-bottom:1px solid rgba(0,0,0,0.08);display:flex;align-items:flex-start;gap:14px}
-.co-av{width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,rgba(5,150,105,0.12),rgba(79,70,229,0.1));border:1px solid rgba(5,150,105,0.2);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:var(--g);flex-shrink:0}
+.co-head{padding:18px 24px;background:#ffffff;border-bottom:1px solid rgba(0,0,0,0.08);display:flex;align-items:flex-start;gap:16px}
+.co-av{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,rgba(5,150,105,0.12),rgba(79,70,229,0.1));border:1px solid rgba(5,150,105,0.2);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:var(--g);flex-shrink:0}
 .co-info{flex:1}
-.co-name{font-size:18px;font-weight:600;margin-bottom:3px}
+.co-name{font-size:22px;font-weight:600;margin-bottom:4px}
 .co-meta{display:flex;gap:8px;flex-wrap:wrap}
-.mt{font-family:'DM Mono',monospace;font-size:11px;padding:2px 8px;border-radius:4px;display:flex;align-items:center;gap:4px}
+.mt{font-family:'JetBrains Mono',monospace;font-size:12px;padding:3px 9px;border-radius:4px;display:flex;align-items:center;gap:4px}
 .co-acts{display:flex;gap:6px;flex-shrink:0}
-.btn{padding:6px 12px;border-radius:6px;border:1px solid rgba(0,0,0,0.12);background:#ffffff;color:var(--t2);font-family:'DM Sans',sans-serif;font-size:11px;cursor:pointer;transition:all .12s;display:flex;align-items:center;gap:5px;white-space:nowrap}
+.btn{padding:7px 14px;border-radius:6px;border:1px solid rgba(0,0,0,0.12);background:#ffffff;color:var(--t2);font-family:'Inter',sans-serif;font-size:13px;cursor:pointer;transition:all .12s;display:flex;align-items:center;gap:5px;white-space:nowrap}
 .btn:hover{background:#f5f6f8;border-color:rgba(0,0,0,0.18);color:var(--t1)}
 .btn-g{background:var(--g);border-color:var(--g);color:#ffffff}
 .btn-g:hover{background:#047857}
 
 /* Caller Card (FS-1) */
-.caller{background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-left:3px solid var(--g);border-radius:9px;padding:12px 16px;margin:14px 20px 0;display:flex;align-items:center;gap:12px;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
-.caller-av{width:36px;height:36px;border-radius:50%;background:rgba(5,150,105,0.1);border:2px solid var(--g);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px;color:var(--g)}
+.caller{background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-left:3px solid var(--g);border-radius:9px;padding:14px 18px;margin:16px 24px 0;display:flex;align-items:center;gap:14px;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
+.caller-av{width:40px;height:40px;border-radius:50%;background:rgba(5,150,105,0.1);border:2px solid var(--g);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:14px;color:var(--g)}
 .caller-info{flex:1}
-.caller-n{font-size:13px;font-weight:600}
-.caller-r{font-size:11px;color:var(--t2);margin-top:1px}
-.caller-c{font-size:11px;color:var(--t3);margin-top:1px}
-.caller-b{font-family:'DM Mono',monospace;font-size:11px;padding:3px 8px;border-radius:4px;background:var(--gb);color:var(--g);border:1px solid var(--gd)}
+.caller-n{font-size:15px;font-weight:600}
+.caller-r{font-size:13px;color:var(--t2);margin-top:2px}
+.caller-c{font-size:12px;color:var(--t3);margin-top:2px}
+.caller-b{font-family:'JetBrains Mono',monospace;font-size:12px;padding:4px 10px;border-radius:4px;background:var(--gb);color:var(--g);border:1px solid var(--gd)}
 
 /* Tax badges (PS-3) */
-.tax-row{padding:10px 20px 0;display:flex;gap:6px}
-.tax-b{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:6px;font-size:11px;font-family:'DM Mono',monospace}
+.tax-row{padding:12px 24px 0;display:flex;gap:8px}
+.tax-b{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:6px;font-size:12px;font-family:'JetBrains Mono',monospace}
 
 /* Tabs */
-.tabs{display:flex;gap:0;padding:0 20px;margin-top:14px;border-bottom:1px solid var(--b1)}
-.tab{padding:8px 14px;background:transparent;border:none;border-bottom:2px solid transparent;color:var(--t3);font-family:'DM Sans',sans-serif;font-size:12px;cursor:pointer;transition:all .12s}
+.tabs{display:flex;gap:0;padding:0 24px;margin-top:16px;border-bottom:1px solid var(--b1)}
+.tab{padding:10px 16px;background:transparent;border:none;border-bottom:2px solid transparent;color:var(--t3);font-family:'Inter',sans-serif;font-size:14px;cursor:pointer;transition:all .12s}
 .tab:hover{color:var(--t2)}
 .tab.act{color:var(--g);border-bottom-color:var(--g)}
-.tab .tc{font-family:'DM Mono',monospace;font-size:11px;background:var(--b0);padding:1px 5px;border-radius:3px;margin-left:4px}
+.tab .tc{font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--b0);padding:2px 6px;border-radius:3px;margin-left:5px}
 .tab.act .tc{background:var(--gb);color:var(--g)}
 
-.tcon{padding:16px 20px 40px}
+.tcon{padding:18px 24px 40px}
 .tp{display:none}
 .tp.act{display:block}
 
 /* Section header */
-.sh{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--t3);text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.sh{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.5px;color:var(--t3);text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px}
 
 /* Timeline (FS-2) */
 .tl{position:relative;padding-left:20px}
@@ -127,117 +127,117 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg0);color:var(--t1);heig
 .tld{width:10px;height:10px;border-radius:50%;border:2px solid;background:#f5f6f8;z-index:1;flex-shrink:0;margin-top:3px;margin-left:-17px}
 .tlc{flex:1}
 .tlh{display:flex;align-items:center;gap:6px;margin-bottom:2px;flex-wrap:wrap}
-.tlch{font-family:'DM Mono',monospace;font-size:11px;padding:1px 7px;border-radius:3px}
-.tldt{font-family:'DM Mono',monospace;font-size:11px;color:var(--t4)}
-.tlst{font-family:'DM Mono',monospace;font-size:11px;padding:1px 5px;border-radius:3px}
-.tlt{font-size:12px;color:var(--t1);line-height:1.5}
-.tla{font-size:11px;color:var(--t3);margin-top:2px}
+.tlch{font-family:'JetBrains Mono',monospace;font-size:12px;padding:2px 8px;border-radius:3px}
+.tldt{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--t4)}
+.tlst{font-family:'JetBrains Mono',monospace;font-size:12px;padding:2px 6px;border-radius:3px}
+.tlt{font-size:14px;color:var(--t1);line-height:1.5}
+.tla{font-size:12px;color:var(--t3);margin-top:2px}
 
 /* Pinned ticket */
-.pinned{border:1px solid var(--ad);background:rgba(217,119,6,.06);border-radius:8px;padding:10px 14px;margin-bottom:8px}
-.pin-l{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--a);text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:5px}
+.pinned{border:1px solid var(--ad);background:rgba(217,119,6,.06);border-radius:8px;padding:12px 16px;margin-bottom:10px}
+.pin-l{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.5px;color:var(--a);text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:5px}
 
 /* Paystub (PS-1) */
 .ps-card{background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-radius:9px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
-.ps-head{padding:10px 14px;background:#f8f9fb;border-bottom:1px solid rgba(0,0,0,0.06);display:flex;justify-content:space-between;align-items:center}
-.ps-head-l{font-family:'DM Mono',monospace;font-size:11px;color:var(--t2)}
-.ps-net{font-size:17px;font-weight:600}
-.ps-net-d{font-size:11px;color:var(--t3);margin-top:1px}
+.ps-head{padding:12px 16px;background:#f8f9fb;border-bottom:1px solid rgba(0,0,0,0.06);display:flex;justify-content:space-between;align-items:center}
+.ps-head-l{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--t2)}
+.ps-net{font-size:20px;font-weight:600}
+.ps-net-d{font-size:12px;color:var(--t3);margin-top:2px}
 .ps-rows{padding:4px 0}
-.psr{display:grid;grid-template-columns:1fr 90px 90px 70px;padding:5px 14px;font-size:11px;align-items:center}
-.psr.hd{font-family:'DM Mono',monospace;font-size:11px;color:var(--t4);letter-spacing:.5px;text-transform:uppercase;padding:6px 14px;border-bottom:1px solid var(--b1)}
+.psr{display:grid;grid-template-columns:1fr 100px 100px 80px;padding:6px 16px;font-size:13px;align-items:center}
+.psr.hd{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--t4);letter-spacing:.5px;text-transform:uppercase;padding:8px 16px;border-bottom:1px solid var(--b1)}
 .psr .lb{color:var(--t2)}
-.psr .cur{font-family:'DM Mono',monospace;text-align:right}
-.psr .prev{font-family:'DM Mono',monospace;text-align:right;color:var(--t3)}
-.psr .dl{font-family:'DM Mono',monospace;text-align:right;font-size:11px}
+.psr .cur{font-family:'JetBrains Mono',monospace;text-align:right}
+.psr .prev{font-family:'JetBrains Mono',monospace;text-align:right;color:var(--t3)}
+.psr .dl{font-family:'JetBrains Mono',monospace;text-align:right;font-size:12px}
 .dl-up{color:var(--r)}
 .dl-dn{color:var(--g)}
 .dl-sm{color:var(--t4)}
 .psr.hl{background:var(--ab)}
 .psr.hl-r{background:var(--rb)}
-.ann{grid-column:1/-1;padding:4px 14px 8px;font-size:11px;display:flex;align-items:center;gap:5px}
-.ann-b{font-family:'DM Mono',monospace;font-size:11px;padding:1px 6px;border-radius:3px}
-.ps-foot{padding:10px 14px;border-top:1px solid var(--b1);display:flex;justify-content:space-between;align-items:center}
-.ps-sum{font-size:11px;color:var(--t3);padding:8px 0;display:flex;align-items:flex-start;gap:5px;line-height:1.6}
+.ann{grid-column:1/-1;padding:5px 16px 9px;font-size:12px;display:flex;align-items:center;gap:5px}
+.ann-b{font-family:'JetBrains Mono',monospace;font-size:12px;padding:2px 7px;border-radius:3px}
+.ps-foot{padding:12px 16px;border-top:1px solid var(--b1);display:flex;justify-content:space-between;align-items:center}
+.ps-sum{font-size:13px;color:var(--t3);padding:10px 0;display:flex;align-items:flex-start;gap:5px;line-height:1.6}
 
 /* Payment Panel (PS-6) */
-.pay-stat{border-radius:9px;padding:14px;display:flex;align-items:center;gap:12px}
-.pay-ico{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.pay-stat{border-radius:9px;padding:16px;display:flex;align-items:center;gap:14px}
+.pay-ico{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px}
 .pay-info{flex:1}
-.pay-t{font-size:13px;font-weight:500}
-.pay-d{font-size:11px;margin-top:1px}
+.pay-t{font-size:15px;font-weight:500}
+.pay-d{font-size:13px;margin-top:2px}
 .risk-cas{background:#ffffff;border:1px solid var(--rd);border-radius:9px;overflow:hidden;margin-top:12px}
-.risk-hd{padding:10px 14px;background:var(--rb);border-bottom:1px solid var(--rd);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--r);text-transform:uppercase;display:flex;align-items:center;gap:5px}
-.risk-s{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-bottom:1px solid var(--b0)}
+.risk-hd{padding:11px 16px;background:var(--rb);border-bottom:1px solid var(--rd);font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.5px;color:var(--r);text-transform:uppercase;display:flex;align-items:center;gap:5px}
+.risk-s{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-bottom:1px solid var(--b0)}
 .risk-s:last-child{border:none}
-.risk-n{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:11px;font-weight:500;flex-shrink:0}
-.risk-t{font-size:12px;line-height:1.5}
+.risk-n{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;flex-shrink:0}
+.risk-t{font-size:14px;line-height:1.5}
 .risk-t strong{font-weight:600}
 
 /* Invoice rows (PS-5) */
-.inv-r{display:grid;grid-template-columns:1fr 90px 80px 60px;padding:9px 14px;background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-radius:7px;font-size:11px;align-items:center;cursor:pointer;transition:all .12s;margin-bottom:4px;box-shadow:0 1px 2px rgba(0,0,0,0.03)}
+.inv-r{display:grid;grid-template-columns:1fr 100px 90px 70px;padding:11px 16px;background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-radius:7px;font-size:13px;align-items:center;cursor:pointer;transition:all .12s;margin-bottom:5px;box-shadow:0 1px 2px rgba(0,0,0,0.03)}
 .inv-r:hover{border-color:rgba(0,0,0,0.15);background:#f8f9fb}
 
 /* Benefits (PS-4) */
-.ben-g{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.ben-c{background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-radius:8px;padding:12px;box-shadow:0 1px 2px rgba(0,0,0,0.03)}
-.ben-type{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--t3);text-transform:uppercase;margin-bottom:4px}
-.ben-plan{font-size:12px;font-weight:500;margin-bottom:1px}
-.ben-car{font-size:11px;color:var(--t2)}
-.ben-det{font-size:11px;color:var(--t3);margin-top:3px}
+.ben-g{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ben-c{background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-radius:8px;padding:14px;box-shadow:0 1px 2px rgba(0,0,0,0.03)}
+.ben-type{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1px;color:var(--t3);text-transform:uppercase;margin-bottom:5px}
+.ben-plan{font-size:14px;font-weight:500;margin-bottom:2px}
+.ben-car{font-size:13px;color:var(--t2)}
+.ben-det{font-size:12px;color:var(--t3);margin-top:4px}
 
 /* Changes feed */
-.chg{display:flex;align-items:flex-start;gap:9px;padding:8px 10px;border-radius:6px;transition:background .12s}
+.chg{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border-radius:6px;transition:background .12s}
 .chg:hover{background:var(--b0)}
-.chg-ico{width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
-.chg-t{font-size:11px;color:var(--t2);line-height:1.5}
+.chg-ico{width:28px;height:28px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+.chg-t{font-size:13px;color:var(--t2);line-height:1.5}
 .chg-t strong{color:var(--t1);font-weight:500}
-.chg-d{font-family:'DM Mono',monospace;font-size:11px;color:var(--t4);margin-top:1px}
+.chg-d{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--t4);margin-top:2px}
 
 /* Alert banner */
-.alert{margin:0 0 12px;padding:10px 14px;border-radius:8px;display:flex;align-items:center;gap:8px;font-size:12px}
+.alert{margin:0 0 14px;padding:12px 16px;border-radius:8px;display:flex;align-items:center;gap:8px;font-size:14px}
 
 /* Deep link */
-.dl-btn{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:5px;background:rgba(79,70,229,0.06);border:1px solid rgba(79,70,229,0.15);color:var(--bl);font-size:11px;cursor:pointer;transition:all .12s;text-decoration:none;font-family:'DM Sans',sans-serif}
+.dl-btn{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:5px;background:rgba(79,70,229,0.06);border:1px solid rgba(79,70,229,0.15);color:var(--bl);font-size:12px;cursor:pointer;transition:all .12s;text-decoration:none;font-family:'Inter',sans-serif}
 .dl-btn:hover{background:rgba(79,70,229,.12)}
 
 /* Modal */
 .modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.35);backdrop-filter:blur(3px);z-index:500;display:none;align-items:center;justify-content:center}
 .modal-ov.vis{display:flex}
-.modal{background:#ffffff;border:1px solid rgba(0,0,0,0.1);border-radius:12px;width:460px;max-height:80vh;overflow-y:auto;box-shadow:0 20px 50px rgba(0,0,0,.15)}
-.modal-hd{padding:16px 18px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between}
-.modal-ti{font-size:14px;font-weight:600}
-.modal-x{width:26px;height:26px;border-radius:5px;border:none;background:rgba(0,0,0,0.04);color:var(--t3);cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;transition:all .12s}
+.modal{background:#ffffff;border:1px solid rgba(0,0,0,0.1);border-radius:12px;width:500px;max-height:80vh;overflow-y:auto;box-shadow:0 20px 50px rgba(0,0,0,.15)}
+.modal-hd{padding:18px 20px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between}
+.modal-ti{font-size:16px;font-weight:600}
+.modal-x{width:28px;height:28px;border-radius:5px;border:none;background:rgba(0,0,0,0.04);color:var(--t3);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .12s}
 .modal-x:hover{background:rgba(0,0,0,0.08);color:var(--t1)}
-.modal-bd{padding:16px 18px}
-.modal-ft{padding:12px 18px;border-top:1px solid var(--b1);display:flex;justify-content:flex-end;gap:6px}
-.mbtn{padding:7px 16px;border-radius:7px;font-family:'DM Sans',sans-serif;font-size:12px;cursor:pointer;transition:all .12s;border:1px solid rgba(0,0,0,0.12);background:#ffffff;color:var(--t2)}
+.modal-bd{padding:18px 20px}
+.modal-ft{padding:14px 20px;border-top:1px solid var(--b1);display:flex;justify-content:flex-end;gap:8px}
+.mbtn{padding:8px 18px;border-radius:7px;font-family:'Inter',sans-serif;font-size:13px;cursor:pointer;transition:all .12s;border:1px solid rgba(0,0,0,0.12);background:#ffffff;color:var(--t2)}
 .mbtn:hover{background:#f5f6f8}
 .mbtn-g{background:var(--g);border-color:var(--g);color:#ffffff}
 .mbtn-g:hover{background:#047857}
-.m-field{margin-bottom:12px}
-.m-label{font-family:'DM Mono',monospace;font-size:11px;color:var(--t4);letter-spacing:1px;display:block;margin-bottom:5px;text-transform:uppercase}
-.m-input{width:100%;padding:7px 10px;background:#f8f9fb;border:1px solid rgba(0,0,0,0.1);border-radius:6px;font-size:12px;color:var(--t1);font-family:'DM Sans',sans-serif;outline:none}
+.m-field{margin-bottom:14px}
+.m-label{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--t4);letter-spacing:1px;display:block;margin-bottom:6px;text-transform:uppercase}
+.m-input{width:100%;padding:9px 12px;background:#f8f9fb;border:1px solid rgba(0,0,0,0.1);border-radius:6px;font-size:14px;color:var(--t1);font-family:'Inter',sans-serif;outline:none}
 .m-input:focus{border-color:var(--gd)}
 .m-ta{resize:vertical;height:70px}
 .m-opts{display:flex;gap:5px}
-.m-opt{padding:4px 10px;border-radius:5px;border:1px solid rgba(0,0,0,0.1);background:#ffffff;color:var(--t3);font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .12s}
+.m-opt{padding:5px 12px;border-radius:5px;border:1px solid rgba(0,0,0,0.1);background:#ffffff;color:var(--t3);font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;transition:all .12s}
 .m-opt:hover{background:#f5f6f8;color:var(--t2)}
 .m-opt.sel{background:var(--g);border-color:var(--g);color:#ffffff}
 
 /* Toast */
 .toast-c{position:fixed;bottom:20px;right:20px;z-index:600;display:flex;flex-direction:column;gap:6px}
-.toast{background:#ffffff;border:1px solid rgba(5,150,105,0.2);border-radius:8px;padding:10px 16px;display:flex;align-items:center;gap:8px;box-shadow:0 8px 24px rgba(0,0,0,.1);animation:slideIn .3s ease-out;font-size:12px}
+.toast{background:#ffffff;border:1px solid rgba(5,150,105,0.2);border-radius:8px;padding:12px 18px;display:flex;align-items:center;gap:8px;box-shadow:0 8px 24px rgba(0,0,0,.1);animation:slideIn .3s ease-out;font-size:14px}
 @keyframes slideIn{from{transform:translateX(80px);opacity:0}to{transform:translateX(0);opacity:1}}
 
 /* Prototype badge */
-.proto{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);background:#ffffff;border:1px solid rgba(0,0,0,0.1);border-radius:16px;padding:5px 14px;font-family:'DM Mono',monospace;font-size:11px;color:var(--t4);letter-spacing:1px;z-index:50;display:flex;align-items:center;gap:6px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.proto{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);background:#ffffff;border:1px solid rgba(0,0,0,0.1);border-radius:16px;padding:6px 16px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--t4);letter-spacing:1px;z-index:50;display:flex;align-items:center;gap:6px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
 .proto .pd{width:5px;height:5px;border-radius:50%;background:var(--a)}
 
 /* Scenario toggle */
 .scenario-bar{padding:0 20px;margin-top:10px}
 .scen-toggle{display:flex;gap:0;border-radius:7px;overflow:hidden;border:1px solid rgba(0,0,0,0.1);width:fit-content;background:#ffffff}
-.scen-btn{padding:5px 12px;background:transparent;border:none;color:var(--t3);font-family:'DM Mono',monospace;font-size:11px;cursor:pointer;transition:all .12s;letter-spacing:.5px}
+.scen-btn{padding:6px 14px;background:transparent;border:none;color:var(--t3);font-family:'JetBrains Mono',monospace;font-size:12px;cursor:pointer;transition:all .12s;letter-spacing:.5px}
 .scen-btn.act{background:var(--g);color:#ffffff}
 </style>
 </head>
@@ -357,7 +357,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg0);color:var(--t1);heig
   </div>
   <div style="text-align:right">
     <div class="caller-b">Admin</div>
-    <div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t4);margin-top:4px">Since Mar 2022</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t4);margin-top:4px">Since Mar 2022</div>
   </div>
 </div>
 
@@ -387,7 +387,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg0);color:var(--t1);heig
       <div style="font-size:13px;font-weight:500;margin-bottom:3px">Payroll discrepancy — new hire withholding</div>
       <div style="font-size:11px;color:var(--t2);margin-bottom:5px;line-height:1.5">Sarah reported Marcus Johnson's first paycheck had incorrect state tax withholding. CA resident taxed as NY.</div>
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
-        <span style="font-family:'DM Mono',monospace;font-size:11px;padding:1px 7px;border-radius:3px;background:var(--ab);color:var(--a)">Medium</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:1px 7px;border-radius:3px;background:var(--ab);color:var(--a)">Medium</span>
         <span style="font-size:11px;color:var(--t4)">Assigned: Alex Rivera · Feb 8</span>
       </div>
       <div style="margin-top:7px;display:flex;gap:6px">
@@ -501,7 +501,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg0);color:var(--t1);heig
     <div class="psr"><span class="lb">401(k) Contribution (6%)</span><span class="cur">$300.00</span><span class="prev">$300.00</span><span class="dl dl-sm">—</span></div>
   </div>
   <div class="ps-foot">
-    <div><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">Total Deductions: </span><span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--r);font-weight:500">$1,152.77</span><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--r);margin-left:4px">+$142.50</span></div>
+    <div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t3)">Total Deductions: </span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--r);font-weight:500">$1,152.77</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--r);margin-left:4px">+$142.50</span></div>
     <div style="display:flex;gap:6px"><button class="btn" style="font-size:11px;padding:4px 8px" onclick="toast('📄 Pay stub PDF downloaded')">Download PDF</button><button class="btn" style="font-size:11px;padding:4px 8px" onclick="toast('📋 Summary copied to clipboard')">Copy Summary</button></div>
   </div>
 </div>
@@ -532,7 +532,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg0);color:var(--t1);heig
     <div class="psr"><span class="lb">401(k) (8%)</span><span class="cur">$483.33</span><span class="prev">$483.33</span><span class="dl dl-sm">—</span></div>
   </div>
   <div class="ps-foot">
-    <div><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--t3)">Total Deductions: </span><span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--t2);font-weight:500">$1,628.79</span></div>
+    <div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t3)">Total Deductions: </span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--t2);font-weight:500">$1,628.79</span></div>
     <div style="display:flex;gap:6px"><button class="btn" style="font-size:11px;padding:4px 8px" onclick="toast('📄 Pay stub PDF downloaded')">Download PDF</button></div>
   </div>
 </div>
@@ -581,7 +581,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg0);color:var(--t1);heig
       <div class="risk-t"><strong style="color:var(--a)">34 employees affected</strong> — If payroll is blocked, 34 employees across NY, CA, and TX will not receive their Feb 28 paycheck on time.</div>
     </div>
     <div style="padding:10px 14px;background:var(--b0);display:flex;align-items:center;gap:8px">
-      <span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--r);letter-spacing:1px">RESOLUTION DEADLINE: FEB 21 (13 DAYS)</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--r);letter-spacing:1px">RESOLUTION DEADLINE: FEB 21 (13 DAYS)</span>
       <button class="btn btn-g" style="font-size:11px;padding:4px 8px;margin-left:auto" onclick="showModal('updatePay')">Update Payment Method</button>
       <button class="btn" style="font-size:11px;padding:4px 8px" onclick="toast('↗ Escalating to billing team...')">Escalate to Billing</button>
     </div>
@@ -595,21 +595,21 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg0);color:var(--t1);heig
 </div>
 <div class="inv-r" onclick="showModal('invDetail')">
   <div><div style="font-weight:500">February 2026</div><div style="font-size:11px;color:var(--t3);margin-top:1px">34 employees · Billed Feb 1</div></div>
-  <div style="text-align:right;font-family:'DM Mono',monospace">$12,480</div>
-  <div style="text-align:right"><span style="font-family:'DM Mono',monospace;font-size:11px;padding:1px 6px;border-radius:3px;background:var(--gb);color:var(--g)">Paid</span></div>
-  <div style="text-align:right;color:var(--r);font-family:'DM Mono',monospace;font-size:11px">+$720</div>
+  <div style="text-align:right;font-family:'JetBrains Mono',monospace">$12,480</div>
+  <div style="text-align:right"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:1px 6px;border-radius:3px;background:var(--gb);color:var(--g)">Paid</span></div>
+  <div style="text-align:right;color:var(--r);font-family:'JetBrains Mono',monospace;font-size:11px">+$720</div>
 </div>
 <div class="inv-r" onclick="showModal('invDetail')">
   <div><div style="font-weight:500">January 2026</div><div style="font-size:11px;color:var(--t3);margin-top:1px">32 employees · Billed Jan 1</div></div>
-  <div style="text-align:right;font-family:'DM Mono',monospace">$11,760</div>
-  <div style="text-align:right"><span style="font-family:'DM Mono',monospace;font-size:11px;padding:1px 6px;border-radius:3px;background:var(--gb);color:var(--g)">Paid</span></div>
-  <div style="text-align:right;color:var(--t4);font-family:'DM Mono',monospace;font-size:11px">—</div>
+  <div style="text-align:right;font-family:'JetBrains Mono',monospace">$11,760</div>
+  <div style="text-align:right"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:1px 6px;border-radius:3px;background:var(--gb);color:var(--g)">Paid</span></div>
+  <div style="text-align:right;color:var(--t4);font-family:'JetBrains Mono',monospace;font-size:11px">—</div>
 </div>
 <div class="inv-r" onclick="showModal('invDetail')">
   <div><div style="font-weight:500">December 2025</div><div style="font-size:11px;color:var(--t3);margin-top:1px">32 employees · Billed Dec 1</div></div>
-  <div style="text-align:right;font-family:'DM Mono',monospace">$11,760</div>
-  <div style="text-align:right"><span style="font-family:'DM Mono',monospace;font-size:11px;padding:1px 6px;border-radius:3px;background:var(--gb);color:var(--g)">Paid</span></div>
-  <div style="text-align:right;color:var(--t4);font-family:'DM Mono',monospace;font-size:11px">—</div>
+  <div style="text-align:right;font-family:'JetBrains Mono',monospace">$11,760</div>
+  <div style="text-align:right"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:1px 6px;border-radius:3px;background:var(--gb);color:var(--g)">Paid</span></div>
+  <div style="text-align:right;color:var(--t4);font-family:'JetBrains Mono',monospace;font-size:11px">—</div>
 </div>
 <div class="ps-sum"><span style="color:var(--a);flex-shrink:0">💡</span><span>Feb invoice +$720 vs Jan. Reason: <strong style="color:var(--t2)">+2 employees</strong> (Marcus Johnson Feb 3, Lisa Park Feb 1) at $360/employee PEO Plus rate.</span></div>
 </div>
@@ -701,10 +701,10 @@ function switchBilling(mode,btn){
 const modalTemplates={
   newTicket:{title:'Create New Ticket',body:`<div class="m-field"><label class="m-label">Company</label><div class="m-input" style="cursor:default;color:var(--t2)">Acme Corp — Sarah Chen</div></div><div class="m-field"><label class="m-label">Subject</label><input class="m-input" placeholder="Brief description..."></div><div class="m-field"><label class="m-label">Priority</label><div class="m-opts"><button class="m-opt">Low</button><button class="m-opt sel">Medium</button><button class="m-opt">High</button><button class="m-opt">Urgent</button></div></div><div class="m-field"><label class="m-label">Description</label><textarea class="m-input m-ta" placeholder="Full description..."></textarea></div>`,confirm:'Create Ticket',action:()=>{closeModalDirect();toast('✓ Ticket #4892 created for Acme Corp')}},
   logInt:{title:'Log Interaction',body:`<div class="m-field"><label class="m-label">Channel</label><div class="m-opts"><button class="m-opt sel">📞 Phone</button><button class="m-opt">📧 Email</button><button class="m-opt">💬 Chat</button></div></div><div class="m-field"><label class="m-label">Topic</label><input class="m-input" placeholder="What was this about?"></div><div class="m-field"><label class="m-label">Resolution</label><div class="m-opts"><button class="m-opt sel">Resolved</button><button class="m-opt">Pending</button><button class="m-opt">Escalated</button></div></div><div class="m-field"><label class="m-label">Notes</label><textarea class="m-input m-ta" placeholder="What happened?"></textarea></div>`,confirm:'Save Interaction',action:()=>{closeModalDirect();toast('✓ Interaction logged · Phone · Resolved')}},
-  ticket:{title:'Ticket #4856 — Payroll Discrepancy',body:`<div style="display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap"><span style="font-family:'DM Mono',monospace;font-size:11px;padding:1px 6px;border-radius:3px;background:var(--ab);color:var(--a)">Medium</span><span style="font-family:'DM Mono',monospace;font-size:11px;padding:1px 6px;border-radius:3px;background:var(--ab);color:var(--a)">Open</span><span style="font-size:11px;color:var(--t4)">Feb 8 · Alex Rivera</span></div><div style="background:var(--bg2);border:1px solid var(--b1);border-radius:7px;padding:12px;margin-bottom:10px"><div style="font-size:12px;color:var(--t1);line-height:1.6">Hi Justworks,<br><br>My new hire Marcus Johnson's first paycheck (Jan 16-31) seems lower than expected. He's based in California but I think the state withholding is set to NY.<br><br>Can someone look into this before the next pay run?<br><br>Thanks,<br>Sarah</div></div><div style="font-size:11px;color:var(--t3)"><strong style="color:var(--t2)">Agent Note (Alex Rivera, Feb 9):</strong> Confirmed state withholding was NY instead of CA. Correction submitted — effective next payroll run.</div>`,confirm:'Take Over Ticket',action:()=>{closeModalDirect();toast('✓ Ticket #4856 reassigned to you')}},
-  payHist:{title:'Payment History — Acme Corp',body:`<div style="display:grid;gap:4px"><div style="display:grid;grid-template-columns:1fr 80px 80px 60px;padding:6px 0;font-family:'DM Mono',monospace;font-size:11px;color:var(--t4);border-bottom:1px solid var(--b1)"><span>DATE</span><span style="text-align:right">AMOUNT</span><span style="text-align:right">METHOD</span><span style="text-align:right">STATUS</span></div><div style="display:grid;grid-template-columns:1fr 80px 80px 60px;padding:6px 0;font-size:11px;border-bottom:1px solid var(--b0)"><span>Feb 1, 2026</span><span style="text-align:right;font-family:'DM Mono',monospace">$12,480</span><span style="text-align:right;color:var(--t3)">ACH ···4892</span><span style="text-align:right;color:var(--g)">✓ Paid</span></div><div style="display:grid;grid-template-columns:1fr 80px 80px 60px;padding:6px 0;font-size:11px;border-bottom:1px solid var(--b0)"><span>Jan 1, 2026</span><span style="text-align:right;font-family:'DM Mono',monospace">$11,760</span><span style="text-align:right;color:var(--t3)">ACH ···4892</span><span style="text-align:right;color:var(--g)">✓ Paid</span></div><div style="display:grid;grid-template-columns:1fr 80px 80px 60px;padding:6px 0;font-size:11px;border-bottom:1px solid var(--b0)"><span>Dec 1, 2025</span><span style="text-align:right;font-family:'DM Mono',monospace">$11,760</span><span style="text-align:right;color:var(--t3)">ACH ···4892</span><span style="text-align:right;color:var(--g)">✓ Paid</span></div><div style="display:grid;grid-template-columns:1fr 80px 80px 60px;padding:6px 0;font-size:11px;border-bottom:1px solid var(--b0)"><span>Nov 1, 2025</span><span style="text-align:right;font-family:'DM Mono',monospace">$11,400</span><span style="text-align:right;color:var(--t3)">ACH ···4892</span><span style="text-align:right;color:var(--g)">✓ Paid</span></div><div style="display:grid;grid-template-columns:1fr 80px 80px 60px;padding:6px 0;font-size:11px"><span>Oct 1, 2025</span><span style="text-align:right;font-family:'DM Mono',monospace">$11,400</span><span style="text-align:right;color:var(--t3)">ACH ···4892</span><span style="text-align:right;color:var(--g)">✓ Paid</span></div></div>`,confirm:null},
+  ticket:{title:'Ticket #4856 — Payroll Discrepancy',body:`<div style="display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:1px 6px;border-radius:3px;background:var(--ab);color:var(--a)">Medium</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:1px 6px;border-radius:3px;background:var(--ab);color:var(--a)">Open</span><span style="font-size:11px;color:var(--t4)">Feb 8 · Alex Rivera</span></div><div style="background:var(--bg2);border:1px solid var(--b1);border-radius:7px;padding:12px;margin-bottom:10px"><div style="font-size:12px;color:var(--t1);line-height:1.6">Hi Justworks,<br><br>My new hire Marcus Johnson's first paycheck (Jan 16-31) seems lower than expected. He's based in California but I think the state withholding is set to NY.<br><br>Can someone look into this before the next pay run?<br><br>Thanks,<br>Sarah</div></div><div style="font-size:11px;color:var(--t3)"><strong style="color:var(--t2)">Agent Note (Alex Rivera, Feb 9):</strong> Confirmed state withholding was NY instead of CA. Correction submitted — effective next payroll run.</div>`,confirm:'Take Over Ticket',action:()=>{closeModalDirect();toast('✓ Ticket #4856 reassigned to you')}},
+  payHist:{title:'Payment History — Acme Corp',body:`<div style="display:grid;gap:4px"><div style="display:grid;grid-template-columns:1fr 80px 80px 60px;padding:6px 0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t4);border-bottom:1px solid var(--b1)"><span>DATE</span><span style="text-align:right">AMOUNT</span><span style="text-align:right">METHOD</span><span style="text-align:right">STATUS</span></div><div style="display:grid;grid-template-columns:1fr 80px 80px 60px;padding:6px 0;font-size:11px;border-bottom:1px solid var(--b0)"><span>Feb 1, 2026</span><span style="text-align:right;font-family:'JetBrains Mono',monospace">$12,480</span><span style="text-align:right;color:var(--t3)">ACH ···4892</span><span style="text-align:right;color:var(--g)">✓ Paid</span></div><div style="display:grid;grid-template-columns:1fr 80px 80px 60px;padding:6px 0;font-size:11px;border-bottom:1px solid var(--b0)"><span>Jan 1, 2026</span><span style="text-align:right;font-family:'JetBrains Mono',monospace">$11,760</span><span style="text-align:right;color:var(--t3)">ACH ···4892</span><span style="text-align:right;color:var(--g)">✓ Paid</span></div><div style="display:grid;grid-template-columns:1fr 80px 80px 60px;padding:6px 0;font-size:11px;border-bottom:1px solid var(--b0)"><span>Dec 1, 2025</span><span style="text-align:right;font-family:'JetBrains Mono',monospace">$11,760</span><span style="text-align:right;color:var(--t3)">ACH ···4892</span><span style="text-align:right;color:var(--g)">✓ Paid</span></div><div style="display:grid;grid-template-columns:1fr 80px 80px 60px;padding:6px 0;font-size:11px;border-bottom:1px solid var(--b0)"><span>Nov 1, 2025</span><span style="text-align:right;font-family:'JetBrains Mono',monospace">$11,400</span><span style="text-align:right;color:var(--t3)">ACH ···4892</span><span style="text-align:right;color:var(--g)">✓ Paid</span></div><div style="display:grid;grid-template-columns:1fr 80px 80px 60px;padding:6px 0;font-size:11px"><span>Oct 1, 2025</span><span style="text-align:right;font-family:'JetBrains Mono',monospace">$11,400</span><span style="text-align:right;color:var(--t3)">ACH ···4892</span><span style="text-align:right;color:var(--g)">✓ Paid</span></div></div>`,confirm:null},
   updatePay:{title:'Update Payment Method',body:`<div class="m-field"><label class="m-label">Current Method</label><div style="padding:8px 10px;background:var(--rb);border:1px solid var(--rd);border-radius:6px;font-size:12px;color:var(--r)">ACH · Chase ···4892 · <strong>FAILED — Insufficient Funds</strong></div></div><div class="m-field"><label class="m-label">New Bank Account</label><input class="m-input" placeholder="Routing number"></div><div class="m-field"><input class="m-input" placeholder="Account number"></div><div style="font-size:11px;color:var(--t3);padding:8px 0">After updating, a retry payment of $12,480 will be initiated within 1 business day.</div>`,confirm:'Update & Retry Payment',action:()=>{closeModalDirect();toast('✓ Payment method updated · Retry initiated')}},
-  invDetail:{title:'Invoice Detail — February 2026',body:`<div style="display:flex;justify-content:space-between;margin-bottom:12px"><div><div style="font-size:14px;font-weight:600">$12,480.00</div><div style="font-size:11px;color:var(--t3)">34 employees · PEO Plus</div></div><span style="font-family:'DM Mono',monospace;font-size:11px;padding:2px 7px;border-radius:3px;background:var(--gb);color:var(--g);height:fit-content">Paid Feb 1</span></div><div style="display:grid;gap:3px"><div style="display:grid;grid-template-columns:1fr 80px;padding:5px 0;font-family:'DM Mono',monospace;font-size:11px;color:var(--t4);border-bottom:1px solid var(--b1)"><span>ITEM</span><span style="text-align:right">AMOUNT</span></div><div style="display:grid;grid-template-columns:1fr 80px;padding:5px 0;font-size:11px;border-bottom:1px solid var(--b0)"><span>PEO Plus · 32 employees (full month)</span><span style="text-align:right;font-family:'DM Mono',monospace">$11,520</span></div><div style="display:grid;grid-template-columns:1fr 80px;padding:5px 0;font-size:11px;border-bottom:1px solid var(--b0);background:var(--ab);margin:0 -18px;padding-left:18px;padding-right:18px"><span style="color:var(--a)">PEO Plus · Lisa Park (prorated Feb 1-28)</span><span style="text-align:right;font-family:'DM Mono',monospace;color:var(--a)">$360</span></div><div style="display:grid;grid-template-columns:1fr 80px;padding:5px 0;font-size:11px;border-bottom:1px solid var(--b0);background:var(--ab);margin:0 -18px;padding-left:18px;padding-right:18px"><span style="color:var(--a)">PEO Plus · Marcus Johnson (prorated Feb 3-28)</span><span style="text-align:right;font-family:'DM Mono',monospace;color:var(--a)">$335</span></div><div style="display:grid;grid-template-columns:1fr 80px;padding:5px 0;font-size:11px;border-bottom:1px solid var(--b0)"><span>Benefits administration fee</span><span style="text-align:right;font-family:'DM Mono',monospace">$265</span></div></div><div style="margin-top:10px;font-size:11px;color:var(--t3);display:flex;align-items:center;gap:5px"><span style="color:var(--a)">💡</span>+$720 vs January due to 2 new employee additions.</div>`,confirm:null},
+  invDetail:{title:'Invoice Detail — February 2026',body:`<div style="display:flex;justify-content:space-between;margin-bottom:12px"><div><div style="font-size:14px;font-weight:600">$12,480.00</div><div style="font-size:11px;color:var(--t3)">34 employees · PEO Plus</div></div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:2px 7px;border-radius:3px;background:var(--gb);color:var(--g);height:fit-content">Paid Feb 1</span></div><div style="display:grid;gap:3px"><div style="display:grid;grid-template-columns:1fr 80px;padding:5px 0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t4);border-bottom:1px solid var(--b1)"><span>ITEM</span><span style="text-align:right">AMOUNT</span></div><div style="display:grid;grid-template-columns:1fr 80px;padding:5px 0;font-size:11px;border-bottom:1px solid var(--b0)"><span>PEO Plus · 32 employees (full month)</span><span style="text-align:right;font-family:'JetBrains Mono',monospace">$11,520</span></div><div style="display:grid;grid-template-columns:1fr 80px;padding:5px 0;font-size:11px;border-bottom:1px solid var(--b0);background:var(--ab);margin:0 -18px;padding-left:18px;padding-right:18px"><span style="color:var(--a)">PEO Plus · Lisa Park (prorated Feb 1-28)</span><span style="text-align:right;font-family:'JetBrains Mono',monospace;color:var(--a)">$360</span></div><div style="display:grid;grid-template-columns:1fr 80px;padding:5px 0;font-size:11px;border-bottom:1px solid var(--b0);background:var(--ab);margin:0 -18px;padding-left:18px;padding-right:18px"><span style="color:var(--a)">PEO Plus · Marcus Johnson (prorated Feb 3-28)</span><span style="text-align:right;font-family:'JetBrains Mono',monospace;color:var(--a)">$335</span></div><div style="display:grid;grid-template-columns:1fr 80px;padding:5px 0;font-size:11px;border-bottom:1px solid var(--b0)"><span>Benefits administration fee</span><span style="text-align:right;font-family:'JetBrains Mono',monospace">$265</span></div></div><div style="margin-top:10px;font-size:11px;color:var(--t3);display:flex;align-items:center;gap:5px"><span style="color:var(--a)">💡</span>+$720 vs January due to 2 new employee additions.</div>`,confirm:null},
 };
 
 function showModal(key){
