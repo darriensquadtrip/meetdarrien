@@ -546,12 +546,33 @@
     padding: 12px 14px;
     border-radius: 8px;
     cursor: pointer;
-    transition: background 0.12s;
+    transition: background 0.15s, transform 0.15s;
     text-decoration: none;
     color: inherit;
   }
 
-  .finder-row:hover { background: var(--bg-card); }
+  .finder-row:hover {
+    background: var(--bg-card);
+    transform: translateX(2px);
+  }
+
+  .finder-row:hover h4 { color: var(--accent-blue); }
+
+  .finder-row::after {
+    content: '›';
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    opacity: 0.4;
+    transition: opacity 0.15s, transform 0.15s;
+  }
+
+  .finder-row:hover::after {
+    opacity: 1;
+    color: var(--accent-blue);
+    transform: translateX(2px);
+  }
 
   .finder-row-icon {
     width: 34px;
