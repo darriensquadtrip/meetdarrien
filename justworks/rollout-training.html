@@ -475,10 +475,11 @@ body {
         <li><strong>Top 3 call drivers confirmed</strong> — Zendesk ticket tag distribution pulled for 90 days</li>
         <li><strong>Salesforce schema documented</strong> — enough to build data access spikes</li>
         <li><strong>CSO leadership bought in</strong> — Renee/Director level aware and supportive of alpha plan</li>
+        <li><strong>Health score validated against agent judgment</strong> — before shipping the score, we validate it against experienced agent intuition. PM manually computes scores for 50-100 accounts using the weighted formula, experienced agents independently rate the same accounts, and we require ≥ 80% alignment before the score goes live</li>
       </ul>
       <div class="stage-gate">
         <div class="sg-label">Gate Logic</div>
-        <p>All four criteria must be met. This gate exists to prevent building the wrong thing. If shadowing reveals a different problem than expected, the product scope changes before code is written.</p>
+        <p>All five criteria must be met. This gate exists to prevent building the wrong thing. If shadowing reveals a different problem than expected, the product scope changes before code is written. If health score validation falls below 80% alignment, weights are recalibrated before shipping.</p>
       </div>
     </div>
   </div>
@@ -558,11 +559,11 @@ body {
         </div>
         <div class="inner-box">
           <div class="ib-label l-g">Demo Flow</div>
-          <p><strong>Cmd+K Search</strong> → Company Profile → History Timeline → Pay Stub Viewer → Billing Risk Cascade. Each step shows the "before and after" — old workflow vs. Customer Central.</p>
+          <p><strong>Cmd+K Search</strong> → Company Profile → <strong>Health Score Badge</strong> → History Timeline → Pay Stub Viewer → Billing Risk Cascade. The health badge shows a composite score from 5 signals you already see in the status strip — billing, payroll, support, satisfaction, and activity — weighted and combined into a single Green/Amber/Red indicator. Each step shows the "before and after" — old workflow vs. Customer Central.</p>
         </div>
         <div class="inner-box ig-full">
           <div class="ib-label l-b">Details</div>
-          <p><strong>"Before and after" comparison</strong> is the centerpiece — show the agent doing a common task the old way (4 tabs, 3 systems, 90 seconds), then the new way (1 search, 15 seconds). Recording available for async viewing. Sessions run in groups of 10-15 agents to keep Q&A productive.</p>
+          <p><strong>"Before and after" comparison</strong> is the centerpiece — show the agent doing a common task the old way (4 tabs, 3 systems, 90 seconds), then the new way (1 search, 15 seconds). Include health score: <strong>before</strong>, an agent checks billing, payroll, support tickets, and CSAT separately to gauge account health — 5 systems, 3 minutes. <strong>After</strong>, a single health badge in the status strip shows the composite score with a click-to-expand breakdown of all 5 signals. Recording available for async viewing. Sessions run in groups of 10-15 agents to keep Q&A productive.</p>
         </div>
       </div>
     </div>
@@ -621,6 +622,7 @@ body {
         <div class="inner-box">
           <div class="ib-label l-g">Panel Guide</div>
           <p><strong>Overview</strong> — Company identity + status strip<br>
+          <strong>Health Score</strong> — Composite badge (Green 90-100, Light Green 70-89, Amber 50-69, Orange 30-49, Red 0-29). Click to see the 5-signal breakdown: Billing (30%), Payroll (25%), Support (20%), Satisfaction (15%), Activity (10%)<br>
           <strong>History</strong> — Merged interaction timeline<br>
           <strong>Pay Stubs</strong> — Employee payroll records<br>
           <strong>Billing</strong> — Invoice + payment cascade<br>
@@ -628,7 +630,7 @@ body {
         </div>
         <div class="inner-box ig-full">
           <div class="ib-label l-b">"Where to Find X" Guide</div>
-          <p>Common lookup scenarios mapped to UI location: <strong>"Client's last call?"</strong> → History tab, filter by type. <strong>"Is payroll running?"</strong> → Overview status strip. <strong>"Why was an invoice late?"</strong> → Billing tab, payment cascade. <strong>"Employee's benefits status?"</strong> → Benefits tab, coverage summary.</p>
+          <p>Common lookup scenarios mapped to UI location: <strong>"Client's last call?"</strong> → History tab, filter by type. <strong>"Is payroll running?"</strong> → Overview status strip. <strong>"Why was an invoice late?"</strong> → Billing tab, payment cascade. <strong>"Employee's benefits status?"</strong> → Benefits tab, coverage summary. <strong>"How healthy is this account?"</strong> → Health score badge in status strip, click for signal breakdown.</p>
         </div>
       </div>
     </div>
@@ -661,6 +663,10 @@ body {
     <div class="inner-box">
       <div class="ib-label l-p">Recognition</div>
       <p><strong>Acknowledged by CSO leadership</strong> — this is a growth opportunity, not volunteer labor. Champions are highlighted in team meetings. Role transitions to feature advocate after 4 weeks post-launch.</p>
+    </div>
+    <div class="inner-box ig-full">
+      <div class="ib-label l-a">Team Lead & Leadership Training</div>
+      <p><strong>Leadership portfolio health view walkthrough</strong> — dedicated session for CSO team leads and leadership on the portfolio health list view. Shows how to read the aggregated health scores across their book of accounts, identify at-risk customers before they escalate, and use the signal breakdown to prioritize proactive outreach. Separate from agent training — this is a strategic tool, not a call-handling tool. Emphasize: health scores measure customer reality, not agent performance.</p>
     </div>
   </div>
 

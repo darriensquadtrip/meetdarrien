@@ -187,9 +187,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);line-
   <h1>Feature Showcase — <em>MVP Prototype</em></h1>
   <p>A walkthrough of every feature in the Customer Central prototype, organized by user story. Each section shows what the agent sees and why it matters.</p>
   <div class="hero-meta">
-    <span>9 USER STORIES</span>
+    <span>11 USER STORIES</span>
     <span>·</span>
-    <span>6 FULL BUILD + 3 DEEP LINK</span>
+    <span>8 FULL BUILD + 3 DEEP LINK</span>
     <span>·</span>
     <span>6-8 WEEKS</span>
   </div>
@@ -208,6 +208,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);line-
     <a class="toc-i" href="#ps4"><span class="toc-tag" style="background:var(--ab);color:var(--a)">PS-4</span>Benefits Enrollment Guidance</a>
     <a class="toc-i" href="#ps5"><span class="toc-tag" style="background:var(--ab);color:var(--a)">PS-5</span>Invoice Explanation</a>
     <a class="toc-i" href="#ps6"><span class="toc-tag" style="background:var(--blb);color:var(--bl)">PS-6</span>Payment Failure Response</a>
+    <a class="toc-i" href="#hs1"><span class="toc-tag" style="background:var(--gb);color:var(--g)">HS-1</span>Lightweight Health Score</a>
+    <a class="toc-i" href="#hs2"><span class="toc-tag" style="background:var(--gb);color:var(--g)">HS-2</span>Leadership Health Overview</a>
   </div>
 </div>
 
@@ -313,6 +315,97 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);line-
       <div class="shot-callout"><span class="ci">→</span>The agent scans these five panels in under 5 seconds. Before Sarah even explains why she's calling, the agent already knows: billing is fine, payroll is coming up in 17 days, there's one open ticket about a payroll discrepancy, and the company recently hired two people.</div>
     </div>
   </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- HS-1: LIGHTWEIGHT HEALTH SCORE -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section-divider"></div>
+<div class="section" id="hs1">
+  <div class="section-tag">Health Score</div>
+  <h2>Lightweight Health Score <span class="story-id">HS-1</span><span class="phase-badge" style="background:var(--gb);color:var(--g);border:1px solid var(--gd)">MVP · Full Build</span></h2>
+  <p class="desc">The same 5 signals from the status strip, now composed into a single score the agent reads in 1 second. Formula: (Billing x 0.30) + (Payroll x 0.25) + (Support x 0.20) + (Satisfaction x 0.15) + (Activity x 0.10).</p>
+  <p class="user-story">As a CSO agent during any interaction, I want a single composite health score that summarizes account health — so I can instantly know whether this account needs special attention before diving into details.</p>
+
+  <div class="two-up">
+    <div class="shot">
+      <div class="shot-bar"><div class="shot-dot"></div><div class="shot-dot"></div><div class="shot-dot"></div><span class="shot-title">STATUS STRIP · HEALTH SCORE BADGE</span></div>
+      <div class="shot-body">
+        <div class="m-strip" style="grid-template-columns:1fr">
+          <div class="m-strip-i" style="display:flex;align-items:center;gap:10px">
+            <div>
+              <div class="m-strip-l">Health Score</div>
+              <div class="m-strip-v" style="color:#4caf50"><span class="m-dot" style="background:#4caf50"></span>82 — Good</div>
+              <div class="m-strip-s">5 signals · Rule-based</div>
+            </div>
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--t4);margin-top:6px;text-align:center">Click to expand signal breakdown card</div>
+      </div>
+    </div>
+    <div class="shot">
+      <div class="shot-bar"><div class="shot-dot"></div><div class="shot-dot"></div><div class="shot-dot"></div><span class="shot-title">BREAKDOWN CARD · ON CLICK</span></div>
+      <div class="shot-body">
+        <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--t4);margin-bottom:6px">HEALTH SCORE BREAKDOWN</div>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--b0);font-size:11px"><span style="color:var(--t2)">Billing</span><div><span style="font-family:'DM Mono',monospace;font-weight:600;color:var(--g)">100</span><span style="font-size:11px;color:var(--t4);margin-left:6px">Current — paid Feb 1</span></div></div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--b0);font-size:11px"><span style="color:var(--t2)">Payroll</span><div><span style="font-family:'DM Mono',monospace;font-weight:600;color:var(--g)">100</span><span style="font-size:11px;color:var(--t4);margin-left:6px">Last 3 runs successful</span></div></div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--b0);font-size:11px"><span style="color:var(--t2)">Support</span><div><span style="font-family:'DM Mono',monospace;font-weight:600;color:var(--a)">72</span><span style="font-size:11px;color:var(--t4);margin-left:6px">1 open ticket, 3 days, medium</span></div></div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--b0);font-size:11px"><span style="color:var(--t2)">Satisfaction</span><div><span style="font-family:'DM Mono',monospace;font-weight:600;color:var(--g)">85</span><span style="font-size:11px;color:var(--t4);margin-left:6px">Last 3 CSAT avg</span></div></div>
+          <div style="display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid var(--b0);font-size:11px"><span style="color:var(--t2)">Activity</span><div><span style="font-family:'DM Mono',monospace;font-weight:600;color:var(--g)">80</span><span style="font-size:11px;color:var(--t4);margin-left:6px">Moderate — 3 changes in 14 days</span></div></div>
+          <div style="display:flex;justify-content:space-between;padding:6px 0 2px;border-top:2px solid var(--b2);margin-top:3px;font-size:11px;font-weight:600"><span>Overall</span><span style="font-family:'DM Mono',monospace;font-weight:700;color:#4caf50">82 — Good</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="shot-callout"><span class="ci">→</span><strong>Simple, transparent, rule-based. No black box.</strong> Agents can verify the score matches their intuition — and in Week 2, we'll ask them to. The formula is fixed-weight, decomposable, and explainable: every component score is visible and traceable to a real data point. Phase 1 uses no ML. The score responds to real signals — toggle the billing scenario to "At-Risk" and watch it drop from 82 to 34.</div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- HS-2: LEADERSHIP HEALTH OVERVIEW -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section-divider"></div>
+<div class="section" id="hs2">
+  <div class="section-tag">Health Score</div>
+  <h2>Leadership Health Overview <span class="story-id">HS-2</span><span class="phase-badge" style="background:var(--gb);color:var(--g);border:1px solid var(--gd)">MVP · Full Build</span></h2>
+  <p class="desc">CSO leadership can see the full portfolio without building a deck. Health distribution summary plus a sortable account list with scores, band colors, and top risk signals.</p>
+  <p class="user-story">As a CSO team lead or VP, I want to see the health distribution of my entire portfolio in one view — so I can prioritize which accounts need intervention and allocate resources accordingly.</p>
+
+  <div class="shot">
+    <div class="shot-bar"><div class="shot-dot"></div><div class="shot-dot"></div><div class="shot-dot"></div><span class="shot-title">PORTFOLIO HEALTH · LEADERSHIP VIEW</span></div>
+    <div class="shot-body">
+      <div style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--t4);margin-bottom:8px">PORTFOLIO HEALTH OVERVIEW</div>
+      <div style="display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap">
+        <span style="padding:3px 8px;border-radius:5px;font-family:'DM Mono',monospace;font-size:11px;background:rgba(76,175,80,0.12);color:#388e3c;border:1px solid rgba(76,175,80,0.2)"><strong>487</strong> Healthy</span>
+        <span style="padding:3px 8px;border-radius:5px;font-family:'DM Mono',monospace;font-size:11px;background:rgba(139,195,74,0.12);color:#689f38;border:1px solid rgba(139,195,74,0.2)"><strong>312</strong> Good</span>
+        <span style="padding:3px 8px;border-radius:5px;font-family:'DM Mono',monospace;font-size:11px;background:var(--ab);color:var(--a);border:1px solid var(--ad)"><strong>89</strong> Attention</span>
+        <span style="padding:3px 8px;border-radius:5px;font-family:'DM Mono',monospace;font-size:11px;background:rgba(234,88,12,0.08);color:#ea580c;border:1px solid rgba(234,88,12,0.15)"><strong>21</strong> At Risk</span>
+        <span style="padding:3px 8px;border-radius:5px;font-family:'DM Mono',monospace;font-size:11px;background:var(--rb);color:var(--r);border:1px solid var(--rd)"><strong>3</strong> Critical</span>
+      </div>
+      <div style="border:1px solid var(--b1);border-radius:6px;overflow:hidden">
+        <div style="display:grid;grid-template-columns:1fr 70px 50px 55px 55px 1fr;padding:5px 10px;font-family:'DM Mono',monospace;font-size:11px;color:var(--t4);background:var(--b0);border-bottom:1px solid var(--b1);letter-spacing:.5px">
+          <span>COMPANY</span><span>PLAN</span><span>EMP</span><span>SCORE</span><span>BAND</span><span>TOP RISK</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 70px 50px 55px 55px 1fr;padding:5px 10px;font-size:11px;border-bottom:1px solid var(--b0);cursor:pointer">
+          <span style="font-weight:500">Acme Corp</span><span style="color:var(--t3)">PEO+</span><span style="color:var(--t3)">34</span><span style="font-family:'DM Mono',monospace;font-weight:600;color:#689f38">82</span><span style="font-family:'DM Mono',monospace;font-size:11px;color:#689f38">Good</span><span style="color:var(--t4)">1 open ticket (3d)</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 70px 50px 55px 55px 1fr;padding:5px 10px;font-size:11px;border-bottom:1px solid var(--b0);cursor:pointer">
+          <span style="font-weight:500">Globex Industries</span><span style="color:var(--t3)">PEO+</span><span style="color:var(--t3)">128</span><span style="font-family:'DM Mono',monospace;font-weight:600;color:#388e3c">95</span><span style="font-family:'DM Mono',monospace;font-size:11px;color:#388e3c">Healthy</span><span style="color:var(--t4)">None</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 70px 50px 55px 55px 1fr;padding:5px 10px;font-size:11px;border-bottom:1px solid var(--b0);cursor:pointer">
+          <span style="font-weight:500">Initech</span><span style="color:var(--t3)">Basic</span><span style="color:var(--t3)">22</span><span style="font-family:'DM Mono',monospace;font-weight:600;color:var(--a)">58</span><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--a)">Attention</span><span style="color:var(--t4)">CSAT below 60</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 70px 50px 55px 55px 1fr;padding:5px 10px;font-size:11px;border-bottom:1px solid var(--b0);cursor:pointer">
+          <span style="font-weight:500">Prestige Worldwide</span><span style="color:var(--t3)">Payroll</span><span style="color:var(--t3)">12</span><span style="font-family:'DM Mono',monospace;font-weight:600;color:#ea580c">34</span><span style="font-family:'DM Mono',monospace;font-size:11px;color:#ea580c">At Risk</span><span style="color:var(--t4)">Payment 12d past due</span>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 70px 50px 55px 55px 1fr;padding:5px 10px;font-size:11px;cursor:pointer">
+          <span style="font-weight:500">Soylent Corp</span><span style="color:var(--t3)">Basic</span><span style="color:var(--t3)">8</span><span style="font-family:'DM Mono',monospace;font-weight:600;color:var(--r)">22</span><span style="font-family:'DM Mono',monospace;font-size:11px;color:var(--r)">Critical</span><span style="color:var(--t4)">Payment 30d+ past due</span>
+        </div>
+      </div>
+      <div style="font-size:11px;color:var(--t4);text-align:center;margin-top:6px;font-family:'DM Mono',monospace">Click any row to navigate to account detail →</div>
+    </div>
+  </div>
+  <div class="shot-callout"><span class="ci">→</span><strong>Same data, same formula, three altitudes.</strong> The agent sees one account's score during a call. The team lead sees their pod. The VP sees the portfolio. No one builds a slide deck — the data is live, sortable, and always current. The distribution summary (487 Healthy, 312 Good, 89 Attention, 21 At Risk, 3 Critical) replaces the "how are we doing?" question with a real answer.</div>
 </div>
 
 <!-- ═══════════════════════════════════════════ -->

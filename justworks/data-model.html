@@ -492,9 +492,10 @@
 
       <!-- CENTRAL API NODE -->
       <g class="entity-group" data-entity="api">
-        <rect class="entity-card" x="410" y="180" width="240" height="60" rx="30" fill="#1B2845" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
+        <rect class="entity-card" x="410" y="180" width="240" height="65" rx="30" fill="#1B2845" stroke="rgba(255,255,255,0.2)" stroke-width="2"/>
         <text x="530" y="207" fill="#FFD166" font-size="12" font-weight="700" text-anchor="middle" font-family="DM Sans, sans-serif">Customer Context API</text>
-        <text x="530" y="225" fill="#8A95A9" font-size="9" text-anchor="middle" font-family="JetBrains Mono, monospace">Normalized · Cached · API-first</text>
+        <text x="530" y="222" fill="#8A95A9" font-size="9" text-anchor="middle" font-family="JetBrains Mono, monospace">Normalized · Cached · API-first</text>
+        <text x="530" y="235" fill="#06D6A0" font-size="8" text-anchor="middle" font-family="JetBrains Mono, monospace">+ health_score (computed from existing signals)</text>
       </g>
 
     </svg>
@@ -696,10 +697,16 @@ const entities = {
   api: {
     title: 'CUSTOMER CONTEXT API',
     source: 'Unified Layer (New Build)',
-    desc: 'The normalized, API-first service that aggregates all sources into a single query interface. Returns a complete customer profile in <2 seconds. Built as a service so Sales, RevOps, and Product can consume it too — not hardcoded to the CSO dashboard.',
+    desc: 'The normalized, API-first service that aggregates all sources into a single query interface. Returns a complete customer profile in <2 seconds. Built as a service so Sales, RevOps, and Product can consume it too — not hardcoded to the CSO dashboard. Includes a computed health_score field derived from existing signals (billing, payroll, support, satisfaction, activity) — no new data integrations required.',
     fields: [
       { name: 'company_id (input)', type: 'pk' },
       { name: 'member_id (input)', type: '' },
+      { name: 'health_score (computed)', type: '' },
+      { name: 'score_billing (computed)', type: '' },
+      { name: 'score_payroll (computed)', type: '' },
+      { name: 'score_support (computed)', type: '' },
+      { name: 'score_satisfaction (computed)', type: '' },
+      { name: 'score_activity (computed)', type: '' },
       { name: 'freshness_timestamps', type: '' },
       { name: 'cache_ttl: 5min', type: '' },
     ]

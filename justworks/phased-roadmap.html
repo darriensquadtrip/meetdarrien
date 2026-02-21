@@ -488,13 +488,13 @@ body {
       <div class="po-label">Phase 1 · MVP</div>
       <div class="po-title">Unified Context</div>
       <div class="po-time">5 Weeks Build + 2 Weeks Rollout</div>
-      <div class="po-desc">Consolidated customer profile, interaction history, account status, and high-volume problem panels. Agents open one tool instead of six.</div>
+      <div class="po-desc">Consolidated customer profile, interaction history, account status, lightweight health score, leadership health overview, and high-volume problem panels. Agents open one tool instead of six.</div>
     </div>
     <div class="po-card p2">
       <div class="po-label">Phase 2 · Intelligence</div>
       <div class="po-title">Health & Action</div>
       <div class="po-time">8–12 Weeks Post-MVP</div>
-      <div class="po-desc">Composite health scoring, in-place actions, benefits life events, compliance guidance. The tool becomes the workspace, not just the reference.</div>
+      <div class="po-desc">Advanced ML-weighted adaptive scoring, predictive churn indicators, trend analytics, in-place actions, benefits life events, compliance guidance. The tool becomes the workspace, not just the reference.</div>
     </div>
     <div class="po-card p3">
       <div class="po-label">Phase 3 · Proactive</div>
@@ -529,7 +529,7 @@ body {
       <div class="gantt-row">
         <div class="gr-label"><span class="gr-role role-pm">PM</span> Product Manager</div>
         <div class="gr-cell"><div class="bar bar-pm">Discovery</div></div>
-        <div class="gr-cell"><div class="bar bar-pm">Specs</div></div>
+        <div class="gr-cell"><div class="bar bar-pm">Specs + HS Valid.</div></div>
         <div class="gr-cell"><div class="bar bar-pm">Build</div></div>
         <div class="gr-cell"><div class="bar bar-pm">Alpha</div></div>
         <div class="gr-cell"><div class="bar bar-pm">Iterate</div></div>
@@ -553,7 +553,7 @@ body {
       <div class="gantt-row">
         <div class="gr-label"><span class="gr-role role-be">E1</span> Search & Identity</div>
         <div class="gr-cell"><div class="bar bar-be">Spikes</div></div>
-        <div class="gr-cell"><div class="bar bar-be">End-to-End</div></div>
+        <div class="gr-cell"><div class="bar bar-be">E2E + HS Comp</div></div>
         <div class="gr-cell"><div class="bar bar-be">Integrate</div></div>
         <div class="gr-cell"><div class="bar bar-be">Alpha</div></div>
         <div class="gr-cell"><div class="bar bar-be">Fixes</div></div>
@@ -566,8 +566,8 @@ body {
         <div class="gr-label"><span class="gr-role role-fe">E2</span> Panels & History</div>
         <div class="gr-cell"><div class="bar bar-fe">Spikes</div></div>
         <div class="gr-cell"><div class="bar bar-fe">End-to-End</div></div>
-        <div class="gr-cell"><div class="bar bar-fe">Integrate</div></div>
-        <div class="gr-cell"><div class="bar bar-fe">Alpha</div></div>
+        <div class="gr-cell"><div class="bar bar-fe">HS UI + Lead</div></div>
+        <div class="gr-cell"><div class="bar bar-fe">Lead View + Alpha</div></div>
         <div class="gr-cell"><div class="bar bar-fe">Polish</div></div>
         <div class="gr-cell"><div class="bar bar-fe">Fixes</div></div>
         <div class="gr-cell"><div class="bar bar-fe">Support</div></div>
@@ -692,7 +692,7 @@ body {
       <div class="role-work">
         <div class="rw-box">
           <div class="rw-role r-be">Eng 1 — Search & Identity (End-to-End)</div>
-          <p><strong>Build the full search vertical:</strong> ⌘K search endpoint + UI (type-ahead, result cards), company profile card (API + component), caller identity card, status indicator strip. Wire to live production DB data. End of week: an agent can search and see a real, complete profile in &lt;500ms.</p>
+          <p><strong>Build the full search vertical:</strong> ⌘K search endpoint + UI (type-ahead, result cards), company profile card (API + component), caller identity card, status indicator strip. Wire to live production DB data. <strong>Health score computation logic (~2 days):</strong> implement rule-based weighted formula — (Billing x 0.30) + (Payroll x 0.25) + (Support x 0.20) + (Satisfaction x 0.15) + (Activity x 0.10). Health band classification (Green/Light Green/Amber/Orange/Red). Signal decomposition API for breakdown card. End of week: an agent can search and see a real, complete profile with health score in &lt;500ms.</p>
         </div>
         <div class="rw-box">
           <div class="rw-role r-fe">Eng 2 — Panels & History (End-to-End)</div>
@@ -704,7 +704,11 @@ body {
         </div>
         <div class="rw-box">
           <div class="rw-role r-ds">Designer</div>
-          <p>Component library finalized — cards, badges, timeline items, tab navigation. <strong>Interaction spec for search:</strong> keyboard shortcuts, result ranking, disambiguation (admin vs. employee with same name). Edge case designs: no results, multiple matches, new company with no history.</p>
+          <p>Component library finalized — cards, badges, timeline items, tab navigation. <strong>Interaction spec for search:</strong> keyboard shortcuts, result ranking, disambiguation (admin vs. employee with same name). Edge case designs: no results, multiple matches, new company with no history. <strong>Health badge and signal breakdown card design specs.</strong></p>
+        </div>
+        <div class="rw-box">
+          <div class="rw-role r-pm">PM — Health Score Validation</div>
+          <p><strong>Manual validation exercise with 5 experienced agents (~2 days):</strong> Run the health score formula against 20-30 real accounts. Have agents independently rate each account's health. Compare system scores to agent intuition. Target: >=80% alignment. If alignment is low, adjust signal weights before health badge ships. This validates the formula before agents see it in the UI.</p>
         </div>
       </div>
       <div class="stage-gate">
@@ -720,7 +724,7 @@ body {
       <span class="wc-week w-build">Weeks 3–4</span>
       <div class="wc-main">
         <div class="wc-title">Feature Build Sprint</div>
-        <div class="wc-sub">All 9 MVP features come online</div>
+        <div class="wc-sub">All 11 MVP features come online</div>
       </div>
       <span class="wc-toggle">▼</span>
     </div>
@@ -732,7 +736,7 @@ body {
         </div>
         <div class="rw-box">
           <div class="rw-role r-fe">Eng 2 — Panels & History</div>
-          <p><strong>Week 3:</strong> Polish timeline merge logic (Zendesk + Salesforce deduplication). Deep link handlers for Payroll Engine and Benefits portal. Auto-refresh via polling. <strong>Week 4:</strong> Alpha feedback fixes — data accuracy in panels, loading performance for heavy payloads (pay stubs at ~20KB), graceful degradation when sources are slow.</p>
+          <p><strong>Week 3:</strong> Polish timeline merge logic (Zendesk + Salesforce deduplication). Deep link handlers for Payroll Engine and Benefits portal. Auto-refresh via polling. <strong>Health badge in status strip + signal breakdown card (~2 days)</strong> — shows health score band with color coding and click-to-expand showing each signal's contribution. <strong>Week 3-4: Leadership portfolio health view (~3-4 days)</strong> — list view of all accounts with health scores, sortable/filterable by band, searchable by company name. <strong>Week 4:</strong> Alpha feedback fixes — data accuracy in panels, loading performance for heavy payloads (pay stubs at ~20KB), graceful degradation when sources are slow.</p>
         </div>
         <div class="rw-box">
           <div class="rw-role r-de">Data Engineer</div>
@@ -745,7 +749,7 @@ body {
       </div>
       <div class="stage-gate">
         <div class="sg-label">Milestone → Core Features Working</div>
-        <p><strong>All 9 MVP features functional</strong> with real data from at least one test company. May have rough edges, but the core flow works: search → profile → history → problem panel. Ready for alpha.</p>
+        <p><strong>All 11 MVP features functional</strong> with real data from at least one test company. May have rough edges, but the core flow works: search → profile → health score → history → problem panel. Leadership health list view accessible. Ready for alpha.</p>
       </div>
     </div>
   </div>
@@ -853,8 +857,8 @@ body {
     </div>
     <div class="fp-grid">
       <div class="fp-item">
-        <div class="fp-item-name">Composite Health Score</div>
-        <div class="fp-item-desc">Weighted RAG status per account. Configurable signals. Requires 60+ days of validated Phase 1 data.</div>
+        <div class="fp-item-name">Advanced Health Scoring</div>
+        <div class="fp-item-desc">ML-weighted adaptive scoring, predictive churn indicators, trend analytics. Upgrades MVP's transparent rule-based score. Requires 60+ days of scored data + agent trust in simple version.</div>
       </div>
       <div class="fp-item">
         <div class="fp-item-name">In-Place Ticket Actions</div>
@@ -873,8 +877,8 @@ body {
         <div class="fp-item-desc">Auto-populate customer profile when phone rings. Requires telephony vendor API integration.</div>
       </div>
       <div class="fp-item">
-        <div class="fp-item-name">Leadership Reporting</div>
-        <div class="fp-item-desc">Aggregate health dashboards for team leads and VP level. Data already flowing to warehouse via API-first architecture.</div>
+        <div class="fp-item-name">Full Leadership Analytics</div>
+        <div class="fp-item-desc">BI-grade reporting, trend charts, drill-down analytics. Upgrades MVP's lightweight portfolio health list to full executive dashboards.</div>
       </div>
     </div>
   </div>
@@ -933,7 +937,7 @@ body {
     <div style="background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:1.1rem 1.2rem;">
       <div style="font-family:'Overpass Mono',monospace;font-size:0.7rem;letter-spacing:2px;text-transform:uppercase;color:var(--t3);margin-bottom:0.5rem;">Total Investment</div>
       <div style="font-size:0.82rem;color:var(--t1);line-height:1.7;font-weight:300;">
-        <strong style="color:var(--t0)">~21</strong> engineer-weeks<br>
+        <strong style="color:var(--t0)">~23</strong> engineer-weeks<br>
         <strong style="color:var(--t0)">~5</strong> design-weeks<br>
         <strong style="color:var(--t0)">~3</strong> QA-weeks<br>
         <strong style="color:var(--t0)">7</strong> calendar weeks total

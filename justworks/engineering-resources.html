@@ -617,7 +617,7 @@ body {
             <li><strong>Weeks 3-5:</strong> Iterate based on alpha/beta feedback — data accuracy in the timeline merge, loading performance for heavy panels (pay stubs at ~20KB), graceful degradation when Zendesk is slow. Performance tuning on the Tier 2/3/4 loading sequence.</li>
           </ul>
           <div class="tc-section-label">Why This Vertical Is the Heaviest</div>
-          <p>This engineer owns the most features (6 of 9 MVP features) and touches the most data sources. The interaction timeline alone merges Zendesk and Salesforce records, the pay stub panel queries the production DB in real-time, and the status indicators hit all 5 sources in parallel. But because one person owns the full vertical — API through UI — they can optimize the loading sequence holistically: pre-fetch what's likely needed, lazy-load what's not, and cancel abandoned requests when the agent switches tabs. No one else needs to be in the loop for those decisions.</p>
+          <p>This engineer owns the most features (6 of 11 MVP features, including health score UI) and touches the most data sources. The interaction timeline alone merges Zendesk and Salesforce records, the pay stub panel queries the production DB in real-time, and the status indicators hit all 5 sources in parallel. But because one person owns the full vertical — API through UI — they can optimize the loading sequence holistically: pre-fetch what's likely needed, lazy-load what's not, and cancel abandoned requests when the agent switches tabs. No one else needs to be in the loop for those decisions.</p>
         </div>
       </div>
 
@@ -728,6 +728,7 @@ body {
             <li><strong>Freshness validation:</strong> Confirm data refresh cadence meets requirements (billing: real-time, interactions: near-real-time, activity: daily).</li>
             <li><strong>Edge cases:</strong> New companies with no history, companies that migrated between plans, employees with multiple roles, Zendesk downtime behavior.</li>
             <li><strong>Performance:</strong> Dashboard loads in &lt;3 seconds, search returns in &lt;2 seconds under realistic data volumes.</li>
+            <li><strong>Health score accuracy:</strong> Cross-reference computed scores against source system data — verify that the weighted formula (Billing 0.30, Payroll 0.25, Support 0.20, Satisfaction 0.15, Activity 0.10) produces scores that align with source fields.</li>
           </ul>
           <div class="tc-section-label">Why Shared</div>
           <p>QA ramps in Week 2 once there's something to test. They don't need to be full-time — they need focused bursts during integration testing and pre-launch validation. A shared resource with clear test plans is more effective than a dedicated QA engineer with idle time.</p>
@@ -832,10 +833,12 @@ body {
         </div>
         <div class="week-content">
           <div class="task-chip chip-be">Search UI + profile card + status strip (end-to-end)<span class="who">ENG 1 · Full week</span></div>
+          <div class="task-chip chip-be">Health score computation logic — weighted formula on existing aggregation layer fields<span class="who">ENG 1 · ~2 days</span></div>
           <div class="task-chip chip-fe">Timeline UI + problem panels (end-to-end)<span class="who">ENG 2 · Full week</span></div>
           <div class="task-chip chip-de">Salesforce pipeline feeding Context Service<span class="who">DATA ENG · Full week</span></div>
           <div class="task-chip chip-qa">Data accuracy test plans written<span class="who">QA · Ramps in</span></div>
           <div class="task-chip chip-pm">Alpha user recruitment (5 CSO volunteers)<span class="who">PM · Parallel</span></div>
+          <div class="task-chip chip-pm">Health score validation exercise — manually compute scores for 50-100 accounts, compare with agent intuition, calibrate weights<span class="who">PM · ~2 days</span></div>
           <div class="task-chip chip-ds">Edge case designs (empty states, errors)<span class="who">DESIGNER · Parallel</span></div>
         </div>
       </div>
@@ -865,6 +868,8 @@ body {
         <div class="week-content">
           <div class="task-chip chip-all">Alpha: 5 CSO agents using it on real calls<span class="who">ALL · Full week</span></div>
           <div class="task-chip chip-pm">Daily 15-min feedback sessions w/ alpha users<span class="who">PM · Every day</span></div>
+          <div class="task-chip chip-fe">Health score badge + signal breakdown card in status strip<span class="who">ENG 2 · ~2 days</span></div>
+          <div class="task-chip chip-fe">Leadership portfolio health list view<span class="who">ENG 2 · ~3-4 days</span></div>
           <div class="task-chip chip-be">Fix search/profile issues surfaced by agents<span class="who">ENG 1 · Responsive</span></div>
           <div class="task-chip chip-fe">Fix timeline/panel data accuracy issues<span class="who">ENG 2 · Responsive</span></div>
           <div class="task-chip chip-qa">Cross-reference testing: dashboard vs source<span class="who">QA · Full week</span></div>
@@ -1056,7 +1061,7 @@ body {
         Total: 5 dedicated people + 1 shared QA for 5 weeks.
       </p>
       <p style="font-size: 14px; color: var(--text2); line-height: 1.7;">
-        That's roughly <strong style="color: var(--text);">22 person-weeks of effort</strong> — equivalent to about 5.5 person-months. For context, the traditional 6-8 week estimate with siloed backend/frontend teams would be 30-40 person-weeks with sequential handoffs. We're not cutting scope — we're leveraging Justworks' full-stack engineering culture to eliminate the handoff waste that inflates timelines. Both engineers work in parallel on distinct feature verticals — Search & Identity and Panels & History — each owning their component from database to UI. No API contract negotiations, no "I'm blocked waiting for the backend." Design and data spikes happen simultaneously. Alpha starts the moment something is usable, not the moment everything is perfect.
+        That's roughly <strong style="color: var(--text);">~23 person-weeks of effort</strong> (including health score features) — equivalent to about 5.75 person-months. For context, the traditional 6-8 week estimate with siloed backend/frontend teams would be 30-40 person-weeks with sequential handoffs. We're not cutting scope — we're leveraging Justworks' full-stack engineering culture to eliminate the handoff waste that inflates timelines. Both engineers work in parallel on distinct feature verticals — Search & Identity and Panels & History — each owning their component from database to UI. No API contract negotiations, no "I'm blocked waiting for the backend." Design and data spikes happen simultaneously. Alpha starts the moment something is usable, not the moment everything is perfect.
       </p>
       <p style="font-size: 14px; color: var(--text2); line-height: 1.7; margin-top: 12px;">
         <strong style="color: var(--green);">The question for the room:</strong> "Who from Data Services would be the right person for the Salesforce integration? And Caroline — can we get API access confirmed in the first two days so we de-risk the data pipeline before writing any production code?"

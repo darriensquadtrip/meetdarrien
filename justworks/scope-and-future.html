@@ -469,29 +469,29 @@ body {
     <span class="sec-title">Out of Scope for Phase 1 MVP</span>
   </div>
 
-  <!-- 1. Composite Health Scoring -->
+  <!-- 1. Composite Health Scoring — PARTIALLY INCLUDED IN MVP -->
   <div class="scope-card" onclick="tog(this)">
     <div class="sc-head">
-      <span class="sc-phase ph-2">Phase 2</span>
+      <span class="sc-phase" style="background: var(--gbg); border: 1px solid var(--gbd); color: var(--g);">MVP + P2</span>
       <div class="sc-main">
         <div class="sc-name">Composite Customer Health Score</div>
-        <div class="sc-oneliner">Weighted algorithm producing a single RAG status per account</div>
+        <div class="sc-oneliner">Lightweight rule-based score in MVP; ML-weighted adaptive scoring in Phase 2</div>
       </div>
       <span class="sc-toggle">▼</span>
     </div>
     <div class="sc-body">
       <div class="rationale-grid">
         <div class="rg-box">
-          <div class="rg-label why">Why It's Out</div>
-          <p>A health score is only as trustworthy as the data feeding it. Phase 1 is building the data foundation — consolidating signals from Salesforce, Zendesk, the production DB, and billing systems for the first time. <strong>Scoring data you haven't validated is worse than no score at all</strong> because agents will act on bad signals, eroding trust in the tool before it's established.</p>
+          <div class="rg-label" style="color: var(--g);">In MVP</div>
+          <p><strong>Rule-based weighted score</strong> using billing, payroll, support, satisfaction, and activity signals. Formula: (Billing x 0.30) + (Payroll x 0.25) + (Support x 0.20) + (Satisfaction x 0.15) + (Activity x 0.10). Health bands: 90-100 Green (Healthy), 70-89 Light Green (Good), 50-69 Amber (Attention), 30-49 Orange (At Risk), 0-29 Red (Critical). <strong>Transparent, decomposable, agent-verifiable.</strong> No ML in Phase 1 — simple rules agents can check against their own intuition. Leadership portfolio health list view for at-a-glance account assessment. Features: HS-1 (Lightweight Health Score), HS-2 (Leadership Health Overview). Week 2 manual validation with 5 experienced agents targets >=80% alignment.</p>
         </div>
         <div class="rg-box">
-          <div class="rg-label when">When to Revisit</div>
-          <p>When Phase 1 data has been live for <strong>60+ days</strong> with validated accuracy across all source systems. Specifically: when we can confirm that engagement signals (login frequency, feature usage), payment signals (on-time rate, failed payments), and interaction signals (contact frequency, topic trends) are reliable and consistent. Then we have the inputs worth composing.</p>
+          <div class="rg-label" style="color: var(--b);">Still Phase 2</div>
+          <p><strong>ML-weighted adaptive scoring</strong> where signal weights adjust based on validated correlation data. <strong>Predictive churn indicators</strong> using historical pattern detection. <strong>Automated outreach triggers</strong> that fire proactive engagement based on health trajectory. <strong>Trend analysis over time</strong> showing health score movement over weeks/months. These require validated data patterns and agent trust in the simple version before upgrading to opaque models.</p>
         </div>
         <div class="rg-box rg-full">
-          <div class="rg-label depends">Dependencies</div>
-          <p>Requires agreement on signal weights — and those weights differ by product line. A Payroll-only customer's health profile looks different from a PEO Plus customer's. <strong>The weighting model needs CSO input based on real correlation data</strong>, not assumptions about what predicts churn. Phase 1's structured data makes that analysis possible.</p>
+          <div class="rg-label depends">Why This Split</div>
+          <p>We CAN score with simple, transparent rules on Day 1. The data doesn't need 60 days of validation to be <em>scored</em> — it needs to <em>exist and be queryable</em>, which the MVP data foundation ensures. What requires validated data is ML-weighted scoring where agents can't verify the logic themselves. <strong>The rule-based score is the trust-building foundation</strong> that makes agents receptive to the ML upgrade in Phase 2. 11 total MVP features, 55 data fields.</p>
         </div>
       </div>
     </div>
@@ -720,26 +720,26 @@ body {
   <!-- 10. Leadership Reporting -->
   <div class="scope-card" onclick="tog(this)">
     <div class="sc-head">
-      <span class="sc-phase ph-2">Phase 2</span>
+      <span class="sc-phase" style="background: var(--gbg); border: 1px solid var(--gbd); color: var(--g);">MVP + P2</span>
       <div class="sc-main">
         <div class="sc-name">Leadership Reporting & Analytics Views</div>
-        <div class="sc-oneliner">Aggregate dashboards for team leads and VP-level customer health trends</div>
+        <div class="sc-oneliner">Lightweight portfolio health list in MVP; full BI-grade reporting and trend analytics in Phase 2</div>
       </div>
       <span class="sc-toggle">▼</span>
     </div>
     <div class="sc-body">
       <div class="rationale-grid">
         <div class="rg-box">
-          <div class="rg-label why">Why It's Out</div>
-          <p><strong>The MVP user is the front-line agent, not leadership.</strong> Broadening the user base to include team leads and VPs in Phase 1 means designing for multiple information needs, multiple permission levels, and multiple UI layouts simultaneously. That doubles the design surface without improving the core value proposition: agents resolving customer issues faster. Leadership reporting is a consumption layer on top of data that Phase 1 is collecting — it's additive, not foundational.</p>
+          <div class="rg-label" style="color: var(--g);">In MVP</div>
+          <p><strong>Lightweight portfolio health list view (HS-2)</strong> for team leads and CSO leadership. Shows all accounts with health scores, filterable by health band (Green/Light Green/Amber/Orange/Red). Simple list — not a full BI dashboard. This is the natural complement to the agent-facing health score: agents see individual account health, leadership sees the portfolio. Same data, different lens.</p>
         </div>
         <div class="rg-box">
-          <div class="rg-label when">When to Revisit</div>
-          <p>When agents are actively using Customer Central daily and the structured data (interactions, events, resolution outcomes) is <strong>accumulating reliably</strong>. The same API-first architecture that serves the agent dashboard can serve a reporting layer — that's why we built it as a service, not a monolith.</p>
+          <div class="rg-label" style="color: var(--b);">Still Phase 2</div>
+          <p><strong>Full BI-grade reporting and trend analytics</strong> — aggregate dashboards with drill-down, health trend charts over time, team performance views, cohort analysis, and VP-level executive summaries. These require accumulated data (weeks/months of health scores) and more complex visualization. Natalie Miranda's team can build <strong>Tableau dashboards against the same data</strong> using existing reporting infrastructure in the interim.</p>
         </div>
         <div class="rg-box rg-full">
-          <div class="rg-label alt">MVP Alternative</div>
-          <p>Phase 1 data flows into the existing data warehouse via the aggregation layer. Natalie Miranda's team can build <strong>Tableau dashboards against the same data</strong> using existing reporting infrastructure. The API-first architecture means we're not blocking leadership analytics — we're just not building a custom UI for it in Phase 1.</p>
+          <div class="rg-label depends">Why This Split</div>
+          <p>A portfolio list is a lightweight extension of the health score — it's the same data rendered as a list instead of an individual badge. <strong>Adding it to MVP is ~3-4 days of frontend engineering</strong>, not a doubling of the design surface. Full BI reporting is a separate initiative with different user needs, permission models, and visualization requirements. The API-first architecture means we're not blocking full reporting — we're just scoping it appropriately.</p>
         </div>
       </div>
     </div>
@@ -812,32 +812,32 @@ body {
     <span class="sec-title">Feature Requests Anticipated in Future Versions</span>
   </div>
 
-  <!-- Future 1: Composite Health Score -->
+  <!-- Future 1: Advanced Health Score (upgrade from MVP rule-based score) -->
   <div class="future-card" onclick="togf(this)">
     <div class="fc-head">
       <span class="fc-phase ph-2">Phase 2</span>
       <div class="fc-main">
-        <div class="fc-name">Composite Customer Health Score</div>
-        <div class="fc-tagline">A single number that tells the story of an account's trajectory</div>
+        <div class="fc-name">Advanced Health Scoring — ML-Weighted & Predictive</div>
+        <div class="fc-tagline">Upgrading the MVP's transparent score to an adaptive, predictive intelligence layer</div>
       </div>
       <span class="fc-toggle">▼</span>
     </div>
     <div class="fc-body">
       <div class="fc-desc">
-        A weighted algorithm combining <strong>engagement frequency, payment reliability, product adoption depth, support contact rate, and satisfaction signals</strong> into a single RAG (Red / Amber / Green) status with drill-down capability. The weights should be configurable — not hardcoded — because different signals matter differently for Payroll-only vs. PEO Basic vs. PEO Plus customers. A Payroll customer who logs in once a month to run payroll is healthy; a PEO Plus customer with the same login pattern might be underutilizing their plan.
+        Phase 2 is the <strong>upgrade, not the introduction</strong>. The MVP already delivers a rule-based composite health score with transparent weights. Phase 2 evolves this into <strong>ML-weighted adaptive scoring</strong> where signal weights adjust based on validated correlation data — because different signals matter differently for Payroll-only vs. PEO Basic vs. PEO Plus customers. A Payroll customer who logs in once a month to run payroll is healthy; a PEO Plus customer with the same login pattern might be underutilizing their plan. Adds <strong>predictive churn indicators, trend analytics over time, and automated outreach triggers</strong>.
       </div>
       <div class="fc-details">
         <div class="fd-box">
           <div class="fd-label bus">Business Value</div>
-          <p>Enables proactive retention. CSO leadership can identify at-risk accounts <strong>before they cancel</strong>, prioritize outbound outreach by health tier, and measure whether interventions improve trajectories. Directly impacts net revenue retention — the metric the board cares about most.</p>
+          <p>Enables proactive retention at scale. The MVP score identifies current state; the ML upgrade predicts <strong>trajectory</strong>. CSO leadership can identify accounts trending toward risk <strong>before they arrive</strong>, prioritize outbound outreach by predicted trajectory, and measure whether interventions change outcomes. Directly impacts net revenue retention.</p>
         </div>
         <div class="fd-box">
           <div class="fd-label tech">Technical Approach</div>
-          <p>Scoring engine consuming the aggregation layer's structured data. Initial weights based on <strong>CSO domain expertise</strong> (which signals experienced agents say predict churn). Over time, validated against actual churn data using regression analysis. Configurable weight UI for CSO leadership to adjust by segment.</p>
+          <p>ML pipeline consuming the aggregation layer's structured data plus the MVP health score history. Regression analysis correlating signal patterns with actual churn outcomes. <strong>Configurable weight UI</strong> for CSO leadership to adjust by segment. The MVP's rule-based score provides the labeled baseline — "this account scored 45 and churned" becomes training data for the ML model.</p>
         </div>
         <div class="fd-box fd-full">
           <div class="fd-label dep">MVP Foundation Required</div>
-          <p>The aggregation layer must be accurately capturing: login frequency (event stream), payment status (billing system), support contact rate (Zendesk + interaction records), and plan utilization (production DB). Phase 1 builds all of these data pipelines. Phase 2 composes them.</p>
+          <p>The MVP health score (HS-1) must be live and validated — agents confirming the simple score matches their intuition (>=80% alignment target). Health score history must be accumulating (60+ days of scored data). The leadership portfolio view (HS-2) must be in use so leadership has context for the upgrade. Phase 1 builds the score; Phase 2 makes it intelligent.</p>
         </div>
       </div>
     </div>
@@ -855,7 +855,7 @@ body {
     </div>
     <div class="fc-body">
       <div class="fc-desc">
-        Automated flags for at-risk accounts pushed to a CSO queue for outbound outreach. <strong>Trigger examples:</strong> 3+ missed payments, declining login frequency over 4 weeks, cancellation page visits, support volume spike (3x normal rate), NPS detractor response, payroll deadline approaching for a company that missed last quarter's deadline. Each alert includes recommended action and context packet.
+        Automated flags for at-risk accounts pushed to a CSO queue for outbound outreach. <strong>The MVP health score provides the substrate</strong> — the rule-based composite score already identifies accounts in Amber/Orange/Red bands. <strong>The alert system adds automation and outreach triggers on top:</strong> 3+ missed payments, declining login frequency over 4 weeks, cancellation page visits, support volume spike (3x normal rate), NPS detractor response, payroll deadline approaching for a company that missed last quarter's deadline. Each alert includes recommended action and context packet.
       </div>
       <div class="fc-details">
         <div class="fd-box">
@@ -991,13 +991,15 @@ body {
         </tr>
       </thead>
       <tbody>
-        <tr><td>Health Score</td><td><span class="tag tag-2">P2</span></td><td>Can't score unvalidated data</td><td>60+ days of clean data</td></tr>
+        <tr><td>Health Score (rule-based)</td><td><span class="tag" style="background:var(--gbg);border:1px solid var(--gbd);color:var(--g);">MVP</span></td><td>Lightweight transparent scoring included</td><td>Included — HS-1, HS-2</td></tr>
+        <tr><td>Health Score (ML-adaptive)</td><td><span class="tag tag-2">P2</span></td><td>ML weights need validated correlation data</td><td>Simple score proven accurate + 60+ days data</td></tr>
         <tr><td>Ticket Write-Back</td><td><span class="tag tag-2">P2</span></td><td>Read path must prove trust first</td><td>Agents request write access</td></tr>
         <tr><td>Life Event Workflows</td><td><span class="tag tag-2">P2</span></td><td>Carrier/state complexity too high</td><td>Benefits data validated + carrier APIs mapped</td></tr>
         <tr><td>Compliance Guidance</td><td><span class="tag tag-2">P2</span></td><td>No structured knowledge base exists</td><td>Structured KB system available</td></tr>
         <tr><td>CTI Screen-Pop</td><td><span class="tag tag-2">P2</span></td><td>Third-party dependency on critical path</td><td>Telephony vendor + API confirmed</td></tr>
         <tr><td>Knowledge Base</td><td><span class="tag tag-2">P2</span></td><td>No API-accessible KB exists</td><td>KB migrated to structured system</td></tr>
-        <tr><td>Leadership Reporting</td><td><span class="tag tag-2">P2</span></td><td>MVP user is the agent, not leadership</td><td>Data accumulating reliably; use Tableau interim</td></tr>
+        <tr><td>Leadership Health List</td><td><span class="tag" style="background:var(--gbg);border:1px solid var(--gbd);color:var(--g);">MVP</span></td><td>Lightweight portfolio view included</td><td>Included — HS-2</td></tr>
+        <tr><td>Full Leadership Analytics</td><td><span class="tag tag-2">P2</span></td><td>Full BI reporting needs accumulated data</td><td>Data accumulating reliably; use Tableau interim</td></tr>
         <tr><td>AI Summaries</td><td><span class="tag tag-3">P3</span></td><td>ML pipeline complexity + needs training data</td><td>90+ days of structured records</td></tr>
         <tr><td>Pre-emptive Alerts</td><td><span class="tag tag-3">P3</span></td><td>Needs historical baselines</td><td>1+ quarter of structured data</td></tr>
         <tr><td>Upsell Intelligence</td><td><span class="tag tag-3">P3</span></td><td>Needs org alignment + conversion data</td><td>CSO/Sales/RevOps alignment achieved</td></tr>
@@ -1015,7 +1017,7 @@ body {
   <!-- ════════════════════════════════════════════════════════════ -->
   <div class="closing">
     <div class="closing-text">
-      <strong>The pattern across every deferral:</strong> Phase 1 builds the data infrastructure. Phase 2 composes that data into intelligence. Phase 3 acts on that intelligence autonomously. Each phase earns the right to the next by proving accuracy, earning trust, and accumulating the structured data that makes the next capability possible. Nothing is deferred arbitrarily — everything has a trigger condition that says "now it's time."
+      <strong>The pattern across every scope decision:</strong> Phase 1 builds the data infrastructure AND a lightweight, transparent health score agents can verify. Phase 2 upgrades that score to ML-weighted adaptive intelligence and adds full reporting. Phase 3 acts on that intelligence autonomously with predictions and proactive outreach. Each phase earns the right to the next by proving accuracy, earning trust, and accumulating the structured data that makes the next capability possible. Nothing is deferred arbitrarily — and what's included (like the rule-based health score) is included because transparent rules build the trust foundation that makes opaque ML models acceptable later.
     </div>
   </div>
 

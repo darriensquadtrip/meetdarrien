@@ -578,7 +578,7 @@ body {
     <span>14 DECISION POINTS</span>
     <span>45 ASSUMPTIONS DOCUMENTED</span>
     <span>20 PROBLEMS SCORED</span>
-    <span>9 USER STORIES</span>
+    <span>11 USER STORIES</span>
   </div>
 </div>
 
@@ -634,7 +634,7 @@ body {
         <div class="section-content">
           <p><strong>The prompt itself is phased.</strong> Paragraph 1 uses present-tense, operational language ("carry out," "understand," "provide"). Paragraph 2 shifts to aspirational language ("pre-empt," "proactively," "opportunities"). This isn't accidental — it signals that the interviewers expect a phased approach, not a monolithic proposal.</p>
           <div class="highlight-box purple">
-            <strong>Implication:</strong> Jobs 1–3 are the MVP ask. Jobs 5–6 are the Phase 2–3 aspiration. Job 4 bridges both (status = MVP, health scoring = Phase 2). Building all six in one phase would fail the "MVP discipline" test Renee is evaluating.
+            <strong>Implication:</strong> Jobs 1–3 are the MVP ask. Jobs 5–6 are the Phase 2–3 aspiration. Job 4 bridges both — status display and a lightweight rule-based health score are MVP; ML-weighted adaptive scoring upgrades in Phase 2. Building all six in one phase would fail the "MVP discipline" test Renee is evaluating.
           </div>
         </div>
       </div>
@@ -727,9 +727,13 @@ body {
               <div class="phase-label">Phase 1: Operations</div>
               <div class="phase-desc">Jobs 3 & 4 — Solve problems, assess status</div>
             </div>
+            <div class="phase-node phase-mvp">
+              <div class="phase-label">Phase 1: Health</div>
+              <div class="phase-desc">Job 4b — Lightweight rule-based health scoring</div>
+            </div>
             <div class="phase-node phase-p2">
-              <div class="phase-label">Phase 2: Health</div>
-              <div class="phase-desc">Job 4b — Composite health scoring</div>
+              <div class="phase-label">Phase 2: Advanced Health</div>
+              <div class="phase-desc">Job 4b+ — ML-weighted adaptive scoring</div>
             </div>
             <div class="phase-node phase-p3">
               <div class="phase-label">Phase 3: Intelligence</div>
@@ -929,7 +933,7 @@ body {
           <p><strong>H6:</strong> "How many employees? Growing or shrinking?" <span class="ice-bar"><span class="ice-score ice-low">ICE 34</span></span></p>
           <p><strong>H9:</strong> "Is open enrollment approaching?" <span class="ice-bar"><span class="ice-score ice-low">ICE 34</span></span></p>
           <p><strong>H7:</strong> "Is the company in compliance across all states?" <span class="ice-bar"><span class="ice-score ice-low">ICE 25</span></span></p>
-          <p><strong>H10:</strong> "Is this account showing churn risk signals?" <span class="ice-bar"><span class="ice-score ice-low">ICE 13</span></span> — Phase 2–3. Requires composite scoring model.</p>
+          <p><strong>H10:</strong> "Is this account showing churn risk signals?" <span class="ice-bar"><span class="ice-score ice-low">ICE 13</span></span> — A lightweight composite health score now exists in MVP as a foundation — using rule-based weighted signals (billing, payroll, support, satisfaction, activity) that agents can verify against their own intuition. Advanced predictive churn modeling remains Phase 2–3.</p>
         </div>
       </div>
     </div>
@@ -1028,7 +1032,7 @@ body {
             </div>
           </div>
           <div class="highlight-box green">
-            <strong>The insight:</strong> Company profile, plan type, billing status, interaction history, open tickets, and recent changes appear in BOTH lists. Building the data layer that serves these 6 data categories simultaneously solves the top problems AND answers the top health questions. That's the MVP scope — derived from the bottom up, not imposed from the top down.
+            <strong>The insight:</strong> Company profile, plan type, billing status, interaction history, open tickets, and recent changes appear in BOTH lists. Building the data layer that serves these 6 data categories simultaneously solves the top problems AND answers the top health questions. <strong>These same 6 data categories also produce a composite health score</strong> — a rule-based weighted computation (Billing x 0.30, Payroll x 0.25, Support x 0.20, Satisfaction x 0.15, Activity x 0.10) that gives agents and leadership an at-a-glance account health assessment. The convergence is threefold: same data serves status display, problem resolution, AND health scoring. That's the MVP scope — derived from the bottom up, not imposed from the top down.
           </div>
         </div>
       </div>
@@ -1058,8 +1062,8 @@ body {
     <div class="step-header" onclick="toggleStep(this)">
       <span class="step-number">09</span>
       <div class="step-title-block">
-        <div class="step-title">9 User Stories — 3 Foundation + 6 Problem</div>
-        <div class="step-summary">Foundation stories are non-negotiable. Problem stories are where the scoping cuts happen. Each has multiple solution options at different effort levels.</div>
+        <div class="step-title">11 User Stories — 3 Foundation + 6 Problem + 2 Health</div>
+        <div class="step-summary">Foundation stories are non-negotiable. Problem stories are where the scoping cuts happen. Health stories add lightweight scoring and leadership visibility. Each has multiple solution options at different effort levels.</div>
       </div>
       <span class="step-toggle">▼</span>
     </div>
@@ -1083,6 +1087,19 @@ body {
               <div class="story-id">FS-3 <span class="phase-badge mvp">FULL BUILD</span></div>
               <div class="story-name">Account Status at a Glance</div>
               <div class="story-scope">5 health indicators: billing status, next payroll, open tickets, recent changes, customer tenure.</div>
+            </div>
+          </div>
+          <p style="margin-top: 1rem"><strong>Health Stories (lightweight scoring — MVP health intelligence):</strong></p>
+          <div class="story-grid">
+            <div class="story-card">
+              <div class="story-id">HS-1 <span class="phase-badge mvp">FULL BUILD</span></div>
+              <div class="story-name">Lightweight Health Score</div>
+              <div class="story-scope">Rule-based weighted composite score: (Billing x 0.30) + (Payroll x 0.25) + (Support x 0.20) + (Satisfaction x 0.15) + (Activity x 0.10). Health badge in status strip with signal breakdown card. Transparent, decomposable, agent-verifiable. No ML — simple rules on Day 1.</div>
+            </div>
+            <div class="story-card">
+              <div class="story-id">HS-2 <span class="phase-badge mvp">FULL BUILD</span></div>
+              <div class="story-name">Leadership Health Overview</div>
+              <div class="story-scope">Portfolio list view for team leads and CSO leadership showing all accounts with health scores, filterable by band (Green/Light Green/Amber/Orange/Red). Lightweight portfolio view — not full BI reporting.</div>
             </div>
           </div>
           <p style="margin-top: 1rem"><strong>Problem Stories (from ICE ≥ 40 problems — the reason they called):</strong></p>
@@ -1183,7 +1200,7 @@ body {
       <div class="decision-section">
         <div class="section-label label-decision">⬡ DEFERRED TO PHASE 2</div>
         <div class="section-content">
-          <p><strong>Composite Health Scoring (H10)</strong> — Requires weighted algorithm across engagement, payment, adoption, and satisfaction signals. Can't score health until the data foundation is proven accurate. Phase 1 provides the raw signals; Phase 2 composes them.</p>
+          <p><strong>Composite Health Scoring (H10)</strong> — <em>Included as lightweight rule-based score in MVP (HS-1, HS-2);</em> ML-based adaptive scoring remains Phase 2. We CAN score with simple, transparent rules on Day 1 — the formula is (Billing x 0.30) + (Payroll x 0.25) + (Support x 0.20) + (Satisfaction x 0.15) + (Activity x 0.10), producing bands agents can verify against their own intuition. What requires validated data is ML-weighted scoring where agents can't verify the logic themselves. Week 2 manual validation with 5 experienced agents targets >=80% alignment with agent intuition.</p>
           <p><strong>Benefits Life Event Flows (B2)</strong> — Marriage/baby/divorce triggers cross multiple carriers, state rules, and enrollment systems. Most complex call type but lowest frequency × highest integration cost. Deep domain expertise required to build correctly.</p>
           <p><strong>Compliance Contextual Guidance (C1)</strong> — State-specific rules surfaced in context. Requires a compliance knowledge engine that doesn't exist yet. The data source is a knowledge base, not a database.</p>
           <p><strong>In-place Ticket Creation/Updates</strong> — Agents should eventually create and update Zendesk tickets from within Customer Central. Deferred because the read path (viewing tickets) must be proven before the write path (creating tickets). Write-path errors are more dangerous.</p>
@@ -1532,8 +1549,8 @@ body {
           <p><strong>Step 5:</strong> Inventoried 20 CSO problems across 6 domains (inferred, not validated)</p>
           <p><strong>Step 6:</strong> Inventoried 12 health/status questions agents need answered every call</p>
           <p><strong>Step 7:</strong> Applied ICE scoring → Impact (stable) × Confidence (needs validation) × Ease (feasibility)</p>
-          <p><strong>Step 8:</strong> Discovered convergence → top problems and top health questions need the same 6 data categories</p>
-          <p><strong>Step 9:</strong> Wrote 9 user stories → 3 foundation (non-negotiable) + 6 problem (scoping cuts here)</p>
+          <p><strong>Step 8:</strong> Discovered convergence → top problems and top health questions need the same 6 data categories — which also produce a composite health score</p>
+          <p><strong>Step 9:</strong> Wrote 11 user stories → 3 foundation (non-negotiable) + 6 problem (scoping cuts here) + 2 health (HS-1 lightweight score, HS-2 leadership overview)</p>
           <p><strong>Step 10:</strong> Applied Full Build vs. Deep Link framework → 4 full builds + 3 deep links + 2 low-cost additions</p>
           <p><strong>Step 11:</strong> Documented what we chose NOT to build → with defensible rationale for every deferral</p>
           <p><strong>Step 12:</strong> Acknowledged the fundamental constraint → zero direct user input, every UX decision is a hypothesis</p>

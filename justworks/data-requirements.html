@@ -373,6 +373,7 @@ body {
 }
 .dh-id.fs { color: var(--green); }
 .dh-id.ps { color: var(--blue); }
+.dh-id.hs { color: var(--amber); }
 .dh-title {
   flex: 1;
   font-size: 0.88rem;
@@ -468,8 +469,8 @@ body {
   <p class="sub">Every data field, source system, Salesforce object, integration method, freshness requirement, and risk — mapped to each MVP feature</p>
   <div class="hdr-stats">
     <div class="hdr-stat"><div class="num">5</div><div class="lbl">Source Systems</div></div>
-    <div class="hdr-stat"><div class="num">9</div><div class="lbl">MVP Features</div></div>
-    <div class="hdr-stat"><div class="num">47</div><div class="lbl">Data Fields</div></div>
+    <div class="hdr-stat"><div class="num">11</div><div class="lbl">MVP Features</div></div>
+    <div class="hdr-stat"><div class="num">55</div><div class="lbl">Data Fields</div></div>
     <div class="hdr-stat"><div class="num">3</div><div class="lbl">High-Risk Integrations</div></div>
   </div>
 </div>
@@ -883,6 +884,82 @@ body {
         <div class="risk-text"><strong>De-risking:</strong> Week 1 — validate with the billing/payroll team that the payment → payroll → employee chain can be queried. If the join is feasible, this is the highest-value novel feature in the MVP. If not, fall back to a simpler "payment failed" alert (like PS-2) and promote the full cascade to Phase 2.</div>
       </div>
     </div>
+
+    <!-- HS-1 -->
+    <div class="detail-block" id="hs1">
+      <div class="detail-header" onclick="toggle(this)">
+        <span class="dh-id hs">HS-1</span>
+        <span class="dh-title">Lightweight Health Score</span>
+        <div class="dh-badges">
+          <span class="src-badge bill">BILLING</span>
+          <span class="src-badge prod">PROD DB</span>
+          <span class="src-badge zd">ZENDESK</span>
+          <span class="src-badge logs">EVENTS</span>
+          <span class="fresh-badge fresh-nrt">NEAR REAL-TIME</span>
+          <span class="risk-badge risk-l">LOW RISK</span>
+        </div>
+        <span class="dh-toggle">▼</span>
+      </div>
+      <div class="detail-body">
+        <div class="sub-head">DATA FIELDS</div>
+        <table class="field-table">
+          <tr><th>Field</th><th>Source</th><th>Notes</th></tr>
+          <tr><td>billing_status, days_past_due</td><td><span class="src-badge bill">BILLING</span></td><td>Current=100, approaching due=60, past due scales by days (30d=0). Weight: 30%</td></tr>
+          <tr><td>payroll_run_status (last 3)</td><td><span class="src-badge prod">PROD DB</span></td><td>All 3 success=100, 1 failure=50, most recent failed=20. Weight: 25%</td></tr>
+          <tr><td>open_ticket_count, avg_ticket_age, highest_ticket_priority</td><td><span class="src-badge zd">ZENDESK</span></td><td>0 open=100, scales down by count/age/severity. Weight: 20%</td></tr>
+          <tr><td>csat_scores (last 3)</td><td><span class="src-badge zd">ZENDESK</span></td><td>Avg of last 3 CSAT scores, missing=neutral (70). Weight: 15%</td></tr>
+          <tr><td>recent_changes_count, customer_tenure</td><td><span class="src-badge logs">EVENTS</span></td><td>Moderate activity=100, zero=70, spikes=50. Weight: 10%</td></tr>
+        </table>
+        <div class="sub-head">SCORING FORMULA</div>
+        <div class="risk-text" style="font-family:'JetBrains Mono',monospace; font-size:0.75rem; margin-bottom:0.5rem">
+          Health Score = (Billing x 0.30) + (Payroll x 0.25) + (Support x 0.20) + (Satisfaction x 0.15) + (Activity x 0.10)
+        </div>
+        <div class="risk-text">
+          <strong>Health Bands:</strong> 90-100 Green (Healthy) · 70-89 Light Green (Good) · 50-69 Amber (Attention) · 30-49 Orange (At Risk) · 0-29 Red (Critical)
+        </div>
+        <div class="sub-head">INTEGRATION NOTES</div>
+        <div class="callout green">
+          <strong>All data comes from the existing aggregation layer — no new integrations required.</strong> The health score is a computation layer on signals already collected for FS-3 (Account Status at a Glance). Billing status, payroll run status, open ticket count, CSAT scores, and activity events are all fields the aggregation API already queries. The health score engine applies a weighted formula and stores the result on <code>account_summaries</code>.
+        </div>
+        <div class="sub-head">KEY DESIGN PRINCIPLES</div>
+        <div class="risk-text">
+          Score must be <strong>decomposable</strong> — agent clicks badge to see each signal's individual score with plain-language explanation. Score is <strong>transparent</strong> — not a black box; agents can verify it matches reality. Score is <strong>rule-based</strong> — no ML in Phase 1; ML-weighted adaptive scoring is Phase 2. Weights are <strong>configurable</strong> — calibrated during Week 2 validation exercise.
+        </div>
+        <div class="sub-head">ACCEPTANCE CRITERIA</div>
+        <div class="risk-text">Score computes in &lt;100ms. Decomposable by signal — clicking the badge shows 5 component scores. Matches experienced agent intuition &ge;80% in Week 2 validation exercise.</div>
+      </div>
+    </div>
+
+    <!-- HS-2 -->
+    <div class="detail-block" id="hs2">
+      <div class="detail-header" onclick="toggle(this)">
+        <span class="dh-id hs">HS-2</span>
+        <span class="dh-title">Leadership Health Overview</span>
+        <div class="dh-badges">
+          <span class="src-badge prod">PROD DB</span>
+          <span class="fresh-badge fresh-nrt">NEAR REAL-TIME</span>
+          <span class="risk-badge risk-l">LOW RISK</span>
+        </div>
+        <span class="dh-toggle">▼</span>
+      </div>
+      <div class="detail-body">
+        <div class="sub-head">DATA FIELDS</div>
+        <table class="field-table">
+          <tr><th>Field</th><th>Source</th><th>Notes</th></tr>
+          <tr><td>health_score, score_billing, score_payroll, score_support, score_satisfaction, score_activity</td><td>Computed (HS-1)</td><td>Same health score from HS-1, aggregated across all accounts</td></tr>
+          <tr><td>company_name, plan_type, employee_count</td><td><span class="src-badge prod">PROD DB</span></td><td>Account identifiers for list view — already on <code>account_summaries</code> table</td></tr>
+          <tr><td>health_band</td><td>Computed</td><td>Derived from health_score: Healthy / Good / Attention / At Risk / Critical</td></tr>
+          <tr><td>top_risk_signal</td><td>Computed</td><td>The lowest-scoring component signal — e.g., "Billing: Past Due (score 20)"</td></tr>
+        </table>
+        <div class="sub-head">INTEGRATION NOTES</div>
+        <div class="callout green">
+          <strong>Read-only list view against existing <code>account_summaries</code> table.</strong> The leadership portfolio view queries the same table that serves Tier 1 agent data (~10,000 rows, fits entirely in memory). Filters by health band and plan type are simple WHERE clauses on indexed columns. No new data sources, no new joins, no new sync pipelines. This is a UI view on existing data.
+        </div>
+        <div class="sub-head">ACCEPTANCE CRITERIA</div>
+        <div class="risk-text">Portfolio list loads in &lt;2 seconds. Sortable by health score, filterable by band and plan type. Click-through to individual account profile. Health distribution summary (count per band) renders at top of view.</div>
+      </div>
+    </div>
+
   </div>
 
   <!-- ============================== -->

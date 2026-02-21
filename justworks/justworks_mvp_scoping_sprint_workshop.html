@@ -1134,14 +1134,25 @@
       </div>
 
       <!-- PHASE 2+ CANDIDATES (Deliberately included to test scoping discipline) -->
-      <div class="feature-card" style="opacity: 0.65;">
+      <div class="feature-card">
         <div class="vote-dots"><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div></div>
         <div class="card-category issues">Health Signals</div>
-        <h5>Composite Health Score</h5>
-        <div class="card-detail">Weighted score combining engagement, payment health, product adoption, and satisfaction. RAG status (Red/Amber/Green) with drill-down.</div>
+        <h5>Lightweight Health Score (HS-1)</h5>
+        <div class="card-detail">Lightweight rule-based score using billing, payroll, support, satisfaction, and activity signals. Transparent and agent-verifiable. Formula: (Billing x 0.30) + (Payroll x 0.25) + (Support x 0.20) + (Satisfaction x 0.15) + (Activity x 0.10). Five color bands: Green (90-100), Light Green (70-89), Amber (50-69), Orange (30-49), Red (0-29).</div>
         <div class="card-footer">
-          <span class="card-source">Multiple sources + scoring model</span>
-          <span class="card-effort high">High Effort</span>
+          <span class="card-source">Status strip signals + rule-based model</span>
+          <span class="card-effort med">Med Effort</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="vote-dots"><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div><div class="vote-dot"></div></div>
+        <div class="card-category issues">Health Signals</div>
+        <h5>Leadership Health Overview (HS-2)</h5>
+        <div class="card-detail">Portfolio-level view of health scores across all accounts. CSO leadership sees at-risk accounts without asking agents. Same score, aggregated for the portfolio.</div>
+        <div class="card-footer">
+          <span class="card-source">HS-1 scores + aggregation layer</span>
+          <span class="card-effort med">Med Effort</span>
         </div>
       </div>
 
@@ -1272,6 +1283,8 @@
           <span class="moscow-chip">Employee-Level Detail View</span>
           <span class="moscow-chip">Product & Plan Summary</span>
           <span class="moscow-chip">SF-Zendesk Record Linking</span>
+          <span class="moscow-chip">Lightweight Health Score (HS-1)</span>
+          <span class="moscow-chip">Leadership Health Overview (HS-2)</span>
           <div class="placeholder-text">↑ Move cards here from Must Have or Could Have</div>
         </div>
       </div>
@@ -1280,7 +1293,6 @@
         <h4>Could Have — Phase 2</h4>
         <div class="quad-desc">Would improve the product. Can wait for the Health Scoring phase.</div>
         <div class="moscow-drop-zone">
-          <span class="moscow-chip">Composite Health Score</span>
           <span class="moscow-chip">API-First Data Layer</span>
           <div class="placeholder-text">↑ Debate zone — architecture decision may move up</div>
         </div>
@@ -1453,8 +1465,10 @@
         Not the final product — the first brick, laid in the right direction."
       </div>
       <p style="margin-top: 16px;">
-        What was deferred today isn't forgotten — it's sequenced. The foundation we build in Phase 1 
-        is what makes Health Scoring and Proactive Intelligence possible in Phase 2 and 3 without re-architecting.
+        What was deferred today isn't forgotten — it's sequenced. Phase 1 ships a lightweight, rule-based health score
+        that agents can verify against their intuition — transparent, decomposable, no ML. Phase 2 upgrades to adaptive
+        ML-weighted scoring, predictive churn signals, and automated outreach. The foundation we build now makes that
+        evolution possible without re-architecting.
       </p>
     </div>
 

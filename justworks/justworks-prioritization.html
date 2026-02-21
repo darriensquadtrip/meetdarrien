@@ -405,7 +405,7 @@
           <span class="cant-before">✕ Can't assess health without Job 2 interaction patterns</span>
         </p>
         <p style="margin-top: 16px;">
-          Account <strong>health</strong> (composite scoring) adds engagement frequency, product adoption depth, and satisfaction signals — which require the data foundation to be stable and trusted before you can layer computation on top. <strong>Wrong health signals are worse than no health signals</strong> — they erode trust in the tool.
+          Account <strong>health</strong> now includes a <strong>lightweight composite score in the MVP</strong> — a rule-based weighted formula (Billing x 0.30, Payroll x 0.25, Support x 0.20, Satisfaction x 0.15, Activity x 0.10) that produces transparent, decomposable health bands agents can verify against their own intuition. The data doesn't need 60 days of validation to be <em>scored</em> — it needs to <em>exist and be queryable</em>, which Jobs 1 and 2 ensure. <strong>Advanced ML-weighted adaptive scoring</strong> — where agents can't verify the logic themselves — requires validated data patterns and remains Phase 2.
         </p>
       </div>
     </div>
@@ -450,14 +450,14 @@
         <div style="font-family: 'DM Mono', monospace; font-size: 11px; color: #6ee7b7; letter-spacing: 1px; margin-bottom: 8px;">PHASE 1</div>
         <div style="font-size: 14px; color: #d1fae5; font-weight: 500; margin-bottom: 8px;">Earn trust through accuracy</div>
         <div style="font-size: 12px; color: #999; line-height: 1.6;">
-          The data is correct. The profile matches reality. The timeline is complete. Agents believe the tool because it's <em>right</em> every time.
+          The data is correct. The profile matches reality. The timeline is complete. A lightweight health score gives agents a verifiable at-a-glance assessment. Agents believe the tool because it's <em>right</em> every time — and they can check the health score against their own intuition.
         </div>
       </div>
       <div style="background: rgba(251,191,36,0.12); border: 1px solid rgba(251,191,36,0.12); border-radius: 10px; padding: 20px;">
-        <div style="font-family: 'DM Mono', monospace; font-size: 11px; color: #fbbf24; letter-spacing: 1px; margin-bottom: 8px;">PHASE 2</div>
-        <div style="font-size: 14px; color: #fef3c7; font-weight: 500; margin-bottom: 8px;">Earn trust through insight</div>
+        <div style="font-family: 'DM Mono', monospace; font-size: 11px; color: #fbbf24; letter-spacing: 1px; margin-bottom: 8px;">PHASE 1 → PHASE 2</div>
+        <div style="font-size: 14px; color: #fef3c7; font-weight: 500; margin-bottom: 8px;">Earn trust through transparent insight, then upgrade</div>
         <div style="font-size: 12px; color: #999; line-height: 1.6;">
-          Once agents trust the data, they'll trust interpretations of it — health scores, risk signals, status assessments. Trust in inputs precedes trust in outputs.
+          Phase 1 earns trust with a simple, transparent, rule-based health score agents can verify against their own intuition. Phase 2 upgrades to ML-weighted adaptive scoring that agents trust <em>because the simple version proved accurate</em>. Trust in transparent rules precedes trust in opaque models.
         </div>
       </div>
       <div style="background: rgba(129,140,248,0.12); border: 1px solid rgba(129,140,248,0.12); border-radius: 10px; padding: 20px;">
@@ -477,7 +477,7 @@
       <span class="tag" style="background: rgba(110,231,183,0.15); color: #6ee7b7; border: 1px solid rgba(110,231,183,0.3);">MVP</span>
       <h3 style="color: #d1fae5;">Unified Context</h3>
       <div class="phase-jobs" style="color: #6ee7b7;">
-        Job 1 · Job 2 · Job 3 (partial) · Job 4 (status only)
+        Job 1 · Job 2 · Job 3 (partial) · Job 4 (status + lightweight health score)
       </div>
       <div class="phase-why" style="color: #6ee7b7; opacity: 0.6; border-top-color: rgba(110,231,183,0.15);">
         Replaces the multi-system workflow. Agents open one tool instead of six. The data is consolidated, accurate, and fast. Adoption is earned.
@@ -487,10 +487,10 @@
       <span class="tag" style="background: rgba(251,191,36,0.12); color: #fbbf24; border: 1px solid rgba(251,191,36,0.25);">Phase 2</span>
       <h3 style="color: #fef3c7;">Health & Action</h3>
       <div class="phase-jobs" style="color: #fbbf24;">
-        Job 3 (full resolution) · Job 4 (health scoring) · Job 5 (early signals)
+        Job 3 (full resolution) · Job 4 (advanced ML-weighted scoring) · Job 5 (early signals)
       </div>
       <div class="phase-why" style="color: #fbbf24; opacity: 0.6; border-top-color: rgba(251,191,36,0.12);">
-        Agents now act from within the tool. Health signals surface what the data means. The tool becomes the workspace, not just the reference.
+        Agents now act from within the tool. ML-weighted adaptive scoring upgrades the simple health score agents already trust. The tool becomes the workspace, not just the reference.
       </div>
     </div>
     <div class="phase-card" style="background: rgba(129,140,248,0.12); border: 1px solid rgba(129,140,248,0.12);">

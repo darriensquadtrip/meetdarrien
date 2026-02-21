@@ -71,7 +71,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--t1);height
 .dash.vis{display:block}
 
 /* Status Strip (FS-3) */
-.strip{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:rgba(0,0,0,0.06);border-bottom:1px solid rgba(0,0,0,0.08)}
+.strip{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:rgba(0,0,0,0.06);border-bottom:1px solid rgba(0,0,0,0.08)}
 .strip-i{background:#ffffff;padding:12px 16px;cursor:pointer;transition:background .12s}
 .strip-i:hover{background:#f8f9fb}
 .strip-l{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.5px;color:var(--t4);text-transform:uppercase;margin-bottom:4px}
@@ -240,6 +240,40 @@ body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--t1);height
 .scen-toggle{display:flex;gap:0;border-radius:7px;overflow:hidden;border:1px solid rgba(0,0,0,0.1);width:fit-content;background:#ffffff}
 .scen-btn{padding:7px 16px;background:transparent;border:none;color:var(--t3);font-family:'JetBrains Mono',monospace;font-size:13px;cursor:pointer;transition:all .12s;letter-spacing:.5px}
 .scen-btn.act{background:var(--g);color:#ffffff}
+
+/* Health Score (HS-1) */
+.hs-badge{background:#ffffff;padding:12px 16px;cursor:pointer;transition:background .12s;position:relative}
+.hs-badge:hover{background:#f8f9fb}
+.hs-score{font-size:18px;font-weight:700;display:flex;align-items:center;gap:5px}
+.hs-band{font-size:13px;font-weight:500;margin-left:2px}
+.hs-breakdown{display:none;position:absolute;top:100%;left:0;right:0;min-width:320px;background:#ffffff;border:1px solid rgba(0,0,0,0.1);border-radius:10px;box-shadow:0 12px 40px rgba(0,0,0,.12);z-index:200;padding:14px 16px}
+.hs-breakdown.vis{display:block}
+.hs-breakdown-title{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.5px;color:var(--t4);text-transform:uppercase;margin-bottom:8px}
+.hs-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--b0);font-size:14px}
+.hs-row:last-child{border-bottom:none}
+.hs-row-label{color:var(--t2)}
+.hs-row-score{font-family:'JetBrains Mono',monospace;font-weight:600}
+.hs-row-detail{font-size:12px;color:var(--t3);margin-left:8px}
+.hs-row-overall{padding:8px 0 2px;border-top:2px solid var(--b1);margin-top:4px;font-weight:600}
+
+/* Portfolio Health (HS-2) */
+.portfolio-view{display:none;height:100%;overflow-y:auto;padding:24px}
+.portfolio-view.vis{display:block}
+.port-header{margin-bottom:20px}
+.port-header h2{font-size:22px;font-weight:600;margin-bottom:4px}
+.port-header p{font-size:14px;color:var(--t3)}
+.port-dist{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.port-dist-item{padding:8px 14px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:13px;display:flex;align-items:center;gap:6px}
+.port-dist-count{font-size:18px;font-weight:700}
+.port-table{width:100%;border-collapse:collapse;background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-radius:9px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
+.port-table th{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1px;color:var(--t4);text-transform:uppercase;text-align:left;padding:10px 14px;border-bottom:2px solid var(--b1);background:#f8f9fb;cursor:pointer;white-space:nowrap;user-select:none}
+.port-table th:hover{color:var(--t2)}
+.port-table td{padding:10px 14px;border-bottom:1px solid var(--b0);font-size:14px}
+.port-table tr:last-child td{border-bottom:none}
+.port-table tr:hover td{background:#f8f9fb}
+.port-band{font-family:'JetBrains Mono',monospace;font-size:12px;padding:2px 8px;border-radius:4px;font-weight:500;white-space:nowrap}
+.port-score{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:15px}
+.port-risk-signal{font-size:13px;color:var(--t3)}
 </style>
 </head>
 <body>
@@ -281,6 +315,8 @@ body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--t1);height
   <div class="si" onclick="showModal('newTicket')"><span class="ic">＋</span>New Ticket</div>
   <div class="si" onclick="showModal('logInt')"><span class="ic">✎</span>Log Interaction</div>
   <div class="si" onclick="toast('📋 Escalation form copied')"><span class="ic">↗</span>Escalate</div>
+  <div class="sl">Leadership</div>
+  <div class="si" id="siPortfolio" onclick="showPortfolio()"><span class="ic">◉</span>Portfolio Health</div>
   <div id="sideAcct" style="display:block">
     <div class="sl">Account</div>
     <div class="si" onclick="showTab('overview')"><span class="ic">◈</span>Overview</div>
@@ -303,6 +339,20 @@ body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--t1);height
 <div class="dash vis" id="dash">
 <!-- FS-3: STATUS STRIP -->
 <div class="strip">
+  <div class="hs-badge" id="hsBadge" onclick="toggleHealthBreakdown(event)">
+    <div class="strip-l">Health Score</div>
+    <div class="hs-score" id="hsScore" style="color:#4caf50"><span class="sdot" style="background:#4caf50"></span><span id="hsScoreNum">82</span> <span class="hs-band" id="hsBand">— Good</span></div>
+    <div class="strip-s" id="hsSubtext">5 signals · Rule-based</div>
+    <div class="hs-breakdown" id="hsBreakdown">
+      <div class="hs-breakdown-title">Health Score Breakdown</div>
+      <div class="hs-row"><span class="hs-row-label">Billing</span><div><span class="hs-row-score" style="color:var(--g)" id="hsBilling">100</span><span class="hs-row-detail" id="hsBillingDetail">Current — paid Feb 1</span></div></div>
+      <div class="hs-row"><span class="hs-row-label">Payroll</span><div><span class="hs-row-score" style="color:var(--g)" id="hsPayroll">100</span><span class="hs-row-detail" id="hsPayrollDetail">Last 3 runs successful</span></div></div>
+      <div class="hs-row"><span class="hs-row-label">Support</span><div><span class="hs-row-score" style="color:var(--a)" id="hsSupport">72</span><span class="hs-row-detail" id="hsSupportDetail">1 open ticket, 3 days old, medium</span></div></div>
+      <div class="hs-row"><span class="hs-row-label">Satisfaction</span><div><span class="hs-row-score" style="color:var(--g)" id="hsSatisfaction">85</span><span class="hs-row-detail" id="hsSatisfactionDetail">Last 3 CSAT avg</span></div></div>
+      <div class="hs-row"><span class="hs-row-label">Activity</span><div><span class="hs-row-score" style="color:var(--g)" id="hsActivity">80</span><span class="hs-row-detail" id="hsActivityDetail">Moderate — 3 changes in 14 days</span></div></div>
+      <div class="hs-row hs-row-overall" id="hsOverallRow"><span>Overall</span><span class="hs-row-score" id="hsOverallScore" style="color:#4caf50">82 — Good</span></div>
+    </div>
+  </div>
   <div class="strip-i" onclick="showTab('billing')">
     <div class="strip-l">Billing</div>
     <div class="strip-v" style="color:var(--g)"><span class="sdot" style="background:var(--g)"></span>Current</div>
@@ -640,6 +690,93 @@ body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--t1);height
 
 </div><!-- tcon -->
 </div><!-- dash -->
+
+<!-- HS-2: PORTFOLIO HEALTH VIEW -->
+<div class="portfolio-view" id="portfolioView">
+  <div class="port-header">
+    <h2>Portfolio Health Overview</h2>
+    <p>Health distribution across all managed accounts. Scores are rule-based: (Billing x 0.30) + (Payroll x 0.25) + (Support x 0.20) + (Satisfaction x 0.15) + (Activity x 0.10)</p>
+  </div>
+  <div class="port-dist">
+    <div class="port-dist-item" style="background:rgba(76,175,80,0.08);color:#388e3c;border:1px solid rgba(76,175,80,0.2)"><span class="port-dist-count">487</span>Healthy</div>
+    <div class="port-dist-item" style="background:rgba(139,195,74,0.08);color:#689f38;border:1px solid rgba(139,195,74,0.2)"><span class="port-dist-count">312</span>Good</div>
+    <div class="port-dist-item" style="background:var(--ab);color:var(--a);border:1px solid var(--ad)"><span class="port-dist-count">89</span>Attention</div>
+    <div class="port-dist-item" style="background:rgba(234,88,12,0.08);color:var(--o);border:1px solid rgba(234,88,12,0.15)"><span class="port-dist-count">21</span>At Risk</div>
+    <div class="port-dist-item" style="background:var(--rb);color:var(--r);border:1px solid var(--rd)"><span class="port-dist-count">3</span>Critical</div>
+  </div>
+
+  <table class="port-table" id="portTable">
+    <thead>
+      <tr>
+        <th onclick="sortPortfolio('company')">Company &#9650;&#9660;</th>
+        <th onclick="sortPortfolio('plan')">Plan &#9650;&#9660;</th>
+        <th onclick="sortPortfolio('employees')">Employees &#9650;&#9660;</th>
+        <th onclick="sortPortfolio('score')">Health Score &#9650;&#9660;</th>
+        <th>Band</th>
+        <th>Top Risk Signal</th>
+      </tr>
+    </thead>
+    <tbody id="portBody">
+      <tr style="cursor:pointer" onclick="toast('→ Opening Acme Corp profile...')">
+        <td style="font-weight:500">Acme Corp</td>
+        <td>PEO Plus</td>
+        <td>34</td>
+        <td><span class="port-score" style="color:#689f38">82</span></td>
+        <td><span class="port-band" style="background:rgba(139,195,74,0.12);color:#689f38;border:1px solid rgba(139,195,74,0.2)">Good</span></td>
+        <td class="port-risk-signal">1 open ticket (3 days, medium)</td>
+      </tr>
+      <tr style="cursor:pointer" onclick="toast('→ Opening Globex Industries profile...')">
+        <td style="font-weight:500">Globex Industries</td>
+        <td>PEO Plus</td>
+        <td>128</td>
+        <td><span class="port-score" style="color:#388e3c">95</span></td>
+        <td><span class="port-band" style="background:rgba(76,175,80,0.12);color:#388e3c;border:1px solid rgba(76,175,80,0.2)">Healthy</span></td>
+        <td class="port-risk-signal">None — all signals green</td>
+      </tr>
+      <tr style="cursor:pointer" onclick="toast('→ Opening Initech profile...')">
+        <td style="font-weight:500">Initech</td>
+        <td>PEO Basic</td>
+        <td>22</td>
+        <td><span class="port-score" style="color:#d97706">58</span></td>
+        <td><span class="port-band" style="background:var(--ab);color:var(--a);border:1px solid var(--ad)">Attention</span></td>
+        <td class="port-risk-signal">CSAT below 60 (2 negative surveys)</td>
+      </tr>
+      <tr style="cursor:pointer" onclick="toast('→ Opening Massive Dynamic profile...')">
+        <td style="font-weight:500">Massive Dynamic</td>
+        <td>PEO Plus</td>
+        <td>87</td>
+        <td><span class="port-score" style="color:#689f38">76</span></td>
+        <td><span class="port-band" style="background:rgba(139,195,74,0.12);color:#689f38;border:1px solid rgba(139,195,74,0.2)">Good</span></td>
+        <td class="port-risk-signal">Payroll run had 2 warnings last cycle</td>
+      </tr>
+      <tr style="cursor:pointer" onclick="toast('→ Opening Prestige Worldwide profile...')">
+        <td style="font-weight:500">Prestige Worldwide</td>
+        <td>Payroll Only</td>
+        <td>12</td>
+        <td><span class="port-score" style="color:var(--o)">34</span></td>
+        <td><span class="port-band" style="background:rgba(234,88,12,0.08);color:var(--o);border:1px solid rgba(234,88,12,0.15)">At Risk</span></td>
+        <td class="port-risk-signal">Payment failed — 12 days past due</td>
+      </tr>
+      <tr style="cursor:pointer" onclick="toast('→ Opening Wayne Enterprises profile...')">
+        <td style="font-weight:500">Wayne Enterprises</td>
+        <td>PEO Plus</td>
+        <td>210</td>
+        <td><span class="port-score" style="color:#388e3c">91</span></td>
+        <td><span class="port-band" style="background:rgba(76,175,80,0.12);color:#388e3c;border:1px solid rgba(76,175,80,0.2)">Healthy</span></td>
+        <td class="port-risk-signal">None — all signals green</td>
+      </tr>
+      <tr style="cursor:pointer" onclick="toast('→ Opening Soylent Corp profile...')">
+        <td style="font-weight:500">Soylent Corp</td>
+        <td>PEO Basic</td>
+        <td>8</td>
+        <td><span class="port-score" style="color:var(--r)">22</span></td>
+        <td><span class="port-band" style="background:var(--rb);color:var(--r);border:1px solid var(--rd)">Critical</span></td>
+        <td class="port-risk-signal">Payment 30+ days past due, no CSAT</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
 </main>
 </div>
 
@@ -728,6 +865,94 @@ function toast(msg){
   const t=document.createElement('div');t.className='toast';t.textContent=msg;
   c.appendChild(t);
   setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity .3s';setTimeout(()=>t.remove(),300)},3000);
+}
+
+// HS-1: Health Score Breakdown Toggle
+function toggleHealthBreakdown(e){
+  e.stopPropagation();
+  const bd=document.getElementById('hsBreakdown');
+  bd.classList.toggle('vis');
+}
+document.addEventListener('click',function(e){
+  const bd=document.getElementById('hsBreakdown');
+  if(bd&&!document.getElementById('hsBadge').contains(e.target))bd.classList.remove('vis');
+});
+
+// HS-1: Health Score responds to billing scenario toggle
+const origSwitchBilling=switchBilling;
+switchBilling=function(mode,btn){
+  origSwitchBilling(mode,btn);
+  updateHealthScore(mode);
+};
+function updateHealthScore(mode){
+  const scoreEl=document.getElementById('hsScoreNum');
+  const bandEl=document.getElementById('hsBand');
+  const scoreWrap=document.getElementById('hsScore');
+  const dotEl=scoreWrap.querySelector('.sdot');
+  const billingScore=document.getElementById('hsBilling');
+  const billingDetail=document.getElementById('hsBillingDetail');
+  const overallScore=document.getElementById('hsOverallScore');
+  const subtextEl=document.getElementById('hsSubtext');
+  if(mode==='risk'){
+    scoreEl.textContent='34';
+    bandEl.textContent='— At Risk';
+    scoreWrap.style.color='#ea580c';
+    dotEl.style.background='#ea580c';
+    billingScore.textContent='0';billingScore.style.color='var(--r)';
+    billingDetail.textContent='Past due 8 days — ACH failed';
+    overallScore.textContent='34 — At Risk';overallScore.style.color='#ea580c';
+    subtextEl.textContent='Billing signal critical';
+  } else {
+    scoreEl.textContent='82';
+    bandEl.textContent='— Good';
+    scoreWrap.style.color='#4caf50';
+    dotEl.style.background='#4caf50';
+    billingScore.textContent='100';billingScore.style.color='var(--g)';
+    billingDetail.textContent='Current — paid Feb 1';
+    overallScore.textContent='82 — Good';overallScore.style.color='#4caf50';
+    subtextEl.textContent='5 signals · Rule-based';
+  }
+}
+
+// HS-2: Portfolio Health View
+function showPortfolio(){
+  document.querySelectorAll('.si').forEach(s=>s.classList.remove('act'));
+  document.getElementById('siPortfolio').classList.add('act');
+  document.getElementById('dash').classList.remove('vis');
+  document.getElementById('emptyState').style.display='none';
+  document.getElementById('portfolioView').classList.add('vis');
+}
+// Override sideNav to also hide portfolio
+const origSideNav=sideNav;
+sideNav=function(el){
+  origSideNav(el);
+  document.getElementById('portfolioView').classList.remove('vis');
+  document.getElementById('dash').classList.add('vis');
+};
+// Override showTab to also hide portfolio
+const origShowTab=showTab;
+showTab=function(t){
+  document.getElementById('portfolioView').classList.remove('vis');
+  document.getElementById('dash').classList.add('vis');
+  origShowTab(t);
+};
+
+// HS-2: Portfolio Sorting
+let portSortDir={};
+function sortPortfolio(col){
+  const tbody=document.getElementById('portBody');
+  const rows=Array.from(tbody.querySelectorAll('tr'));
+  const colMap={company:0,plan:1,employees:2,score:3};
+  const idx=colMap[col];
+  portSortDir[col]=!portSortDir[col];
+  const dir=portSortDir[col]?1:-1;
+  rows.sort((a,b)=>{
+    let av=a.children[idx].textContent.trim();
+    let bv=b.children[idx].textContent.trim();
+    if(col==='employees'||col==='score'){av=parseInt(av);bv=parseInt(bv);return(av-bv)*dir;}
+    return av.localeCompare(bv)*dir;
+  });
+  rows.forEach(r=>tbody.appendChild(r));
 }
 </script>
 </body>

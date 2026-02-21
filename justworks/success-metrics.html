@@ -259,6 +259,8 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--t1)
   </div>
 </div>
 
+<div class="co r" style="margin:1rem 0 1.5rem"><strong>Health score guardrail:</strong> The health score measures customer reality, not agent performance — do not use as an agent evaluation metric. The score reflects billing status, payroll health, support history, satisfaction, and activity patterns. If leadership uses it to rank agents, it will destroy trust in the tool and agents will game the inputs. Health scores are for customer diagnosis, not agent judgment.</div>
+
 <!-- =========================================== -->
 <!-- LEADING INDICATORS -->
 <!-- =========================================== -->
@@ -352,6 +354,28 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--t1)
   </div>
 </div>
 
+<div class="met" id="health-score">
+  <div class="met-top">
+    <div class="met-name">Health Score Accuracy</div>
+    <div class="met-oneliner">Does the computed health score match experienced agent intuition? If agents disagree with the score for most accounts, the formula needs recalibration before shipping.</div>
+    <div class="met-row">
+      <span class="met-pill pill-target">TARGET: ≥ 80% ALIGNMENT</span>
+      <span class="met-pill pill-when">VISIBLE: WEEK 2 VALIDATION</span>
+      <span class="met-pill pill-type">LEADING → DRIVES TRUST</span>
+    </div>
+  </div>
+  <div class="met-toggle" onclick="tog(this)"><span class="arrow">▼</span> HOW WE MEASURE · INSTRUMENTATION</div>
+  <div class="met-detail">
+    <div class="det-h">How We Measure</div>
+    <div class="det-p"><strong>Week 2 validation exercise:</strong> PM manually computes health scores for 50-100 accounts using the weighted formula — (Billing × 0.30) + (Payroll × 0.25) + (Support × 0.20) + (Satisfaction × 0.15) + (Activity × 0.10). Experienced agents independently rate the same accounts as Green/Amber/Red. Compare computed bands against agent intuition. ≥ 80% agreement = formula is calibrated. &lt; 80% = adjust weights before shipping.</div>
+    <div class="det-p"><strong>Ongoing:</strong> Monthly spot-check with 20 accounts. Agent panel reviews computed scores and flags disagreements. Recalibrate weights if drift exceeds 15%.</div>
+    <div class="inst">
+      <div class="inst-label">⚙ What needs to be engineered</div>
+      <div class="inst-body"><strong>Health score computation logging.</strong> Log the inputs and output of each score computation: <code>company_id</code>, <code>billing_score</code>, <code>payroll_score</code>, <code>support_score</code>, <code>satisfaction_score</code>, <code>activity_score</code>, <code>composite_score</code>, <code>health_band</code>. Required for debugging disagreements and weight calibration. ~0.5 days.</div>
+    </div>
+  </div>
+</div>
+
 <!-- =========================================== -->
 <!-- INPUT METRICS -->
 <!-- =========================================== -->
@@ -367,6 +391,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--t1)
     <tr><td><strong>Feature Usage</strong></td><td style="color:var(--a)">Problem tabs ≥30% of sessions</td><td>Click events per tab/section</td><td><code>tab_clicked(tab_name, session_id)</code>. Standard analytics.</td></tr>
     <tr><td><strong>Data Freshness</strong></td><td style="color:var(--g)">≤5 min avg staleness</td><td>Sync pipeline: time since last sync</td><td>Log <code>last_synced_at</code> per source, alert if &gt;10 min. Backend ops.</td></tr>
     <tr><td><strong>Error Rate</strong></td><td style="color:var(--g)">&lt;0.5% of loads</td><td>API errors ÷ total requests</td><td>Standard monitoring (Datadog, etc.). No custom work.</td></tr>
+    <tr><td><strong>Leadership View Usage</strong></td><td style="color:var(--g)">CSO leads weekly</td><td>CSO leads accessing portfolio health view at least weekly</td><td>Page-view logging on leadership health overview: <code>leader_id</code>, <code>view_timestamp</code>. Built into auth + page load. ~0.5 days.</td></tr>
   </tbody>
 </table>
 
@@ -402,11 +427,12 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--t1)
     <tr><td style="color:var(--r)"><strong>P0</strong></td><td><strong>Freshness timestamps in UI.</strong> Each section shows "as of X min ago." Already designed — ensure it ships.</td><td>0.5 days</td><td>Agent trust, data accuracy transparency</td></tr>
     <tr><td style="color:var(--a)"><strong>P1</strong></td><td><strong>Nightly consistency checker.</strong> Sample 50 accounts, compare cached vs. source. Log discrepancies.</td><td>1-2 days</td><td>Data accuracy (guardrail)</td></tr>
     <tr><td style="color:var(--a)"><strong>P1</strong></td><td><strong>Performance timing.</strong> <code>search_submitted_at</code>, <code>tier1_rendered_at</code>, <code>tier2_rendered_at</code>.</td><td>0.5 days</td><td>Search-to-context time</td></tr>
+    <tr><td style="color:var(--a)"><strong>P1</strong></td><td><strong>Health score computation logging.</strong> Log inputs and output per score: <code>company_id</code>, component scores, <code>composite_score</code>, <code>health_band</code>.</td><td>0.5 days</td><td>Health score accuracy, weight calibration</td></tr>
     <tr><td style="color:var(--b)"><strong>P2</strong></td><td><strong>Call-session linkage.</strong> Log telephony <code>call_id</code> with Customer Central <code>session_id</code>.</td><td>1 day</td><td>Precise orientation time, per-call AHT</td></tr>
   </tbody>
 </table>
 
-<div class="co b" style="margin-top:.75rem"><strong>Total: ~3-4 days of engineering.</strong> P0 ships with MVP. P1 ships during first week of alpha. P2 ships when telephony integration is available.</div>
+<div class="co b" style="margin-top:.75rem"><strong>Total: ~4-5 days of engineering.</strong> P0 ships with MVP. P1 (including health score computation logging) ships during first week of alpha. P2 ships when telephony integration is available.</div>
 
 <!-- =========================================== -->
 <!-- ANTI-METRICS -->

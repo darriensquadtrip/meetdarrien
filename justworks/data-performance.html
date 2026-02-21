@@ -142,7 +142,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--t1)
     </div>
     <div class="tier-box tb-instant">
       <div class="tb-name">Status Strip</div>
-      <div class="tb-sub">Billing RAG, next payroll, open tickets count</div>
+      <div class="tb-sub">Health score, billing RAG, next payroll, open tickets</div>
       <div class="tb-size">~1 KB · from cache</div>
     </div>
   </div>
@@ -200,7 +200,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--t1)
     <span class="card-tog">▼</span>
   </div>
   <div class="card-body">
-    <p><strong>What's in this tier:</strong> Caller name, role (admin/employee), company name, plan type, employee count, billing status (RAG), next payroll date, open ticket count, customer tenure. ~3 KB total.</p>
+    <p><strong>What's in this tier:</strong> Caller name, role (admin/employee), company name, plan type, employee count, <strong>composite health score + 5 component scores</strong>, billing status (RAG), next payroll date, open ticket count, customer tenure. ~3.5 KB total.</p>
     <p><strong>Why it must be instant:</strong> This is the agent's orientation data. Within the first 3 seconds of the call, they need to say the customer's name and demonstrate awareness. If this data takes even 2 seconds to appear, the agent is greeting blind.</p>
     <p><strong>How we make it instant:</strong> This data is pre-fetched and cached in the aggregation layer. When the agent searches, the search results already carry enough metadata to populate Tier 1 without additional queries. The search response itself IS the Tier 1 payload — company profile, caller identity, and status indicators all come back as part of the search result, not as separate follow-up queries.</p>
     <div class="co g"><strong>Implementation:</strong> The search endpoint returns a fat object — not just search matches, but the full Tier 1 payload for each match. One query, one response, zero follow-up requests. The frontend renders immediately on search-result click.</div>
@@ -297,6 +297,13 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--t1)
 &nbsp;&nbsp;<span class="fname">states_of_operation</span> <span class="ftype">VARCHAR[]</span><br>
 &nbsp;&nbsp;<span class="fname">salesforce_account_id</span> <span class="ftype">VARCHAR</span> <span class="fk">— FK to Salesforce</span><br>
 &nbsp;&nbsp;<span class="fname">zendesk_org_id</span> <span class="ftype">VARCHAR</span> <span class="fk">— FK to Zendesk</span><br>
+&nbsp;&nbsp;<span class="fname">health_score</span> <span class="ftype">SMALLINT</span> <span class="comment">-- composite score 0-100, computed from 5 signals</span><br>
+&nbsp;&nbsp;<span class="fname">score_billing</span> <span class="ftype">SMALLINT</span> <span class="comment">-- billing health component (weight: 30%)</span><br>
+&nbsp;&nbsp;<span class="fname">score_payroll</span> <span class="ftype">SMALLINT</span> <span class="comment">-- payroll stability component (weight: 25%)</span><br>
+&nbsp;&nbsp;<span class="fname">score_support</span> <span class="ftype">SMALLINT</span> <span class="comment">-- support burden component (weight: 20%)</span><br>
+&nbsp;&nbsp;<span class="fname">score_satisfaction</span> <span class="ftype">SMALLINT</span> <span class="comment">-- CSAT satisfaction component (weight: 15%)</span><br>
+&nbsp;&nbsp;<span class="fname">score_activity</span> <span class="ftype">SMALLINT</span> <span class="comment">-- account activity component (weight: 10%)</span><br>
+&nbsp;&nbsp;<span class="fname">score_updated_at</span> <span class="ftype">TIMESTAMP</span> <span class="comment">-- when health score was last recomputed</span><br>
 &nbsp;&nbsp;<span class="fname">last_synced_at</span> <span class="ftype">TIMESTAMP</span> <span class="comment">-- freshness indicator for UI</span><br>
 </div>
 
@@ -684,7 +691,8 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--t1)
   </div>
   <div class="card-body">
     <p><strong>The interactions table uses structured enums, not free text.</strong> <code>channel</code>, <code>status</code>, and <code>priority</code> are enums. If we stored these as free-text (as they exist in Zendesk), Phase 3 AI would need to parse and categorize millions of text fields before it could do anything useful. Structured on ingest means the ML pipeline has clean training data from day one.</p>
-    <p><strong>The account_events table stores metadata as JSONB.</strong> Flexible enough to capture any event type, structured enough to query. When Phase 3 builds a health scoring model, it can query "how many employee_removed events in the last 90 days" without NLP — it's a SQL WHERE clause.</p>
+    <p><strong>The account_summaries table already includes health scoring fields.</strong> The Phase 1 health score is a rule-based weighted composite stored directly on the account summary row. Phase 3 doesn't introduce health scoring — it upgrades the <em>weights</em> from static rules to ML-adaptive signals trained on the structured data we're already collecting. The schema is ready; only the computation engine changes.</p>
+    <p><strong>The account_events table stores metadata as JSONB.</strong> Flexible enough to capture any event type, structured enough to query. The health score's activity component already queries these events (e.g., "how many changes in 14 days"). Phase 3 AI can query richer patterns — "how many employee_removed events in the last 90 days" — without NLP, because it's a SQL WHERE clause.</p>
     <p><strong>The access_log table captures agent behavior.</strong> When Phase 3 builds an AI that predicts "this call is probably about payroll" and auto-navigates to the Payroll tab — it learns from access_log patterns: "when billing_status = past_due, agents click the Payment tab 80% of the time."</p>
     <div class="co g"><strong>This is the Tiebreaker Principle applied to database design.</strong> Same MVP effort. Same agent experience today. But the schema decisions — structured enums over free text, JSONB metadata over flat fields, audit logging from day one — create an AI-ready data foundation that would cost months to retrofit later.</div>
   </div>

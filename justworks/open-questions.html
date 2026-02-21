@@ -688,6 +688,38 @@ body {
   </div>
 
 
+  <!-- R5 -->
+  <div class="q-card" data-who="renee" data-scope="true" onclick="togq(this)">
+    <div class="q-head">
+      <span class="q-impact impact-scope">Scope</span>
+      <div class="q-main">
+        <div class="q-text">What signals does CSO leadership currently use to assess whether an account is healthy or at-risk? How do you identify accounts that need proactive outreach today?</div>
+      </div>
+      <span class="q-toggle">▼</span>
+    </div>
+    <div class="q-body">
+      <div class="d-grid">
+        <div class="d-box">
+          <div class="d-label why">Why This Matters</div>
+          <p>We're shipping a <strong>lightweight health score in Phase 1</strong> — a rule-based composite of billing, payroll, support, satisfaction, and activity signals with fixed weights. Understanding how CSO leadership currently assesses account health validates whether our scoring model captures the right signals and whether the proposed weights (Billing 0.30, Payroll 0.25, Support 0.20, Satisfaction 0.15, Activity 0.10) align with operational reality.</p>
+        </div>
+        <div class="d-box">
+          <div class="d-label assume">Our Assumption</div>
+          <p>Account health assessment is currently informal — based on agent intuition, escalation patterns, and reactive signals like missed payments or complaint spikes. No composite score exists today. Confidence: <strong>Medium</strong>. Most CSO orgs this size rely on tribal knowledge rather than systematic scoring.</p>
+        </div>
+        <div class="d-box">
+          <div class="d-label ifyes">If Leadership Has Existing Signals</div>
+          <p>We calibrate the health score weights against their existing mental model. If they weight billing health higher than satisfaction, we adjust. The Week 2 validation exercise — sitting with experienced agents to check score alignment — becomes even more targeted. Their existing intuition becomes our ground truth.</p>
+        </div>
+        <div class="d-box">
+          <div class="d-label ifno">If No Systematic Assessment Exists</div>
+          <p>The lightweight health score fills a genuine gap. We proceed with the proposed weights and use the <strong>Week 2 manual validation</strong> (target: >=80% alignment with experienced agent intuition) to calibrate. Phase 2 then upgrades to ML-weighted adaptive scoring once we have production data to learn from.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
   <!-- ═══════════════════════════════════════════════════ -->
   <!-- ANNELISE — DESIGN & UX -->
   <!-- ═══════════════════════════════════════════════════ -->
