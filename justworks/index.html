@@ -211,6 +211,13 @@
     margin-bottom: 32px;
   }
 
+  .welcome-text .prepared-by {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    letter-spacing: 0.02em;
+  }
+
   .welcome-text h1 {
     font-family: 'Instrument Serif', serif;
     font-size: 1.6rem;
@@ -756,6 +763,7 @@
       <!-- Welcome bar -->
       <div class="welcome-bar">
         <div class="welcome-text">
+          <p class="prepared-by">Prepared by Darrien Watson for Justworks</p>
           <h1>Customer Central — <em>From Prompt to Prototype</em></h1>
           <p>I was given a case study about building a Customer Health Dashboard for Justworks' CSO. Here's the full body of work. Start with the presentation, then explore the prototype. Everything else shows the thinking behind it.</p>
         </div>
@@ -775,8 +783,19 @@
         </div>
       </div>
 
-      <!-- Hero files -->
+      <!-- Proposal hero card -->
       <div class="section-label">Start here</div>
+      <a class="hero-file proto" href="proposal.html" style="margin-bottom:16px;display:flex;">
+        <div class="hero-file-icon" style="background:linear-gradient(135deg,#4e8cff,#8b5cf6);">&#x1F4DD;</div>
+        <div class="hero-file-info">
+          <div class="file-label" style="color:var(--accent-blue);">Structured Proposal</div>
+          <h3>Customer Central Proposal</h3>
+          <p>11 sections &middot; Linear read &middot; Links to all artifacts</p>
+        </div>
+        <div class="hero-file-badge" style="background:rgba(78,140,255,0.15);color:var(--accent-blue);">Read Proposal</div>
+      </a>
+
+      <!-- Hero files -->
       <div class="hero-files">
         <div class="hero-file pptx">
           <div class="hero-file-icon">📊</div>
@@ -900,7 +919,6 @@
       </div>
 
       <div class="desktop-footer">
-        <p>Prepared by Darrien Watson for Justworks</p>
       </div>
 
     </div>
@@ -914,6 +932,9 @@
         <span class="dock-tooltip">Interactive Prototype</span>🖥️
       </a>
       <div class="dock-sep"></div>
+      <a class="dock-item" href="proposal.html" style="background:linear-gradient(135deg,#4e8cff,#8b5cf6);border-radius:12px;">
+        <span class="dock-tooltip">Proposal</span>&#x1F4DD;
+      </a>
       <a class="dock-item" href="feature-showcase.html" target="_blank" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9);border-radius:12px;">
         <span class="dock-tooltip">Feature Showcase</span>🎯
       </a>

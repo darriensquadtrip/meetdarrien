@@ -874,7 +874,69 @@ body {
     </div>
   </div>
 
-  <!-- Future 3: Upsell Intelligence -->
+  <!-- Future 3: Churn Prediction from Behavior -->
+  <div class="future-card" onclick="togf(this)">
+    <div class="fc-head">
+      <span class="fc-phase ph-3">Phase 3</span>
+      <div class="fc-main">
+        <div class="fc-name">Churn Prediction from Behavior</div>
+        <div class="fc-tagline">Interaction patterns are stronger churn signals than any CSAT score</div>
+      </div>
+      <span class="fc-toggle">▼</span>
+    </div>
+    <div class="fc-body">
+      <div class="fc-desc">
+        Use interaction velocity, sentiment trajectory, repeat-contact patterns, and escalation frequency as leading indicators of churn risk. <strong>Highest impact Phase 3 feature</strong> because it directly protects revenue and provides the signal layer everything else depends on. A customer who contacts support 3 times in 5 days with declining sentiment is at risk — the system should know this before any survey is sent.
+      </div>
+      <div class="fc-details">
+        <div class="fd-box">
+          <div class="fd-label bus">Business Value</div>
+          <p><strong>Revenue protection.</strong> Every churned account that could have been saved represents lost ARR. Behavioral churn prediction catches at-risk accounts weeks before a cancellation — giving CSO time to intervene. The interaction data is proprietary: every competitor has Zendesk tickets, but no one else has Justworks' interaction corpus mapped to account health, billing status, and product adoption.</p>
+        </div>
+        <div class="fd-box">
+          <div class="fd-label tech">Technical Approach</div>
+          <p>Model trained on historical interaction patterns of churned vs. retained accounts. Input features: <strong>contact frequency</strong> (acceleration = risk), <strong>channel escalation</strong> (email → chat → phone = increasing urgency), <strong>sentiment codes</strong> from Phase 1 structured records, <strong>repeat-topic patterns</strong> (same issue unresolved across contacts), <strong>escalation rate</strong>. Outputs a risk score that feeds directly into the Health Score and triggers proactive outreach.</p>
+        </div>
+        <div class="fd-box fd-full">
+          <div class="fd-label dep">MVP Foundation Required</div>
+          <p>Requires Phase 1's structured interaction records running for <strong>at least one quarter</strong> to establish behavioral baselines. The structured topic tags, sentiment codes, and resolution types from Phase 1 are the training features. Without them, the model would need to parse raw text — slower, less accurate, and more expensive.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Future 4: Feature Gap Detection & Self-Service Roadmap -->
+  <div class="future-card" onclick="togf(this)">
+    <div class="fc-head">
+      <span class="fc-phase ph-3">Phase 3</span>
+      <div class="fc-main">
+        <div class="fc-name">Feature Gap Detection & Self-Service Roadmap</div>
+        <div class="fc-tagline">If 30% of calls are about benefits elections, that's a product problem</div>
+      </div>
+      <span class="fc-toggle">▼</span>
+    </div>
+    <div class="fc-body">
+      <div class="fc-desc">
+        Cluster the top reasons people call to reveal what the product doesn't do well enough. Then build help content and in-app flows for the exact things people call about most, deflecting volume at the source. <strong>Two capabilities, one data source:</strong> the interaction corpus tells you both what's broken in the product and what self-service content to build first.
+      </div>
+      <div class="fc-details">
+        <div class="fd-box">
+          <div class="fd-label bus">Business Value</div>
+          <p><strong>Dual impact: product improvement + volume deflection.</strong> Feature gap detection gives Product a data-driven backlog prioritized by actual customer pain. Self-service roadmap reduces inbound volume by building help content where customers actually need it — not where we guess they do. Every call that becomes a self-service resolution is a cost saving AND a better customer experience.</p>
+        </div>
+        <div class="fd-box">
+          <div class="fd-label tech">Technical Approach</div>
+          <p>Topic clustering on Phase 1's structured interaction records. Group contacts by <strong>topic tag + resolution type</strong> to identify: (1) high-volume topics that should be self-service, (2) topics with high repeat-contact rates indicating product gaps, (3) topics where resolution requires product changes vs. better documentation. Output feeds into a Product Intelligence dashboard and a Self-Service Content Priority Queue.</p>
+        </div>
+        <div class="fd-box fd-full">
+          <div class="fd-label dep">MVP Foundation Required</div>
+          <p>Entirely dependent on Phase 1's <strong>structured topic tagging system</strong>. If interactions are logged as free text, clustering requires NLP. If they're tagged with enums (as Phase 1 specifies), clustering is a SQL query. This is the Tiebreaker Principle in action — the Phase 1 tagging decision makes Phase 3's product intelligence feature orders of magnitude simpler.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Future 5: Upsell Intelligence -->
   <div class="future-card" onclick="togf(this)">
     <div class="fc-head">
       <span class="fc-phase ph-3">Phase 3</span>
