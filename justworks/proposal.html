@@ -616,6 +616,85 @@
   }
 
   /* ═══════════════════════════════════════
+     REALITY TODAY
+     ═══════════════════════════════════════ */
+  .reality-block {
+    margin-bottom: 32px;
+  }
+
+  .reality-card {
+    background: linear-gradient(135deg, rgba(248,113,113,0.06) 0%, rgba(251,191,36,0.06) 100%);
+    border: 1px solid rgba(248,113,113,0.18);
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 18px;
+  }
+
+  .reality-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent-red);
+    margin-bottom: 10px;
+  }
+
+  .reality-headline {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 1.35rem;
+    font-style: italic;
+    line-height: 1.4;
+    color: var(--text-primary);
+    margin-bottom: 14px;
+    max-width: 720px;
+  }
+
+  .reality-body {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 0;
+  }
+
+  .reality-body + .reality-body {
+    margin-top: 10px;
+  }
+
+  .reality-signals {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .reality-signal {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px;
+  }
+
+  .reality-signal .signal-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent-red);
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 600px) {
+    .reality-card { padding: 22px; }
+    .reality-headline { font-size: 1.15rem; }
+    .reality-signals { flex-direction: column; }
+  }
+
+  /* ═══════════════════════════════════════
      PROBLEM STATEMENTS
      ═══════════════════════════════════════ */
   .problem-list {
@@ -1554,12 +1633,30 @@
             <h2>Problem Overview, Context &amp; Business Opportunity</h2>
           </div>
 
-          <div class="prose">
-            <p>Justworks CSO agents currently toggle between <strong>5&ndash;6 systems</strong> per customer interaction &mdash; Zendesk, Salesforce, the Justworks admin dashboard, an internal knowledge base, Slack, and occasionally Tableau. At ~10,000 customers, Justworks has earned <strong>NPS +60</strong> and 9 Stevie Awards. But NPS built on human heroics doesn&rsquo;t scale linearly &mdash; either headcount climbs proportionally or quality erodes.</p>
-            <p>We identified <strong>6 distinct problems</strong> from the case study brief. Each is traced back to the exact language in the prompt that surfaced it. Problems 1&ndash;4 map directly to the Phase&nbsp;1 MVP; problems 5&ndash;6 require the data foundation that the MVP builds, and are addressed in Phases&nbsp;2&ndash;3.</p>
+          <!-- THE REALITY TODAY -->
+          <div class="reality-block">
+            <div class="reality-card">
+              <div class="reality-label">The Agent&rsquo;s Reality Today</div>
+              <div class="reality-headline">CSO agents spend the first few minutes of every call piecing together customer context across 5&ndash;6 disconnected systems &mdash; instead of actually helping the customer.</div>
+              <p class="reality-body">Justworks has earned <strong style="color:var(--text-primary);">NPS +60</strong> and <strong style="color:var(--text-primary);">9 Stevie Awards</strong> at ~10,000 customers. That quality was built on human heroics &mdash; agents who are exceptional despite the tooling, not because of it. But heroics don&rsquo;t scale. As the customer base grows, either headcount climbs proportionally or quality erodes.</p>
+              <p class="reality-body">The data to serve customers brilliantly already exists &mdash; it&rsquo;s just scattered across systems that were never designed to talk to each other. Nobody knows the overall health of an individual customer. Nobody knows the overall health of the book. The signals are there; the synthesis is not.</p>
+              <div class="reality-signals">
+                <div class="reality-signal"><span class="signal-dot"></span>5&ndash;6 systems per call</div>
+                <div class="reality-signal"><span class="signal-dot"></span>No single source of truth</div>
+                <div class="reality-signal"><span class="signal-dot"></span>Disparate, siloed data</div>
+                <div class="reality-signal"><span class="signal-dot"></span>No customer health visibility</div>
+                <div class="reality-signal"><span class="signal-dot"></span>No smart pattern recognition</div>
+                <div class="reality-signal"><span class="signal-dot"></span>Can&rsquo;t surface product opportunities</div>
+                <div class="reality-signal"><span class="signal-dot"></span>Reactive at best</div>
+              </div>
+            </div>
           </div>
 
           <!-- 6 PROBLEM STATEMENTS -->
+          <div class="prose" style="margin-bottom:18px;">
+            <p>We traced <strong>6 distinct problems</strong> back to the exact language in the case study brief. Problems 1&ndash;4 map directly to the Phase&nbsp;1 MVP; problems 5&ndash;6 require the data foundation that the MVP builds, and are addressed in Phases&nbsp;2&ndash;3.</p>
+          </div>
+
           <div class="problem-list">
 
             <div class="problem-card">
