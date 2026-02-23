@@ -2368,6 +2368,135 @@
     .proto-iframe { height: 400px; }
     .proto-expand-btn { display: none; }
   }
+
+  /* ═══════════════════════════════════════
+     PRESENTATION MODE
+     ═══════════════════════════════════════ */
+
+  /* Slide wrapper — invisible in default mode */
+  .slide { display: contents; }
+  .slide--closing { display: none; }
+
+  /* Present button in header */
+  .proposal-header { position: relative; }
+
+  .present-btn {
+    position: absolute;
+    top: 0; right: 0;
+    display: flex; align-items: center; gap: 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    padding: 8px 16px; border-radius: 8px;
+    border: 1px solid rgba(78, 140, 255, 0.2);
+    background: rgba(78, 140, 255, 0.08);
+    color: var(--accent-blue);
+    cursor: pointer; transition: all 0.2s;
+  }
+  .present-btn:hover {
+    background: rgba(78, 140, 255, 0.15);
+    border-color: rgba(78, 140, 255, 0.4);
+  }
+  .present-btn svg { width: 14px; height: 14px; }
+
+  /* Slide counter + exit */
+  .slide-nav {
+    display: none;
+    position: fixed; bottom: 24px; right: 32px; z-index: 100;
+    align-items: center; gap: 12px;
+    background: rgba(15, 17, 23, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--border);
+    border-radius: 10px; padding: 8px 16px;
+  }
+  body.present .slide-nav { display: flex; }
+
+  .slide-counter {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem; color: var(--text-muted);
+  }
+  .slide-exit {
+    background: none; border: none;
+    color: var(--text-muted); cursor: pointer;
+    font-size: 1rem; padding: 4px 8px; border-radius: 6px;
+    transition: all 0.15s;
+  }
+  .slide-exit:hover { color: var(--text-primary); background: rgba(255,255,255,0.05); }
+
+  /* ── body.present overrides ── */
+  body.present { overflow: hidden; }
+
+  body.present .toc-sidebar,
+  body.present .toc-toggle,
+  body.present .toc-overlay,
+  body.present .present-btn { display: none; }
+
+  body.present .proposal-layout {
+    display: block;
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+  }
+
+  body.present .proposal-main { padding: 0; }
+  body.present .proposal-inner { max-width: none; }
+  body.present .proposal-footer { display: none; }
+
+  /* Slide sizing */
+  body.present .slide {
+    height: 100vh;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 48px 80px;
+    overflow: hidden;
+    max-width: 1100px;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+
+  /* Content density reduction */
+  body.present .proposal-section { margin-bottom: 0; }
+  body.present .proposal-header { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+  body.present .deep-dives { display: none; }
+  body.present .problem-source { display: none; }
+  body.present .data-table td { padding: 10px 14px; }
+  body.present .data-table th { padding: 8px 14px; }
+  body.present .prose { line-height: 1.6; margin-bottom: 20px; }
+  body.present .visual-card { padding: 20px; margin-bottom: 16px; }
+  body.present .problem-card { padding: 18px; }
+  body.present .problem-list { gap: 10px; }
+  body.present .opp-pillars { grid-template-columns: repeat(3, 1fr); }
+  body.present .section-header { margin-bottom: 20px; }
+
+  /* Full-bleed iframe slides */
+  body.present .slide--proto { padding: 0; }
+  body.present .slide--proto .proto-breakout { width: 100%; max-width: none; }
+  body.present .slide--proto .proto-iframe { height: calc(100vh - 60px); }
+
+  /* Full-bleed concept mockup */
+  body.present .slide--concept { padding: 0; }
+  body.present .slide--concept .proto-breakout { width: 100%; max-width: none; }
+  body.present .slide--concept .concept-body { min-height: calc(100vh - 60px); }
+
+  /* Q&A closing slide */
+  body.present .slide--closing {
+    display: flex;
+    text-align: center;
+  }
+  body.present .slide--closing h2 {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 2.5rem;
+    font-weight: 400;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+  }
+  body.present .slide--closing p {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+  }
 </style>
 </head>
 <body>
@@ -2433,6 +2562,11 @@
 
         <!-- HEADER -->
         <header class="proposal-header">
+          <button class="present-btn" id="present-btn" title="Enter presentation mode">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8.25V18a2.25 2.25 0 002.25 2.25h13.5A2.25 2.25 0 0021 18V8.25m-18 0V6a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 6v2.25m-18 0h18M5.25 21h13.5M12 17.25v3.75"/></svg>
+            Present
+          </button>
+          <div class="slide">
           <div class="header-tags">
             <span class="header-tag">Product Proposal</span>
             <span class="header-tag purple">Customer Central MVP</span>
@@ -2448,8 +2582,10 @@
             <div class="stat-pill"><span class="pill-num">7</span><span class="pill-label">Week Timeline</span></div>
             <div class="stat-pill"><span class="pill-num">5</span><span class="pill-label">Team Members</span></div>
           </div>
+          </div>
 
           <!-- FUTURE TEASER -->
+          <div class="slide">
           <div class="teaser-block" style="margin-top:32px;">
             <div class="teaser-label">&#x2728; Where this is going</div>
             <div class="teaser-mockup">
@@ -2491,12 +2627,14 @@
               <div class="teaser-footer">Phase 3 concept &mdash; built on the data foundation the MVP creates</div>
             </div>
           </div>
+          </div>
         </header>
 
         <!-- ═══════════════════════════════════════
              SECTION 01: PROBLEM & OPPORTUNITY
              ═══════════════════════════════════════ -->
         <section class="proposal-section" id="s01">
+          <div class="slide">
           <div class="section-header">
             <div class="section-num">Section 01</div>
             <h2>Problem Overview, Context &amp; Business Opportunity</h2>
@@ -2520,8 +2658,10 @@
               </div>
             </div>
           </div>
+          </div>
 
           <!-- 6 PROBLEM STATEMENTS -->
+          <div class="slide">
           <div class="prose" style="margin-bottom:18px;">
             <p>We traced <strong>6 distinct problems</strong> back to the exact language in the case study brief. Problems 1&ndash;4 map directly to the Phase&nbsp;1 MVP; problems 5&ndash;6 require the data foundation that the MVP builds, and are addressed in Phases&nbsp;2&ndash;3.</p>
           </div>
@@ -2564,6 +2704,12 @@
               </div>
             </div>
 
+          </div>
+          </div>
+
+          <div class="slide">
+          <div class="problem-list">
+
             <div class="problem-card">
               <div class="problem-id">P4</div>
               <div class="problem-body">
@@ -2605,8 +2751,10 @@
             </div>
 
           </div>
+          </div>
 
           <!-- THE SOLUTION -->
+          <div class="slide">
           <div class="solution-block">
             <div class="solution-card">
               <div class="solution-label">The Solution</div>
@@ -2643,8 +2791,10 @@
               </div>
             </div>
           </div>
+          </div>
 
           <!-- BUSINESS OPPORTUNITY -->
+          <div class="slide">
           <div class="opportunity-block">
             <p class="opp-intro">Those are the problems &mdash; and that&rsquo;s the solution. Here is why solving them represents a <strong>compounding strategic advantage</strong>, not just an operational fix.</p>
 
@@ -2700,6 +2850,7 @@
               </div>
             </div>
           </div>
+          </div>
 
           <div class="deep-dives">
             <a class="deep-dive-link" href="customer_central_user_stories.pdf" target="_blank">
@@ -2721,6 +2872,7 @@
              SECTION 02: PHASED ROADMAP
              ═══════════════════════════════════════ -->
         <section class="proposal-section" id="s02">
+          <div class="slide">
           <div class="section-header">
             <div class="section-num">Section 02</div>
             <h2>Phased Roadmap</h2>
@@ -2793,6 +2945,7 @@
               </div>
             </div>
           </div>
+          </div>
 
           <div class="deep-dives">
             <a class="deep-dive-link" href="phased-roadmap.html" target="_blank">
@@ -2806,6 +2959,7 @@
              SECTION 03: MVP REQUIREMENTS
              ═══════════════════════════════════════ -->
         <section class="proposal-section" id="s03">
+          <div class="slide">
           <div class="section-header">
             <div class="section-num">Section 03</div>
             <h2>Phase 1 MVP Requirements &amp; Acceptance Criteria</h2>
@@ -2844,8 +2998,10 @@
               </table>
             </div>
           </div>
+          </div>
 
           <!-- EMBEDDED PROTOTYPE — PORTFOLIO HEALTH VIEW -->
+          <div class="slide slide--proto">
           <div class="visual-card proto-breakout" style="padding:0;overflow:hidden;">
             <div class="proto-embed-header">
               <div class="proto-embed-bar">
@@ -2860,8 +3016,10 @@
             </div>
             <iframe class="proto-iframe" src="customer-central.html#portfolio" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
           </div>
+          </div>
 
           <!-- EMBEDDED PROTOTYPE — AGENT DASHBOARD -->
+          <div class="slide slide--proto">
           <div class="visual-card proto-breakout" style="padding:0;overflow:hidden;">
             <div class="proto-embed-header">
               <div class="proto-embed-bar">
@@ -2876,8 +3034,10 @@
             </div>
             <iframe class="proto-iframe" src="customer-central.html" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
           </div>
+          </div>
 
           <!-- CONCEPT MOCKUP — PHASE 3 INTELLIGENCE LAYER -->
+          <div class="slide slide--concept">
           <div class="visual-card concept-mockup proto-breakout" style="padding:0;overflow:hidden;">
             <div class="proto-embed-header">
               <div class="proto-embed-bar">
@@ -2994,8 +3154,10 @@
 
             </div>
           </div>
+          </div>
 
           <!-- Interaction Details -->
+          <div class="slide">
           <div class="visual-card">
             <div class="visual-card-title">Key Interaction Details</div>
             <div class="table-scroll">
@@ -3093,6 +3255,8 @@
             <p>All 11 features are testable in the live prototype with the sample data above. The test guide walks through each feature with step-by-step instructions and maps every acceptance criterion to its implementation.</p>
           </div>
 
+          </div>
+
           <div class="deep-dives">
             <a class="deep-dive-link" href="feature-showcase.html" target="_blank">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
@@ -3113,6 +3277,7 @@
              SECTION 04: DATA REQUIREMENTS
              ═══════════════════════════════════════ -->
         <section class="proposal-section" id="s04">
+          <div class="slide">
           <div class="section-header">
             <div class="section-num">Section 04</div>
             <h2>Data Requirements</h2>
@@ -3153,6 +3318,8 @@
             <strong>3. Payment-to-Payroll Business Logic</strong> &mdash; rules for how payment failure impacts payroll are undocumented; affects PS-6 cascade.</p>
           </div>
 
+          </div>
+
           <div class="deep-dives">
             <a class="deep-dive-link" href="data-requirements.html" target="_blank">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
@@ -3173,6 +3340,7 @@
              SECTION 05: ENGINEERING RESOURCES
              ═══════════════════════════════════════ -->
         <section class="proposal-section" id="s05">
+          <div class="slide">
           <div class="section-header">
             <div class="section-num">Section 05</div>
             <h2>Engineering Resources</h2>
@@ -3248,6 +3416,8 @@
             </div>
           </div>
 
+          </div>
+
           <div class="deep-dives">
             <a class="deep-dive-link" href="engineering-resources.html" target="_blank">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
@@ -3260,6 +3430,7 @@
              SECTION 06: OPEN QUESTIONS
              ═══════════════════════════════════════ -->
         <section class="proposal-section" id="s06">
+          <div class="slide">
           <div class="section-header">
             <div class="section-num">Section 06</div>
             <h2>Open Questions &amp; Dependencies</h2>
@@ -3293,6 +3464,9 @@
             </div>
           </div>
 
+          </div>
+
+          <div class="slide">
           <div class="visual-card">
             <div class="visual-card-title">External Dependencies</div>
             <div class="table-scroll">
@@ -3329,6 +3503,8 @@
             <p>That&rsquo;s exactly why the proposal treats every design choice as a <strong style="color:var(--text-primary);">hypothesis waiting to be validated</strong>, and why Phase 1 starts with a paired spike to confirm the data architecture before a single line of product code is written. The full set of 45 assumptions is documented and traceable.</p>
           </div>
 
+          </div>
+
           <div class="deep-dives">
             <a class="deep-dive-link" href="open-questions.html" target="_blank">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
@@ -3345,6 +3521,7 @@
              SECTION 07: SUCCESS METRICS
              ═══════════════════════════════════════ -->
         <section class="proposal-section" id="s07">
+          <div class="slide">
           <div class="section-header">
             <div class="section-num">Section 07</div>
             <h2>Success Metrics &amp; Rationale</h2>
@@ -3382,6 +3559,8 @@
             </div>
           </div>
 
+          </div>
+
           <div class="deep-dives">
             <a class="deep-dive-link" href="success-metrics.html" target="_blank">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
@@ -3394,6 +3573,7 @@
              SECTION 08: ROLLOUT & TRAINING
              ═══════════════════════════════════════ -->
         <section class="proposal-section" id="s08">
+          <div class="slide">
           <div class="section-header">
             <div class="section-num">Section 08</div>
             <h2>Rollout &amp; Training Plan</h2>
@@ -3434,6 +3614,8 @@
             </div>
           </div>
 
+          </div>
+
           <div class="deep-dives">
             <a class="deep-dive-link" href="rollout-training.html" target="_blank">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
@@ -3446,6 +3628,7 @@
              SECTION 09: MVP RATIONALE
              ═══════════════════════════════════════ -->
         <section class="proposal-section" id="s09">
+          <div class="slide">
           <div class="section-header">
             <div class="section-num">Section 09</div>
             <h2>MVP Rationale</h2>
@@ -3516,6 +3699,8 @@
             <p>A dashboard that shows wrong data is a mild problem. A dashboard that lets agents write wrong data back into source systems is a severe problem. MVP is read-only. Write capabilities come after data accuracy is proven over 60+ days of production use.</p>
           </div>
 
+          </div>
+
           <div class="deep-dives">
             <a class="deep-dive-link" href="assumptions-chain.html" target="_blank">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
@@ -3532,6 +3717,7 @@
              SECTION 10: OUT OF SCOPE
              ═══════════════════════════════════════ -->
         <section class="proposal-section" id="s10">
+          <div class="slide">
           <div class="section-header">
             <div class="section-num">Section 10</div>
             <h2>Out of Scope (Worth Revisiting)</h2>
@@ -3572,6 +3758,8 @@
             </div>
           </div>
 
+          </div>
+
           <div class="deep-dives">
             <a class="deep-dive-link" href="scope-and-future.html" target="_blank">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
@@ -3584,6 +3772,7 @@
              SECTION 11: FUTURE FEATURES
              ═══════════════════════════════════════ -->
         <section class="proposal-section" id="s11">
+          <div class="slide">
           <div class="section-header">
             <div class="section-num">Section 11</div>
             <h2>Anticipated Future Features</h2>
@@ -3635,6 +3824,8 @@
             </div>
           </div>
 
+          </div>
+
           <div class="deep-dives">
             <a class="deep-dive-link" href="scope-and-future.html" target="_blank">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
@@ -3647,6 +3838,7 @@
              ARTIFACT INDEX
              ═══════════════════════════════════════ -->
         <section class="proposal-section" id="artifact-index">
+          <div class="slide">
           <div class="section-header">
             <div class="section-num" style="letter-spacing:0;">&#x1F4C1;</div>
             <h2>Artifact Index</h2>
@@ -3805,8 +3997,15 @@
               </a>
             </div>
           </div>
+          </div>
 
         </section>
+
+        <!-- CLOSING / Q&A SLIDE -->
+        <div class="slide slide--closing">
+          <h2>Questions &amp; Discussion</h2>
+          <p>Darrien Watson &middot; Customer Central Proposal</p>
+        </div>
 
         <!-- FOOTER -->
         <footer class="proposal-footer">
@@ -3817,6 +4016,12 @@
     </main>
 
   </div>
+</div>
+
+<!-- SLIDE NAV (presentation mode) -->
+<div class="slide-nav" id="slide-nav">
+  <span class="slide-counter" id="slide-counter">1 / 24</span>
+  <button class="slide-exit" id="slide-exit" title="Exit presentation">&times;</button>
 </div>
 
 <script>
@@ -3909,6 +4114,81 @@
     tocSidebar.classList.remove('open');
     tocOverlay.classList.remove('open');
   });
+
+  // ── Presentation mode ──
+  var slideObserver = null;
+
+  function enterPresent() {
+    document.body.classList.add('present');
+    setupSlideObserver();
+    var firstSlide = document.querySelector('.slide');
+    if (firstSlide) firstSlide.scrollIntoView();
+    history.replaceState(null, '', '?present');
+  }
+
+  function exitPresent() {
+    document.body.classList.remove('present');
+    if (slideObserver) { slideObserver.disconnect(); slideObserver = null; }
+    history.replaceState(null, '', location.pathname);
+  }
+
+  document.getElementById('present-btn').addEventListener('click', enterPresent);
+  document.getElementById('slide-exit').addEventListener('click', exitPresent);
+
+  // Auto-enter if URL has ?present
+  if (location.search.indexOf('present') !== -1) {
+    var checkUnlock = setInterval(function() {
+      if (document.getElementById('content').classList.contains('visible')) {
+        enterPresent();
+        clearInterval(checkUnlock);
+      }
+    }, 100);
+  }
+
+  // Keyboard navigation
+  document.addEventListener('keydown', function(e) {
+    if (!document.body.classList.contains('present')) return;
+    var slides = Array.from(document.querySelectorAll('.slide'));
+    var current = getCurrentSlideIndex(slides);
+
+    if (['ArrowDown','ArrowRight','PageDown',' '].indexOf(e.key) !== -1) {
+      e.preventDefault();
+      if (current < slides.length - 1) slides[current + 1].scrollIntoView({ behavior: 'smooth' });
+    }
+    if (['ArrowUp','ArrowLeft','PageUp'].indexOf(e.key) !== -1) {
+      e.preventDefault();
+      if (current > 0) slides[current - 1].scrollIntoView({ behavior: 'smooth' });
+    }
+    if (e.key === 'Escape') exitPresent();
+  });
+
+  function getCurrentSlideIndex(slides) {
+    var viewportMid = window.innerHeight / 2;
+    for (var i = slides.length - 1; i >= 0; i--) {
+      if (slides[i].getBoundingClientRect().top <= viewportMid) return i;
+    }
+    return 0;
+  }
+
+  // Slide counter (IntersectionObserver)
+  function setupSlideObserver() {
+    var slides = document.querySelectorAll('.slide');
+    var counter = document.getElementById('slide-counter');
+    var scrollRoot = document.querySelector('.proposal-layout');
+    var total = slides.length;
+    counter.textContent = '1 / ' + total;
+
+    slideObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var idx = Array.from(slides).indexOf(entry.target) + 1;
+          counter.textContent = idx + ' / ' + total;
+        }
+      });
+    }, { root: scrollRoot, rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+
+    slides.forEach(function(s) { slideObserver.observe(s); });
+  }
 </script>
 
 </body>
