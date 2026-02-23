@@ -18,8 +18,8 @@
   --bg-elevated: #e8ebf2;
   --border: #d4d8e3;
   --text-primary: #1a1c25;
-  --text-secondary: #4a4e63;
-  --text-muted: #7b7f97;
+  --text-secondary: #3a3e52;
+  --text-muted: #6b6f87;
   --accent-blue: #2563eb;
   --accent-purple: #7c3aed;
   --accent-green: #059669;
@@ -59,9 +59,9 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 48px 80px;
+  padding: 36px 52px;
   overflow: hidden;
-  max-width: 1100px;
+  max-width: 1350px;
   margin: 0 auto;
   box-sizing: border-box;
   position: relative;
@@ -106,7 +106,7 @@ body {
 
 .slide h2 {
   font-family: 'Instrument Serif', serif;
-  font-size: 2rem;
+  font-size: 2.25rem;
   font-weight: 400;
   line-height: 1.2;
   margin-bottom: 20px;
@@ -118,13 +118,14 @@ body {
 }
 
 .slide h3 {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 700;
   margin-bottom: 8px;
 }
 
 .slide p, .slide li {
-  font-size: 0.95rem;
+  font-size: 1.02rem;
+  font-weight: 450;
   line-height: 1.6;
   color: var(--text-secondary);
 }
@@ -133,11 +134,11 @@ body {
 
 .tagline {
   font-family: 'Instrument Serif', Georgia, serif;
-  font-size: 1.6rem;
+  font-size: 1.75rem;
   font-weight: 400;
   font-style: italic;
   line-height: 1.3;
-  max-width: 520px;
+  max-width: 580px;
   background: linear-gradient(135deg, #1a1c25 0%, #7c3aed 50%, #2563eb 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -261,14 +262,15 @@ body {
 }
 
 .timeline-step .t-action {
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   font-weight: 600;
   color: var(--text-primary);
   margin-bottom: 4px;
 }
 
 .timeline-step .t-system {
-  font-size: 0.72rem;
+  font-size: 0.78rem;
+  font-weight: 450;
   color: var(--text-muted);
 }
 
@@ -297,21 +299,22 @@ body {
 
 .problem-card .p-id {
   font-family: 'DM Mono', monospace;
-  font-size: 0.7rem;
+  font-size: 0.76rem;
   font-weight: 600;
   color: var(--accent-blue);
   margin-bottom: 6px;
 }
 
 .problem-card h4 {
-  font-size: 0.88rem;
+  font-size: 0.96rem;
   font-weight: 700;
   margin-bottom: 6px;
   color: var(--text-primary);
 }
 
 .problem-card p {
-  font-size: 0.78rem;
+  font-size: 0.85rem;
+  font-weight: 450;
   line-height: 1.5;
   color: var(--text-secondary);
 }
@@ -342,7 +345,8 @@ body {
 }
 
 .opp-stat .os-label {
-  font-size: 0.78rem;
+  font-size: 0.85rem;
+  font-weight: 450;
   color: var(--text-muted);
   line-height: 1.4;
 }
@@ -380,9 +384,10 @@ body {
 }
 
 .ns-context {
-  max-width: 600px;
+  max-width: 650px;
   margin: 0 auto;
-  font-size: 0.92rem;
+  font-size: 1rem;
+  font-weight: 450;
   line-height: 1.7;
   color: var(--text-secondary);
 }
@@ -405,7 +410,7 @@ body {
 
 .phase-col .pc-label {
   font-family: 'DM Mono', monospace;
-  font-size: 0.68rem;
+  font-size: 0.74rem;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -413,20 +418,21 @@ body {
 }
 
 .phase-col h4 {
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 700;
   margin-bottom: 4px;
 }
 
 .phase-col .pc-time {
   font-family: 'DM Mono', monospace;
-  font-size: 0.68rem;
+  font-size: 0.74rem;
   color: var(--text-muted);
   margin-bottom: 10px;
 }
 
 .phase-col p {
-  font-size: 0.8rem;
+  font-size: 0.88rem;
+  font-weight: 450;
   line-height: 1.55;
 }
 
@@ -448,7 +454,8 @@ body {
   border-radius: 10px;
   padding: 14px 18px;
   margin-top: 14px;
-  font-size: 0.85rem;
+  font-size: 0.92rem;
+  font-weight: 450;
   line-height: 1.6;
   color: var(--text-secondary);
 }
@@ -481,7 +488,8 @@ body {
 }
 
 .milestone-item .mn {
-  font-size: 0.92rem;
+  font-size: 0.98rem;
+  font-weight: 450;
   color: var(--text-secondary);
   line-height: 1.35;
 }
@@ -498,7 +506,8 @@ body {
 .data-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.85rem;
+  font-size: 0.92rem;
+  font-weight: 450;
 }
 
 .data-table th {
@@ -516,6 +525,7 @@ body {
   padding: 9px 12px;
   border-bottom: 1px solid rgba(51, 55, 72, 0.5);
   color: var(--text-secondary);
+  font-weight: 450;
   vertical-align: top;
   line-height: 1.4;
 }
@@ -578,7 +588,8 @@ body {
   gap: 8px;
   align-items: center;
   padding: 5px 0;
-  font-size: 0.78rem;
+  font-size: 0.85rem;
+  font-weight: 450;
   color: var(--text-secondary);
 }
 
@@ -634,14 +645,15 @@ body {
 }
 
 .sys-card h4 {
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   font-weight: 600;
   margin-bottom: 4px;
   color: var(--text-primary);
 }
 
 .sys-card p {
-  font-size: 0.72rem;
+  font-size: 0.78rem;
+  font-weight: 450;
   color: var(--text-muted);
   line-height: 1.4;
 }
@@ -662,13 +674,14 @@ body {
 }
 
 .aggregation-box h4 {
-  font-size: 0.95rem;
+  font-size: 1.02rem;
   color: var(--accent-blue);
   margin-bottom: 4px;
 }
 
 .aggregation-box p {
-  font-size: 0.8rem;
+  font-size: 0.88rem;
+  font-weight: 450;
   color: rgba(37, 99, 235, 0.7);
 }
 
@@ -697,13 +710,14 @@ body {
 }
 
 .tier-card h4 {
-  font-size: 0.85rem;
+  font-size: 0.92rem;
   font-weight: 700;
   margin-bottom: 4px;
 }
 
 .tier-card p {
-  font-size: 0.72rem;
+  font-size: 0.78rem;
+  font-weight: 450;
   line-height: 1.4;
 }
 
@@ -730,14 +744,15 @@ body {
 }
 
 .risk-card h4 {
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   font-weight: 700;
   color: var(--accent-red);
   margin-bottom: 6px;
 }
 
 .risk-card p {
-  font-size: 0.78rem;
+  font-size: 0.85rem;
+  font-weight: 450;
   line-height: 1.5;
   color: var(--text-secondary);
 }
@@ -769,14 +784,15 @@ body {
 }
 
 .team-card h4 {
-  font-size: 0.9rem;
+  font-size: 0.96rem;
   font-weight: 700;
   margin-bottom: 4px;
   color: var(--text-primary);
 }
 
 .team-card p {
-  font-size: 0.78rem;
+  font-size: 0.85rem;
+  font-weight: 450;
   color: var(--text-secondary);
   line-height: 1.45;
 }
@@ -842,7 +858,8 @@ body {
 }
 
 .question-item p {
-  font-size: 0.88rem;
+  font-size: 0.95rem;
+  font-weight: 450;
   color: var(--text-secondary);
   line-height: 1.5;
 }
@@ -890,7 +907,8 @@ body {
 }
 
 .metric-item .mi-name {
-  font-size: 0.78rem;
+  font-size: 0.85rem;
+  font-weight: 450;
   color: var(--text-muted);
   line-height: 1.35;
 }
@@ -920,13 +938,14 @@ body {
 }
 
 .rollout-stage h4 {
-  font-size: 0.95rem;
+  font-size: 1.02rem;
   font-weight: 700;
   margin-bottom: 4px;
 }
 
 .rollout-stage .rs-who {
-  font-size: 0.82rem;
+  font-size: 0.88rem;
+  font-weight: 450;
   color: var(--text-secondary);
   margin-bottom: 10px;
 }
@@ -945,7 +964,8 @@ body {
 }
 
 .rollout-stage li {
-  font-size: 0.78rem;
+  font-size: 0.85rem;
+  font-weight: 450;
   color: var(--text-secondary);
   line-height: 1.5;
   padding-left: 14px;
@@ -982,8 +1002,8 @@ body {
    ═══════════════════════════════════════ */
 .mvp-layout {
   display: grid;
-  grid-template-columns: 260px 1fr;
-  gap: 20px;
+  grid-template-columns: 300px 1fr;
+  gap: 24px;
   flex: 1;
   min-height: 0;
 }
@@ -1014,14 +1034,15 @@ body {
 }
 
 .decision-step h4 {
-  font-size: 0.78rem;
+  font-size: 0.85rem;
   font-weight: 700;
   margin-bottom: 2px;
   color: var(--text-primary);
 }
 
 .decision-step p {
-  font-size: 0.68rem;
+  font-size: 0.74rem;
+  font-weight: 450;
   color: var(--text-secondary);
   line-height: 1.4;
 }
@@ -1087,7 +1108,8 @@ body {
 }
 
 .scope-col li {
-  font-size: 0.78rem;
+  font-size: 0.85rem;
+  font-weight: 450;
   color: var(--text-secondary);
   line-height: 1.5;
   padding: 4px 0;
@@ -1117,7 +1139,8 @@ body {
 }
 
 .crosssell-note p {
-  font-size: 0.85rem;
+  font-size: 0.92rem;
+  font-weight: 450;
   line-height: 1.6;
 }
 
@@ -1165,7 +1188,8 @@ body {
 .tp-proactive .tp-label { color: var(--accent-green); }
 
 .tp-desc {
-  font-size: 0.82rem;
+  font-size: 0.9rem;
+  font-weight: 450;
   color: var(--text-secondary);
   line-height: 1.5;
   margin-top: 10px;
@@ -1213,14 +1237,15 @@ body {
 .foundation-phase:nth-child(3) .fp-tag { color: var(--accent-amber); }
 
 .fp-title {
-  font-size: 0.85rem;
+  font-size: 0.92rem;
   font-weight: 600;
   color: var(--text-primary);
   margin-bottom: 4px;
 }
 
 .fp-items {
-  font-size: 0.75rem;
+  font-size: 0.82rem;
+  font-weight: 450;
   color: var(--text-secondary);
   line-height: 1.5;
 }
@@ -1310,13 +1335,14 @@ body {
 }
 
 .thesis-point h4 {
-  font-size: 0.85rem;
+  font-size: 0.92rem;
   font-weight: 700;
   margin-bottom: 6px;
 }
 
 .thesis-point p {
-  font-size: 0.78rem;
+  font-size: 0.85rem;
+  font-weight: 450;
   color: var(--text-secondary);
   line-height: 1.5;
 }
@@ -1603,6 +1629,8 @@ body {
   overflow: visible;
   border: 1px solid var(--border);
   box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
 .screenshot-container img {
@@ -1657,7 +1685,8 @@ body {
 }
 
 .flow-step .fs-name {
-  font-size: 0.78rem;
+  font-size: 0.85rem;
+  font-weight: 450;
   color: var(--text-secondary);
 }
 
@@ -1674,6 +1703,9 @@ body {
   overflow: hidden;
   border: 1px solid rgba(124, 58, 237, 0.25);
   box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .future-preview img {
@@ -1787,7 +1819,8 @@ body {
 }
 
 .cp-items {
-  font-size: 0.85rem;
+  font-size: 0.92rem;
+  font-weight: 450;
   line-height: 1.7;
   color: var(--text-secondary);
 }
@@ -1802,7 +1835,8 @@ body {
 .closing-invest {
   text-align: center;
   margin-top: 18px;
-  font-size: 0.92rem;
+  font-size: 1rem;
+  font-weight: 450;
   color: var(--text-secondary);
   flex-shrink: 0;
 }
@@ -1930,7 +1964,7 @@ body {
 }
 
 .dream-content {
-  max-width: 780px;
+  max-width: 860px;
   margin: 0 auto;
 }
 
@@ -2009,14 +2043,15 @@ body {
 }
 
 .context-step-card h4 {
-  font-size: 1.1rem;
+  font-size: 1.18rem;
   font-weight: 700;
   color: var(--text-primary);
   margin-bottom: 8px;
 }
 
 .context-step-card p {
-  font-size: 0.82rem;
+  font-size: 0.9rem;
+  font-weight: 450;
   line-height: 1.55;
   color: var(--text-secondary);
 }
@@ -2046,8 +2081,8 @@ body {
    ═══════════════════════════════════════ */
 .strategic-case {
   display: grid;
-  grid-template-columns: 340px 1fr;
-  gap: 28px;
+  grid-template-columns: 380px 1fr;
+  gap: 32px;
   align-items: center;
 }
 
@@ -2076,17 +2111,18 @@ body {
 }
 
 .strategic-right .ns-metric {
-  font-size: 2.2rem;
+  font-size: 2.4rem;
   margin-bottom: 12px;
 }
 
 .strategic-right .ns-formula {
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   margin-bottom: 16px;
 }
 
 .strategic-right .ns-context {
-  font-size: 0.82rem;
+  font-size: 0.9rem;
+  font-weight: 450;
   line-height: 1.6;
 }
 
