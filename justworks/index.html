@@ -45,14 +45,7 @@
      PASSWORD GATE
      ═══════════════════════════════════════ */
   .gate-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 9000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #ffffff;
-    transition: opacity 0.6s var(--ease-out), visibility 0.6s;
+    display: none;
   }
 
   .gate-overlay.unlocked {
@@ -163,12 +156,6 @@
      DESKTOP LAYOUT
      ═══════════════════════════════════════ */
   .page-content {
-    display: none;
-    opacity: 0;
-    transition: opacity 0.6s var(--ease-out);
-  }
-
-  .page-content.visible {
     display: block;
     opacity: 1;
   }
@@ -1107,57 +1094,6 @@
 
 
 <script>
-  // ── Password gate ──
-  const HASH_STANDARD = '80107215236f645b8f39dac1653b79a7f70c0129ca571594dbf85a2e06739dca';
-  const HASH_ADMIN = '10ebc6a77ba980649d3ad8f01674a589c3e3feae814ee0542ac08a24ffc2873a';
-  const SESSION_KEY = 'jw_access';
-
-  async function sha256(message) {
-    const msgBuffer = new TextEncoder().encode(message);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-  }
-
-  function showAdminContent() {
-    document.querySelectorAll('.admin-only').forEach(el => el.style.display = '');
-  }
-
-  function unlock(isAdmin) {
-    document.getElementById('gate').classList.add('unlocked');
-    document.getElementById('content').classList.add('visible');
-    sessionStorage.setItem(SESSION_KEY, isAdmin ? 'admin' : '1');
-    if (isAdmin) showAdminContent();
-  }
-
-  const stored = sessionStorage.getItem(SESSION_KEY);
-  if (stored === 'admin') {
-    unlock(true);
-  } else if (stored === '1') {
-    unlock(false);
-  }
-
-  document.getElementById('gate-form').addEventListener('submit', async function() {
-    const input = document.getElementById('gate-password');
-    const errorEl = document.getElementById('gate-error');
-    const hash = await sha256(input.value);
-    if (hash === HASH_ADMIN) {
-      errorEl.textContent = '';
-      unlock(true);
-    } else if (hash === HASH_STANDARD) {
-      errorEl.textContent = '';
-      unlock(false);
-    } else {
-      input.classList.add('error');
-      errorEl.textContent = 'Incorrect password. Please try again.';
-      setTimeout(() => input.classList.remove('error'), 400);
-    }
-  });
-
-  document.getElementById('gate-password').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') document.getElementById('gate-submit').click();
-  });
-
   // ── Finder overlays ──
   function openFolder(id) {
     document.getElementById('finder-' + id).classList.add('open');
