@@ -2560,10 +2560,27 @@
             </div>
           </div>
 
+          <!-- WHAT I DON'T KNOW -->
+          <div class="callout amber" style="border-left:3px solid var(--accent-amber);background:rgba(251,191,36,0.05);">
+            <div class="callout-title" style="color:var(--accent-amber);">What I Don&rsquo;t Know</div>
+            <p style="margin-bottom:12px;">This proposal is thorough, but it is built from the outside in. I want to be upfront about the gaps:</p>
+            <ul style="margin:0 0 12px 18px;padding:0;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;">
+              <li>I haven&rsquo;t sat with a CSO agent &mdash; every workflow assumption comes from the case study brief, the help center, and industry patterns, not firsthand observation</li>
+              <li>I don&rsquo;t know the actual top call drivers by volume &mdash; the problem inventory is inferred, not measured</li>
+              <li>I don&rsquo;t know the real data architecture &mdash; the integration plan assumes standard APIs; the actual schema could change the Phase 1 timeline</li>
+              <li>Every UX decision in the prototype is an informed assumption &mdash; not validated by a single user test</li>
+            </ul>
+            <p>That&rsquo;s exactly why the proposal treats every design choice as a <strong style="color:var(--text-primary);">hypothesis waiting to be validated</strong>, and why Phase 1 starts with a paired spike to confirm the data architecture before a single line of product code is written. The full set of 45 assumptions is documented and traceable.</p>
+          </div>
+
           <div class="deep-dives">
             <a class="deep-dive-link" href="open-questions.html" target="_blank">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
               All Open Questions
+            </a>
+            <a class="deep-dive-link" href="assumptions-chain.html" target="_blank">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+              45 Assumptions &amp; Decision Chain
             </a>
           </div>
         </section>
