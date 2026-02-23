@@ -45,14 +45,7 @@
      PASSWORD GATE
      ═══════════════════════════════════════ */
   .gate-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 9000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #ffffff;
-    transition: opacity 0.6s var(--ease-out), visibility 0.6s;
+    display: none;
   }
 
   .gate-overlay.unlocked {
@@ -163,12 +156,6 @@
      PAGE LAYOUT
      ═══════════════════════════════════════ */
   .page-content {
-    display: none;
-    opacity: 0;
-    transition: opacity 0.6s var(--ease-out);
-  }
-
-  .page-content.visible {
     display: flex;
     opacity: 1;
   }
@@ -2369,6 +2356,36 @@
     .proto-iframe { height: 400px; }
     .proto-expand-btn { display: none; }
   }
+
+  .print-proto-img { display: none; }
+
+  @media print {
+    /* Hide TOC sidebar */
+    .toc-sidebar, .toc-toggle, .toc-overlay { display: none !important; }
+
+    /* Full-width layout, no background gradients */
+    .proposal-layout { display: block; background: white; }
+    .proposal-layout::before { display: none; }
+    .proposal-main { padding: 24px; }
+
+    /* Hide iframes, show print images */
+    .proto-iframe { display: none !important; }
+    .print-proto-img { display: block !important; }
+
+    /* Hide gate, expand buttons */
+    .gate-overlay { display: none !important; }
+    .proto-expand-btn { display: none !important; }
+
+    /* Constrain breakout cards to page width */
+    .proto-breakout { width: 100% !important; margin-left: 0 !important; }
+
+    /* Page break control */
+    .proposal-section { page-break-inside: avoid; }
+    .visual-card { page-break-inside: avoid; }
+
+    /* Clean print — no shadows */
+    * { box-shadow: none !important; }
+  }
 </style>
 </head>
 <body>
@@ -2452,7 +2469,7 @@
 
           <!-- FUTURE TEASER -->
           <div class="teaser-block" style="margin-top:32px;">
-            <div class="teaser-label">&#x2728; Where this is going</div>
+            <div class="teaser-label"></div>
             <div class="teaser-mockup">
               <div class="teaser-header">
                 <div class="teaser-avatar">SC</div>
@@ -2860,6 +2877,9 @@
               <div class="proto-embed-hint">Leadership view &mdash; 912 accounts scored and sortable by health, tier, and risk across the entire book of business</div>
             </div>
             <iframe class="proto-iframe" src="customer-central.html#portfolio" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
+            <a class="print-proto-img" href="https://meetdarrien.com/justworks/customer-central.html#portfolio">
+              <img src="images/Screenshot 2026-02-23 012505.png" alt="Customer Central — Portfolio Health View" style="width:100%;display:block;">
+            </a>
           </div>
 
           <!-- EMBEDDED PROTOTYPE — AGENT DASHBOARD -->
@@ -2876,6 +2896,9 @@
               <div class="proto-embed-hint">Fully interactive &mdash; use Cmd+K to search, click tabs, expand health scores, toggle billing scenarios</div>
             </div>
             <iframe class="proto-iframe" src="customer-central.html" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
+            <a class="print-proto-img" href="https://meetdarrien.com/justworks/customer-central.html">
+              <img src="images/Screenshot 2026-02-23 012523.png" alt="Customer Central — Agent Dashboard" style="width:100%;display:block;">
+            </a>
           </div>
 
           <!-- CONCEPT MOCKUP — PHASE 3 INTELLIGENCE LAYER -->
