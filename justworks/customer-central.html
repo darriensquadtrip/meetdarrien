@@ -969,6 +969,9 @@ function sortPortfolio(col){
   });
   rows.forEach(r=>tbody.appendChild(r));
 }
+
+// Hash-based deep linking (e.g. #portfolio)
+if(location.hash==='#portfolio'){showPortfolio();}
 </script>
 </body>
 </html>
