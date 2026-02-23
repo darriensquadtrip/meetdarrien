@@ -1116,6 +1116,262 @@
     .deep-dives { flex-direction: column; }
     .deep-dive-link { justify-content: center; }
   }
+
+  /* ═══════════════════════════════════════
+     WIREFRAME DIAGRAM
+     ═══════════════════════════════════════ */
+  .wireframe {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    font-size: 0.78rem;
+  }
+
+  .wf-titlebar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: rgba(15, 17, 23, 0.6);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .wf-dots { display: flex; gap: 5px; }
+  .wf-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .wf-dot.r { background: #ef4444; }
+  .wf-dot.y { background: #eab308; }
+  .wf-dot.g { background: #22c55e; }
+
+  .wf-titlebar span {
+    flex: 1;
+    text-align: center;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  .wf-body {
+    display: flex;
+    min-height: 340px;
+  }
+
+  .wf-sidebar {
+    width: 200px;
+    flex-shrink: 0;
+    border-right: 1px solid var(--border);
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: rgba(15, 17, 23, 0.3);
+  }
+
+  .wf-nav-item {
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    cursor: default;
+  }
+
+  .wf-nav-item.active {
+    background: rgba(78, 140, 255, 0.12);
+    color: var(--accent-blue);
+    font-weight: 600;
+  }
+
+  .wf-main {
+    flex: 1;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .wf-search {
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .wf-search kbd {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    margin-left: auto;
+  }
+
+  .wf-profile-row {
+    display: flex;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .wf-caller-card {
+    flex: 1;
+    padding: 14px;
+    background: rgba(52, 211, 153, 0.06);
+    border: 1px solid rgba(52, 211, 153, 0.2);
+    border-radius: 8px;
+  }
+
+  .wf-caller-card h4 {
+    font-size: 0.88rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+
+  .wf-caller-card .wf-meta {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .wf-status-strip {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .wf-status-item {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .wf-status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  .wf-health-card {
+    width: 140px;
+    flex-shrink: 0;
+    padding: 14px;
+    background: rgba(78, 140, 255, 0.06);
+    border: 1px solid rgba(78, 140, 255, 0.2);
+    border-radius: 8px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .wf-health-score {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #86efac;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .wf-health-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: #86efac;
+    margin-bottom: 6px;
+  }
+
+  .wf-health-detail {
+    font-size: 0.62rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  .wf-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .wf-tab {
+    padding: 8px 14px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    border-bottom: 2px solid transparent;
+    cursor: default;
+  }
+
+  .wf-tab.active {
+    color: var(--accent-blue);
+    border-bottom-color: var(--accent-blue);
+  }
+
+  .wf-panel {
+    flex: 1;
+    min-height: 0;
+  }
+
+  .wf-timeline-item {
+    display: flex;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(51, 55, 72, 0.3);
+    font-size: 0.72rem;
+    align-items: center;
+  }
+
+  .wf-timeline-item:last-child { border-bottom: none; }
+
+  .wf-channel {
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 2px 6px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+
+  .wf-channel.phone { background: rgba(78, 140, 255, 0.15); color: var(--accent-blue); }
+  .wf-channel.email { background: rgba(139, 92, 246, 0.15); color: var(--accent-purple); }
+  .wf-channel.chat { background: rgba(52, 211, 153, 0.15); color: var(--accent-green); }
+
+  .wf-timeline-subject { flex: 1; color: var(--text-secondary); }
+  .wf-timeline-date { color: var(--text-muted); font-size: 0.68rem; flex-shrink: 0; }
+
+  .wf-flow-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    text-align: center;
+    padding: 4px 0;
+  }
+
+  @media (max-width: 900px) {
+    .wf-sidebar { display: none; }
+    .wf-health-card { width: 110px; }
+    .wf-profile-row { flex-direction: column; }
+    .wf-health-card { width: 100%; }
+  }
+
+  @media (max-width: 600px) {
+    .wf-body { min-height: 280px; }
+    .wf-status-strip { flex-direction: column; }
+  }
 </style>
 </head>
 <body>
@@ -1374,9 +1630,146 @@
             </div>
           </div>
 
+          <!-- WIREFRAME -->
+          <div class="visual-card">
+            <div class="visual-card-title">Wireframe &mdash; Agent Encounter View (Sample Data)</div>
+            <div class="wireframe">
+              <div class="wf-titlebar">
+                <div class="wf-dots"><div class="wf-dot r"></div><div class="wf-dot y"></div><div class="wf-dot g"></div></div>
+                <span>Customer Central &mdash; Acme Corp</span>
+              </div>
+              <div class="wf-body">
+                <div class="wf-sidebar">
+                  <div class="wf-nav-item active">Overview</div>
+                  <div class="wf-nav-item">History</div>
+                  <div class="wf-nav-item">Pay Stubs</div>
+                  <div class="wf-nav-item">Tax Docs</div>
+                  <div class="wf-nav-item">Benefits</div>
+                  <div class="wf-nav-item">Billing</div>
+                  <div class="wf-nav-item">Portfolio Health</div>
+                </div>
+                <div class="wf-main">
+                  <!-- Search bar -->
+                  <div class="wf-search">
+                    <span>Search customers...</span>
+                    <kbd>&num;K</kbd>
+                  </div>
+
+                  <!-- Caller card + Health score -->
+                  <div class="wf-flow-label">WHO &mdash; Instant Caller Recognition (FS-1)</div>
+                  <div class="wf-profile-row">
+                    <div class="wf-caller-card">
+                      <h4>Sarah Chen</h4>
+                      <div class="wf-meta">Company Admin &middot; Acme Corp &middot; PEO Plus &middot; 34 employees &middot; NY, CA, TX</div>
+                      <div class="wf-status-strip">
+                        <div class="wf-status-item"><div class="wf-status-dot" style="background:var(--accent-green)"></div> Billing Current</div>
+                        <div class="wf-status-item"><div class="wf-status-dot" style="background:var(--accent-blue)"></div> Next Payroll: Feb 14</div>
+                        <div class="wf-status-item"><div class="wf-status-dot" style="background:var(--accent-amber)"></div> 2 Open Tickets</div>
+                        <div class="wf-status-item"><div class="wf-status-dot" style="background:var(--accent-green)"></div> Customer Since 2021</div>
+                      </div>
+                    </div>
+                    <div class="wf-health-card">
+                      <div class="wf-health-score">82</div>
+                      <div class="wf-health-label">Good</div>
+                      <div class="wf-health-detail">Click to expand<br>5 component scores<br>+ tenure factor</div>
+                    </div>
+                  </div>
+
+                  <!-- Tabs -->
+                  <div class="wf-flow-label">CONTEXT &amp; HISTORY &mdash; Tabbed Panels (FS-2, FS-3, PS-1&ndash;6)</div>
+                  <div class="wf-tabs">
+                    <div class="wf-tab active">History</div>
+                    <div class="wf-tab">Pay Stubs</div>
+                    <div class="wf-tab">Tax Docs</div>
+                    <div class="wf-tab">Benefits</div>
+                    <div class="wf-tab">Billing</div>
+                  </div>
+
+                  <!-- Sample timeline -->
+                  <div class="wf-panel">
+                    <div class="wf-timeline-item">
+                      <span class="wf-channel phone">Phone</span>
+                      <span class="wf-timeline-subject">Paycheck discrepancy &mdash; state tax increase after CA move</span>
+                      <span class="wf-timeline-date">Feb 10</span>
+                    </div>
+                    <div class="wf-timeline-item">
+                      <span class="wf-channel email">Email</span>
+                      <span class="wf-timeline-subject">W-2 delivery confirmation request</span>
+                      <span class="wf-timeline-date">Jan 28</span>
+                    </div>
+                    <div class="wf-timeline-item">
+                      <span class="wf-channel chat">Chat</span>
+                      <span class="wf-timeline-subject">Benefits enrollment window question</span>
+                      <span class="wf-timeline-date">Jan 15</span>
+                    </div>
+                    <div class="wf-timeline-item">
+                      <span class="wf-channel phone">Phone</span>
+                      <span class="wf-timeline-subject">New employee onboarding &mdash; multi-state setup</span>
+                      <span class="wf-timeline-date">Dec 4</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interaction Details -->
+          <div class="visual-card">
+            <div class="visual-card-title">Key Interaction Details</div>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Interaction</th>
+                    <th>Trigger</th>
+                    <th>What the Agent Sees</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Search</strong></td>
+                    <td>Cmd+K or click search bar</td>
+                    <td>Fuzzy search across 500K contacts by name, email, phone, or company. Results in &lt;2s with role badges (Admin / Employee).</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Caller card loads</strong></td>
+                    <td>Click search result</td>
+                    <td>Full profile in &lt;500ms: name, role, company, plan type, employee count, tenure, states of operation. Status strip shows billing RAG, next payroll countdown, open ticket count, recent changes.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Health score expand</strong></td>
+                    <td>Click score badge</td>
+                    <td>Breakdown card: Billing (30%), Payroll (25%), Support (20%), Satisfaction (15%), Activity (10%) &times; tenure factor. Score 82 = (100&times;0.30)+(100&times;0.25)+(72&times;0.20)+(85&times;0.15)+(80&times;0.10) &times; 1.00.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>History tab</strong></td>
+                    <td>Default view</td>
+                    <td>Unified timeline of last 10 interactions across phone, email, chat. Channel-coded badges. Open tickets pinned at top. Click any row for full detail modal.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Pay Stubs tab</strong></td>
+                    <td>Click tab</td>
+                    <td>Period-over-period comparison. Delta highlighting shows what changed and why (e.g., net pay &minus;$142.50 due to CA state tax +$59.77, dental enrollment +$27.73). Auto-annotations with WHY/NEW badges.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Billing tab &mdash; risk cascade</strong></td>
+                    <td>Click tab (when billing = red)</td>
+                    <td>3-step cascade: Failed payment &rarr; Payroll blocked &rarr; 34 employees affected. Resolution deadline and action buttons. No existing tool connects these three systems.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Sample data measures -->
+          <div class="callout blue">
+            <div class="callout-title">Sample Data &amp; Measures</div>
+            <p><strong>Test scenario:</strong> Sarah Chen (Admin) at Acme Corp &mdash; PEO Plus, 34 employees, NY/CA/TX. Health Score: 82 (Good). Billing: Current. Next Payroll: Feb 14. Open Tickets: 2. Recent Changes: 4 events in last 14 days. Interaction History: 10 interactions spanning 6 months across phone/email/chat. Pay Stub Delta: net pay decreased $142.50 due to CA state tax increase (+$59.77), CA SDI (+$55.00), dental enrollment (+$27.73). Portfolio View: 912 accounts &mdash; 487 Healthy, 312 Good, 89 Attention, 21 At Risk, 3 Critical.</p>
+          </div>
+
           <div class="callout green">
             <div class="callout-title">Interactive Prototype Available</div>
-            <p>All 11 features are testable in the live prototype. The test guide walks through each feature with step-by-step instructions and maps every acceptance criterion to its implementation.</p>
+            <p>All 11 features are testable in the live prototype with the sample data above. The test guide walks through each feature with step-by-step instructions and maps every acceptance criterion to its implementation.</p>
           </div>
 
           <div class="deep-dives">
