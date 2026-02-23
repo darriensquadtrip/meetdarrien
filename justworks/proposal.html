@@ -714,6 +714,150 @@
   }
 
   /* ═══════════════════════════════════════
+     BUSINESS OPPORTUNITY / NORTH STAR
+     ═══════════════════════════════════════ */
+  .opportunity-block {
+    margin-bottom: 28px;
+  }
+
+  .opportunity-block .opp-intro {
+    font-size: 1.0rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin-bottom: 24px;
+  }
+
+  .opportunity-block .opp-intro strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .north-star-card {
+    position: relative;
+    background: linear-gradient(135deg, rgba(139,92,246,0.08) 0%, rgba(78,140,255,0.08) 100%);
+    border: 1px solid rgba(139,92,246,0.2);
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+
+  .north-star-card::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle, rgba(139,92,246,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .north-star-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent-purple);
+    margin-bottom: 10px;
+  }
+
+  .north-star-quote {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 1.45rem;
+    font-style: italic;
+    line-height: 1.4;
+    color: var(--text-primary);
+    margin-bottom: 14px;
+  }
+
+  .north-star-body {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 0;
+  }
+
+  .north-star-body + .north-star-body {
+    margin-top: 12px;
+  }
+
+  .opp-pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .opp-pillar {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 20px;
+    transition: border-color 0.25s var(--ease-out);
+  }
+
+  .opp-pillar:hover {
+    border-color: var(--accent-blue);
+  }
+
+  .opp-pillar-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+  }
+
+  .opp-pillar-label.lbl-scale { color: var(--accent-blue); }
+  .opp-pillar-label.lbl-metric { color: var(--accent-green); }
+  .opp-pillar-label.lbl-vision { color: var(--accent-purple); }
+
+  .opp-pillar h4 {
+    font-size: 1.0rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+
+  .opp-pillar p {
+    font-size: 0.90rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .opp-pillar .opp-highlight {
+    display: inline-block;
+    margin-top: 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+
+  .opp-highlight.hl-blue {
+    color: var(--accent-blue);
+    background: rgba(78,140,255,0.1);
+  }
+
+  .opp-highlight.hl-green {
+    color: var(--accent-green);
+    background: rgba(52,211,153,0.1);
+  }
+
+  .opp-highlight.hl-purple {
+    color: var(--accent-purple);
+    background: rgba(139,92,246,0.1);
+  }
+
+  @media (max-width: 900px) {
+    .opp-pillars { grid-template-columns: 1fr; }
+  }
+
+  /* ═══════════════════════════════════════
      PHASE CARDS
      ═══════════════════════════════════════ */
   .phase-cards {
@@ -1494,6 +1638,39 @@
               </div>
             </div>
 
+          </div>
+
+          <!-- BUSINESS OPPORTUNITY -->
+          <div class="opportunity-block">
+            <p class="opp-intro">Those are the problems. Here is why solving them represents a <strong>compounding strategic advantage</strong>, not just an operational fix.</p>
+
+            <div class="north-star-card">
+              <div class="north-star-label">The North Star</div>
+              <div class="north-star-quote">The customer never needed to call in the first place.</div>
+              <p class="north-star-body">Not because Justworks eliminated human support &mdash; but because the system was so intelligent, so anticipatory, that the problem was resolved before the customer recognized it was a problem.</p>
+              <p class="north-star-body">And when they do reach out, the interaction is so fast, so precise, so contextually aware that it feels like talking to someone who&rsquo;s been managing their account personally for years &mdash; whether that&rsquo;s a human, an AI, or a seamless blend of both.</p>
+            </div>
+
+            <div class="opp-pillars">
+              <div class="opp-pillar">
+                <div class="opp-pillar-label lbl-scale">The Scaling Equation</div>
+                <h4>Logarithmic Support, Linear Customers</h4>
+                <p>10,000 to 50,000 customers does not mean 5&times; the agents. It means the same team &mdash; or marginally larger &mdash; operating with exponentially better leverage because the tooling handles pattern recognition, context assembly, proactive outreach, and routine resolution.</p>
+                <span class="opp-highlight hl-blue">Support grows log, customers grow linear</span>
+              </div>
+              <div class="opp-pillar">
+                <div class="opp-pillar-label lbl-metric">The Metric</div>
+                <h4>NPS per CSO Headcount Dollar</h4>
+                <p>The ratio of customer interactions to customer count declines quarter over quarter &mdash; not because service gets worse, but because the system gets smarter. Fewer reactive contacts. Faster resolution. A growing percentage of routine interactions handled by AI at a quality bar indistinguishable from the best human agents.</p>
+                <span class="opp-highlight hl-green">Interactions &div; customers &darr; QoQ</span>
+              </div>
+              <div class="opp-pillar">
+                <div class="opp-pillar-label lbl-vision">The Long-Term Vision</div>
+                <h4>Customer Central Becomes the Second Product</h4>
+                <p>The first product is payroll, benefits, and HR for small businesses. The second &mdash; born from solving their own problem better than anyone else &mdash; is the intelligence layer that makes customer operations scale without linear headcount growth. Build it for Justworks, prove it at scale, and it becomes either an unassailable moat or a standalone revenue line. Or both.</p>
+                <span class="opp-highlight hl-purple">Moat &rarr; Revenue line &rarr; Both</span>
+              </div>
+            </div>
           </div>
 
           <!-- DEPENDENCY STACK -->
