@@ -1546,6 +1546,374 @@
   .proposal-footer a:hover { text-decoration: underline; }
 
   /* ═══════════════════════════════════════
+     FUTURE CONCEPT MOCKUP
+     ═══════════════════════════════════════ */
+  .concept-mockup {
+    background: var(--bg-deep);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+
+  .concept-titlebar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    background: rgba(15,17,23,0.8);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .concept-titlebar-text {
+    flex: 1;
+    text-align: center;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  .concept-titlebar-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 10px;
+    border-radius: 4px;
+    background: rgba(139,92,246,0.15);
+    color: var(--accent-purple);
+  }
+
+  .concept-body {
+    display: grid;
+    grid-template-columns: 220px 1fr 280px;
+    min-height: 520px;
+  }
+
+  .concept-sidebar {
+    background: rgba(15,17,23,0.5);
+    border-right: 1px solid var(--border);
+    padding: 16px 14px;
+  }
+
+  .concept-sidebar-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    margin-top: 14px;
+  }
+
+  .concept-sidebar-label:first-child { margin-top: 0; }
+
+  .concept-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    margin-bottom: 2px;
+  }
+
+  .concept-nav-item.active {
+    background: rgba(139,92,246,0.12);
+    color: var(--accent-purple);
+    font-weight: 600;
+  }
+
+  .concept-nav-item .nav-icon { font-size: 0.9rem; width: 18px; text-align: center; }
+
+  .concept-main {
+    padding: 20px 24px;
+    overflow: hidden;
+  }
+
+  .concept-main-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .concept-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .concept-main-title h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .concept-main-title p {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+
+  .concept-health-badge {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-family: 'DM Mono', monospace;
+    font-weight: 700;
+  }
+
+  .concept-health-badge.churn-risk {
+    background: rgba(248,113,113,0.12);
+    border: 1px solid rgba(248,113,113,0.25);
+    color: var(--accent-red);
+    font-size: 0.82rem;
+  }
+
+  .concept-health-badge .churn-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent-red);
+    animation: churn-pulse 2s infinite;
+  }
+
+  @keyframes churn-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .concept-ai-card {
+    background: linear-gradient(135deg, rgba(139,92,246,0.08) 0%, rgba(78,140,255,0.06) 100%);
+    border: 1px solid rgba(139,92,246,0.2);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+  }
+
+  .concept-ai-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent-purple);
+    margin-bottom: 8px;
+  }
+
+  .concept-ai-label .sparkle { animation: sparkle-spin 3s linear infinite; }
+  @keyframes sparkle-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .concept-ai-card p {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+  }
+
+  .concept-ai-card p strong {
+    color: var(--text-primary);
+  }
+
+  .concept-signals-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .concept-signal {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+
+  .concept-signal-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 4px;
+  }
+
+  .concept-signal-value {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .concept-signal-sub {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .concept-signal.sig-red .concept-signal-label { color: var(--accent-red); }
+  .concept-signal.sig-red .concept-signal-value { color: var(--accent-red); }
+  .concept-signal.sig-amber .concept-signal-label { color: var(--accent-amber); }
+  .concept-signal.sig-amber .concept-signal-value { color: var(--accent-amber); }
+  .concept-signal.sig-green .concept-signal-label { color: var(--accent-green); }
+  .concept-signal.sig-green .concept-signal-value { color: var(--accent-green); }
+  .concept-signal.sig-blue .concept-signal-label { color: var(--accent-blue); }
+  .concept-signal.sig-blue .concept-signal-value { color: var(--accent-blue); }
+
+  .concept-outreach-card {
+    background: rgba(52,211,153,0.06);
+    border: 1px solid rgba(52,211,153,0.2);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+
+  .concept-outreach-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent-green);
+    margin-bottom: 8px;
+  }
+
+  .concept-outreach-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .concept-action {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+  }
+
+  .concept-action .action-icon {
+    font-size: 0.85rem;
+    width: 18px;
+    text-align: center;
+  }
+
+  .concept-action .action-tag {
+    margin-left: auto;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 3px;
+  }
+
+  .action-tag.at-auto { background: rgba(139,92,246,0.12); color: var(--accent-purple); }
+  .action-tag.at-suggest { background: rgba(78,140,255,0.12); color: var(--accent-blue); }
+  .action-tag.at-sales { background: rgba(251,191,36,0.12); color: var(--accent-amber); }
+
+  /* Right panel — insights */
+  .concept-insights {
+    background: rgba(15,17,23,0.5);
+    border-left: 1px solid var(--border);
+    padding: 16px 14px;
+    overflow-y: auto;
+  }
+
+  .concept-insight-section {
+    margin-bottom: 16px;
+  }
+
+  .concept-insight-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .concept-insight-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 6px;
+  }
+
+  .concept-insight-card h5 {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 3px;
+  }
+
+  .concept-insight-card p {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    line-height: 1.45;
+  }
+
+  .concept-insight-card .insight-dest {
+    display: inline-block;
+    margin-top: 4px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 3px;
+  }
+
+  .insight-dest.dest-product { background: rgba(139,92,246,0.12); color: var(--accent-purple); }
+  .insight-dest.dest-sales { background: rgba(251,191,36,0.12); color: var(--accent-amber); }
+  .insight-dest.dest-leadership { background: rgba(78,140,255,0.12); color: var(--accent-blue); }
+  .insight-dest.dest-support { background: rgba(52,211,153,0.12); color: var(--accent-green); }
+
+  .concept-caption {
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: 8px;
+  }
+
+  @media (max-width: 900px) {
+    .concept-body { grid-template-columns: 1fr; }
+    .concept-sidebar { display: none; }
+    .concept-insights { border-left: none; border-top: 1px solid var(--border); }
+  }
+
+  /* ═══════════════════════════════════════
      ARTIFACT INDEX
      ═══════════════════════════════════════ */
   .artifact-category {
@@ -2973,6 +3341,127 @@
               </div>
             </div>
           </div>
+
+          <!-- CONCEPT MOCKUP: FUTURE STATE -->
+          <div class="concept-mockup proto-breakout">
+            <div class="concept-titlebar">
+              <div class="wf-dots"><div class="wf-dot r"></div><div class="wf-dot y"></div><div class="wf-dot g"></div></div>
+              <span class="concept-titlebar-text">Customer Central &mdash; Phase 3 Concept</span>
+              <span class="concept-titlebar-badge">Concept Only</span>
+            </div>
+            <div class="concept-body">
+
+              <!-- Left sidebar -->
+              <div class="concept-sidebar">
+                <div class="concept-sidebar-label">Navigation</div>
+                <div class="concept-nav-item"><span class="nav-icon">&#x25C9;</span> Dashboard</div>
+                <div class="concept-nav-item active"><span class="nav-icon">&#x2728;</span> Intelligence</div>
+                <div class="concept-nav-item"><span class="nav-icon">&#x1F4CB;</span> My Queue <span style="margin-left:auto;font-size:0.72rem;color:var(--accent-amber);">7</span></div>
+                <div class="concept-nav-item"><span class="nav-icon">&#x23F0;</span> Recent</div>
+                <div class="concept-sidebar-label">Actions</div>
+                <div class="concept-nav-item"><span class="nav-icon">+</span> New Ticket</div>
+                <div class="concept-nav-item"><span class="nav-icon">&#x270D;&#xFE0F;</span> Log Interaction</div>
+                <div class="concept-nav-item"><span class="nav-icon">&#x2197;&#xFE0F;</span> Escalate</div>
+                <div class="concept-sidebar-label">Leadership</div>
+                <div class="concept-nav-item"><span class="nav-icon">&#x25C9;</span> Portfolio Health</div>
+                <div class="concept-nav-item"><span class="nav-icon">&#x1F4CA;</span> Trend Analytics</div>
+              </div>
+
+              <!-- Main content -->
+              <div class="concept-main">
+                <div class="concept-main-header">
+                  <div class="concept-avatar">SC</div>
+                  <div class="concept-main-title">
+                    <h3>Sarah Chen &middot; Acme Corp</h3>
+                    <p>Account Admin &middot; PEO Plus &middot; 34 employees &middot; 3 yr tenure</p>
+                  </div>
+                  <div class="concept-health-badge churn-risk">
+                    <span class="churn-dot"></span>
+                    Churn Risk: 73%
+                  </div>
+                </div>
+
+                <!-- AI Summary -->
+                <div class="concept-ai-card">
+                  <div class="concept-ai-label"><span class="sparkle">&#x2728;</span> AI Summary</div>
+                  <p>Acme Corp has contacted support <strong>4 times in 9 days</strong> &mdash; 3x their rolling average. Two interactions involved billing discrepancies tied to the same payroll migration error. <strong>NPS dropped from 9 to 6</strong> in the last survey. The pattern matches pre-churn behavior seen in 23 similar accounts. Sarah&rsquo;s last email tone was escalatory.</p>
+                </div>
+
+                <!-- Signal cards -->
+                <div class="concept-signals-grid">
+                  <div class="concept-signal sig-red">
+                    <div class="concept-signal-label">Churn Prediction</div>
+                    <div class="concept-signal-value">73% risk</div>
+                    <div class="concept-signal-sub">&#x2191; from 31% last month &middot; 3 triggers active</div>
+                  </div>
+                  <div class="concept-signal sig-amber">
+                    <div class="concept-signal-label">Sentiment Trajectory</div>
+                    <div class="concept-signal-value">Declining</div>
+                    <div class="concept-signal-sub">NPS 9 &#x2192; 6 &middot; Tone shift in last 2 emails</div>
+                  </div>
+                  <div class="concept-signal sig-green">
+                    <div class="concept-signal-label">Expansion Signal</div>
+                    <div class="concept-signal-value">PEO Plus &#x2192; Premium</div>
+                    <div class="concept-signal-sub">34 employees &middot; Hitting plan limits on 3 features</div>
+                  </div>
+                  <div class="concept-signal sig-blue">
+                    <div class="concept-signal-label">Resolution Confidence</div>
+                    <div class="concept-signal-value">High</div>
+                    <div class="concept-signal-sub">Root cause identified &middot; Similar fix resolved 19/23 cases</div>
+                  </div>
+                </div>
+
+                <!-- Proactive outreach -->
+                <div class="concept-outreach-card">
+                  <div class="concept-outreach-label">&#x1F3AF; Recommended Actions</div>
+                  <div class="concept-outreach-actions">
+                    <div class="concept-action"><span class="action-icon">&#x1F4E7;</span> Send billing credit + apology for payroll migration error <span class="action-tag at-auto">Auto-Draft</span></div>
+                    <div class="concept-action"><span class="action-icon">&#x1F4DE;</span> Schedule proactive check-in call within 48 hours <span class="action-tag at-suggest">Suggested</span></div>
+                    <div class="concept-action"><span class="action-icon">&#x1F4B0;</span> Flag to Sales: Premium upgrade conversation when stable <span class="action-tag at-sales">Sales Signal</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right panel — cross-functional insights -->
+              <div class="concept-insights">
+                <div class="concept-insight-section">
+                  <div class="concept-insight-label">Cross-Functional Insights</div>
+
+                  <div class="concept-insight-card">
+                    <h5>Payroll Migration Bug Pattern</h5>
+                    <p>Same billing error seen in 23 accounts post-migration. Systemic root cause, not one-off.</p>
+                    <span class="insight-dest dest-product">&#x2192; Product</span>
+                  </div>
+
+                  <div class="concept-insight-card">
+                    <h5>PEO Plus Plan Ceiling</h5>
+                    <p>12 accounts hitting feature limits this quarter. Expansion pipeline: ~$84K ARR.</p>
+                    <span class="insight-dest dest-sales">&#x2192; Sales</span>
+                  </div>
+
+                  <div class="concept-insight-card">
+                    <h5>NY/CA Tax Confusion Spike</h5>
+                    <p>Multi-state employers calling 2.3x more about withholding. Help article gap identified.</p>
+                    <span class="insight-dest dest-support">&#x2192; Help Center</span>
+                  </div>
+
+                  <div class="concept-insight-card">
+                    <h5>Churn Cohort Alert</h5>
+                    <p>7 accounts in &ldquo;At Risk&rdquo; share the same trigger: 3+ contacts in 10 days with declining sentiment.</p>
+                    <span class="insight-dest dest-leadership">&#x2192; Leadership</span>
+                  </div>
+
+                  <div class="concept-insight-card">
+                    <h5>Q1 Benefits Enrollment Gap</h5>
+                    <p>18% of new hires not completing dental enrollment. Guided flow could cut tickets by ~40/week.</p>
+                    <span class="insight-dest dest-product">&#x2192; Product</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="concept-caption">Concept visualization &mdash; not a committed design. Illustrates where the Phase 1 data foundation leads.</div>
 
           <div class="deep-dives">
             <a class="deep-dive-link" href="scope-and-future.html" target="_blank">
