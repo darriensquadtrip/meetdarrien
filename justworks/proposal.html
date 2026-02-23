@@ -1118,259 +1118,80 @@
   }
 
   /* ═══════════════════════════════════════
-     WIREFRAME DIAGRAM
+     EMBEDDED PROTOTYPE
      ═══════════════════════════════════════ */
-  .wireframe {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    font-size: 0.78rem;
-  }
-
-  .wf-titlebar {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 16px;
-    background: rgba(15, 17, 23, 0.6);
-    border-bottom: 1px solid var(--border);
-  }
-
   .wf-dots { display: flex; gap: 5px; }
   .wf-dot { width: 10px; height: 10px; border-radius: 50%; }
   .wf-dot.r { background: #ef4444; }
   .wf-dot.y { background: #eab308; }
   .wf-dot.g { background: #22c55e; }
 
-  .wf-titlebar span {
-    flex: 1;
-    text-align: center;
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: var(--text-muted);
-  }
-
-  .wf-body {
-    display: flex;
-    min-height: 340px;
-  }
-
-  .wf-sidebar {
-    width: 200px;
-    flex-shrink: 0;
-    border-right: 1px solid var(--border);
-    padding: 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    background: rgba(15, 17, 23, 0.3);
-  }
-
-  .wf-nav-item {
-    padding: 8px 10px;
-    border-radius: 6px;
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    cursor: default;
-  }
-
-  .wf-nav-item.active {
-    background: rgba(78, 140, 255, 0.12);
-    color: var(--accent-blue);
-    font-weight: 600;
-  }
-
-  .wf-main {
-    flex: 1;
-    padding: 18px;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
-
-  .wf-search {
-    padding: 10px 14px;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .wf-search kbd {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    padding: 2px 6px;
-    border-radius: 4px;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid var(--border);
-    color: var(--text-muted);
-    margin-left: auto;
-  }
-
-  .wf-profile-row {
-    display: flex;
-    gap: 12px;
-    align-items: stretch;
-  }
-
-  .wf-caller-card {
-    flex: 1;
-    padding: 14px;
-    background: rgba(52, 211, 153, 0.06);
-    border: 1px solid rgba(52, 211, 153, 0.2);
-    border-radius: 8px;
-  }
-
-  .wf-caller-card h4 {
-    font-size: 0.88rem;
-    font-weight: 700;
-    margin-bottom: 2px;
-  }
-
-  .wf-caller-card .wf-meta {
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    margin-bottom: 8px;
-  }
-
-  .wf-status-strip {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  .wf-status-item {
-    padding: 4px 10px;
-    border-radius: 6px;
-    font-size: 0.68rem;
-    font-weight: 600;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .wf-status-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-  }
-
-  .wf-health-card {
-    width: 140px;
-    flex-shrink: 0;
-    padding: 14px;
-    background: rgba(78, 140, 255, 0.06);
-    border: 1px solid rgba(78, 140, 255, 0.2);
-    border-radius: 8px;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .wf-health-score {
-    font-family: 'DM Mono', monospace;
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #86efac;
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-
-  .wf-health-label {
-    font-size: 0.68rem;
-    font-weight: 600;
-    color: #86efac;
-    margin-bottom: 6px;
-  }
-
-  .wf-health-detail {
-    font-size: 0.62rem;
-    color: var(--text-muted);
-    line-height: 1.4;
-  }
-
-  .wf-tabs {
-    display: flex;
-    gap: 0;
+  .proto-embed-header {
     border-bottom: 1px solid var(--border);
   }
 
-  .wf-tab {
-    padding: 8px 14px;
-    font-size: 0.72rem;
+  .proto-embed-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    background: rgba(15, 17, 23, 0.6);
+  }
+
+  .proto-embed-title {
+    flex: 1;
+    text-align: center;
+    font-size: 0.75rem;
     font-weight: 600;
     color: var(--text-muted);
-    border-bottom: 2px solid transparent;
-    cursor: default;
   }
 
-  .wf-tab.active {
-    color: var(--accent-blue);
-    border-bottom-color: var(--accent-blue);
-  }
-
-  .wf-panel {
-    flex: 1;
-    min-height: 0;
-  }
-
-  .wf-timeline-item {
-    display: flex;
-    gap: 10px;
-    padding: 8px 0;
-    border-bottom: 1px solid rgba(51, 55, 72, 0.3);
-    font-size: 0.72rem;
+  .proto-expand-btn {
+    display: inline-flex;
     align-items: center;
-  }
-
-  .wf-timeline-item:last-child { border-bottom: none; }
-
-  .wf-channel {
-    font-size: 0.62rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    padding: 2px 6px;
-    border-radius: 4px;
+    gap: 5px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--accent-blue);
+    text-decoration: none;
+    padding: 5px 12px;
+    border-radius: 6px;
+    background: rgba(78, 140, 255, 0.1);
+    border: 1px solid rgba(78, 140, 255, 0.2);
+    transition: all 0.15s;
+    white-space: nowrap;
     flex-shrink: 0;
   }
 
-  .wf-channel.phone { background: rgba(78, 140, 255, 0.15); color: var(--accent-blue); }
-  .wf-channel.email { background: rgba(139, 92, 246, 0.15); color: var(--accent-purple); }
-  .wf-channel.chat { background: rgba(52, 211, 153, 0.15); color: var(--accent-green); }
+  .proto-expand-btn:hover {
+    background: rgba(78, 140, 255, 0.2);
+    border-color: rgba(78, 140, 255, 0.4);
+  }
 
-  .wf-timeline-subject { flex: 1; color: var(--text-secondary); }
-  .wf-timeline-date { color: var(--text-muted); font-size: 0.68rem; flex-shrink: 0; }
-
-  .wf-flow-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.62rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+  .proto-embed-hint {
+    padding: 8px 16px;
+    font-size: 0.72rem;
     color: var(--text-muted);
+    background: rgba(52, 211, 153, 0.04);
+    border-top: 1px solid rgba(52, 211, 153, 0.1);
     text-align: center;
-    padding: 4px 0;
+  }
+
+  .proto-iframe {
+    display: block;
+    width: 100%;
+    height: 700px;
+    border: none;
+    background: var(--bg-deep);
   }
 
   @media (max-width: 900px) {
-    .wf-sidebar { display: none; }
-    .wf-health-card { width: 110px; }
-    .wf-profile-row { flex-direction: column; }
-    .wf-health-card { width: 100%; }
+    .proto-iframe { height: 500px; }
   }
 
   @media (max-width: 600px) {
-    .wf-body { min-height: 280px; }
-    .wf-status-strip { flex-direction: column; }
+    .proto-iframe { height: 400px; }
+    .proto-expand-btn { display: none; }
   }
 </style>
 </head>
@@ -1630,87 +1451,20 @@
             </div>
           </div>
 
-          <!-- WIREFRAME -->
-          <div class="visual-card">
-            <div class="visual-card-title">Wireframe &mdash; Agent Encounter View (Sample Data)</div>
-            <div class="wireframe">
-              <div class="wf-titlebar">
+          <!-- EMBEDDED PROTOTYPE -->
+          <div class="visual-card" style="padding:0;overflow:hidden;">
+            <div class="proto-embed-header">
+              <div class="proto-embed-bar">
                 <div class="wf-dots"><div class="wf-dot r"></div><div class="wf-dot y"></div><div class="wf-dot g"></div></div>
-                <span>Customer Central &mdash; Acme Corp</span>
+                <span class="proto-embed-title">Customer Central &mdash; Live Prototype</span>
+                <a class="proto-expand-btn" href="customer-central.html" target="_blank">
+                  Open Full Screen
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+                </a>
               </div>
-              <div class="wf-body">
-                <div class="wf-sidebar">
-                  <div class="wf-nav-item active">Overview</div>
-                  <div class="wf-nav-item">History</div>
-                  <div class="wf-nav-item">Pay Stubs</div>
-                  <div class="wf-nav-item">Tax Docs</div>
-                  <div class="wf-nav-item">Benefits</div>
-                  <div class="wf-nav-item">Billing</div>
-                  <div class="wf-nav-item">Portfolio Health</div>
-                </div>
-                <div class="wf-main">
-                  <!-- Search bar -->
-                  <div class="wf-search">
-                    <span>Search customers...</span>
-                    <kbd>&num;K</kbd>
-                  </div>
-
-                  <!-- Caller card + Health score -->
-                  <div class="wf-flow-label">WHO &mdash; Instant Caller Recognition (FS-1)</div>
-                  <div class="wf-profile-row">
-                    <div class="wf-caller-card">
-                      <h4>Sarah Chen</h4>
-                      <div class="wf-meta">Company Admin &middot; Acme Corp &middot; PEO Plus &middot; 34 employees &middot; NY, CA, TX</div>
-                      <div class="wf-status-strip">
-                        <div class="wf-status-item"><div class="wf-status-dot" style="background:var(--accent-green)"></div> Billing Current</div>
-                        <div class="wf-status-item"><div class="wf-status-dot" style="background:var(--accent-blue)"></div> Next Payroll: Feb 14</div>
-                        <div class="wf-status-item"><div class="wf-status-dot" style="background:var(--accent-amber)"></div> 2 Open Tickets</div>
-                        <div class="wf-status-item"><div class="wf-status-dot" style="background:var(--accent-green)"></div> Customer Since 2021</div>
-                      </div>
-                    </div>
-                    <div class="wf-health-card">
-                      <div class="wf-health-score">82</div>
-                      <div class="wf-health-label">Good</div>
-                      <div class="wf-health-detail">Click to expand<br>5 component scores<br>+ tenure factor</div>
-                    </div>
-                  </div>
-
-                  <!-- Tabs -->
-                  <div class="wf-flow-label">CONTEXT &amp; HISTORY &mdash; Tabbed Panels (FS-2, FS-3, PS-1&ndash;6)</div>
-                  <div class="wf-tabs">
-                    <div class="wf-tab active">History</div>
-                    <div class="wf-tab">Pay Stubs</div>
-                    <div class="wf-tab">Tax Docs</div>
-                    <div class="wf-tab">Benefits</div>
-                    <div class="wf-tab">Billing</div>
-                  </div>
-
-                  <!-- Sample timeline -->
-                  <div class="wf-panel">
-                    <div class="wf-timeline-item">
-                      <span class="wf-channel phone">Phone</span>
-                      <span class="wf-timeline-subject">Paycheck discrepancy &mdash; state tax increase after CA move</span>
-                      <span class="wf-timeline-date">Feb 10</span>
-                    </div>
-                    <div class="wf-timeline-item">
-                      <span class="wf-channel email">Email</span>
-                      <span class="wf-timeline-subject">W-2 delivery confirmation request</span>
-                      <span class="wf-timeline-date">Jan 28</span>
-                    </div>
-                    <div class="wf-timeline-item">
-                      <span class="wf-channel chat">Chat</span>
-                      <span class="wf-timeline-subject">Benefits enrollment window question</span>
-                      <span class="wf-timeline-date">Jan 15</span>
-                    </div>
-                    <div class="wf-timeline-item">
-                      <span class="wf-channel phone">Phone</span>
-                      <span class="wf-timeline-subject">New employee onboarding &mdash; multi-state setup</span>
-                      <span class="wf-timeline-date">Dec 4</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <div class="proto-embed-hint">Fully interactive &mdash; use Cmd+K to search, click tabs, expand health scores, toggle billing scenarios</div>
             </div>
+            <iframe id="proto-iframe" class="proto-iframe" src="customer-central.html" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
           </div>
 
           <!-- Interaction Details -->
