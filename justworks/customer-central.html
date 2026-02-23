@@ -276,48 +276,48 @@ body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--t1);height
 .port-risk-signal{font-size:13px;color:var(--t3)}
 
 /* PHASE 3: INTELLIGENCE VIEW */
-.intel-view{display:none;height:100%;overflow-y:auto;background:#12131a;color:#e2e4ea}
+.intel-view{display:none;height:100%;overflow-y:auto;background:var(--bg0);color:var(--t1)}
 .intel-view.vis{display:block}
-.intel-banner{display:flex;align-items:center;gap:12px;padding:14px 24px;background:#1a1b2e;border-bottom:1px solid rgba(255,255,255,0.06)}
-.intel-banner-title{font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:1px;color:rgba(255,255,255,0.5)}
-.intel-banner-badge{font-family:'JetBrains Mono',monospace;font-size:11px;padding:3px 10px;border-radius:4px;background:rgba(5,150,105,0.15);color:#6ee7b7;border:1px solid rgba(5,150,105,0.3);letter-spacing:1px}
+.intel-banner{display:flex;align-items:center;gap:12px;padding:14px 24px;background:#ffffff;border-bottom:1px solid rgba(0,0,0,0.08)}
+.intel-banner-title{font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:1px;color:var(--t4)}
+.intel-banner-badge{font-family:'JetBrains Mono',monospace;font-size:11px;padding:3px 10px;border-radius:4px;background:var(--gb);color:var(--g);border:1px solid var(--gd);letter-spacing:1px}
 .intel-grid{display:grid;grid-template-columns:1fr 300px;gap:0;min-height:calc(100% - 48px)}
 .intel-main{padding:24px;overflow-y:auto}
-.intel-aside{padding:24px 20px;background:#16172a;border-left:1px solid rgba(255,255,255,0.06);overflow-y:auto}
+.intel-aside{padding:24px 20px;background:#f8f9fb;border-left:1px solid rgba(0,0,0,0.08);overflow-y:auto}
 .intel-profile{display:flex;align-items:center;gap:14px;margin-bottom:16px}
-.intel-avatar{width:48px;height:48px;border-radius:50%;background:#059669;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#ffffff;flex-shrink:0}
-.intel-profile-name{font-size:20px;font-weight:600;color:#ffffff}
-.intel-profile-meta{font-size:13px;color:rgba(255,255,255,0.5);margin-top:3px}
-.intel-churn-badge{font-family:'JetBrains Mono',monospace;font-size:12px;padding:4px 10px;border-radius:5px;background:rgba(220,38,38,0.15);color:#f87171;border:1px solid rgba(220,38,38,0.3);margin-left:auto;white-space:nowrap}
-.intel-hr{border:none;border-top:1px solid rgba(255,255,255,0.08);margin:0 0 20px}
-.intel-card{background:#1e1f2e;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:18px;margin-bottom:16px}
+.intel-avatar{width:48px;height:48px;border-radius:50%;background:var(--g);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#ffffff;flex-shrink:0}
+.intel-profile-name{font-size:20px;font-weight:600;color:var(--t1)}
+.intel-profile-meta{font-size:13px;color:var(--t3);margin-top:3px}
+.intel-churn-badge{font-family:'JetBrains Mono',monospace;font-size:12px;padding:4px 10px;border-radius:5px;background:var(--rb);color:var(--r);border:1px solid var(--rd);margin-left:auto;white-space:nowrap}
+.intel-hr{border:none;border-top:1px solid rgba(0,0,0,0.08);margin:0 0 20px}
+.intel-card{background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-radius:10px;padding:18px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
 .intel-card-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
 .intel-card-icon{font-size:16px}
-.intel-card-label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:rgba(255,255,255,0.4);text-transform:uppercase}
-.intel-card p{font-size:14px;line-height:1.7;color:rgba(255,255,255,0.75)}
-.intel-card p strong{color:#ffffff;font-weight:600}
+.intel-card-label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--t4);text-transform:uppercase}
+.intel-card p{font-size:14px;line-height:1.7;color:var(--t2)}
+.intel-card p strong{color:var(--t1);font-weight:600}
 .intel-metrics{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
-.intel-metric{background:#1e1f2e;border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:16px}
+.intel-metric{background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-radius:10px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
 .intel-metric-label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
 .intel-metric-value{font-size:22px;font-weight:700;margin-bottom:4px}
-.intel-metric-detail{font-size:12px;color:rgba(255,255,255,0.45)}
-.intel-action-item{display:flex;align-items:flex-start;gap:12px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,0.06)}
+.intel-metric-detail{font-size:12px;color:var(--t3)}
+.intel-action-item{display:flex;align-items:flex-start;gap:12px;padding:14px 0;border-bottom:1px solid var(--b0)}
 .intel-action-item:last-child{border-bottom:none}
 .intel-action-emoji{font-size:18px;flex-shrink:0;margin-top:1px}
-.intel-action-text{font-size:14px;color:rgba(255,255,255,0.75);flex:1;line-height:1.5}
+.intel-action-text{font-size:14px;color:var(--t2);flex:1;line-height:1.5}
 .intel-action-badge{font-family:'JetBrains Mono',monospace;font-size:10px;padding:3px 8px;border-radius:4px;white-space:nowrap;flex-shrink:0;margin-top:2px;letter-spacing:0.5px}
-.intel-action-badge.auto{background:rgba(79,70,229,0.2);color:#a5b4fc;border:1px solid rgba(79,70,229,0.3)}
-.intel-action-badge.suggested{background:rgba(5,150,105,0.15);color:#6ee7b7;border:1px solid rgba(5,150,105,0.3)}
-.intel-action-badge.sales{background:rgba(217,119,6,0.15);color:#fbbf24;border:1px solid rgba(217,119,6,0.3)}
-.intel-aside-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:rgba(255,255,255,0.4);text-transform:uppercase;margin-bottom:14px}
-.intel-insight{background:#1e1f2e;border:1px solid rgba(255,255,255,0.06);border-radius:9px;padding:14px;margin-bottom:10px}
-.intel-insight-title{font-size:13px;font-weight:600;color:#ffffff;margin-bottom:6px}
-.intel-insight-text{font-size:12px;color:rgba(255,255,255,0.55);line-height:1.6;margin-bottom:8px}
+.intel-action-badge.auto{background:var(--blb);color:var(--bl);border:1px solid var(--bld)}
+.intel-action-badge.suggested{background:var(--gb);color:var(--g);border:1px solid var(--gd)}
+.intel-action-badge.sales{background:var(--ab);color:var(--a);border:1px solid var(--ad)}
+.intel-aside-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--t4);text-transform:uppercase;margin-bottom:14px}
+.intel-insight{background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-radius:9px;padding:14px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
+.intel-insight-title{font-size:13px;font-weight:600;color:var(--t1);margin-bottom:6px}
+.intel-insight-text{font-size:12px;color:var(--t3);line-height:1.6;margin-bottom:8px}
 .intel-insight-pill{font-family:'JetBrains Mono',monospace;font-size:10px;padding:2px 8px;border-radius:3px;letter-spacing:0.5px;display:inline-block}
-.intel-insight-pill.product{background:rgba(79,70,229,0.15);color:#a5b4fc;border:1px solid rgba(79,70,229,0.25)}
-.intel-insight-pill.sales-pill{background:rgba(217,119,6,0.15);color:#fbbf24;border:1px solid rgba(217,119,6,0.25)}
-.intel-insight-pill.help{background:rgba(5,150,105,0.15);color:#6ee7b7;border:1px solid rgba(5,150,105,0.25)}
-.intel-insight-pill.leadership{background:rgba(219,39,119,0.15);color:#f9a8d4;border:1px solid rgba(219,39,119,0.25)}
+.intel-insight-pill.product{background:var(--blb);color:var(--bl);border:1px solid var(--bld)}
+.intel-insight-pill.sales-pill{background:var(--ab);color:var(--a);border:1px solid var(--ad)}
+.intel-insight-pill.help{background:var(--gb);color:var(--g);border:1px solid var(--gd)}
+.intel-insight-pill.leadership{background:var(--pb);color:var(--p);border:1px solid rgba(219,39,119,0.15)}
 </style>
 </head>
 <body>
@@ -847,7 +847,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--t1);height
       <!-- AI Summary -->
       <div class="intel-card">
         <div class="intel-card-header">
-          <span class="intel-card-icon" style="color:#a78bfa">✦</span>
+          <span class="intel-card-icon" style="color:var(--bl)">✦</span>
           <span class="intel-card-label">AI Summary</span>
         </div>
         <p>Acme Corp has contacted support <strong>4 times in 9 days</strong> — 3× their rolling average. Two interactions involved billing discrepancies tied to the same payroll migration error. <strong>NPS dropped from 9 to 6</strong> in the last survey. The pattern matches pre-churn behavior seen in 23 similar accounts. Sarah's last email tone was escalatory.</p>
@@ -856,23 +856,23 @@ body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--t1);height
       <!-- 2×2 Metric Cards -->
       <div class="intel-metrics">
         <div class="intel-metric">
-          <div class="intel-metric-label" style="color:#f87171">Churn Prediction</div>
-          <div class="intel-metric-value" style="color:#f87171">73% risk</div>
+          <div class="intel-metric-label" style="color:var(--r)">Churn Prediction</div>
+          <div class="intel-metric-value" style="color:var(--r)">73% risk</div>
           <div class="intel-metric-detail">↑ from 31% last month · 3 triggers active</div>
         </div>
         <div class="intel-metric">
-          <div class="intel-metric-label" style="color:#fbbf24">Sentiment Trajectory</div>
-          <div class="intel-metric-value" style="color:#fbbf24">Declining</div>
+          <div class="intel-metric-label" style="color:var(--a)">Sentiment Trajectory</div>
+          <div class="intel-metric-value" style="color:var(--a)">Declining</div>
           <div class="intel-metric-detail">NPS 9 → 6 · Tone shift in last 2 emails</div>
         </div>
         <div class="intel-metric">
-          <div class="intel-metric-label" style="color:#6ee7b7">Expansion Signal</div>
-          <div class="intel-metric-value" style="color:#6ee7b7">PEO Plus → Premium</div>
+          <div class="intel-metric-label" style="color:var(--g)">Expansion Signal</div>
+          <div class="intel-metric-value" style="color:var(--g)">PEO Plus → Premium</div>
           <div class="intel-metric-detail">34 employees · Hitting plan limits on 3 features</div>
         </div>
         <div class="intel-metric">
-          <div class="intel-metric-label" style="color:#6ee7b7">Resolution Confidence</div>
-          <div class="intel-metric-value" style="color:#6ee7b7">High</div>
+          <div class="intel-metric-label" style="color:var(--g)">Resolution Confidence</div>
+          <div class="intel-metric-value" style="color:var(--g)">High</div>
           <div class="intel-metric-detail">Root cause identified · Similar fix resolved 19/23 cases</div>
         </div>
       </div>
