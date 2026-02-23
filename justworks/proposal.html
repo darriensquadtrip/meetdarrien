@@ -793,6 +793,142 @@
   }
 
   /* ═══════════════════════════════════════
+     THE SOLUTION
+     ═══════════════════════════════════════ */
+  .solution-block {
+    margin-bottom: 32px;
+  }
+
+  .solution-card {
+    position: relative;
+    background: linear-gradient(135deg, rgba(52,211,153,0.06) 0%, rgba(78,140,255,0.06) 100%);
+    border: 1px solid rgba(52,211,153,0.2);
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 18px;
+    overflow: hidden;
+  }
+
+  .solution-card::before {
+    content: '';
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, rgba(52,211,153,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .solution-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent-green);
+    margin-bottom: 10px;
+  }
+
+  .solution-headline {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 1.35rem;
+    font-style: italic;
+    line-height: 1.4;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+  }
+
+  .solution-body {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  .solution-body strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .solution-body + .solution-body {
+    margin-top: 12px;
+  }
+
+  .solution-layers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .solution-layer {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 20px;
+    transition: border-color 0.25s var(--ease-out);
+  }
+
+  .solution-layer:hover {
+    border-color: var(--accent-green);
+  }
+
+  .solution-layer-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+  }
+
+  .solution-layer-label.sl-now { color: var(--accent-green); }
+  .solution-layer-label.sl-next { color: var(--accent-blue); }
+
+  .solution-layer h4 {
+    font-size: 1.0rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+
+  .solution-layer p {
+    font-size: 0.90rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .solution-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .solution-item {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+
+  .solution-item.si-green {
+    color: var(--accent-green);
+    background: rgba(52,211,153,0.1);
+  }
+
+  .solution-item.si-blue {
+    color: var(--accent-blue);
+    background: rgba(78,140,255,0.1);
+  }
+
+  @media (max-width: 600px) {
+    .solution-card { padding: 22px; }
+    .solution-headline { font-size: 1.15rem; }
+    .solution-layers { grid-template-columns: 1fr; }
+  }
+
+  /* ═══════════════════════════════════════
      BUSINESS OPPORTUNITY / NORTH STAR
      ═══════════════════════════════════════ */
   .opportunity-block {
@@ -1737,9 +1873,46 @@
 
           </div>
 
+          <!-- THE SOLUTION -->
+          <div class="solution-block">
+            <div class="solution-card">
+              <div class="solution-label">The Solution</div>
+              <div class="solution-headline">Customer Central puts the complete customer picture &mdash; identity, history, account status, and a health score that instantly signals what&rsquo;s working and what&rsquo;s not &mdash; on one screen in under 3 seconds, so the agent walks into every conversation already knowing where to focus.</div>
+              <p class="solution-body">From disparate systems and reactive firefighting to a <strong>single, unified workspace</strong> that assembles context before the customer finishes saying hello. No more toggling. No more asking &ldquo;can you give me your company name?&rdquo; No more flying blind on account health.</p>
+              <p class="solution-body">And that&rsquo;s just the immediate win. The real unlock is what comes next: the same data foundation that powers instant context <strong>becomes the platform for preemptive support, predictive intelligence, and cross-functional insight</strong> &mdash; connecting the dots across customer interactions to inform sales, product, and the broader business.</p>
+            </div>
+
+            <div class="solution-layers">
+              <div class="solution-layer">
+                <div class="solution-layer-label sl-now">Immediate &mdash; The MVP</div>
+                <h4>One Screen, Under 3 Seconds</h4>
+                <p>Unified customer identity, interaction history across all channels, real-time account status, and a transparent health score &mdash; everything an agent needs before they even pick up the phone.</p>
+                <div class="solution-items">
+                  <span class="solution-item si-green">Identity</span>
+                  <span class="solution-item si-green">History</span>
+                  <span class="solution-item si-green">Account Status</span>
+                  <span class="solution-item si-green">Health Score</span>
+                  <span class="solution-item si-green">Open Issues</span>
+                </div>
+              </div>
+              <div class="solution-layer">
+                <div class="solution-layer-label sl-next">Foundation For &mdash; What Comes Next</div>
+                <h4>Preemptive, Predictive, Connected</h4>
+                <p>Structured data and transparent scoring unlock pattern recognition, churn prediction, proactive outreach, and insights that flow back to product, sales, and leadership &mdash; not just support.</p>
+                <div class="solution-items">
+                  <span class="solution-item si-blue">Churn Prediction</span>
+                  <span class="solution-item si-blue">Proactive Outreach</span>
+                  <span class="solution-item si-blue">AI Summaries</span>
+                  <span class="solution-item si-blue">Product Insights</span>
+                  <span class="solution-item si-blue">Sales Signals</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- BUSINESS OPPORTUNITY -->
           <div class="opportunity-block">
-            <p class="opp-intro">Those are the problems. Here is why solving them represents a <strong>compounding strategic advantage</strong>, not just an operational fix.</p>
+            <p class="opp-intro">Those are the problems &mdash; and that&rsquo;s the solution. Here is why solving them represents a <strong>compounding strategic advantage</strong>, not just an operational fix.</p>
 
             <div class="north-star-card">
               <div class="north-star-label">The North Star</div>
