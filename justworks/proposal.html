@@ -1421,6 +1421,26 @@
     height: 14px;
   }
 
+  /* Arrow indicators for clickable links */
+  .deep-dive-link::after {
+    content: ' ›';
+    font-size: 1.1em;
+    margin-left: 2px;
+  }
+
+  .artifact-link::after {
+    content: '›';
+    font-size: 1.2em;
+    margin-left: auto;
+    color: var(--text-muted);
+    flex-shrink: 0;
+  }
+
+  .proto-expand-btn::after {
+    content: ' ›';
+    font-size: 1.1em;
+  }
+
   /* ═══════════════════════════════════════
      TEAM GRID
      ═══════════════════════════════════════ */
@@ -2525,7 +2545,7 @@
 
     <!-- SIDEBAR TOC -->
     <nav class="toc-sidebar" id="toc-sidebar">
-      <a class="toc-back" href="index.html">&larr; Back to Overview</a>
+      <a class="toc-back" href="https://meetdarrien.com/justworks/index.html">&larr; Back to Overview</a>
       <div class="toc-label">Table of Contents</div>
       <ul class="toc-list">
         <li class="toc-item"><a class="toc-link" href="#s01"><span class="toc-num">01</span> Problem &amp; Opportunity</a></li>
@@ -2746,7 +2766,7 @@
             <div class="solution-card">
               <div class="solution-label">The Solution</div>
               <div class="solution-headline">Customer Central puts the complete customer picture &mdash; identity, history, account status, and a health score that instantly signals what&rsquo;s working and what&rsquo;s not &mdash; on one screen in under 3 seconds, so the agent walks into every conversation already knowing where to focus.</div>
-              <p class="solution-body">This wasn&rsquo;t designed by starting with features. I decomposed the case study brief into <strong>6 jobs CSO agents need to perform</strong>, inventoried the top problems across Justworks&rsquo; product surface, and discovered that the highest-impact problems and health-status questions independently converged on the same six data categories &mdash; that convergence defined the MVP scope. Every design decision is framed as a hypothesis waiting to be validated; the full <a href="assumptions-chain.html" target="_blank" style="color:var(--accent-green);text-decoration:underline;text-underline-offset:3px;">14-step decision chain</a> traces each choice back to the brief.</p>
+              <p class="solution-body">This wasn&rsquo;t designed by starting with features. I decomposed the case study brief into <strong>6 jobs CSO agents need to perform</strong>, inventoried the top problems across Justworks&rsquo; product surface, and discovered that the highest-impact problems and health-status questions independently converged on the same six data categories &mdash; that convergence defined the MVP scope. Every design decision is framed as a hypothesis waiting to be validated; the full <a href="https://meetdarrien.com/justworks/assumptions-chain.html" target="_blank" style="color:var(--accent-green);text-decoration:underline;text-underline-offset:3px;">14-step decision chain</a> traces each choice back to the brief.</p>
               <p class="solution-body">From disparate systems and reactive firefighting to a <strong>single, unified workspace</strong> that assembles context before the customer finishes saying hello. No more toggling. No more asking &ldquo;can you give me your company name?&rdquo; No more flying blind on account health.</p>
               <p class="solution-body">And that&rsquo;s just the immediate win. The real unlock is what comes next: the same data foundation that powers instant context <strong>becomes the platform for preemptive support, predictive intelligence, and cross-functional insight</strong> &mdash; connecting the dots across customer interactions to inform sales, product, and the broader business.</p>
             </div>
@@ -2813,7 +2833,9 @@
               </div>
             </div>
           </div>
+          </div>
 
+          <div class="slide">
           <!-- DEPENDENCY STACK -->
           <div class="visual-card">
             <div class="visual-card-title">Dependency Stack &mdash; Problems Map to Phases</div>
@@ -2840,15 +2862,15 @@
           </div>
 
           <div class="deep-dives">
-            <a class="deep-dive-link" href="customer_central_user_stories.pdf" target="_blank">
+            <a class="deep-dive-link" href="https://meetdarrien.com/justworks/customer_central_user_stories.pdf" target="_blank">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
               Problem Statements &amp; User Stories
             </a>
-            <a class="deep-dive-link" href="assumptions-chain.html" target="_blank">
+            <a class="deep-dive-link" href="https://meetdarrien.com/justworks/assumptions-chain.html" target="_blank">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
               The Decision Chain
             </a>
-            <a class="deep-dive-link" href="justworks-prioritization.html" target="_blank">
+            <a class="deep-dive-link" href="https://meetdarrien.com/justworks/justworks-prioritization.html" target="_blank">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
               Prioritization Logic
             </a>
@@ -2935,7 +2957,7 @@
           </div>
 
           <div class="deep-dives">
-            <a class="deep-dive-link" href="phased-roadmap.html" target="_blank">
+            <a class="deep-dive-link" href="https://meetdarrien.com/justworks/phased-roadmap.html" target="_blank">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
               Full Phased Roadmap
             </a>
@@ -2994,7 +3016,7 @@
               <div class="proto-embed-bar">
                 <div class="wf-dots"><div class="wf-dot r"></div><div class="wf-dot y"></div><div class="wf-dot g"></div></div>
                 <span class="proto-embed-title">Customer Central &mdash; Portfolio Health View (HS-2)</span>
-                <a class="proto-expand-btn" href="customer-central.html#portfolio" target="_blank">
+                <a class="proto-expand-btn" href="https://meetdarrien.com/justworks/customer-central.html#portfolio" target="_blank">
                   Open Full Screen
                   <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
                 </a>
@@ -3012,7 +3034,7 @@
               <div class="proto-embed-bar">
                 <div class="wf-dots"><div class="wf-dot r"></div><div class="wf-dot y"></div><div class="wf-dot g"></div></div>
                 <span class="proto-embed-title">Customer Central &mdash; Agent Dashboard</span>
-                <a class="proto-expand-btn" href="customer-central.html" target="_blank">
+                <a class="proto-expand-btn" href="https://meetdarrien.com/justworks/customer-central.html" target="_blank">
                   Open Full Screen
                   <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
                 </a>
@@ -3191,7 +3213,9 @@
               </table>
             </div>
           </div>
+          </div>
 
+          <div class="slide">
           <!-- How I Got to the MVP -->
           <div class="derivation-block">
             <div class="derivation-title">How I Got to the MVP</div>
@@ -3245,15 +3269,15 @@
           </div>
 
           <div class="deep-dives">
-            <a class="deep-dive-link" href="feature-showcase.html" target="_blank">
+            <a class="deep-dive-link" href="https://meetdarrien.com/justworks/feature-showcase.html" target="_blank">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
               Feature Showcase
             </a>
-            <a class="deep-dive-link" href="customer-central.html" target="_blank">
+            <a class="deep-dive-link" href="https://meetdarrien.com/justworks/customer-central.html" target="_blank">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
               Interactive Prototype
             </a>
-            <a class="deep-dive-link" href="customer-central-test-guide.html" target="_blank">
+            <a class="deep-dive-link" href="https://meetdarrien.com/justworks/customer-central-test-guide.html" target="_blank">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
               Test Guide
             </a>
@@ -3308,15 +3332,15 @@
           </div>
 
           <div class="deep-dives">
-            <a class="deep-dive-link" href="data-requirements.html" target="_blank">
+            <a class="deep-dive-link" href="https://meetdarrien.com/justworks/data-requirements.html" target="_blank">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
               Data Requirements Matrix
             </a>
-            <a class="deep-dive-link" href="data-model.html" target="_blank">
+            <a class="deep-dive-link" href="https://meetdarrien.com/justworks/data-model.html" target="_blank">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
               Data Model (ER Diagram)
             </a>
-            <a class="deep-dive-link" href="data-performance.html" target="_blank">
+            <a class="deep-dive-link" href="https://meetdarrien.com/justworks/data-performance.html" target="_blank">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
               Data Performance Strategy
             </a>
@@ -3379,7 +3403,9 @@
               </div>
             </div>
           </div>
+          </div>
 
+          <div class="slide">
           <div class="visual-card">
             <div class="visual-card-title">Sprint Summary</div>
             <div class="table-scroll">
@@ -3406,7 +3432,7 @@
           </div>
 
           <div class="deep-dives">
-            <a class="deep-dive-link" href="engineering-resources.html" target="_blank">
+            <a class="deep-dive-link" href="https://meetdarrien.com/justworks/engineering-resources.html" target="_blank">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
               Full Engineering Resources
             </a>
@@ -3493,11 +3519,11 @@
           </div>
 
           <div class="deep-dives">
-            <a class="deep-dive-link" href="open-questions.html" target="_blank">
+            <a class="deep-dive-link" href="https://meetdarrien.com/justworks/open-questions.html" target="_blank">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
               All Open Questions
             </a>
-            <a class="deep-dive-link" href="assumptions-chain.html" target="_blank">
+            <a class="deep-dive-link" href="https://meetdarrien.com/justworks/assumptions-chain.html" target="_blank">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
               45 Assumptions &amp; Decision Chain
             </a>
@@ -3518,7 +3544,9 @@
             <p>Metrics are structured in <strong>3 tiers</strong>. Outcome metrics (AHT reduction of 15&ndash;20%, FCR improvement of 10%, NPS per headcount dollar trending up) prove the business case at 90 days. Guardrail metrics (NPS &ge; +60, data accuracy &ge; 98%, no escalation rate increase) ensure we don't cause harm in pursuit of speed. Leading indicators (orientation time &lt;10s, repeat-information rate &lt;10%, systems accessed dropping from ~5 to &le;2) become visible in Week 1&ndash;2 and let us course-correct early.</p>
             <p>The North Star metric &mdash; <strong>NPS per CSO headcount dollar</strong> &mdash; is deliberately chosen over raw NPS because it captures the leverage story: same quality, less cost per customer. This is the metric that proves tooling creates sustainable scale, not just incremental improvement.</p>
           </div>
+          </div>
 
+          <div class="slide">
           <div class="visual-card">
             <div class="visual-card-title">Metrics Framework</div>
             <div class="table-scroll">
@@ -3549,7 +3577,7 @@
           </div>
 
           <div class="deep-dives">
-            <a class="deep-dive-link" href="success-metrics.html" target="_blank">
+            <a class="deep-dive-link" href="https://meetdarrien.com/justworks/success-metrics.html" target="_blank">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
               Full Success Metrics
             </a>
@@ -3604,7 +3632,7 @@
           </div>
 
           <div class="deep-dives">
-            <a class="deep-dive-link" href="rollout-training.html" target="_blank">
+            <a class="deep-dive-link" href="https://meetdarrien.com/justworks/rollout-training.html" target="_blank">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
               Full Rollout &amp; Training Plan
             </a>
@@ -3689,11 +3717,11 @@
           </div>
 
           <div class="deep-dives">
-            <a class="deep-dive-link" href="assumptions-chain.html" target="_blank">
+            <a class="deep-dive-link" href="https://meetdarrien.com/justworks/assumptions-chain.html" target="_blank">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
               Full Decision Chain (14 Steps)
             </a>
-            <a class="deep-dive-link" href="justworks-prioritization.html" target="_blank">
+            <a class="deep-dive-link" href="https://meetdarrien.com/justworks/justworks-prioritization.html" target="_blank">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
               Prioritization Logic
             </a>
@@ -3734,6 +3762,25 @@
                   <tr><td>CTI / Telephony Screen-Pop</td><td><span class="badge badge-blue">Phase 2</span></td><td>Telephony vendor + API confirmed</td></tr>
                   <tr><td>Knowledge Base Integration</td><td><span class="badge badge-blue">Phase 2</span></td><td>KB migrated to structured, API-accessible system</td></tr>
                   <tr><td>Full Leadership Analytics</td><td><span class="badge badge-blue">Phase 2</span></td><td>Data accumulating reliably; Tableau interim</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          </div>
+
+          <div class="slide">
+          <div class="visual-card">
+            <div class="visual-card-title">Deferred Items (continued)</div>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Deferred To</th>
+                    <th>Revisit Trigger</th>
+                  </tr>
+                </thead>
+                <tbody>
                   <tr><td>AI Interaction Summaries</td><td><span class="badge badge-purple">Phase 3</span></td><td>90+ days of structured records; AI tooling decision</td></tr>
                   <tr><td>Pre-emptive Problem Detection</td><td><span class="badge badge-purple">Phase 3</span></td><td>2 quarters of structured engagement data</td></tr>
                   <tr><td>Upsell &amp; Cross-Sell</td><td><span class="badge badge-purple">Phase 3</span></td><td>CSO/Sales/RevOps alignment on agent suggestions</td></tr>
@@ -3748,7 +3795,7 @@
           </div>
 
           <div class="deep-dives">
-            <a class="deep-dive-link" href="scope-and-future.html" target="_blank">
+            <a class="deep-dive-link" href="https://meetdarrien.com/justworks/scope-and-future.html" target="_blank">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
               Scope &amp; Future Vision
             </a>
@@ -3814,7 +3861,7 @@
           </div>
 
           <div class="deep-dives">
-            <a class="deep-dive-link" href="scope-and-future.html" target="_blank">
+            <a class="deep-dive-link" href="https://meetdarrien.com/justworks/scope-and-future.html" target="_blank">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
               Scope &amp; Future Vision
             </a>
@@ -3839,32 +3886,32 @@
           <div class="artifact-category">
             <div class="artifact-category-label" style="color:var(--accent-purple);">How I Thought About It</div>
             <div class="artifact-grid">
-              <a class="artifact-link" href="justworks_north_star_and_problem_overview.pdf" target="_blank">
+              <a class="artifact-link" href="https://meetdarrien.com/justworks/justworks_north_star_and_problem_overview.pdf" target="_blank">
                 <div class="artifact-icon" style="background:rgba(139,92,246,0.1);">&#x2B50;</div>
                 <div class="artifact-info"><h4>North Star &amp; Problem Overview</h4><p>Strategic framing, north star metric, problem definition</p></div>
                 <span class="artifact-badge ab-pdf">PDF</span>
               </a>
-              <a class="artifact-link" href="justworks_deep_problem_analysis.pdf" target="_blank">
+              <a class="artifact-link" href="https://meetdarrien.com/justworks/justworks_deep_problem_analysis.pdf" target="_blank">
                 <div class="artifact-icon" style="background:rgba(139,92,246,0.1);">&#x1F50D;</div>
                 <div class="artifact-info"><h4>Deep Problem Analysis</h4><p>CSO pain points, root causes, compounding problem framework</p></div>
                 <span class="artifact-badge ab-pdf">PDF</span>
               </a>
-              <a class="artifact-link" href="customer_central_user_stories.pdf" target="_blank">
+              <a class="artifact-link" href="https://meetdarrien.com/justworks/customer_central_user_stories.pdf" target="_blank">
                 <div class="artifact-icon" style="background:rgba(139,92,246,0.1);">&#x1F4CB;</div>
                 <div class="artifact-info"><h4>Problem Statements &amp; User Stories</h4><p>6 problems traced to the brief + 9 user stories with acceptance criteria</p></div>
                 <span class="artifact-badge ab-pdf">PDF</span>
               </a>
-              <a class="artifact-link" href="assumptions-chain.html" target="_blank">
+              <a class="artifact-link" href="https://meetdarrien.com/justworks/assumptions-chain.html" target="_blank">
                 <div class="artifact-icon" style="background:rgba(139,92,246,0.1);">&#x1F9E0;</div>
                 <div class="artifact-info"><h4>The Decision Chain</h4><p>14-step reasoning chain with 45 documented assumptions</p></div>
                 <span class="artifact-badge">Interactive</span>
               </a>
-              <a class="artifact-link" href="justworks-prioritization.html" target="_blank">
+              <a class="artifact-link" href="https://meetdarrien.com/justworks/justworks-prioritization.html" target="_blank">
                 <div class="artifact-icon" style="background:rgba(139,92,246,0.1);">&#x1F3AF;</div>
                 <div class="artifact-info"><h4>Prioritization Logic</h4><p>Dependency chain proving why Phase 1 must come before Phase 2</p></div>
                 <span class="artifact-badge">Interactive</span>
               </a>
-              <a class="artifact-link" href="success-metrics.html" target="_blank">
+              <a class="artifact-link" href="https://meetdarrien.com/justworks/success-metrics.html" target="_blank">
                 <div class="artifact-icon" style="background:rgba(139,92,246,0.1);">&#x1F4CF;</div>
                 <div class="artifact-info"><h4>Success Metrics</h4><p>Outcome metrics, guardrails, leading indicators, and anti-metrics</p></div>
                 <span class="artifact-badge">Interactive</span>
@@ -3876,59 +3923,61 @@
           <div class="artifact-category">
             <div class="artifact-category-label" style="color:var(--accent-green);">What I&rsquo;d Build</div>
             <div class="artifact-grid">
-              <a class="artifact-link" href="customer-central.html" target="_blank">
+              <a class="artifact-link" href="https://meetdarrien.com/justworks/customer-central.html" target="_blank">
                 <div class="artifact-icon" style="background:rgba(52,211,153,0.1);">&#x1F5A5;&#xFE0F;</div>
                 <div class="artifact-info"><h4>Interactive Prototype</h4><p>Fully interactive Customer Central dashboard &mdash; all 11 features testable</p></div>
                 <span class="artifact-badge">Interactive</span>
               </a>
-              <a class="artifact-link" href="feature-showcase.html" target="_blank">
+              <a class="artifact-link" href="https://meetdarrien.com/justworks/feature-showcase.html" target="_blank">
                 <div class="artifact-icon" style="background:rgba(52,211,153,0.1);">&#x1F3A8;</div>
                 <div class="artifact-info"><h4>Feature Showcase</h4><p>Visual walkthrough of all 11 MVP features with design rationale</p></div>
                 <span class="artifact-badge">Interactive</span>
               </a>
-              <a class="artifact-link" href="customer-central-test-guide.html" target="_blank">
+              <a class="artifact-link" href="https://meetdarrien.com/justworks/customer-central-test-guide.html" target="_blank">
                 <div class="artifact-icon" style="background:rgba(52,211,153,0.1);">&#x1F9EA;</div>
                 <div class="artifact-info"><h4>Prototype Test Guide</h4><p>Story-by-story walkthrough with step-by-step instructions</p></div>
                 <span class="artifact-badge">Interactive</span>
               </a>
-              <a class="artifact-link" href="data-model.html" target="_blank">
+              <a class="artifact-link" href="https://meetdarrien.com/justworks/data-model.html" target="_blank">
                 <div class="artifact-icon" style="background:rgba(52,211,153,0.1);">&#x1F517;</div>
                 <div class="artifact-info"><h4>Data Model</h4><p>Interactive ER diagram &mdash; 13 entities, 4 source systems</p></div>
                 <span class="artifact-badge">Interactive</span>
               </a>
-              <a class="artifact-link" href="data-requirements.html" target="_blank">
+              <a class="artifact-link" href="https://meetdarrien.com/justworks/data-requirements.html" target="_blank">
                 <div class="artifact-icon" style="background:rgba(52,211,153,0.1);">&#x1F4CB;</div>
                 <div class="artifact-info"><h4>Data Requirements Matrix</h4><p>55 data fields mapped across 11 features and 5 source systems</p></div>
                 <span class="artifact-badge">Interactive</span>
               </a>
-              <a class="artifact-link" href="data-performance.html" target="_blank">
+              <a class="artifact-link" href="https://meetdarrien.com/justworks/data-performance.html" target="_blank">
                 <div class="artifact-icon" style="background:rgba(52,211,153,0.1);">&#x26A1;</div>
                 <div class="artifact-info"><h4>Data Performance Strategy</h4><p>4-tier loading model, DB schema, caching, volume estimates</p></div>
                 <span class="artifact-badge">Interactive</span>
               </a>
             </div>
           </div>
+          </div>
 
+          <div class="slide">
           <!-- How I'd Ship It -->
           <div class="artifact-category">
             <div class="artifact-category-label" style="color:var(--accent-blue);">How I&rsquo;d Ship It</div>
             <div class="artifact-grid">
-              <a class="artifact-link" href="phased-roadmap.html" target="_blank">
+              <a class="artifact-link" href="https://meetdarrien.com/justworks/phased-roadmap.html" target="_blank">
                 <div class="artifact-icon" style="background:rgba(78,140,255,0.1);">&#x1F4C5;</div>
                 <div class="artifact-info"><h4>Phased Roadmap</h4><p>7-week Gantt-style timeline with role-specific tasks and stage gates</p></div>
                 <span class="artifact-badge">Interactive</span>
               </a>
-              <a class="artifact-link" href="engineering-resources.html" target="_blank">
+              <a class="artifact-link" href="https://meetdarrien.com/justworks/engineering-resources.html" target="_blank">
                 <div class="artifact-icon" style="background:rgba(78,140,255,0.1);">&#x1F465;</div>
                 <div class="artifact-info"><h4>Engineering Resources</h4><p>Team composition, sprint plan, and 4 de-risking strategies</p></div>
                 <span class="artifact-badge">Interactive</span>
               </a>
-              <a class="artifact-link" href="scope-and-future.html" target="_blank">
+              <a class="artifact-link" href="https://meetdarrien.com/justworks/scope-and-future.html" target="_blank">
                 <div class="artifact-icon" style="background:rgba(78,140,255,0.1);">&#x1F52E;</div>
                 <div class="artifact-info"><h4>Scope &amp; Future Vision</h4><p>13 excluded items with rationale + future feature deep-dives</p></div>
                 <span class="artifact-badge">Interactive</span>
               </a>
-              <a class="artifact-link" href="rollout-training.html" target="_blank">
+              <a class="artifact-link" href="https://meetdarrien.com/justworks/rollout-training.html" target="_blank">
                 <div class="artifact-icon" style="background:rgba(78,140,255,0.1);">&#x1F680;</div>
                 <div class="artifact-info"><h4>Rollout &amp; Training Plan</h4><p>3-stage rollout, stage gates, 3-layer training, champions program</p></div>
                 <span class="artifact-badge">Interactive</span>
@@ -3945,7 +3994,7 @@
                 <div class="artifact-info"><h4>Workshop Board (Miro)</h4><p>45-minute MVP scoping sprint with exercises and dot voting</p></div>
                 <span class="artifact-badge ab-miro">Miro</span>
               </a>
-              <a class="artifact-link" href="open-questions.html" target="_blank">
+              <a class="artifact-link" href="https://meetdarrien.com/justworks/open-questions.html" target="_blank">
                 <div class="artifact-icon" style="background:rgba(251,191,36,0.1);">&#x2753;</div>
                 <div class="artifact-info"><h4>Open Questions</h4><p>17 questions organized by stakeholder with assumptions</p></div>
                 <span class="artifact-badge">Interactive</span>
@@ -3957,27 +4006,27 @@
           <div class="artifact-category">
             <div class="artifact-category-label">Reference</div>
             <div class="artifact-grid">
-              <a class="artifact-link" href="presentation-outline.html" target="_blank">
+              <a class="artifact-link" href="https://meetdarrien.com/justworks/presentation-outline.html" target="_blank">
                 <div class="artifact-icon" style="background:rgba(107,110,133,0.1);">&#x1F399;&#xFE0F;</div>
                 <div class="artifact-info"><h4>Presentation Outline</h4><p>7-section speaker guide with scripted beats</p></div>
                 <span class="artifact-badge">Interactive</span>
               </a>
-              <a class="artifact-link" href="presentation-workshop-plan.html" target="_blank">
+              <a class="artifact-link" href="https://meetdarrien.com/justworks/presentation-workshop-plan.html" target="_blank">
                 <div class="artifact-icon" style="background:rgba(107,110,133,0.1);">&#x1F4DD;</div>
                 <div class="artifact-info"><h4>Workshop + Q&amp;A Plan</h4><p>Full session plan with contingency plans</p></div>
                 <span class="artifact-badge">Interactive</span>
               </a>
-              <a class="artifact-link" href="submission-checklist.html" target="_blank">
+              <a class="artifact-link" href="https://meetdarrien.com/justworks/submission-checklist.html" target="_blank">
                 <div class="artifact-icon" style="background:rgba(107,110,133,0.1);">&#x1F4CB;</div>
                 <div class="artifact-info"><h4>Submission Checklist</h4><p>Audit of all deliverables against the case study prompt</p></div>
                 <span class="artifact-badge">Interactive</span>
               </a>
-              <a class="artifact-link" href="justworks_cso_success_model.pdf" target="_blank">
+              <a class="artifact-link" href="https://meetdarrien.com/justworks/justworks_cso_success_model.pdf" target="_blank">
                 <div class="artifact-icon" style="background:rgba(107,110,133,0.1);">&#x1F3AF;</div>
                 <div class="artifact-info"><h4>CSO Success Model</h4><p>What success looks like at agent, team lead, and leadership levels</p></div>
                 <span class="artifact-badge ab-pdf">PDF</span>
               </a>
-              <a class="artifact-link" href="product_case_study.pdf" target="_blank">
+              <a class="artifact-link" href="https://meetdarrien.com/justworks/product_case_study.pdf" target="_blank">
                 <div class="artifact-icon" style="background:rgba(107,110,133,0.1);">&#x1F4C4;</div>
                 <div class="artifact-info"><h4>Product Case Study Prompt</h4><p>The original brief this entire project responds to</p></div>
                 <span class="artifact-badge ab-pdf">PDF</span>
@@ -4007,7 +4056,7 @@
 
 <!-- SLIDE NAV (presentation mode) -->
 <div class="slide-nav" id="slide-nav">
-  <span class="slide-counter" id="slide-counter">1 / 24</span>
+  <span class="slide-counter" id="slide-counter">1 / 30</span>
   <button class="slide-exit" id="slide-exit" title="Exit presentation">&times;</button>
 </div>
 
