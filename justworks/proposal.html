@@ -929,6 +929,159 @@
   }
 
   /* ═══════════════════════════════════════
+     FUTURE TEASER
+     ═══════════════════════════════════════ */
+  .teaser-block {
+    margin-bottom: 28px;
+  }
+
+  .teaser-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent-purple);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .teaser-mockup {
+    background: var(--bg-card);
+    border: 1px solid rgba(139,92,246,0.2);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .teaser-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    background: linear-gradient(135deg, rgba(139,92,246,0.06) 0%, rgba(78,140,255,0.04) 100%);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .teaser-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .teaser-header-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .teaser-header-info h4 {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .teaser-header-info p {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+
+  .teaser-risk {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--accent-red);
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: rgba(248,113,113,0.1);
+    border: 1px solid rgba(248,113,113,0.2);
+    flex-shrink: 0;
+  }
+
+  .teaser-risk .t-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent-red);
+    animation: churn-pulse 2s infinite;
+  }
+
+  .teaser-rows {
+    padding: 10px 12px;
+  }
+
+  .teaser-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 0.80rem;
+  }
+
+  .teaser-row:nth-child(odd) {
+    background: rgba(255,255,255,0.02);
+  }
+
+  .teaser-row-icon {
+    font-size: 0.85rem;
+    width: 20px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .teaser-row-text {
+    flex: 1;
+    color: var(--text-secondary);
+    min-width: 0;
+  }
+
+  .teaser-row-text strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .teaser-row-tag {
+    flex-shrink: 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 3px;
+  }
+
+  .t-tag-purple { background: rgba(139,92,246,0.12); color: var(--accent-purple); }
+  .t-tag-green { background: rgba(52,211,153,0.12); color: var(--accent-green); }
+  .t-tag-amber { background: rgba(251,191,36,0.12); color: var(--accent-amber); }
+  .t-tag-blue { background: rgba(78,140,255,0.12); color: var(--accent-blue); }
+  .t-tag-red { background: rgba(248,113,113,0.12); color: var(--accent-red); }
+
+  .teaser-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px;
+    border-top: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  /* ═══════════════════════════════════════
      BUSINESS OPPORTUNITY / NORTH STAR
      ═══════════════════════════════════════ */
   .opportunity-block {
@@ -1550,27 +1703,6 @@
      ═══════════════════════════════════════ */
   .concept-mockup {
     background: var(--bg-deep);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    overflow: hidden;
-    margin-bottom: 24px;
-  }
-
-  .concept-titlebar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 16px;
-    background: rgba(15,17,23,0.8);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .concept-titlebar-text {
-    flex: 1;
-    text-align: center;
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: var(--text-muted);
   }
 
   .concept-titlebar-badge {
@@ -2469,6 +2601,49 @@
             </div>
           </div>
 
+          <!-- FUTURE TEASER -->
+          <div class="teaser-block">
+            <div class="teaser-label">&#x2728; A glimpse of where this leads</div>
+            <div class="teaser-mockup">
+              <div class="teaser-header">
+                <div class="teaser-avatar">SC</div>
+                <div class="teaser-header-info">
+                  <h4>Sarah Chen &middot; Acme Corp</h4>
+                  <p>PEO Plus &middot; 34 employees &middot; 4 contacts in 9 days</p>
+                </div>
+                <div class="teaser-risk"><span class="t-dot"></span> Churn Risk 73%</div>
+              </div>
+              <div class="teaser-rows">
+                <div class="teaser-row">
+                  <span class="teaser-row-icon">&#x2728;</span>
+                  <span class="teaser-row-text"><strong>AI Summary:</strong> NPS dropped 9 &#x2192; 6, pattern matches 23 pre-churn accounts. Payroll migration error is root cause.</span>
+                  <span class="teaser-row-tag t-tag-purple">AI</span>
+                </div>
+                <div class="teaser-row">
+                  <span class="teaser-row-icon">&#x1F4C9;</span>
+                  <span class="teaser-row-text"><strong>Sentiment:</strong> Declining &mdash; tone shift detected in last 2 emails</span>
+                  <span class="teaser-row-tag t-tag-red">Alert</span>
+                </div>
+                <div class="teaser-row">
+                  <span class="teaser-row-icon">&#x1F4E7;</span>
+                  <span class="teaser-row-text">Auto-drafted billing credit + apology for migration error</span>
+                  <span class="teaser-row-tag t-tag-green">Outreach</span>
+                </div>
+                <div class="teaser-row">
+                  <span class="teaser-row-icon">&#x1F4B0;</span>
+                  <span class="teaser-row-text">Expansion signal: hitting plan limits on 3 features &#x2192; Premium upgrade</span>
+                  <span class="teaser-row-tag t-tag-amber">Sales</span>
+                </div>
+                <div class="teaser-row">
+                  <span class="teaser-row-icon">&#x1F527;</span>
+                  <span class="teaser-row-text">Bug pattern: same error in 23 accounts post-migration &#x2192; systemic fix needed</span>
+                  <span class="teaser-row-tag t-tag-blue">Product</span>
+                </div>
+              </div>
+              <div class="teaser-footer">Phase 3 concept &mdash; built on the data foundation the MVP creates</div>
+            </div>
+          </div>
+
           <!-- BUSINESS OPPORTUNITY -->
           <div class="opportunity-block">
             <p class="opp-intro">Those are the problems &mdash; and that&rsquo;s the solution. Here is why solving them represents a <strong>compounding strategic advantage</strong>, not just an operational fix.</p>
@@ -2700,6 +2875,124 @@
               <div class="proto-embed-hint">Fully interactive &mdash; use Cmd+K to search, click tabs, expand health scores, toggle billing scenarios</div>
             </div>
             <iframe class="proto-iframe" src="customer-central.html" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
+          </div>
+
+          <!-- CONCEPT MOCKUP — PHASE 3 INTELLIGENCE LAYER -->
+          <div class="visual-card concept-mockup proto-breakout" style="padding:0;overflow:hidden;">
+            <div class="proto-embed-header">
+              <div class="proto-embed-bar">
+                <div class="wf-dots"><div class="wf-dot r"></div><div class="wf-dot y"></div><div class="wf-dot g"></div></div>
+                <span class="proto-embed-title">Customer Central &mdash; Phase 3 Intelligence Layer</span>
+                <span class="concept-titlebar-badge">Concept Only</span>
+              </div>
+              <div class="proto-embed-hint" style="background:rgba(139,92,246,0.04);border-top-color:rgba(139,92,246,0.1);">Where the Phase 1 data foundation leads &mdash; AI summaries, churn prediction, proactive outreach, and cross-functional insights</div>
+            </div>
+            <div class="concept-body">
+
+              <!-- Left sidebar -->
+              <div class="concept-sidebar">
+                <div class="concept-sidebar-label">Navigation</div>
+                <div class="concept-nav-item"><span class="nav-icon">&#x25C9;</span> Dashboard</div>
+                <div class="concept-nav-item active"><span class="nav-icon">&#x2728;</span> Intelligence</div>
+                <div class="concept-nav-item"><span class="nav-icon">&#x1F4CB;</span> My Queue <span style="margin-left:auto;font-size:0.72rem;color:var(--accent-amber);">7</span></div>
+                <div class="concept-nav-item"><span class="nav-icon">&#x23F0;</span> Recent</div>
+                <div class="concept-sidebar-label">Actions</div>
+                <div class="concept-nav-item"><span class="nav-icon">+</span> New Ticket</div>
+                <div class="concept-nav-item"><span class="nav-icon">&#x270D;&#xFE0F;</span> Log Interaction</div>
+                <div class="concept-nav-item"><span class="nav-icon">&#x2197;&#xFE0F;</span> Escalate</div>
+                <div class="concept-sidebar-label">Leadership</div>
+                <div class="concept-nav-item"><span class="nav-icon">&#x25C9;</span> Portfolio Health</div>
+                <div class="concept-nav-item"><span class="nav-icon">&#x1F4CA;</span> Trend Analytics</div>
+              </div>
+
+              <!-- Main content -->
+              <div class="concept-main">
+                <div class="concept-main-header">
+                  <div class="concept-avatar">SC</div>
+                  <div class="concept-main-title">
+                    <h3>Sarah Chen &middot; Acme Corp</h3>
+                    <p>Account Admin &middot; PEO Plus &middot; 34 employees &middot; 3 yr tenure</p>
+                  </div>
+                  <div class="concept-health-badge churn-risk">
+                    <span class="churn-dot"></span>
+                    Churn Risk: 73%
+                  </div>
+                </div>
+
+                <!-- AI Summary -->
+                <div class="concept-ai-card">
+                  <div class="concept-ai-label"><span class="sparkle">&#x2728;</span> AI Summary</div>
+                  <p>Acme Corp has contacted support <strong>4 times in 9 days</strong> &mdash; 3x their rolling average. Two interactions involved billing discrepancies tied to the same payroll migration error. <strong>NPS dropped from 9 to 6</strong> in the last survey. The pattern matches pre-churn behavior seen in 23 similar accounts. Sarah&rsquo;s last email tone was escalatory.</p>
+                </div>
+
+                <!-- Signal cards -->
+                <div class="concept-signals-grid">
+                  <div class="concept-signal sig-red">
+                    <div class="concept-signal-label">Churn Prediction</div>
+                    <div class="concept-signal-value">73% risk</div>
+                    <div class="concept-signal-sub">&#x2191; from 31% last month &middot; 3 triggers active</div>
+                  </div>
+                  <div class="concept-signal sig-amber">
+                    <div class="concept-signal-label">Sentiment Trajectory</div>
+                    <div class="concept-signal-value">Declining</div>
+                    <div class="concept-signal-sub">NPS 9 &#x2192; 6 &middot; Tone shift in last 2 emails</div>
+                  </div>
+                  <div class="concept-signal sig-green">
+                    <div class="concept-signal-label">Expansion Signal</div>
+                    <div class="concept-signal-value">PEO Plus &#x2192; Premium</div>
+                    <div class="concept-signal-sub">34 employees &middot; Hitting plan limits on 3 features</div>
+                  </div>
+                  <div class="concept-signal sig-blue">
+                    <div class="concept-signal-label">Resolution Confidence</div>
+                    <div class="concept-signal-value">High</div>
+                    <div class="concept-signal-sub">Root cause identified &middot; Similar fix resolved 19/23 cases</div>
+                  </div>
+                </div>
+
+                <!-- Proactive outreach -->
+                <div class="concept-outreach-card">
+                  <div class="concept-outreach-label">&#x1F3AF; Recommended Actions</div>
+                  <div class="concept-outreach-actions">
+                    <div class="concept-action"><span class="action-icon">&#x1F4E7;</span> Send billing credit + apology for payroll migration error <span class="action-tag at-auto">Auto-Draft</span></div>
+                    <div class="concept-action"><span class="action-icon">&#x1F4DE;</span> Schedule proactive check-in call within 48 hours <span class="action-tag at-suggest">Suggested</span></div>
+                    <div class="concept-action"><span class="action-icon">&#x1F4B0;</span> Flag to Sales: Premium upgrade conversation when stable <span class="action-tag at-sales">Sales Signal</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right panel — cross-functional insights -->
+              <div class="concept-insights">
+                <div class="concept-insight-section">
+                  <div class="concept-insight-label">Cross-Functional Insights</div>
+                  <div class="concept-insight-card">
+                    <h5>Payroll Migration Bug Pattern</h5>
+                    <p>Same billing error seen in 23 accounts post-migration. Systemic root cause, not one-off.</p>
+                    <span class="insight-dest dest-product">&#x2192; Product</span>
+                  </div>
+                  <div class="concept-insight-card">
+                    <h5>PEO Plus Plan Ceiling</h5>
+                    <p>12 accounts hitting feature limits this quarter. Expansion pipeline: ~$84K ARR.</p>
+                    <span class="insight-dest dest-sales">&#x2192; Sales</span>
+                  </div>
+                  <div class="concept-insight-card">
+                    <h5>NY/CA Tax Confusion Spike</h5>
+                    <p>Multi-state employers calling 2.3x more about withholding. Help article gap identified.</p>
+                    <span class="insight-dest dest-support">&#x2192; Help Center</span>
+                  </div>
+                  <div class="concept-insight-card">
+                    <h5>Churn Cohort Alert</h5>
+                    <p>7 accounts in &ldquo;At Risk&rdquo; share the same trigger: 3+ contacts in 10 days with declining sentiment.</p>
+                    <span class="insight-dest dest-leadership">&#x2192; Leadership</span>
+                  </div>
+                  <div class="concept-insight-card">
+                    <h5>Q1 Benefits Enrollment Gap</h5>
+                    <p>18% of new hires not completing dental enrollment. Guided flow could cut tickets by ~40/week.</p>
+                    <span class="insight-dest dest-product">&#x2192; Product</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
           </div>
 
           <!-- Interaction Details -->
@@ -3341,127 +3634,6 @@
               </div>
             </div>
           </div>
-
-          <!-- CONCEPT MOCKUP: FUTURE STATE -->
-          <div class="concept-mockup proto-breakout">
-            <div class="concept-titlebar">
-              <div class="wf-dots"><div class="wf-dot r"></div><div class="wf-dot y"></div><div class="wf-dot g"></div></div>
-              <span class="concept-titlebar-text">Customer Central &mdash; Phase 3 Concept</span>
-              <span class="concept-titlebar-badge">Concept Only</span>
-            </div>
-            <div class="concept-body">
-
-              <!-- Left sidebar -->
-              <div class="concept-sidebar">
-                <div class="concept-sidebar-label">Navigation</div>
-                <div class="concept-nav-item"><span class="nav-icon">&#x25C9;</span> Dashboard</div>
-                <div class="concept-nav-item active"><span class="nav-icon">&#x2728;</span> Intelligence</div>
-                <div class="concept-nav-item"><span class="nav-icon">&#x1F4CB;</span> My Queue <span style="margin-left:auto;font-size:0.72rem;color:var(--accent-amber);">7</span></div>
-                <div class="concept-nav-item"><span class="nav-icon">&#x23F0;</span> Recent</div>
-                <div class="concept-sidebar-label">Actions</div>
-                <div class="concept-nav-item"><span class="nav-icon">+</span> New Ticket</div>
-                <div class="concept-nav-item"><span class="nav-icon">&#x270D;&#xFE0F;</span> Log Interaction</div>
-                <div class="concept-nav-item"><span class="nav-icon">&#x2197;&#xFE0F;</span> Escalate</div>
-                <div class="concept-sidebar-label">Leadership</div>
-                <div class="concept-nav-item"><span class="nav-icon">&#x25C9;</span> Portfolio Health</div>
-                <div class="concept-nav-item"><span class="nav-icon">&#x1F4CA;</span> Trend Analytics</div>
-              </div>
-
-              <!-- Main content -->
-              <div class="concept-main">
-                <div class="concept-main-header">
-                  <div class="concept-avatar">SC</div>
-                  <div class="concept-main-title">
-                    <h3>Sarah Chen &middot; Acme Corp</h3>
-                    <p>Account Admin &middot; PEO Plus &middot; 34 employees &middot; 3 yr tenure</p>
-                  </div>
-                  <div class="concept-health-badge churn-risk">
-                    <span class="churn-dot"></span>
-                    Churn Risk: 73%
-                  </div>
-                </div>
-
-                <!-- AI Summary -->
-                <div class="concept-ai-card">
-                  <div class="concept-ai-label"><span class="sparkle">&#x2728;</span> AI Summary</div>
-                  <p>Acme Corp has contacted support <strong>4 times in 9 days</strong> &mdash; 3x their rolling average. Two interactions involved billing discrepancies tied to the same payroll migration error. <strong>NPS dropped from 9 to 6</strong> in the last survey. The pattern matches pre-churn behavior seen in 23 similar accounts. Sarah&rsquo;s last email tone was escalatory.</p>
-                </div>
-
-                <!-- Signal cards -->
-                <div class="concept-signals-grid">
-                  <div class="concept-signal sig-red">
-                    <div class="concept-signal-label">Churn Prediction</div>
-                    <div class="concept-signal-value">73% risk</div>
-                    <div class="concept-signal-sub">&#x2191; from 31% last month &middot; 3 triggers active</div>
-                  </div>
-                  <div class="concept-signal sig-amber">
-                    <div class="concept-signal-label">Sentiment Trajectory</div>
-                    <div class="concept-signal-value">Declining</div>
-                    <div class="concept-signal-sub">NPS 9 &#x2192; 6 &middot; Tone shift in last 2 emails</div>
-                  </div>
-                  <div class="concept-signal sig-green">
-                    <div class="concept-signal-label">Expansion Signal</div>
-                    <div class="concept-signal-value">PEO Plus &#x2192; Premium</div>
-                    <div class="concept-signal-sub">34 employees &middot; Hitting plan limits on 3 features</div>
-                  </div>
-                  <div class="concept-signal sig-blue">
-                    <div class="concept-signal-label">Resolution Confidence</div>
-                    <div class="concept-signal-value">High</div>
-                    <div class="concept-signal-sub">Root cause identified &middot; Similar fix resolved 19/23 cases</div>
-                  </div>
-                </div>
-
-                <!-- Proactive outreach -->
-                <div class="concept-outreach-card">
-                  <div class="concept-outreach-label">&#x1F3AF; Recommended Actions</div>
-                  <div class="concept-outreach-actions">
-                    <div class="concept-action"><span class="action-icon">&#x1F4E7;</span> Send billing credit + apology for payroll migration error <span class="action-tag at-auto">Auto-Draft</span></div>
-                    <div class="concept-action"><span class="action-icon">&#x1F4DE;</span> Schedule proactive check-in call within 48 hours <span class="action-tag at-suggest">Suggested</span></div>
-                    <div class="concept-action"><span class="action-icon">&#x1F4B0;</span> Flag to Sales: Premium upgrade conversation when stable <span class="action-tag at-sales">Sales Signal</span></div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Right panel — cross-functional insights -->
-              <div class="concept-insights">
-                <div class="concept-insight-section">
-                  <div class="concept-insight-label">Cross-Functional Insights</div>
-
-                  <div class="concept-insight-card">
-                    <h5>Payroll Migration Bug Pattern</h5>
-                    <p>Same billing error seen in 23 accounts post-migration. Systemic root cause, not one-off.</p>
-                    <span class="insight-dest dest-product">&#x2192; Product</span>
-                  </div>
-
-                  <div class="concept-insight-card">
-                    <h5>PEO Plus Plan Ceiling</h5>
-                    <p>12 accounts hitting feature limits this quarter. Expansion pipeline: ~$84K ARR.</p>
-                    <span class="insight-dest dest-sales">&#x2192; Sales</span>
-                  </div>
-
-                  <div class="concept-insight-card">
-                    <h5>NY/CA Tax Confusion Spike</h5>
-                    <p>Multi-state employers calling 2.3x more about withholding. Help article gap identified.</p>
-                    <span class="insight-dest dest-support">&#x2192; Help Center</span>
-                  </div>
-
-                  <div class="concept-insight-card">
-                    <h5>Churn Cohort Alert</h5>
-                    <p>7 accounts in &ldquo;At Risk&rdquo; share the same trigger: 3+ contacts in 10 days with declining sentiment.</p>
-                    <span class="insight-dest dest-leadership">&#x2192; Leadership</span>
-                  </div>
-
-                  <div class="concept-insight-card">
-                    <h5>Q1 Benefits Enrollment Gap</h5>
-                    <p>18% of new hires not completing dental enrollment. Guided flow could cut tickets by ~40/week.</p>
-                    <span class="insight-dest dest-product">&#x2192; Product</span>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-          <div class="concept-caption">Concept visualization &mdash; not a committed design. Illustrates where the Phase 1 data foundation leads.</div>
 
           <div class="deep-dives">
             <a class="deep-dive-link" href="scope-and-future.html" target="_blank">
