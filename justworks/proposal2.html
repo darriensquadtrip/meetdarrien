@@ -1,0 +1,3916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Central Proposal (Light) | Darrien Watson</title>
+<meta name="robots" content="noindex, nofollow">
+<base href="/justworks/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg-deep: #f8f9fb;
+    --bg-surface: #ffffff;
+    --bg-card: #ffffff;
+    --bg-elevated: #f0f1f5;
+    --border: #dfe1e8;
+    --text-primary: #1a1c25;
+    --text-secondary: #4a4e69;
+    --text-muted: #6b7088;
+    --accent-blue: #2563eb;
+    --accent-purple: #7c3aed;
+    --accent-green: #059669;
+    --accent-amber: #d97706;
+    --accent-red: #dc2626;
+    --accent-pink: #db2777;
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ═══════════════════════════════════════
+     PASSWORD GATE
+     ═══════════════════════════════════════ */
+  .gate-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    transition: opacity 0.6s var(--ease-out), visibility 0.6s;
+  }
+
+  .gate-overlay.unlocked {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .gate-card {
+    width: 100%;
+    max-width: 420px;
+    padding: 48px 40px;
+    margin: 0 20px;
+    text-align: center;
+  }
+
+  .gate-logo {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #0f172a;
+    margin-bottom: 48px;
+  }
+
+  .gate-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 24px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .gate-icon svg { width: 28px; height: 28px; color: #fff; }
+
+  .gate-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 8px;
+  }
+
+  .gate-subtitle {
+    font-size: 0.95rem;
+    color: #475569;
+    margin-bottom: 32px;
+  }
+
+  .gate-input {
+    width: 100%;
+    padding: 14px 18px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    color: #0f172a;
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 12px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    margin-bottom: 16px;
+  }
+
+  .gate-input:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.08);
+  }
+
+  .gate-input.error {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+    animation: shake 0.4s ease-in-out;
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-6px); }
+    40%, 80% { transform: translateX(6px); }
+  }
+
+  .gate-btn {
+    width: 100%;
+    padding: 14px 24px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.2s var(--ease-out), box-shadow 0.2s;
+  }
+
+  .gate-btn:hover { transform: translateY(-1px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.08); }
+  .gate-btn:active { transform: translateY(0); }
+
+  .gate-error-msg {
+    font-size: 0.85rem;
+    color: #ef4444;
+    margin-top: 12px;
+    min-height: 20px;
+  }
+
+  /* ═══════════════════════════════════════
+     PAGE LAYOUT
+     ═══════════════════════════════════════ */
+  .page-content {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.6s var(--ease-out);
+  }
+
+  .page-content.visible {
+    display: flex;
+    opacity: 1;
+  }
+
+  .proposal-layout {
+    display: flex;
+    min-height: 100vh;
+    background: linear-gradient(145deg, #f5f3ff 0%, #f8f9fb 40%, #f0f7ff 100%);
+    position: relative;
+  }
+
+  .proposal-layout::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 15% 25%, rgba(124, 58, 237, 0.04) 0%, transparent 50%),
+      radial-gradient(circle at 85% 75%, rgba(37, 99, 235, 0.03) 0%, transparent 50%);
+    pointer-events: none;
+  }
+
+  /* ═══════════════════════════════════════
+     SIDEBAR TOC
+     ═══════════════════════════════════════ */
+  .toc-sidebar {
+    width: 260px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 32px 20px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(16px);
+    border-right: 1px solid var(--border);
+    z-index: 10;
+  }
+
+  .toc-sidebar::-webkit-scrollbar { width: 4px; }
+  .toc-sidebar::-webkit-scrollbar-track { background: transparent; }
+  .toc-sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  .toc-back {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-decoration: none;
+    margin-bottom: 24px;
+    transition: color 0.2s;
+  }
+
+  .toc-back:hover { color: var(--accent-blue); }
+
+  .toc-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    padding-left: 12px;
+  }
+
+  .toc-list { list-style: none; }
+
+  .toc-item {
+    margin-bottom: 2px;
+  }
+
+  .toc-link {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    border-radius: 8px;
+    border-left: 2px solid transparent;
+    transition: all 0.2s;
+    line-height: 1.45;
+  }
+
+  .toc-link:hover {
+    color: var(--text-secondary);
+    background: rgba(0, 0, 0, 0.03);
+  }
+
+  .toc-link.active {
+    color: var(--accent-blue);
+    background: rgba(37, 99, 235, 0.08);
+    border-left-color: var(--accent-blue);
+  }
+
+  .toc-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 500;
+    flex-shrink: 0;
+    width: 20px;
+  }
+
+  /* ═══════════════════════════════════════
+     MOBILE TOC TOGGLE
+     ═══════════════════════════════════════ */
+  .toc-toggle {
+    display: none;
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 200;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: background 0.2s;
+  }
+
+  .toc-toggle:hover { background: var(--bg-card); }
+
+  .toc-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+  }
+
+  /* ═══════════════════════════════════════
+     MAIN CONTENT AREA
+     ═══════════════════════════════════════ */
+  .proposal-main {
+    flex: 1;
+    min-width: 0;
+    padding: 48px 56px 120px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .proposal-inner {
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  /* ═══════════════════════════════════════
+     HEADER
+     ═══════════════════════════════════════ */
+  .proposal-header {
+    margin-bottom: 64px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .header-tags {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .header-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 6px 14px;
+    border-radius: 6px;
+    background: rgba(37, 99, 235, 0.1);
+    color: var(--accent-blue);
+    border: 1px solid rgba(37, 99, 235, 0.2);
+  }
+
+  .header-tag.purple {
+    background: rgba(124, 58, 237, 0.1);
+    color: var(--accent-purple);
+    border-color: rgba(124, 58, 237, 0.2);
+  }
+
+  .header-tag.green {
+    background: rgba(5, 150, 105, 0.1);
+    color: var(--accent-green);
+    border-color: rgba(5, 150, 105, 0.2);
+  }
+
+  .proposal-header h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 2.4rem;
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+
+  .proposal-header h1 em {
+    color: var(--accent-blue);
+    font-style: italic;
+  }
+
+  .proposal-header .tagline {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 2rem;
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.3;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+    max-width: 520px;
+    background: linear-gradient(135deg, #1a1c25 0%, #7c3aed 50%, #2563eb 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .proposal-header .subtitle {
+    font-size: 1.12rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 16px;
+    max-width: 700px;
+  }
+
+  .header-meta {
+    font-size: 0.92rem;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+  }
+
+  .stat-pills {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .stat-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+
+  .stat-pill .pill-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--accent-blue);
+  }
+
+  .stat-pill .pill-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  /* ═══════════════════════════════════════
+     SECTIONS
+     ═══════════════════════════════════════ */
+  .proposal-section {
+    margin-bottom: 72px;
+    scroll-margin-top: 32px;
+  }
+
+  .section-header {
+    margin-bottom: 28px;
+  }
+
+  .section-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent-blue);
+    margin-bottom: 8px;
+  }
+
+  .section-header h2 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.8rem;
+    font-weight: 400;
+    line-height: 1.25;
+  }
+
+  .prose {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    margin-bottom: 32px;
+  }
+
+  .prose p { margin-bottom: 16px; }
+  .prose p:last-child { margin-bottom: 0; }
+
+  .prose strong { color: var(--text-primary); font-weight: 600; }
+
+  /* ═══════════════════════════════════════
+     VISUAL CARDS & TABLES
+     ═══════════════════════════════════════ */
+  .visual-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    margin-bottom: 28px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 12px rgba(0,0,0,0.03);
+  }
+
+  .visual-card-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+  }
+
+  .data-table th {
+    text-align: left;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+
+  .data-table td {
+    padding: 14px 14px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    color: var(--text-secondary);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+
+  .data-table tr:last-child td { border-bottom: none; }
+
+  .data-table tr:hover td { background: rgba(0, 0, 0, 0.02); }
+
+  .table-scroll {
+    overflow-x: auto;
+    margin: 0 -28px;
+    padding: 0 28px;
+  }
+
+  /* Badges */
+  .badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+
+  .badge-green { background: rgba(5, 150, 105, 0.15); color: var(--accent-green); }
+  .badge-blue { background: rgba(37, 99, 235, 0.15); color: var(--accent-blue); }
+  .badge-purple { background: rgba(124, 58, 237, 0.15); color: var(--accent-purple); }
+  .badge-amber { background: rgba(217, 119, 6, 0.15); color: var(--accent-amber); }
+  .badge-red { background: rgba(220, 38, 38, 0.15); color: var(--accent-red); }
+
+  /* ═══════════════════════════════════════
+     DEPENDENCY STACK DIAGRAM
+     ═══════════════════════════════════════ */
+  .dep-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .dep-layer {
+    padding: 20px 24px;
+    border-radius: 12px;
+    border: 1px solid;
+    position: relative;
+  }
+
+  .dep-layer .layer-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
+
+  .dep-layer h4 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .dep-layer p {
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+  .dep-layer.layer-proactive {
+    background: rgba(124, 58, 237, 0.08);
+    border-color: rgba(124, 58, 237, 0.25);
+  }
+  .dep-layer.layer-proactive .layer-label { color: var(--accent-purple); }
+  .dep-layer.layer-proactive h4 { color: var(--accent-purple); }
+  .dep-layer.layer-proactive p { color: rgba(124, 58, 237, 0.8); }
+
+  .dep-layer.layer-intelligence {
+    background: rgba(37, 99, 235, 0.08);
+    border-color: rgba(37, 99, 235, 0.25);
+  }
+  .dep-layer.layer-intelligence .layer-label { color: var(--accent-blue); }
+  .dep-layer.layer-intelligence h4 { color: var(--accent-blue); }
+  .dep-layer.layer-intelligence p { color: rgba(37, 99, 235, 0.8); }
+
+  .dep-layer.layer-foundation {
+    background: rgba(5, 150, 105, 0.08);
+    border-color: rgba(5, 150, 105, 0.25);
+  }
+  .dep-layer.layer-foundation .layer-label { color: var(--accent-green); }
+  .dep-layer.layer-foundation h4 { color: var(--accent-green); }
+  .dep-layer.layer-foundation p { color: rgba(5, 150, 105, 0.8); }
+
+  .dep-arrow {
+    text-align: center;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    padding: 4px 0;
+  }
+
+  /* ═══════════════════════════════════════
+     REALITY TODAY
+     ═══════════════════════════════════════ */
+  .reality-block {
+    margin-bottom: 32px;
+  }
+
+  .reality-card {
+    background: linear-gradient(135deg, rgba(220,38,38,0.06) 0%, rgba(217,119,6,0.06) 100%);
+    border: 1px solid rgba(220,38,38,0.18);
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 18px;
+  }
+
+  .reality-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent-red);
+    margin-bottom: 10px;
+  }
+
+  .reality-headline {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 1.35rem;
+    font-style: italic;
+    line-height: 1.4;
+    color: var(--text-primary);
+    margin-bottom: 14px;
+    max-width: 720px;
+  }
+
+  .reality-body {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 0;
+  }
+
+  .reality-body + .reality-body {
+    margin-top: 10px;
+  }
+
+  .reality-signals {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .reality-signal {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px;
+  }
+
+  .reality-signal .signal-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent-red);
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 600px) {
+    .reality-card { padding: 22px; }
+    .reality-headline { font-size: 1.15rem; }
+    .reality-signals { flex-direction: column; }
+  }
+
+  /* ═══════════════════════════════════════
+     PROBLEM STATEMENTS
+     ═══════════════════════════════════════ */
+  .problem-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .problem-card {
+    display: flex;
+    gap: 18px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    transition: border-color 0.25s var(--ease-out);
+  }
+
+  .problem-card:hover {
+    border-color: var(--accent-blue);
+  }
+
+  .problem-id {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--accent-blue);
+    background: rgba(37, 99, 235, 0.1);
+    border: 1px solid rgba(37, 99, 235, 0.2);
+    border-radius: 10px;
+  }
+
+  .problem-body h4 {
+    font-size: 1.0rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+  }
+
+  .problem-body > p {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    margin-bottom: 12px;
+  }
+
+  .problem-source {
+    margin-top: 10px;
+    padding: 12px 16px;
+    background: rgba(37, 99, 235, 0.04);
+    border-left: 3px solid rgba(37, 99, 235, 0.25);
+    border-radius: 0 8px 8px 0;
+  }
+
+  .problem-source + .problem-source {
+    margin-top: 8px;
+  }
+
+  .source-label {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent-blue);
+    margin-bottom: 6px;
+  }
+
+  .problem-source blockquote {
+    margin: 0;
+    font-size: 0.88rem;
+    font-style: italic;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  @media (max-width: 600px) {
+    .problem-card {
+      flex-direction: column;
+      gap: 10px;
+      padding: 18px;
+    }
+    .problem-id {
+      width: 36px;
+      height: 36px;
+      font-size: 0.78rem;
+    }
+  }
+
+  /* ═══════════════════════════════════════
+     THE SOLUTION
+     ═══════════════════════════════════════ */
+  .solution-block {
+    margin-bottom: 32px;
+  }
+
+  .solution-card {
+    position: relative;
+    background: linear-gradient(135deg, rgba(5,150,105,0.06) 0%, rgba(37,99,235,0.06) 100%);
+    border: 1px solid rgba(5,150,105,0.2);
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 18px;
+    overflow: hidden;
+  }
+
+  .solution-card::before {
+    content: '';
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, rgba(5,150,105,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .solution-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent-green);
+    margin-bottom: 10px;
+  }
+
+  .solution-headline {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 1.35rem;
+    font-style: italic;
+    line-height: 1.4;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+  }
+
+  .solution-body {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  .solution-body strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .solution-body + .solution-body {
+    margin-top: 12px;
+  }
+
+  .solution-layers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .solution-layer {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 20px;
+    transition: border-color 0.25s var(--ease-out);
+  }
+
+  .solution-layer:hover {
+    border-color: var(--accent-green);
+  }
+
+  .solution-layer-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+  }
+
+  .solution-layer-label.sl-now { color: var(--accent-green); }
+  .solution-layer-label.sl-next { color: var(--accent-blue); }
+
+  .solution-layer h4 {
+    font-size: 1.0rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+
+  .solution-layer p {
+    font-size: 0.90rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .solution-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .solution-item {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 500;
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+
+  .solution-item.si-green {
+    color: var(--accent-green);
+    background: rgba(5,150,105,0.1);
+  }
+
+  .solution-item.si-blue {
+    color: var(--accent-blue);
+    background: rgba(37,99,235,0.1);
+  }
+
+  @media (max-width: 600px) {
+    .solution-card { padding: 22px; }
+    .solution-headline { font-size: 1.15rem; }
+    .solution-layers { grid-template-columns: 1fr; }
+  }
+
+  /* ═══════════════════════════════════════
+     FUTURE TEASER
+     ═══════════════════════════════════════ */
+  .teaser-block {
+    margin-bottom: 28px;
+  }
+
+  .teaser-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent-purple);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .teaser-mockup {
+    background: var(--bg-card);
+    border: 1px solid rgba(124,58,237,0.2);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .teaser-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    background: linear-gradient(135deg, rgba(124,58,237,0.06) 0%, rgba(37,99,235,0.04) 100%);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .teaser-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .teaser-header-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .teaser-header-info h4 {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .teaser-header-info p {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+
+  .teaser-risk {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--accent-red);
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: rgba(220,38,38,0.1);
+    border: 1px solid rgba(220,38,38,0.2);
+    flex-shrink: 0;
+  }
+
+  .teaser-risk .t-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent-red);
+    animation: churn-pulse 2s infinite;
+  }
+
+  .teaser-rows {
+    padding: 10px 12px;
+  }
+
+  .teaser-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 0.80rem;
+  }
+
+  .teaser-row:nth-child(odd) {
+    background: rgba(0,0,0,0.02);
+  }
+
+  .teaser-row-icon {
+    font-size: 0.85rem;
+    width: 20px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  .teaser-row-text {
+    flex: 1;
+    color: var(--text-secondary);
+    min-width: 0;
+  }
+
+  .teaser-row-text strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .teaser-row-tag {
+    flex-shrink: 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 3px;
+  }
+
+  .t-tag-purple { background: rgba(124,58,237,0.12); color: var(--accent-purple); }
+  .t-tag-green { background: rgba(5,150,105,0.12); color: var(--accent-green); }
+  .t-tag-amber { background: rgba(217,119,6,0.12); color: var(--accent-amber); }
+  .t-tag-blue { background: rgba(37,99,235,0.12); color: var(--accent-blue); }
+  .t-tag-red { background: rgba(220,38,38,0.12); color: var(--accent-red); }
+
+  .teaser-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px;
+    border-top: 1px solid var(--border);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  /* ═══════════════════════════════════════
+     BUSINESS OPPORTUNITY / NORTH STAR
+     ═══════════════════════════════════════ */
+  .opportunity-block {
+    margin-bottom: 28px;
+  }
+
+  .opportunity-block .opp-intro {
+    font-size: 1.0rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin-bottom: 24px;
+  }
+
+  .opportunity-block .opp-intro strong {
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .north-star-card {
+    position: relative;
+    background: linear-gradient(135deg, rgba(124,58,237,0.08) 0%, rgba(37,99,235,0.08) 100%);
+    border: 1px solid rgba(124,58,237,0.2);
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+
+  .north-star-card::before {
+    content: '';
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    width: 120px;
+    height: 120px;
+    background: radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .north-star-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent-purple);
+    margin-bottom: 10px;
+  }
+
+  .north-star-quote {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 1.45rem;
+    font-style: italic;
+    line-height: 1.4;
+    color: var(--text-primary);
+    margin-bottom: 14px;
+  }
+
+  .north-star-body {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 0;
+  }
+
+  .north-star-body + .north-star-body {
+    margin-top: 12px;
+  }
+
+  .opp-pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .opp-pillar {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 20px;
+    transition: border-color 0.25s var(--ease-out);
+  }
+
+  .opp-pillar:hover {
+    border-color: var(--accent-blue);
+  }
+
+  .opp-pillar-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+  }
+
+  .opp-pillar-label.lbl-scale { color: var(--accent-blue); }
+  .opp-pillar-label.lbl-metric { color: var(--accent-green); }
+  .opp-pillar-label.lbl-vision { color: var(--accent-purple); }
+
+  .opp-pillar h4 {
+    font-size: 1.0rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+  }
+
+  .opp-pillar p {
+    font-size: 0.90rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .opp-pillar .opp-highlight {
+    display: inline-block;
+    margin-top: 10px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+
+  .opp-highlight.hl-blue {
+    color: var(--accent-blue);
+    background: rgba(37,99,235,0.1);
+  }
+
+  .opp-highlight.hl-green {
+    color: var(--accent-green);
+    background: rgba(5,150,105,0.1);
+  }
+
+  .opp-highlight.hl-purple {
+    color: var(--accent-purple);
+    background: rgba(124,58,237,0.1);
+  }
+
+  @media (max-width: 900px) {
+    .opp-pillars { grid-template-columns: 1fr; }
+  }
+
+  /* ═══════════════════════════════════════
+     PHASE CARDS
+     ═══════════════════════════════════════ */
+  .phase-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+
+  .phase-card {
+    padding: 22px;
+    border-radius: 12px;
+    border: 1px solid;
+    text-align: center;
+  }
+
+  .phase-card .phase-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+
+  .phase-card h4 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .phase-card .phase-duration {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+    margin-bottom: 8px;
+  }
+
+  .phase-card p {
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+
+  .phase-card.green {
+    background: rgba(5, 150, 105, 0.06);
+    border-color: rgba(5, 150, 105, 0.2);
+  }
+  .phase-card.green .phase-num, .phase-card.green h4 { color: var(--accent-green); }
+  .phase-card.green .phase-duration { color: rgba(5, 150, 105, 0.7); }
+  .phase-card.green p { color: var(--text-muted); }
+
+  .phase-card.blue {
+    background: rgba(37, 99, 235, 0.06);
+    border-color: rgba(37, 99, 235, 0.2);
+  }
+  .phase-card.blue .phase-num, .phase-card.blue h4 { color: var(--accent-blue); }
+  .phase-card.blue .phase-duration { color: rgba(37, 99, 235, 0.7); }
+  .phase-card.blue p { color: var(--text-muted); }
+
+  .phase-card.purple {
+    background: rgba(124, 58, 237, 0.06);
+    border-color: rgba(124, 58, 237, 0.2);
+  }
+  .phase-card.purple .phase-num, .phase-card.purple h4 { color: var(--accent-purple); }
+  .phase-card.purple .phase-duration { color: rgba(124, 58, 237, 0.7); }
+  .phase-card.purple p { color: var(--text-muted); }
+
+  /* ═══════════════════════════════════════
+     MILESTONE STRIP
+     ═══════════════════════════════════════ */
+  .milestone-strip {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    padding-bottom: 8px;
+  }
+
+  .milestone-strip::-webkit-scrollbar { height: 4px; }
+  .milestone-strip::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  .milestone-item {
+    flex: 1;
+    min-width: 110px;
+    text-align: center;
+    padding: 14px 8px;
+    position: relative;
+  }
+
+  .milestone-item::before {
+    content: '';
+    position: absolute;
+    top: 28px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--border);
+  }
+
+  .milestone-item:first-child::before { left: 50%; }
+  .milestone-item:last-child::before { right: 50%; }
+
+  .milestone-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin: 0 auto 10px;
+    position: relative;
+    z-index: 1;
+    border: 2px solid;
+  }
+
+  .milestone-item.green .milestone-dot { background: var(--accent-green); border-color: var(--accent-green); }
+  .milestone-item.blue .milestone-dot { background: var(--accent-blue); border-color: var(--accent-blue); }
+  .milestone-item.purple .milestone-dot { background: var(--accent-purple); border-color: var(--accent-purple); }
+
+  .milestone-week {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+
+  .milestone-name {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    line-height: 1.4;
+  }
+
+  /* ═══════════════════════════════════════
+     CALLOUT CARDS
+     ═══════════════════════════════════════ */
+  .callout {
+    padding: 20px 24px;
+    border-radius: 12px;
+    border-left: 3px solid;
+    margin-bottom: 24px;
+  }
+
+  .callout.blue {
+    background: rgba(37, 99, 235, 0.06);
+    border-left-color: var(--accent-blue);
+  }
+
+  .callout.green {
+    background: rgba(5, 150, 105, 0.06);
+    border-left-color: var(--accent-green);
+  }
+
+  .callout.amber {
+    background: rgba(217, 119, 6, 0.06);
+    border-left-color: var(--accent-amber);
+  }
+
+  .callout.purple {
+    background: rgba(124, 58, 237, 0.06);
+    border-left-color: var(--accent-purple);
+  }
+
+  .callout-title {
+    font-size: 0.92rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: var(--text-primary);
+  }
+
+  .callout p {
+    font-size: 0.92rem;
+    line-height: 1.65;
+    color: var(--text-secondary);
+  }
+
+  /* ═══════════════════════════════════════
+     DEEP DIVE LINKS
+     ═══════════════════════════════════════ */
+  .deep-dives {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 24px;
+  }
+
+  .deep-dive-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 18px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--accent-blue);
+    background: rgba(37, 99, 235, 0.08);
+    border: 1px solid rgba(37, 99, 235, 0.2);
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s var(--ease-out);
+  }
+
+  .deep-dive-link:hover {
+    background: rgba(37, 99, 235, 0.15);
+    border-color: rgba(37, 99, 235, 0.4);
+    transform: translateY(-1px);
+  }
+
+  .deep-dive-link svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  /* ═══════════════════════════════════════
+     TEAM GRID
+     ═══════════════════════════════════════ */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .team-card {
+    padding: 18px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    text-align: center;
+  }
+
+  .team-card .team-emoji {
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+  }
+
+  .team-card h4 {
+    font-size: 0.92rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .team-card .team-vertical {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+
+  .team-card .team-alloc {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--accent-blue);
+  }
+
+  /* ═══════════════════════════════════════
+     ROLLOUT STAGES
+     ═══════════════════════════════════════ */
+  .rollout-stages {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    margin-bottom: 24px;
+  }
+
+  .rollout-stage {
+    flex: 1;
+    padding: 22px 18px;
+    text-align: center;
+    border: 1px solid;
+    position: relative;
+  }
+
+  .rollout-stage:first-child { border-radius: 12px 0 0 12px; }
+  .rollout-stage:last-child { border-radius: 0 12px 12px 0; }
+
+  .rollout-arrow {
+    position: absolute;
+    right: -14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    z-index: 2;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-deep);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 0.8rem;
+  }
+
+  .rollout-stage .stage-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+  }
+
+  .rollout-stage h4 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .rollout-stage .stage-agents {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+
+  .rollout-stage p {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+
+  .rollout-stage.alpha {
+    background: rgba(5, 150, 105, 0.06);
+    border-color: rgba(5, 150, 105, 0.2);
+  }
+  .rollout-stage.alpha .stage-label, .rollout-stage.alpha h4, .rollout-stage.alpha .stage-agents { color: var(--accent-green); }
+
+  .rollout-stage.beta {
+    background: rgba(37, 99, 235, 0.06);
+    border-color: rgba(37, 99, 235, 0.2);
+  }
+  .rollout-stage.beta .stage-label, .rollout-stage.beta h4, .rollout-stage.beta .stage-agents { color: var(--accent-blue); }
+
+  .rollout-stage.ga {
+    background: rgba(124, 58, 237, 0.06);
+    border-color: rgba(124, 58, 237, 0.2);
+  }
+  .rollout-stage.ga .stage-label, .rollout-stage.ga h4, .rollout-stage.ga .stage-agents { color: var(--accent-purple); }
+
+  .gate-criteria {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    text-align: center;
+    margin-top: 12px;
+    padding: 0 8px;
+  }
+
+  .gate-criteria strong { color: var(--text-secondary); }
+
+  /* ═══════════════════════════════════════
+     DECISION CHAIN
+     ═══════════════════════════════════════ */
+  .decision-chain {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .chain-step {
+    display: flex;
+    gap: 16px;
+    padding: 16px 0;
+    position: relative;
+  }
+
+  .chain-num {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(37, 99, 235, 0.12);
+    border: 1px solid rgba(37, 99, 235, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent-blue);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .chain-step:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 17px;
+    top: 52px;
+    bottom: 0;
+    width: 2px;
+    background: rgba(37, 99, 235, 0.15);
+  }
+
+  .chain-content h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .chain-content p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+  }
+
+  /* ═══════════════════════════════════════
+     FUTURE FEATURES GRID
+     ═══════════════════════════════════════ */
+  .future-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .future-card {
+    padding: 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    transition: all 0.2s var(--ease-out);
+  }
+
+  .future-card:hover {
+    border-color: rgba(124, 58, 237, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .future-card .future-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 4px 10px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+
+  .future-card h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .future-card p {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+  }
+
+  /* ═══════════════════════════════════════
+     FOOTER
+     ═══════════════════════════════════════ */
+  .proposal-footer {
+    text-align: center;
+    padding: 48px 0 32px;
+    border-top: 1px solid var(--border);
+    margin-top: 48px;
+  }
+
+  .proposal-footer p {
+    font-size: 0.90rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .proposal-footer a {
+    color: var(--accent-blue);
+    text-decoration: none;
+  }
+
+  .proposal-footer a:hover { text-decoration: underline; }
+
+  /* ═══════════════════════════════════════
+     FUTURE CONCEPT MOCKUP
+     ═══════════════════════════════════════ */
+  .concept-mockup {
+    background: var(--bg-deep);
+  }
+
+  .concept-titlebar-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 10px;
+    border-radius: 4px;
+    background: rgba(124,58,237,0.15);
+    color: var(--accent-purple);
+  }
+
+  .concept-body {
+    display: grid;
+    grid-template-columns: 220px 1fr 280px;
+    min-height: 520px;
+  }
+
+  .concept-sidebar {
+    background: #f5f6fa;
+    border-right: 1px solid var(--border);
+    padding: 16px 14px;
+  }
+
+  .concept-sidebar-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+    margin-top: 14px;
+  }
+
+  .concept-sidebar-label:first-child { margin-top: 0; }
+
+  .concept-nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    margin-bottom: 2px;
+  }
+
+  .concept-nav-item.active {
+    background: rgba(124,58,237,0.12);
+    color: var(--accent-purple);
+    font-weight: 600;
+  }
+
+  .concept-nav-item .nav-icon { font-size: 0.9rem; width: 18px; text-align: center; }
+
+  .concept-main {
+    padding: 20px 24px;
+    overflow: hidden;
+  }
+
+  .concept-main-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .concept-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+  }
+
+  .concept-main-title h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .concept-main-title p {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+  }
+
+  .concept-health-badge {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-family: 'DM Mono', monospace;
+    font-weight: 700;
+  }
+
+  .concept-health-badge.churn-risk {
+    background: rgba(220,38,38,0.12);
+    border: 1px solid rgba(220,38,38,0.25);
+    color: var(--accent-red);
+    font-size: 0.82rem;
+  }
+
+  .concept-health-badge .churn-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent-red);
+    animation: churn-pulse 2s infinite;
+  }
+
+  @keyframes churn-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .concept-ai-card {
+    background: linear-gradient(135deg, rgba(124,58,237,0.08) 0%, rgba(37,99,235,0.06) 100%);
+    border: 1px solid rgba(124,58,237,0.2);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+  }
+
+  .concept-ai-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent-purple);
+    margin-bottom: 8px;
+  }
+
+  .concept-ai-label .sparkle { animation: sparkle-spin 3s linear infinite; }
+  @keyframes sparkle-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .concept-ai-card p {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+  }
+
+  .concept-ai-card p strong {
+    color: var(--text-primary);
+  }
+
+  .concept-signals-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .concept-signal {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+
+  .concept-signal-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 4px;
+  }
+
+  .concept-signal-value {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .concept-signal-sub {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .concept-signal.sig-red .concept-signal-label { color: var(--accent-red); }
+  .concept-signal.sig-red .concept-signal-value { color: var(--accent-red); }
+  .concept-signal.sig-amber .concept-signal-label { color: var(--accent-amber); }
+  .concept-signal.sig-amber .concept-signal-value { color: var(--accent-amber); }
+  .concept-signal.sig-green .concept-signal-label { color: var(--accent-green); }
+  .concept-signal.sig-green .concept-signal-value { color: var(--accent-green); }
+  .concept-signal.sig-blue .concept-signal-label { color: var(--accent-blue); }
+  .concept-signal.sig-blue .concept-signal-value { color: var(--accent-blue); }
+
+  .concept-outreach-card {
+    background: rgba(5,150,105,0.06);
+    border: 1px solid rgba(5,150,105,0.2);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+
+  .concept-outreach-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent-green);
+    margin-bottom: 8px;
+  }
+
+  .concept-outreach-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .concept-action {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+  }
+
+  .concept-action .action-icon {
+    font-size: 0.85rem;
+    width: 18px;
+    text-align: center;
+  }
+
+  .concept-action .action-tag {
+    margin-left: auto;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 3px;
+  }
+
+  .action-tag.at-auto { background: rgba(124,58,237,0.12); color: var(--accent-purple); }
+  .action-tag.at-suggest { background: rgba(37,99,235,0.12); color: var(--accent-blue); }
+  .action-tag.at-sales { background: rgba(217,119,6,0.12); color: var(--accent-amber); }
+
+  /* Right panel — insights */
+  .concept-insights {
+    background: #f5f6fa;
+    border-left: 1px solid var(--border);
+    padding: 16px 14px;
+    overflow-y: auto;
+  }
+
+  .concept-insight-section {
+    margin-bottom: 16px;
+  }
+
+  .concept-insight-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .concept-insight-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 6px;
+  }
+
+  .concept-insight-card h5 {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 3px;
+  }
+
+  .concept-insight-card p {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    line-height: 1.45;
+  }
+
+  .concept-insight-card .insight-dest {
+    display: inline-block;
+    margin-top: 4px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 3px;
+  }
+
+  .insight-dest.dest-product { background: rgba(124,58,237,0.12); color: var(--accent-purple); }
+  .insight-dest.dest-sales { background: rgba(217,119,6,0.12); color: var(--accent-amber); }
+  .insight-dest.dest-leadership { background: rgba(37,99,235,0.12); color: var(--accent-blue); }
+  .insight-dest.dest-support { background: rgba(5,150,105,0.12); color: var(--accent-green); }
+
+  .concept-caption {
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: 8px;
+  }
+
+  @media (max-width: 900px) {
+    .concept-body { grid-template-columns: 1fr; }
+    .concept-sidebar { display: none; }
+    .concept-insights { border-left: none; border-top: 1px solid var(--border); }
+  }
+
+  /* ═══════════════════════════════════════
+     ARTIFACT INDEX
+     ═══════════════════════════════════════ */
+  .artifact-category {
+    margin-bottom: 24px;
+  }
+
+  .artifact-category-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .artifact-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .artifact-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.2s var(--ease-out);
+  }
+
+  .artifact-link:hover {
+    border-color: var(--accent-blue);
+    transform: translateY(-1px);
+  }
+
+  .artifact-icon {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    border-radius: 8px;
+  }
+
+  .artifact-info h4 {
+    font-size: 0.90rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+  }
+
+  .artifact-info p {
+    font-size: 0.80rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  .artifact-badge {
+    margin-left: auto;
+    flex-shrink: 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.70rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: rgba(37,99,235,0.1);
+    color: var(--accent-blue);
+  }
+
+  .artifact-badge.ab-pdf {
+    background: rgba(220,38,38,0.1);
+    color: var(--accent-red);
+  }
+
+  .artifact-badge.ab-miro {
+    background: rgba(217,119,6,0.1);
+    color: var(--accent-amber);
+  }
+
+  @media (max-width: 900px) {
+    .artifact-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ═══════════════════════════════════════
+     RESPONSIVE
+     ═══════════════════════════════════════ */
+  @media (max-width: 900px) {
+    .toc-sidebar {
+      position: fixed;
+      left: -280px;
+      top: 0;
+      height: 100vh;
+      width: 270px;
+      z-index: 100;
+      transition: left 0.3s var(--ease-out);
+    }
+
+    .toc-sidebar.open { left: 0; }
+
+    .toc-toggle { display: flex; }
+
+    .toc-overlay.open { display: block; }
+
+    .proposal-main { padding: 48px 28px 80px; }
+
+    .proposal-header h1 { font-size: 1.8rem; }
+
+    .phase-cards { grid-template-columns: 1fr; }
+    .team-grid { grid-template-columns: repeat(2, 1fr); }
+    .future-grid { grid-template-columns: 1fr; }
+    .stat-pills { gap: 8px; }
+
+    .rollout-stages { flex-direction: column; }
+    .rollout-stage { border-radius: 12px !important; }
+    .rollout-arrow { display: none; }
+  }
+
+  @media (max-width: 600px) {
+    .proposal-main { padding: 32px 18px 60px; }
+    .proposal-header h1 { font-size: 1.5rem; }
+    .section-header h2 { font-size: 1.4rem; }
+    .section-prose { font-size: 0.95rem; }
+    .visual-card { padding: 20px; }
+    .team-grid { grid-template-columns: 1fr; }
+    .stat-pills { flex-direction: column; }
+    .stat-pill { justify-content: center; }
+    .deep-dives { flex-direction: column; }
+    .deep-dive-link { justify-content: center; }
+  }
+
+  /* ═══════════════════════════════════════
+     HOW I GOT TO THE MVP
+     ═══════════════════════════════════════ */
+  .derivation-block {
+    margin-bottom: 28px;
+  }
+
+  .derivation-title {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 1.35rem;
+    font-weight: 400;
+    color: var(--text-primary);
+    margin-bottom: 4px;
+  }
+
+  .derivation-subtitle {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 1.0rem;
+    font-style: italic;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+
+  .derivation-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+  }
+
+  .derivation-step {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .deriv-num-bar {
+    padding: 8px 0;
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #fff;
+    border-radius: 6px 6px 0 0;
+  }
+
+  .derivation-step:nth-child(1) .deriv-num-bar { background: #1e293b; }
+  .derivation-step:nth-child(2) .deriv-num-bar { background: #334155; }
+  .derivation-step:nth-child(3) .deriv-num-bar { background: #2563eb; }
+  .derivation-step:nth-child(4) .deriv-num-bar { background: var(--accent-green); }
+
+  .deriv-content {
+    flex: 1;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 6px 6px;
+    padding: 16px 18px;
+  }
+
+  .deriv-content h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+
+  .deriv-content p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+  }
+
+  .deriv-arrow {
+    position: absolute;
+    right: -14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    color: var(--accent-amber);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  @media (max-width: 900px) {
+    .derivation-steps { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .deriv-arrow { display: none; }
+  }
+
+  @media (max-width: 600px) {
+    .derivation-steps { grid-template-columns: 1fr; }
+    .derivation-title { font-size: 1.15rem; }
+  }
+
+  /* ═══════════════════════════════════════
+     EMBEDDED PROTOTYPE
+     ═══════════════════════════════════════ */
+  .proto-breakout {
+    /* Break out of .proposal-inner max-width to fill available main area */
+    width: calc(100vw - 260px - 112px);   /* viewport - sidebar - main lr padding */
+    max-width: 1400px;
+    min-width: 100%;                       /* never narrower than the column */
+  }
+
+  @media (max-width: 900px) {
+    .proto-breakout { width: 100%; }       /* sidebar hidden on mobile, stay in column */
+  }
+
+  .wf-dots { display: flex; gap: 5px; }
+  .wf-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .wf-dot.r { background: #ef4444; }
+  .wf-dot.y { background: #eab308; }
+  .wf-dot.g { background: #22c55e; }
+
+  .proto-embed-header {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .proto-embed-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    background: #f0f1f5;
+  }
+
+  .proto-embed-title {
+    flex: 1;
+    text-align: center;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+
+  .proto-expand-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--accent-blue);
+    text-decoration: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    background: rgba(37, 99, 235, 0.1);
+    border: 1px solid rgba(37, 99, 235, 0.2);
+    transition: all 0.15s;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .proto-expand-btn:hover {
+    background: rgba(37, 99, 235, 0.2);
+    border-color: rgba(37, 99, 235, 0.4);
+  }
+
+  .proto-embed-hint {
+    padding: 8px 16px;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    background: rgba(5, 150, 105, 0.04);
+    border-top: 1px solid rgba(5, 150, 105, 0.1);
+    text-align: center;
+  }
+
+  .proto-iframe {
+    display: block;
+    width: 100%;
+    height: 700px;
+    border: none;
+    background: var(--bg-deep);
+  }
+
+  @media (max-width: 900px) {
+    .proto-iframe { height: 500px; }
+  }
+
+  @media (max-width: 600px) {
+    .proto-iframe { height: 400px; }
+    .proto-expand-btn { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     PASSWORD GATE
+     ═══════════════════════════════════════ -->
+<div class="gate-overlay" id="gate">
+  <div class="gate-card">
+    <div class="gate-logo">Darrien Watson</div>
+    <div class="gate-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+      </svg>
+    </div>
+    <h1 class="gate-title">Private Page</h1>
+    <p class="gate-subtitle">Enter the password to view this content.</p>
+    <form id="gate-form" onsubmit="return false;">
+      <input type="password" class="gate-input" id="gate-password" placeholder="Password" autocomplete="off" autofocus>
+      <button type="submit" class="gate-btn" id="gate-submit">Enter</button>
+      <p class="gate-error-msg" id="gate-error"></p>
+    </form>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     MOBILE TOC TOGGLE
+     ═══════════════════════════════════════ -->
+<button class="toc-toggle" id="toc-toggle" aria-label="Toggle table of contents">
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/></svg>
+</button>
+<div class="toc-overlay" id="toc-overlay"></div>
+
+<!-- ═══════════════════════════════════════
+     MAIN CONTENT
+     ═══════════════════════════════════════ -->
+<div class="page-content" id="content">
+  <div class="proposal-layout">
+
+    <!-- SIDEBAR TOC -->
+    <nav class="toc-sidebar" id="toc-sidebar">
+      <a class="toc-back" href="index.html">&larr; Back to Overview</a>
+      <div class="toc-label">Table of Contents</div>
+      <ul class="toc-list">
+        <li class="toc-item"><a class="toc-link" href="#s01"><span class="toc-num">01</span> Problem &amp; Opportunity</a></li>
+        <li class="toc-item"><a class="toc-link" href="#s02"><span class="toc-num">02</span> Phased Roadmap</a></li>
+        <li class="toc-item"><a class="toc-link" href="#s03"><span class="toc-num">03</span> MVP Requirements</a></li>
+        <li class="toc-item"><a class="toc-link" href="#s04"><span class="toc-num">04</span> Data Requirements</a></li>
+        <li class="toc-item"><a class="toc-link" href="#s05"><span class="toc-num">05</span> Engineering Resources</a></li>
+        <li class="toc-item"><a class="toc-link" href="#s06"><span class="toc-num">06</span> Open Questions</a></li>
+        <li class="toc-item"><a class="toc-link" href="#s07"><span class="toc-num">07</span> Success Metrics</a></li>
+        <li class="toc-item"><a class="toc-link" href="#s08"><span class="toc-num">08</span> Rollout &amp; Training</a></li>
+        <li class="toc-item"><a class="toc-link" href="#s09"><span class="toc-num">09</span> MVP Rationale</a></li>
+        <li class="toc-item"><a class="toc-link" href="#s10"><span class="toc-num">10</span> Out of Scope</a></li>
+        <li class="toc-item"><a class="toc-link" href="#s11"><span class="toc-num">11</span> Future Features</a></li>
+        <li class="toc-item"><a class="toc-link" href="#artifact-index"><span class="toc-num" style="font-size:0.65rem;">&#x1F4C1;</span> Artifact Index</a></li>
+      </ul>
+    </nav>
+
+    <!-- CONTENT -->
+    <main class="proposal-main">
+      <div class="proposal-inner">
+
+        <!-- HEADER -->
+        <header class="proposal-header">
+          <div class="header-tags">
+            <span class="header-tag">Product Proposal</span>
+            <span class="header-tag purple">Customer Central MVP</span>
+            <span class="header-tag green">Justworks CSO</span>
+          </div>
+          <h1>Customer Central &mdash; <em>A Unified Agent Workspace for Justworks CSO</em></h1>
+          <p class="tagline">The agent knows everything before the customer finishes saying hello.</p>
+          <p class="subtitle">Replace the 5-system scavenger hunt with a single pane of glass that gives CSO agents everything they need to serve customers in under 3 seconds.</p>
+          <p class="header-meta">Darrien Watson &middot; February 2025</p>
+          <div class="stat-pills">
+            <div class="stat-pill"><span class="pill-num">3</span><span class="pill-label">Phases</span></div>
+            <div class="stat-pill"><span class="pill-num">11</span><span class="pill-label">MVP Features</span></div>
+            <div class="stat-pill"><span class="pill-num">7</span><span class="pill-label">Week Timeline</span></div>
+            <div class="stat-pill"><span class="pill-num">5</span><span class="pill-label">Team Members</span></div>
+          </div>
+
+          <!-- FUTURE TEASER -->
+          <div class="teaser-block" style="margin-top:32px;">
+            <div class="teaser-label">&#x2728; Where this is going</div>
+            <div class="teaser-mockup">
+              <div class="teaser-header">
+                <div class="teaser-avatar">SC</div>
+                <div class="teaser-header-info">
+                  <h4>Sarah Chen &middot; Acme Corp</h4>
+                  <p>PEO Plus &middot; 34 employees &middot; 4 contacts in 9 days</p>
+                </div>
+                <div class="teaser-risk"><span class="t-dot"></span> Churn Risk 73%</div>
+              </div>
+              <div class="teaser-rows">
+                <div class="teaser-row">
+                  <span class="teaser-row-icon">&#x2728;</span>
+                  <span class="teaser-row-text"><strong>AI Summary:</strong> NPS dropped 9 &#x2192; 6, pattern matches 23 pre-churn accounts. Payroll migration error is root cause.</span>
+                  <span class="teaser-row-tag t-tag-purple">AI</span>
+                </div>
+                <div class="teaser-row">
+                  <span class="teaser-row-icon">&#x1F4C9;</span>
+                  <span class="teaser-row-text"><strong>Sentiment:</strong> Declining &mdash; tone shift detected in last 2 emails</span>
+                  <span class="teaser-row-tag t-tag-red">Alert</span>
+                </div>
+                <div class="teaser-row">
+                  <span class="teaser-row-icon">&#x1F4E7;</span>
+                  <span class="teaser-row-text">Auto-drafted billing credit + apology for migration error</span>
+                  <span class="teaser-row-tag t-tag-green">Outreach</span>
+                </div>
+                <div class="teaser-row">
+                  <span class="teaser-row-icon">&#x1F4B0;</span>
+                  <span class="teaser-row-text">Expansion signal: hitting plan limits on 3 features &#x2192; Premium upgrade</span>
+                  <span class="teaser-row-tag t-tag-amber">Sales</span>
+                </div>
+                <div class="teaser-row">
+                  <span class="teaser-row-icon">&#x1F527;</span>
+                  <span class="teaser-row-text">Bug pattern: same error in 23 accounts post-migration &#x2192; systemic fix needed</span>
+                  <span class="teaser-row-tag t-tag-blue">Product</span>
+                </div>
+              </div>
+              <div class="teaser-footer">Phase 3 concept &mdash; built on the data foundation the MVP creates</div>
+            </div>
+          </div>
+        </header>
+
+        <!-- ═══════════════════════════════════════
+             SECTION 01: PROBLEM & OPPORTUNITY
+             ═══════════════════════════════════════ -->
+        <section class="proposal-section" id="s01">
+          <div class="section-header">
+            <div class="section-num">Section 01</div>
+            <h2>Problem Overview, Context &amp; Business Opportunity</h2>
+          </div>
+
+          <!-- THE REALITY TODAY -->
+          <div class="reality-block">
+            <div class="reality-card">
+              <div class="reality-label">The Agent&rsquo;s Reality Today</div>
+              <div class="reality-headline">CSO agents spend the first few minutes of every call piecing together customer context across 5&ndash;6 disconnected systems &mdash; instead of actually helping the customer.</div>
+              <p class="reality-body">Justworks has earned <strong style="color:var(--text-primary);">NPS +60</strong> and <strong style="color:var(--text-primary);">9 Stevie Awards</strong> at ~10,000 customers. That quality was built on human heroics &mdash; agents who are exceptional despite the tooling, not because of it. But heroics don&rsquo;t scale. As the customer base grows, either headcount climbs proportionally or quality erodes.</p>
+              <p class="reality-body">The data to serve customers brilliantly already exists &mdash; it&rsquo;s just scattered across systems that were never designed to talk to each other. Nobody knows the overall health of an individual customer. Nobody knows the overall health of the book. The signals are there; the synthesis is not.</p>
+              <div class="reality-signals">
+                <div class="reality-signal"><span class="signal-dot"></span>5&ndash;6 systems per call</div>
+                <div class="reality-signal"><span class="signal-dot"></span>No single source of truth</div>
+                <div class="reality-signal"><span class="signal-dot"></span>Disparate, siloed data</div>
+                <div class="reality-signal"><span class="signal-dot"></span>No customer health visibility</div>
+                <div class="reality-signal"><span class="signal-dot"></span>No smart pattern recognition</div>
+                <div class="reality-signal"><span class="signal-dot"></span>Can&rsquo;t surface product opportunities</div>
+                <div class="reality-signal"><span class="signal-dot"></span>Reactive at best</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6 PROBLEM STATEMENTS -->
+          <div class="prose" style="margin-bottom:18px;">
+            <p>We traced <strong>6 distinct problems</strong> back to the exact language in the case study brief. Problems 1&ndash;4 map directly to the Phase&nbsp;1 MVP; problems 5&ndash;6 require the data foundation that the MVP builds, and are addressed in Phases&nbsp;2&ndash;3.</p>
+          </div>
+
+          <div class="problem-list">
+
+            <div class="problem-card">
+              <div class="problem-id">P1</div>
+              <div class="problem-body">
+                <h4>The Context-Switching Tax</h4>
+                <p>Agents toggle between 5&ndash;6 disconnected systems (Zendesk, Salesforce, admin dashboard, knowledge base, Slack, Tableau) to assemble a complete picture. Every switch costs cognitive bandwidth and clock time.</p>
+                <div class="problem-source">
+                  <span class="source-label">Case Study Brief</span>
+                  <blockquote>&ldquo;Customer Central should allow CSO to carry out routine tasks, understand complete profiles about our customer companies and the employees of those companies, and ultimately give them information necessary to provide a best-in-class customer experience for small businesses.&rdquo;</blockquote>
+                </div>
+              </div>
+            </div>
+
+            <div class="problem-card">
+              <div class="problem-id">P2</div>
+              <div class="problem-body">
+                <h4>The Caller Identity Problem</h4>
+                <p>An agent may only have a phone number. They must determine: admin or employee? Which company? What history? Two caller types require entirely different data. The first 30&ndash;60 seconds are wasted on identification.</p>
+                <div class="problem-source">
+                  <span class="source-label">Case Study Brief</span>
+                  <blockquote>&ldquo;What data and tooling in a Customer Health Dashboard would be relevant for a customer support team member to fully understand the profile of the person, and their company, during an encounter?&rdquo;</blockquote>
+                </div>
+              </div>
+            </div>
+
+            <div class="problem-card">
+              <div class="problem-id">P3</div>
+              <div class="problem-body">
+                <h4>The Repeat-Yourself Problem</h4>
+                <p>Customer contacted Monday by email, Wednesday by chat, calls Friday &mdash; told their story three times. Interaction history is split between Zendesk and Salesforce in formats not consumable during a live call.</p>
+                <div class="problem-source">
+                  <span class="source-label">Case Study Brief</span>
+                  <blockquote>&ldquo;Customer Central should allow CSO to carry out routine tasks, understand complete profiles about our customer companies and the employees of those companies, and ultimately give them information necessary to provide a best-in-class customer experience for small businesses.&rdquo;</blockquote>
+                </div>
+              </div>
+            </div>
+
+            <div class="problem-card">
+              <div class="problem-id">P4</div>
+              <div class="problem-body">
+                <h4>The Account Status Blindspot</h4>
+                <p>Agents need billing status, next payroll date, recent account changes &mdash; but this data lives in production DB and billing systems, not in Salesforce or Zendesk. Requires a separate system login.</p>
+                <div class="problem-source">
+                  <span class="source-label">Case Study Brief</span>
+                  <blockquote>&ldquo;We aim to ensure our CSO is informed enough to handle the direct problems they will encounter on a call.&rdquo;</blockquote>
+                </div>
+              </div>
+            </div>
+
+            <div class="problem-card">
+              <div class="problem-id">P5</div>
+              <div class="problem-body">
+                <h4>The Proactive Blindspot</h4>
+                <p>Justworks wants CSO to pre-empt problems and surface product opportunities. Usage patterns, lifecycle events, and adoption gaps exist across systems but are never synthesized into agent-facing signals.</p>
+                <div class="problem-source">
+                  <span class="source-label">Case Study Brief</span>
+                  <blockquote>&ldquo;Our customer interactions &mdash; calls, emails, chat &mdash; serve as an informative proprietary data set for us to learn from and action off of within our tooling.&rdquo;</blockquote>
+                </div>
+                <div class="problem-source">
+                  <span class="source-label">Case Study Brief</span>
+                  <blockquote>&ldquo;We aim to ensure our CSO is informed enough to handle the direct problems they will encounter on a call, but also pre-empt problems before they arise and proactively provide support and services that the customer may not know they need yet, including opportunities to utilize additional areas of our product offerings.&rdquo;</blockquote>
+                </div>
+              </div>
+            </div>
+
+            <div class="problem-card">
+              <div class="problem-id">P6</div>
+              <div class="problem-body">
+                <h4>The Open Issues Visibility Gap</h4>
+                <p>No way to see active open tickets, pending tasks, or unresolved items for an account. An agent may spend 5 minutes diagnosing an issue another team is already working on, or make conflicting commitments.</p>
+                <div class="problem-source">
+                  <span class="source-label">Derived from Brief</span>
+                  <blockquote>Derived from the brief&rsquo;s requirement that CSO &ldquo;carry out routine tasks&rdquo; and &ldquo;understand complete profiles.&rdquo; An agent cannot manage open work if they cannot see it. Also informed by the JTBD analysis: &ldquo;Hand Off Cleanly &mdash; when I can&rsquo;t fully resolve an issue, I want to capture enough context that the next person can pick up seamlessly.&rdquo;</blockquote>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- THE SOLUTION -->
+          <div class="solution-block">
+            <div class="solution-card">
+              <div class="solution-label">The Solution</div>
+              <div class="solution-headline">Customer Central puts the complete customer picture &mdash; identity, history, account status, and a health score that instantly signals what&rsquo;s working and what&rsquo;s not &mdash; on one screen in under 3 seconds, so the agent walks into every conversation already knowing where to focus.</div>
+              <p class="solution-body">This wasn&rsquo;t designed by starting with features. I decomposed the case study brief into <strong>6 jobs CSO agents need to perform</strong>, inventoried the top problems across Justworks&rsquo; product surface, and discovered that the highest-impact problems and health-status questions independently converged on the same six data categories &mdash; that convergence defined the MVP scope. Every design decision is framed as a hypothesis waiting to be validated; the full <a href="assumptions-chain.html" target="_blank" style="color:var(--accent-green);text-decoration:underline;text-underline-offset:3px;">14-step decision chain</a> traces each choice back to the brief.</p>
+              <p class="solution-body">From disparate systems and reactive firefighting to a <strong>single, unified workspace</strong> that assembles context before the customer finishes saying hello. No more toggling. No more asking &ldquo;can you give me your company name?&rdquo; No more flying blind on account health.</p>
+              <p class="solution-body">And that&rsquo;s just the immediate win. The real unlock is what comes next: the same data foundation that powers instant context <strong>becomes the platform for preemptive support, predictive intelligence, and cross-functional insight</strong> &mdash; connecting the dots across customer interactions to inform sales, product, and the broader business.</p>
+            </div>
+
+            <div class="solution-layers">
+              <div class="solution-layer">
+                <div class="solution-layer-label sl-now">Immediate &mdash; The MVP</div>
+                <h4>One Screen, Under 3 Seconds</h4>
+                <p>Unified customer identity, interaction history across all channels, real-time account status, and a transparent health score &mdash; everything an agent needs before they even pick up the phone.</p>
+                <div class="solution-items">
+                  <span class="solution-item si-green">Identity</span>
+                  <span class="solution-item si-green">History</span>
+                  <span class="solution-item si-green">Account Status</span>
+                  <span class="solution-item si-green">Health Score</span>
+                  <span class="solution-item si-green">Open Issues</span>
+                </div>
+              </div>
+              <div class="solution-layer">
+                <div class="solution-layer-label sl-next">Foundation For &mdash; What Comes Next</div>
+                <h4>Preemptive, Predictive, Connected</h4>
+                <p>Structured data and transparent scoring unlock pattern recognition, churn prediction, proactive outreach, and insights that flow back to product, sales, and leadership &mdash; not just support.</p>
+                <div class="solution-items">
+                  <span class="solution-item si-blue">Churn Prediction</span>
+                  <span class="solution-item si-blue">Proactive Outreach</span>
+                  <span class="solution-item si-blue">AI Summaries</span>
+                  <span class="solution-item si-blue">Product Insights</span>
+                  <span class="solution-item si-blue">Sales Signals</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BUSINESS OPPORTUNITY -->
+          <div class="opportunity-block">
+            <p class="opp-intro">Those are the problems &mdash; and that&rsquo;s the solution. Here is why solving them represents a <strong>compounding strategic advantage</strong>, not just an operational fix.</p>
+
+            <div class="north-star-card">
+              <div class="north-star-label">The North Star</div>
+              <div class="north-star-quote">The customer never needed to call in the first place.</div>
+              <p class="north-star-body">Not because Justworks eliminated human support &mdash; but because the system was so intelligent, so anticipatory, that the problem was resolved before the customer recognized it was a problem.</p>
+              <p class="north-star-body">And when they do reach out, the interaction is so fast, so precise, so contextually aware that it feels like talking to someone who&rsquo;s been managing their account personally for years &mdash; whether that&rsquo;s a human, an AI, or a seamless blend of both.</p>
+            </div>
+
+            <div class="opp-pillars">
+              <div class="opp-pillar">
+                <div class="opp-pillar-label lbl-scale">The Scaling Equation</div>
+                <h4>Logarithmic Support, Linear Customers</h4>
+                <p>10,000 to 50,000 customers does not mean 5&times; the agents. It means the same team &mdash; or marginally larger &mdash; operating with exponentially better leverage because the tooling handles pattern recognition, context assembly, proactive outreach, and routine resolution.</p>
+                <span class="opp-highlight hl-blue">Support grows log, customers grow linear</span>
+              </div>
+              <div class="opp-pillar">
+                <div class="opp-pillar-label lbl-metric">The Metric</div>
+                <h4>NPS per CSO Headcount Dollar</h4>
+                <p>The ratio of customer interactions to customer count declines quarter over quarter &mdash; not because service gets worse, but because the system gets smarter. Fewer reactive contacts. Faster resolution. A growing percentage of routine interactions handled by AI at a quality bar indistinguishable from the best human agents.</p>
+                <span class="opp-highlight hl-green">Interactions &div; customers &darr; QoQ</span>
+              </div>
+              <div class="opp-pillar">
+                <div class="opp-pillar-label lbl-vision">The Long-Term Vision</div>
+                <h4>Customer Central Becomes the Second Product</h4>
+                <p>The first product is payroll, benefits, and HR for small businesses. The second &mdash; born from solving their own problem better than anyone else &mdash; is the intelligence layer that makes customer operations scale without linear headcount growth. Build it for Justworks, prove it at scale, and it becomes either an unassailable moat or a standalone revenue line. Or both.</p>
+                <span class="opp-highlight hl-purple">Moat &rarr; Revenue line &rarr; Both</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- DEPENDENCY STACK -->
+          <div class="visual-card">
+            <div class="visual-card-title">Dependency Stack &mdash; Problems Map to Phases</div>
+            <div class="dep-stack">
+              <div class="dep-layer layer-proactive">
+                <div class="layer-label">Phase 3 &mdash; Proactive</div>
+                <h4>Pre-empt &amp; Expand</h4>
+                <p>P5 &amp; P6 (full): Churn prediction, AI summaries, upsell intelligence. Requires validated data + trusted health model.</p>
+              </div>
+              <div class="dep-arrow">&darr; requires</div>
+              <div class="dep-layer layer-intelligence">
+                <div class="layer-label">Phase 2 &mdash; Intelligence</div>
+                <h4>Health &amp; Action</h4>
+                <p>P4&ndash;P6 (partial): ML-weighted scoring, in-place ticket actions, benefits life events. Requires proven data accuracy.</p>
+              </div>
+              <div class="dep-arrow">&darr; requires</div>
+              <div class="dep-layer layer-foundation">
+                <div class="layer-label">Phase 1 &mdash; Foundation (MVP)</div>
+                <h4>Unified Context</h4>
+                <p>P1&ndash;P4: Consolidated profile, interaction history, account status, lightweight health score. Replaces multi-system workflow.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="deep-dives">
+            <a class="deep-dive-link" href="customer_central_user_stories.pdf" target="_blank">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+              Problem Statements &amp; User Stories
+            </a>
+            <a class="deep-dive-link" href="assumptions-chain.html" target="_blank">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+              The Decision Chain
+            </a>
+            <a class="deep-dive-link" href="justworks-prioritization.html" target="_blank">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+              Prioritization Logic
+            </a>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════
+             SECTION 02: PHASED ROADMAP
+             ═══════════════════════════════════════ -->
+        <section class="proposal-section" id="s02">
+          <div class="section-header">
+            <div class="section-num">Section 02</div>
+            <h2>Phased Roadmap</h2>
+          </div>
+
+          <div class="prose">
+            <p>Customer Central is delivered in <strong>3 phases</strong>, where each phase earns the right to the next. Phase 1 proves the data is accurate and agents trust it. Phase 2 upgrades trust into action. Phase 3 turns action into prediction. Skipping a phase isn't just risky &mdash; it's architecturally impossible because each layer depends on outputs from the one below.</p>
+            <p>Phase 1 spans <strong>7 calendar weeks</strong>: 2 weeks of foundation-building (data spikes + core features), 2 weeks of validation (alpha with 5 agents, beta with a full pod), and a final week of full rollout with training. Every week ends with a decision gate. If the data isn't accurate enough or agents don't trust it, we extend rather than push forward.</p>
+          </div>
+
+          <div class="visual-card">
+            <div class="visual-card-title">Three Phases</div>
+            <div class="phase-cards">
+              <div class="phase-card green">
+                <div class="phase-num">Phase 1</div>
+                <h4>Unified Context</h4>
+                <div class="phase-duration">7 weeks</div>
+                <p>Consolidated profile, interaction history, status strip, lightweight health score, leadership view</p>
+              </div>
+              <div class="phase-card blue">
+                <div class="phase-num">Phase 2</div>
+                <h4>Health &amp; Action</h4>
+                <div class="phase-duration">8&ndash;12 weeks</div>
+                <p>ML scoring, in-place ticket actions, benefits life events, proactive alerts, CTI screen-pop</p>
+              </div>
+              <div class="phase-card purple">
+                <div class="phase-num">Phase 3</div>
+                <h4>Prediction</h4>
+                <div class="phase-duration">Following quarter</div>
+                <p>Churn prediction, AI summaries, feature gap detection, upsell intelligence, agent copilot</p>
+              </div>
+            </div>
+
+            <div class="visual-card-title" style="margin-top:24px;">Phase 1 &mdash; Weekly Milestones</div>
+            <div class="milestone-strip">
+              <div class="milestone-item green">
+                <div class="milestone-dot"></div>
+                <div class="milestone-week">Wk 0</div>
+                <div class="milestone-name">Discovery &amp; Validation</div>
+              </div>
+              <div class="milestone-item green">
+                <div class="milestone-dot"></div>
+                <div class="milestone-week">Wk 1</div>
+                <div class="milestone-name">Data Spikes &amp; Foundation</div>
+              </div>
+              <div class="milestone-item green">
+                <div class="milestone-dot"></div>
+                <div class="milestone-week">Wk 2</div>
+                <div class="milestone-name">API Core &amp; Search</div>
+              </div>
+              <div class="milestone-item blue">
+                <div class="milestone-dot"></div>
+                <div class="milestone-week">Wk 3&ndash;4</div>
+                <div class="milestone-name">Feature Build Sprint</div>
+              </div>
+              <div class="milestone-item blue">
+                <div class="milestone-dot"></div>
+                <div class="milestone-week">Wk 5</div>
+                <div class="milestone-name">Alpha (5 Agents)</div>
+              </div>
+              <div class="milestone-item purple">
+                <div class="milestone-dot"></div>
+                <div class="milestone-week">Wk 6</div>
+                <div class="milestone-name">Beta (Full Pod)</div>
+              </div>
+              <div class="milestone-item purple">
+                <div class="milestone-dot"></div>
+                <div class="milestone-week">Wk 7</div>
+                <div class="milestone-name">Full Rollout</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="deep-dives">
+            <a class="deep-dive-link" href="phased-roadmap.html" target="_blank">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+              Full Phased Roadmap
+            </a>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════
+             SECTION 03: MVP REQUIREMENTS
+             ═══════════════════════════════════════ -->
+        <section class="proposal-section" id="s03">
+          <div class="section-header">
+            <div class="section-num">Section 03</div>
+            <h2>Phase 1 MVP Requirements &amp; Acceptance Criteria</h2>
+          </div>
+
+          <div class="prose">
+            <p>The MVP delivers <strong>11 features</strong> across 3 categories: Foundation (the base layer every interaction needs), Problem (targeted at high-volume call types), and Health (composite scoring and leadership visibility). Every feature has documented acceptance criteria that are testable in the interactive prototype.</p>
+            <p>Of the 11 features, <strong>8 are full builds</strong> and 3 are deep-link integrations that surface existing system data with contextual annotations. The deep-link approach covers ~80% of each use case at ~20% of the build cost &mdash; and the full build ships in Phase 2 once the data patterns are validated.</p>
+          </div>
+
+          <div class="visual-card">
+            <div class="visual-card-title">11 MVP Features</div>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Feature</th>
+                    <th>Category</th>
+                    <th>Build Type</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>FS-1</td><td>Instant Caller Recognition</td><td><span class="badge badge-green">Foundation</span></td><td>Full Build</td></tr>
+                  <tr><td>FS-2</td><td>Complete Interaction History</td><td><span class="badge badge-green">Foundation</span></td><td>Full Build</td></tr>
+                  <tr><td>FS-3</td><td>Account Status at a Glance</td><td><span class="badge badge-green">Foundation</span></td><td>Full Build</td></tr>
+                  <tr><td>PS-1</td><td>Paycheck Discrepancy Resolution</td><td><span class="badge badge-blue">Problem</span></td><td>Full Build</td></tr>
+                  <tr><td>PS-2</td><td>Payroll Failure Triage</td><td><span class="badge badge-blue">Problem</span></td><td>Alert + Deep Link</td></tr>
+                  <tr><td>PS-3</td><td>Tax Document Lookup</td><td><span class="badge badge-blue">Problem</span></td><td>Full Build</td></tr>
+                  <tr><td>PS-4</td><td>Benefits Enrollment Guidance</td><td><span class="badge badge-blue">Problem</span></td><td>Quick-View + Deep Link</td></tr>
+                  <tr><td>PS-5</td><td>Invoice Explanation</td><td><span class="badge badge-blue">Problem</span></td><td>Deep Link + Annotation</td></tr>
+                  <tr><td>PS-6</td><td>Payment Failure Cascade</td><td><span class="badge badge-blue">Problem</span></td><td>Full Build</td></tr>
+                  <tr><td>HS-1</td><td>Lightweight Health Score</td><td><span class="badge badge-purple">Health</span></td><td>Full Build</td></tr>
+                  <tr><td>HS-2</td><td>Leadership Health Overview</td><td><span class="badge badge-purple">Health</span></td><td>Full Build</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- EMBEDDED PROTOTYPE — PORTFOLIO HEALTH VIEW -->
+          <div class="visual-card proto-breakout" style="padding:0;overflow:hidden;">
+            <div class="proto-embed-header">
+              <div class="proto-embed-bar">
+                <div class="wf-dots"><div class="wf-dot r"></div><div class="wf-dot y"></div><div class="wf-dot g"></div></div>
+                <span class="proto-embed-title">Customer Central &mdash; Portfolio Health View (HS-2)</span>
+                <a class="proto-expand-btn" href="customer-central.html#portfolio" target="_blank">
+                  Open Full Screen
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+                </a>
+              </div>
+              <div class="proto-embed-hint">Leadership view &mdash; 912 accounts scored and sortable by health, tier, and risk across the entire book of business</div>
+            </div>
+            <iframe class="proto-iframe" src="customer-central.html#portfolio" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
+          </div>
+
+          <!-- EMBEDDED PROTOTYPE — AGENT DASHBOARD -->
+          <div class="visual-card proto-breakout" style="padding:0;overflow:hidden;">
+            <div class="proto-embed-header">
+              <div class="proto-embed-bar">
+                <div class="wf-dots"><div class="wf-dot r"></div><div class="wf-dot y"></div><div class="wf-dot g"></div></div>
+                <span class="proto-embed-title">Customer Central &mdash; Agent Dashboard</span>
+                <a class="proto-expand-btn" href="customer-central.html" target="_blank">
+                  Open Full Screen
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+                </a>
+              </div>
+              <div class="proto-embed-hint">Fully interactive &mdash; use Cmd+K to search, click tabs, expand health scores, toggle billing scenarios</div>
+            </div>
+            <iframe class="proto-iframe" src="customer-central.html" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
+          </div>
+
+          <!-- CONCEPT MOCKUP — PHASE 3 INTELLIGENCE LAYER -->
+          <div class="visual-card concept-mockup proto-breakout" style="padding:0;overflow:hidden;">
+            <div class="proto-embed-header">
+              <div class="proto-embed-bar">
+                <div class="wf-dots"><div class="wf-dot r"></div><div class="wf-dot y"></div><div class="wf-dot g"></div></div>
+                <span class="proto-embed-title">Customer Central &mdash; Phase 3 Intelligence Layer</span>
+                <span class="concept-titlebar-badge">Concept Only</span>
+              </div>
+              <div class="proto-embed-hint" style="background:rgba(124,58,237,0.04);border-top-color:rgba(124,58,237,0.1);">Where the Phase 1 data foundation leads &mdash; AI summaries, churn prediction, proactive outreach, and cross-functional insights</div>
+            </div>
+            <div class="concept-body">
+
+              <!-- Left sidebar -->
+              <div class="concept-sidebar">
+                <div class="concept-sidebar-label">Navigation</div>
+                <div class="concept-nav-item"><span class="nav-icon">&#x25C9;</span> Dashboard</div>
+                <div class="concept-nav-item active"><span class="nav-icon">&#x2728;</span> Intelligence</div>
+                <div class="concept-nav-item"><span class="nav-icon">&#x1F4CB;</span> My Queue <span style="margin-left:auto;font-size:0.72rem;color:var(--accent-amber);">7</span></div>
+                <div class="concept-nav-item"><span class="nav-icon">&#x23F0;</span> Recent</div>
+                <div class="concept-sidebar-label">Actions</div>
+                <div class="concept-nav-item"><span class="nav-icon">+</span> New Ticket</div>
+                <div class="concept-nav-item"><span class="nav-icon">&#x270D;&#xFE0F;</span> Log Interaction</div>
+                <div class="concept-nav-item"><span class="nav-icon">&#x2197;&#xFE0F;</span> Escalate</div>
+                <div class="concept-sidebar-label">Leadership</div>
+                <div class="concept-nav-item"><span class="nav-icon">&#x25C9;</span> Portfolio Health</div>
+                <div class="concept-nav-item"><span class="nav-icon">&#x1F4CA;</span> Trend Analytics</div>
+              </div>
+
+              <!-- Main content -->
+              <div class="concept-main">
+                <div class="concept-main-header">
+                  <div class="concept-avatar">SC</div>
+                  <div class="concept-main-title">
+                    <h3>Sarah Chen &middot; Acme Corp</h3>
+                    <p>Account Admin &middot; PEO Plus &middot; 34 employees &middot; 3 yr tenure</p>
+                  </div>
+                  <div class="concept-health-badge churn-risk">
+                    <span class="churn-dot"></span>
+                    Churn Risk: 73%
+                  </div>
+                </div>
+
+                <!-- AI Summary -->
+                <div class="concept-ai-card">
+                  <div class="concept-ai-label"><span class="sparkle">&#x2728;</span> AI Summary</div>
+                  <p>Acme Corp has contacted support <strong>4 times in 9 days</strong> &mdash; 3x their rolling average. Two interactions involved billing discrepancies tied to the same payroll migration error. <strong>NPS dropped from 9 to 6</strong> in the last survey. The pattern matches pre-churn behavior seen in 23 similar accounts. Sarah&rsquo;s last email tone was escalatory.</p>
+                </div>
+
+                <!-- Signal cards -->
+                <div class="concept-signals-grid">
+                  <div class="concept-signal sig-red">
+                    <div class="concept-signal-label">Churn Prediction</div>
+                    <div class="concept-signal-value">73% risk</div>
+                    <div class="concept-signal-sub">&#x2191; from 31% last month &middot; 3 triggers active</div>
+                  </div>
+                  <div class="concept-signal sig-amber">
+                    <div class="concept-signal-label">Sentiment Trajectory</div>
+                    <div class="concept-signal-value">Declining</div>
+                    <div class="concept-signal-sub">NPS 9 &#x2192; 6 &middot; Tone shift in last 2 emails</div>
+                  </div>
+                  <div class="concept-signal sig-green">
+                    <div class="concept-signal-label">Expansion Signal</div>
+                    <div class="concept-signal-value">PEO Plus &#x2192; Premium</div>
+                    <div class="concept-signal-sub">34 employees &middot; Hitting plan limits on 3 features</div>
+                  </div>
+                  <div class="concept-signal sig-blue">
+                    <div class="concept-signal-label">Resolution Confidence</div>
+                    <div class="concept-signal-value">High</div>
+                    <div class="concept-signal-sub">Root cause identified &middot; Similar fix resolved 19/23 cases</div>
+                  </div>
+                </div>
+
+                <!-- Proactive outreach -->
+                <div class="concept-outreach-card">
+                  <div class="concept-outreach-label">&#x1F3AF; Recommended Actions</div>
+                  <div class="concept-outreach-actions">
+                    <div class="concept-action"><span class="action-icon">&#x1F4E7;</span> Send billing credit + apology for payroll migration error <span class="action-tag at-auto">Auto-Draft</span></div>
+                    <div class="concept-action"><span class="action-icon">&#x1F4DE;</span> Schedule proactive check-in call within 48 hours <span class="action-tag at-suggest">Suggested</span></div>
+                    <div class="concept-action"><span class="action-icon">&#x1F4B0;</span> Flag to Sales: Premium upgrade conversation when stable <span class="action-tag at-sales">Sales Signal</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right panel — cross-functional insights -->
+              <div class="concept-insights">
+                <div class="concept-insight-section">
+                  <div class="concept-insight-label">Cross-Functional Insights</div>
+                  <div class="concept-insight-card">
+                    <h5>Payroll Migration Bug Pattern</h5>
+                    <p>Same billing error seen in 23 accounts post-migration. Systemic root cause, not one-off.</p>
+                    <span class="insight-dest dest-product">&#x2192; Product</span>
+                  </div>
+                  <div class="concept-insight-card">
+                    <h5>PEO Plus Plan Ceiling</h5>
+                    <p>12 accounts hitting feature limits this quarter. Expansion pipeline: ~$84K ARR.</p>
+                    <span class="insight-dest dest-sales">&#x2192; Sales</span>
+                  </div>
+                  <div class="concept-insight-card">
+                    <h5>NY/CA Tax Confusion Spike</h5>
+                    <p>Multi-state employers calling 2.3x more about withholding. Help article gap identified.</p>
+                    <span class="insight-dest dest-support">&#x2192; Help Center</span>
+                  </div>
+                  <div class="concept-insight-card">
+                    <h5>Churn Cohort Alert</h5>
+                    <p>7 accounts in &ldquo;At Risk&rdquo; share the same trigger: 3+ contacts in 10 days with declining sentiment.</p>
+                    <span class="insight-dest dest-leadership">&#x2192; Leadership</span>
+                  </div>
+                  <div class="concept-insight-card">
+                    <h5>Q1 Benefits Enrollment Gap</h5>
+                    <p>18% of new hires not completing dental enrollment. Guided flow could cut tickets by ~40/week.</p>
+                    <span class="insight-dest dest-product">&#x2192; Product</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Interaction Details -->
+          <div class="visual-card">
+            <div class="visual-card-title">Key Interaction Details</div>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Interaction</th>
+                    <th>Trigger</th>
+                    <th>What the Agent Sees</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Search</strong></td>
+                    <td>Cmd+K or click search bar</td>
+                    <td>Fuzzy search across 500K contacts by name, email, phone, or company. Results in &lt;2s with role badges (Admin / Employee).</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Caller card loads</strong></td>
+                    <td>Click search result</td>
+                    <td>Full profile in &lt;500ms: name, role, company, plan type, employee count, tenure, states of operation. Status strip shows billing RAG, next payroll countdown, open ticket count, recent changes.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Health score expand</strong></td>
+                    <td>Click score badge</td>
+                    <td>Breakdown card: Billing (30%), Payroll (25%), Support (20%), Satisfaction (15%), Activity (10%) &times; tenure factor. Score 82 = (100&times;0.30)+(100&times;0.25)+(72&times;0.20)+(85&times;0.15)+(80&times;0.10) &times; 1.00.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>History tab</strong></td>
+                    <td>Default view</td>
+                    <td>Unified timeline of last 10 interactions across phone, email, chat. Channel-coded badges. Open tickets pinned at top. Click any row for full detail modal.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Pay Stubs tab</strong></td>
+                    <td>Click tab</td>
+                    <td>Period-over-period comparison. Delta highlighting shows what changed and why (e.g., net pay &minus;$142.50 due to CA state tax +$59.77, dental enrollment +$27.73). Auto-annotations with WHY/NEW badges.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Billing tab &mdash; risk cascade</strong></td>
+                    <td>Click tab (when billing = red)</td>
+                    <td>3-step cascade: Failed payment &rarr; Payroll blocked &rarr; 34 employees affected. Resolution deadline and action buttons. No existing tool connects these three systems.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- How I Got to the MVP -->
+          <div class="derivation-block">
+            <div class="derivation-title">How I Got to the MVP</div>
+            <div class="derivation-subtitle">Problems first, features never</div>
+            <div class="derivation-steps">
+              <div class="derivation-step">
+                <div class="deriv-num-bar">01</div>
+                <div class="deriv-content">
+                  <h4>Extract Jobs from Prompt</h4>
+                  <p>6 distinct jobs traced to prompt language</p>
+                </div>
+                <div class="deriv-arrow">&#x27A1;</div>
+              </div>
+              <div class="derivation-step">
+                <div class="deriv-num-bar">02</div>
+                <div class="deriv-content">
+                  <h4>Build Problem Inventory</h4>
+                  <p>20 CSO problems<br>12 health questions<br>ICE scored</p>
+                </div>
+                <div class="deriv-arrow">&#x27A1;</div>
+              </div>
+              <div class="derivation-step">
+                <div class="deriv-num-bar">03</div>
+                <div class="deriv-content">
+                  <h4>Discover Convergence</h4>
+                  <p>Both lists need same 6 data foundations</p>
+                </div>
+                <div class="deriv-arrow">&#x27A1;</div>
+              </div>
+              <div class="derivation-step">
+                <div class="deriv-num-bar">04</div>
+                <div class="deriv-content">
+                  <h4>Apply Trust Progression</h4>
+                  <p>Phase 1: accuracy + transparent health score<br>Phase 2: ML-adaptive scoring + alerts<br>Phase 3: predictive intelligence</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sample data measures -->
+          <div class="callout blue">
+            <div class="callout-title">Sample Data &amp; Measures</div>
+            <p><strong>Test scenario:</strong> Sarah Chen (Admin) at Acme Corp &mdash; PEO Plus, 34 employees, NY/CA/TX. Health Score: 82 (Good). Billing: Current. Next Payroll: Feb 14. Open Tickets: 2. Recent Changes: 4 events in last 14 days. Interaction History: 10 interactions spanning 6 months across phone/email/chat. Pay Stub Delta: net pay decreased $142.50 due to CA state tax increase (+$59.77), CA SDI (+$55.00), dental enrollment (+$27.73). Portfolio View: 912 accounts &mdash; 487 Healthy, 312 Good, 89 Attention, 21 At Risk, 3 Critical.</p>
+          </div>
+
+          <div class="callout green">
+            <div class="callout-title">Interactive Prototype Available</div>
+            <p>All 11 features are testable in the live prototype with the sample data above. The test guide walks through each feature with step-by-step instructions and maps every acceptance criterion to its implementation.</p>
+          </div>
+
+          <div class="deep-dives">
+            <a class="deep-dive-link" href="feature-showcase.html" target="_blank">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+              Feature Showcase
+            </a>
+            <a class="deep-dive-link" href="customer-central.html" target="_blank">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+              Interactive Prototype
+            </a>
+            <a class="deep-dive-link" href="customer-central-test-guide.html" target="_blank">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+              Test Guide
+            </a>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════
+             SECTION 04: DATA REQUIREMENTS
+             ═══════════════════════════════════════ -->
+        <section class="proposal-section" id="s04">
+          <div class="section-header">
+            <div class="section-num">Section 04</div>
+            <h2>Data Requirements</h2>
+          </div>
+
+          <div class="prose">
+            <p>Customer Central aggregates <strong>55 data fields</strong> from <strong>5 source systems</strong> into a unified Customer Context API. Rather than querying sources in real-time for every interaction, we use a <strong>4-tier loading strategy</strong>: instant (pre-cached identity + status in &lt;500ms), fast (interaction timeline in &lt;2s), background (tax/benefits badges loaded silently), and on-click (pay stubs and invoices fetched live on demand).</p>
+            <p>The top integration risks center on cross-system joins. The #1 question &mdash; whether a shared key exists between Zendesk Organization IDs and Salesforce Account IDs &mdash; determines whether interaction history merging is a 2-day or 2-week task. A Week 1 spike with Caroline Crossland's Salesforce team resolves this before it can block the timeline.</p>
+          </div>
+
+          <div class="visual-card">
+            <div class="visual-card-title">Source Systems</div>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Source System</th>
+                    <th>Fields</th>
+                    <th>Integration</th>
+                    <th>Risk</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Salesforce</td><td>12</td><td>REST API / SOQL + Bulk sync</td><td><span class="badge badge-amber">Medium</span></td></tr>
+                  <tr><td>Zendesk</td><td>10</td><td>REST API v2 + Incremental Export</td><td><span class="badge badge-red">High</span></td></tr>
+                  <tr><td>Production DB</td><td>20</td><td>Read replica / Internal API</td><td><span class="badge badge-amber">Medium</span></td></tr>
+                  <tr><td>Billing / Payments</td><td>8</td><td>Internal API / Payment gateway</td><td><span class="badge badge-red">High</span></td></tr>
+                  <tr><td>Event Stream</td><td>5</td><td>Data warehouse / Event bus</td><td><span class="badge badge-amber">Medium</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="callout amber">
+            <div class="callout-title">Top 3 Integration Risks</div>
+            <p><strong>1. Zendesk &harr; Salesforce Join Key</strong> &mdash; shared identifier between systems may not exist; gates interaction history merge.<br>
+            <strong>2. Payroll Engine Access</strong> &mdash; real-time payroll status may not be queryable via API; affects PS-1 and PS-2.<br>
+            <strong>3. Payment-to-Payroll Business Logic</strong> &mdash; rules for how payment failure impacts payroll are undocumented; affects PS-6 cascade.</p>
+          </div>
+
+          <div class="deep-dives">
+            <a class="deep-dive-link" href="data-requirements.html" target="_blank">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+              Data Requirements Matrix
+            </a>
+            <a class="deep-dive-link" href="data-model.html" target="_blank">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+              Data Model (ER Diagram)
+            </a>
+            <a class="deep-dive-link" href="data-performance.html" target="_blank">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+              Data Performance Strategy
+            </a>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════
+             SECTION 05: ENGINEERING RESOURCES
+             ═══════════════════════════════════════ -->
+        <section class="proposal-section" id="s05">
+          <div class="section-header">
+            <div class="section-num">Section 05</div>
+            <h2>Engineering Resources</h2>
+          </div>
+
+          <div class="prose">
+            <p>The team is a <strong>5+1 structure</strong>: 2 full-stack engineers split by component vertical (not layer), 1 Data Services data engineer for the highest-risk Salesforce pipeline, 1 product designer, 1 PM, and 1 shared QA engineer. Total investment is <strong>~23 engineer-weeks</strong> over 5 build weeks.</p>
+            <p>Work is split by <strong>vertical, not layer</strong>. Engineer 1 owns search, identity, and the status strip &mdash; from database queries through API to React UI. Engineer 2 owns interaction timeline, all problem panels, and health scoring. Zero handoffs between "backend" and "frontend" engineers. The Data Services team handles the highest-risk dependency: getting Salesforce data flowing reliably into the Customer Context API.</p>
+          </div>
+
+          <div class="visual-card">
+            <div class="visual-card-title">Team Composition</div>
+            <div class="team-grid">
+              <div class="team-card">
+                <div class="team-emoji">&#x1F4BB;</div>
+                <h4>SWE &mdash; Search &amp; Identity</h4>
+                <div class="team-vertical">Cmd+K search, profile, status strip</div>
+                <div class="team-alloc">100% &middot; 5 weeks</div>
+              </div>
+              <div class="team-card">
+                <div class="team-emoji">&#x1F4BB;</div>
+                <h4>SWE &mdash; Panels &amp; History</h4>
+                <div class="team-vertical">Timeline, problem panels, health score</div>
+                <div class="team-alloc">100% &middot; 5 weeks</div>
+              </div>
+              <div class="team-card">
+                <div class="team-emoji">&#x1F5C4;&#xFE0F;</div>
+                <h4>Data Engineer</h4>
+                <div class="team-vertical">Salesforce sync, data pipelines</div>
+                <div class="team-alloc">75% Wk 1&ndash;4, 25% Wk 5</div>
+              </div>
+              <div class="team-card">
+                <div class="team-emoji">&#x1F3A8;</div>
+                <h4>Product Designer</h4>
+                <div class="team-vertical">Info hierarchy, components, usability</div>
+                <div class="team-alloc">100% Wk 1&ndash;2, 50% Wk 3&ndash;5</div>
+              </div>
+              <div class="team-card">
+                <div class="team-emoji">&#x1F4CB;</div>
+                <h4>Product Manager</h4>
+                <div class="team-vertical">Scope control, stakeholder alignment</div>
+                <div class="team-alloc">100% &middot; 5 weeks</div>
+              </div>
+              <div class="team-card">
+                <div class="team-emoji">&#x1F9EA;</div>
+                <h4>QA Engineer</h4>
+                <div class="team-vertical">Data accuracy, regression testing</div>
+                <div class="team-alloc">50% &middot; Wk 2&ndash;5 (shared)</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="visual-card">
+            <div class="visual-card-title">Sprint Summary</div>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Week</th>
+                    <th>Phase</th>
+                    <th>Primary Activity</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td style="white-space:nowrap;">Week 0</td><td><span class="badge badge-green">Pre-Work</span></td><td>Shadow CSO agents, pull Zendesk ticket data, validate problem framing</td></tr>
+                  <tr><td style="white-space:nowrap;">Week 1</td><td><span class="badge badge-green">Build</span></td><td>Data access spikes, search API, timeline API, Salesforce pipeline start</td></tr>
+                  <tr><td style="white-space:nowrap;">Week 2</td><td><span class="badge badge-green">Build</span></td><td>Full search UI, profile card, interaction timeline, health score logic</td></tr>
+                  <tr><td style="white-space:nowrap;">Weeks 3&ndash;4</td><td><span class="badge badge-blue">Validate</span></td><td>All 11 features online, alpha with 5 agents, daily feedback sessions</td></tr>
+                  <tr><td style="white-space:nowrap;">Week 5</td><td><span class="badge badge-purple">Ship</span></td><td>Beta with full pod (20&ndash;30 agents), performance at scale</td></tr>
+                  <tr><td style="white-space:nowrap;">Weeks 6&ndash;7</td><td><span class="badge badge-purple">Ship</span></td><td>Full rollout, 3-layer training, champions program, office hours</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="deep-dives">
+            <a class="deep-dive-link" href="engineering-resources.html" target="_blank">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+              Full Engineering Resources
+            </a>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════
+             SECTION 06: OPEN QUESTIONS
+             ═══════════════════════════════════════ -->
+        <section class="proposal-section" id="s06">
+          <div class="section-header">
+            <div class="section-num">Section 06</div>
+            <h2>Open Questions &amp; Dependencies</h2>
+          </div>
+
+          <div class="prose">
+            <p>This proposal is built on <strong>45 documented assumptions</strong>. Of those, 17 have been converted into explicit questions directed at 5 stakeholders &mdash; each chosen because they own the system or domain where the assumption lives. Seven of these 17 questions are scope-changing: if the answer differs from our assumption, it alters what we build in Phase 1.</p>
+            <p>Five external dependencies could block the project if not resolved in Week 1. The most critical is the Salesforce team's availability for a paired spike in Days 1&ndash;2 &mdash; 2 hours of Caroline Crossland's time saves an estimated 2 weeks of reverse-engineering the schema independently.</p>
+          </div>
+
+          <div class="visual-card">
+            <div class="visual-card-title">Questions by Stakeholder</div>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Stakeholder</th>
+                    <th>Role</th>
+                    <th>Questions</th>
+                    <th>Sample Question</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Caroline Crossland</td><td>SF Solutions Architect</td><td style="text-align:center;">4</td><td>Is the Zendesk Org ID mapped to the Salesforce Account ID today?</td></tr>
+                  <tr><td>Evan Lehrman</td><td>Sr. Technical PM</td><td style="text-align:center;">3</td><td>Can payroll engine data be accessed via internal API?</td></tr>
+                  <tr><td>Renee Orser</td><td>VP, Internal Tools</td><td style="text-align:center;">5</td><td>What signals does CSO leadership use to assess account health today?</td></tr>
+                  <tr><td>Annelise Bryda</td><td>Staff Experience Designer</td><td style="text-align:center;">2</td><td>What does a CSO agent's physical workspace look like?</td></tr>
+                  <tr><td>CSO Operations</td><td>Natalie Miranda's Team</td><td style="text-align:center;">3</td><td>What are the actual top 5 call drivers by volume?</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="visual-card">
+            <div class="visual-card-title">External Dependencies</div>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Dependency</th>
+                    <th>Owner</th>
+                    <th>Deadline</th>
+                    <th>Risk</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Salesforce API access &amp; schema docs</td><td>Caroline Crossland</td><td>Day 2</td><td><span class="badge badge-red">High</span></td></tr>
+                  <tr><td>Zendesk API credentials &amp; rate limits</td><td>CSO Ops (TBD)</td><td>Week 1</td><td><span class="badge badge-amber">Medium</span></td></tr>
+                  <tr><td>Read replica access &amp; staging environment</td><td>Engineering Platform</td><td>Week 1</td><td><span class="badge badge-green">Low</span></td></tr>
+                  <tr><td>5 alpha agents for Week 5 validation</td><td>Natalie Miranda</td><td>Week 2</td><td><span class="badge badge-green">Low</span></td></tr>
+                  <tr><td>Data Services engineer allocation</td><td>Renee Orser</td><td>Week 1</td><td><span class="badge badge-amber">Medium</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- WHAT I DON'T KNOW -->
+          <div class="callout amber" style="border-left:3px solid var(--accent-amber);background:rgba(217,119,6,0.05);">
+            <div class="callout-title" style="color:var(--accent-amber);">What I Don&rsquo;t Know</div>
+            <p style="margin-bottom:12px;">This proposal is thorough, but it is built from the outside in. I want to be upfront about the gaps:</p>
+            <ul style="margin:0 0 12px 18px;padding:0;color:var(--text-secondary);font-size:0.95rem;line-height:1.7;">
+              <li>I haven&rsquo;t sat with a CSO agent &mdash; every workflow assumption comes from the case study brief, the help center, and industry patterns, not firsthand observation</li>
+              <li>I don&rsquo;t know the actual top call drivers by volume &mdash; the problem inventory is inferred, not measured</li>
+              <li>I don&rsquo;t know the real data architecture &mdash; the integration plan assumes standard APIs; the actual schema could change the Phase 1 timeline</li>
+              <li>Every UX decision in the prototype is an informed assumption &mdash; not validated by a single user test</li>
+            </ul>
+            <p>That&rsquo;s exactly why the proposal treats every design choice as a <strong style="color:var(--text-primary);">hypothesis waiting to be validated</strong>, and why Phase 1 starts with a paired spike to confirm the data architecture before a single line of product code is written. The full set of 45 assumptions is documented and traceable.</p>
+          </div>
+
+          <div class="deep-dives">
+            <a class="deep-dive-link" href="open-questions.html" target="_blank">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+              All Open Questions
+            </a>
+            <a class="deep-dive-link" href="assumptions-chain.html" target="_blank">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+              45 Assumptions &amp; Decision Chain
+            </a>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════
+             SECTION 07: SUCCESS METRICS
+             ═══════════════════════════════════════ -->
+        <section class="proposal-section" id="s07">
+          <div class="section-header">
+            <div class="section-num">Section 07</div>
+            <h2>Success Metrics &amp; Rationale</h2>
+          </div>
+
+          <div class="prose">
+            <p>Metrics are structured in <strong>3 tiers</strong>. Outcome metrics (AHT reduction of 15&ndash;20%, FCR improvement of 10%, NPS per headcount dollar trending up) prove the business case at 90 days. Guardrail metrics (NPS &ge; +60, data accuracy &ge; 98%, no escalation rate increase) ensure we don't cause harm in pursuit of speed. Leading indicators (orientation time &lt;10s, repeat-information rate &lt;10%, systems accessed dropping from ~5 to &le;2) become visible in Week 1&ndash;2 and let us course-correct early.</p>
+            <p>The North Star metric &mdash; <strong>NPS per CSO headcount dollar</strong> &mdash; is deliberately chosen over raw NPS because it captures the leverage story: same quality, less cost per customer. This is the metric that proves tooling creates sustainable scale, not just incremental improvement.</p>
+          </div>
+
+          <div class="visual-card">
+            <div class="visual-card-title">Metrics Framework</div>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Metric</th>
+                    <th>Type</th>
+                    <th>Target</th>
+                    <th>Timeline</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Average Handle Time (AHT)</td><td><span class="badge badge-blue">Outcome</span></td><td>15&ndash;20% reduction</td><td>90 days</td></tr>
+                  <tr><td>First Contact Resolution (FCR)</td><td><span class="badge badge-blue">Outcome</span></td><td>10% improvement</td><td>90 days</td></tr>
+                  <tr><td>NPS / Headcount Dollar</td><td><span class="badge badge-purple">North Star</span></td><td>Trending up QoQ</td><td>2&ndash;3 quarters</td></tr>
+                  <tr><td>NPS (Absolute)</td><td><span class="badge badge-amber">Guardrail</span></td><td>&ge; +60</td><td>Continuous</td></tr>
+                  <tr><td>Data Accuracy Rate</td><td><span class="badge badge-amber">Guardrail</span></td><td>&ge; 98%</td><td>Continuous</td></tr>
+                  <tr><td>Escalation Rate</td><td><span class="badge badge-amber">Guardrail</span></td><td>No increase</td><td>Continuous</td></tr>
+                  <tr><td>Orientation Time</td><td><span class="badge badge-green">Leading</span></td><td>&lt; 10 seconds</td><td>Week 1</td></tr>
+                  <tr><td>Systems Accessed per Call</td><td><span class="badge badge-green">Leading</span></td><td>~5 &rarr; &le; 2</td><td>Week 2</td></tr>
+                  <tr><td>Health Score Accuracy</td><td><span class="badge badge-green">Leading</span></td><td>&ge; 80% alignment</td><td>Week 2</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="deep-dives">
+            <a class="deep-dive-link" href="success-metrics.html" target="_blank">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+              Full Success Metrics
+            </a>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════
+             SECTION 08: ROLLOUT & TRAINING
+             ═══════════════════════════════════════ -->
+        <section class="proposal-section" id="s08">
+          <div class="section-header">
+            <div class="section-num">Section 08</div>
+            <h2>Rollout &amp; Training Plan</h2>
+          </div>
+
+          <div class="prose">
+            <p>Rollout follows a <strong>3-stage pull-based model</strong>: Alpha (5 hand-picked agents, Week 5) &rarr; Beta (1 full pod of 20&ndash;30 agents, Week 6) &rarr; Full Rollout (all CSO agents, Week 7). Each stage has explicit gate criteria that must pass before advancing. If a gate fails, we extend by one week rather than push forward with unresolved issues.</p>
+            <p>Training is <strong>3 layers</strong>: a 45-minute live demo (recorded, co-facilitated by a Champion), a self-paced sandbox with sample data, and a 1-page quick reference card printed at each workstation. The Champions program identifies 2&ndash;3 beta power users who become peer trainers during full rollout &mdash; agents learn best from agents, not from PMs.</p>
+          </div>
+
+          <div class="visual-card">
+            <div class="visual-card-title">Rollout Stages</div>
+            <div class="rollout-stages">
+              <div class="rollout-stage alpha">
+                <div class="rollout-arrow">&rarr;</div>
+                <div class="stage-label">Week 5</div>
+                <h4>Alpha</h4>
+                <div class="stage-agents">5</div>
+                <p>Hand-picked agents who feel the pain most. Daily feedback standups.</p>
+              </div>
+              <div class="rollout-stage beta">
+                <div class="rollout-arrow">&rarr;</div>
+                <div class="stage-label">Week 6</div>
+                <h4>Beta</h4>
+                <div class="stage-agents">20&ndash;30</div>
+                <p>Full pod. Structured surveys, AHT comparison, feature heatmap.</p>
+              </div>
+              <div class="rollout-stage ga">
+                <div class="stage-label">Week 7</div>
+                <h4>Full Rollout</h4>
+                <div class="stage-agents">All</div>
+                <p>Champions train the rest. Old tools accessible for 30 days.</p>
+              </div>
+            </div>
+            <div class="gate-criteria">
+              <strong>Alpha Gate:</strong> Data accuracy &ge; 95% &middot; 3/5 agents prefer it<br>
+              <strong>Beta Gate:</strong> Satisfaction &ge; 3.5/5.0 &middot; 70%+ using as primary tool &middot; Champions identified
+            </div>
+          </div>
+
+          <div class="deep-dives">
+            <a class="deep-dive-link" href="rollout-training.html" target="_blank">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+              Full Rollout &amp; Training Plan
+            </a>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════
+             SECTION 09: MVP RATIONALE
+             ═══════════════════════════════════════ -->
+        <section class="proposal-section" id="s09">
+          <div class="section-header">
+            <div class="section-num">Section 09</div>
+            <h2>MVP Rationale</h2>
+          </div>
+
+          <div class="prose">
+            <p>The MVP isn't the most important features first &mdash; it's <strong>the features that make every future feature possible</strong>. A 14-step decision chain moves from the raw prompt language through problem scoring, dependency analysis, and scoping cuts to arrive at exactly these 11 features. Each step builds on the previous one, and each is documented with its assumptions.</p>
+            <p>The core argument is architectural: you cannot build Phase 2 (in-place actions, ML scoring) without Phase 1's <strong>validated data layer</strong>. You cannot predict churn (Phase 3) without a health model agents trust (Phase 2). And you cannot build a health model without the unified data that Phase 1 consolidates. The phasing isn't a preference &mdash; it's a dependency chain.</p>
+          </div>
+
+          <div class="visual-card">
+            <div class="visual-card-title">Decision Chain (Condensed)</div>
+            <div class="decision-chain">
+              <div class="chain-step">
+                <div class="chain-num">1</div>
+                <div class="chain-content">
+                  <h4>Extract 6 Jobs from Prompt</h4>
+                  <p>Paragraph 1 uses operational language (MVP). Paragraph 2 shifts to aspirational (Phase 2&ndash;3).</p>
+                </div>
+              </div>
+              <div class="chain-step">
+                <div class="chain-num">2</div>
+                <div class="chain-content">
+                  <h4>Establish Dependency Stack</h4>
+                  <p>Foundation &rarr; Operations &rarr; Intelligence. Each layer is impossible without the one below.</p>
+                </div>
+              </div>
+              <div class="chain-step">
+                <div class="chain-num">3</div>
+                <div class="chain-content">
+                  <h4>Score 20 CSO Problems by ICE</h4>
+                  <p>Impact &times; Confidence &times; Ease across 6 domains. ICE &ge; 40 = MVP target.</p>
+                </div>
+              </div>
+              <div class="chain-step">
+                <div class="chain-num">4</div>
+                <div class="chain-content">
+                  <h4>Discover Data Convergence</h4>
+                  <p>Top problems and top health questions independently need the same 6 data categories.</p>
+                </div>
+              </div>
+              <div class="chain-step">
+                <div class="chain-num">5</div>
+                <div class="chain-content">
+                  <h4>Define 11 User Stories</h4>
+                  <p>3 Foundation + 6 Problem + 2 Health. Classify as Full Build vs. Deep Link (80/20 cut).</p>
+                </div>
+              </div>
+              <div class="chain-step">
+                <div class="chain-num">6</div>
+                <div class="chain-content">
+                  <h4>Apply "Read Before Write" Principle</h4>
+                  <p>MVP is read-only. Write capabilities come after data accuracy is proven.</p>
+                </div>
+              </div>
+              <div class="chain-step">
+                <div class="chain-num">7</div>
+                <div class="chain-content">
+                  <h4>Architect for the Future</h4>
+                  <p>Structured records (not free text), API-first services, audit logging &mdash; Phase 1 enables Phase 2&ndash;3 as iteration, not re-architecture.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout purple">
+            <div class="callout-title">"Read Before Write"</div>
+            <p>A dashboard that shows wrong data is a mild problem. A dashboard that lets agents write wrong data back into source systems is a severe problem. MVP is read-only. Write capabilities come after data accuracy is proven over 60+ days of production use.</p>
+          </div>
+
+          <div class="deep-dives">
+            <a class="deep-dive-link" href="assumptions-chain.html" target="_blank">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+              Full Decision Chain (14 Steps)
+            </a>
+            <a class="deep-dive-link" href="justworks-prioritization.html" target="_blank">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+              Prioritization Logic
+            </a>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════
+             SECTION 10: OUT OF SCOPE
+             ═══════════════════════════════════════ -->
+        <section class="proposal-section" id="s10">
+          <div class="section-header">
+            <div class="section-num">Section 10</div>
+            <h2>Out of Scope (Worth Revisiting)</h2>
+          </div>
+
+          <div class="prose">
+            <p>Thirteen items are <strong>deliberately deferred</strong>, not forgotten. Each has a documented revisit trigger &mdash; a specific condition under which the deferral should be reconsidered. The key deferrals are in-place ticket creation (read path must prove trust first), benefits life event workflows (carrier/state complexity too high), compliance guidance (no structured content system exists), AI summaries (need 90+ days of structured records), and cross-functional intelligence &mdash; surfacing support interaction data to inform sales, product, and leadership decisions.</p>
+            <p>The principle: an item is out of scope when the cost of including it &mdash; complexity, timeline risk, cognitive load &mdash; exceeds the cost of deferring it. Every deferred item has a clear path back into the product once its prerequisites are met.</p>
+          </div>
+
+          <div class="visual-card">
+            <div class="visual-card-title">Deferred Items</div>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Item</th>
+                    <th>Deferred To</th>
+                    <th>Revisit Trigger</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>In-Place Ticket Creation</td><td><span class="badge badge-blue">Phase 2</span></td><td>Agents request write access after using read-only tool</td></tr>
+                  <tr><td>Benefits Life Event Workflows</td><td><span class="badge badge-blue">Phase 2</span></td><td>Benefits data validated + carrier APIs mapped</td></tr>
+                  <tr><td>Compliance Contextual Guidance</td><td><span class="badge badge-blue">Phase 2</span></td><td>Structured compliance content system available</td></tr>
+                  <tr><td>ML-Adaptive Health Scoring</td><td><span class="badge badge-blue">Phase 2</span></td><td>Simple score proven accurate + 60 days of data</td></tr>
+                  <tr><td>CTI / Telephony Screen-Pop</td><td><span class="badge badge-blue">Phase 2</span></td><td>Telephony vendor + API confirmed</td></tr>
+                  <tr><td>Knowledge Base Integration</td><td><span class="badge badge-blue">Phase 2</span></td><td>KB migrated to structured, API-accessible system</td></tr>
+                  <tr><td>Full Leadership Analytics</td><td><span class="badge badge-blue">Phase 2</span></td><td>Data accumulating reliably; Tableau interim</td></tr>
+                  <tr><td>AI Interaction Summaries</td><td><span class="badge badge-purple">Phase 3</span></td><td>90+ days of structured records; AI tooling decision</td></tr>
+                  <tr><td>Pre-emptive Problem Detection</td><td><span class="badge badge-purple">Phase 3</span></td><td>2 quarters of structured engagement data</td></tr>
+                  <tr><td>Upsell &amp; Cross-Sell</td><td><span class="badge badge-purple">Phase 3</span></td><td>CSO/Sales/RevOps alignment on agent suggestions</td></tr>
+                  <tr><td>Multi-Language Support</td><td><span class="badge badge-amber">Later</span></td><td>EOR / international volume becomes significant</td></tr>
+                  <tr><td>Cross-Functional Intelligence &mdash; Surface insights from support interactions to inform Sales (upsell signals, expansion triggers), Product (feature gaps, pain-point frequency), and Leadership (portfolio health trends, capacity forecasting)</td><td><span class="badge badge-purple">Phase 3</span></td><td>Structured interaction data accumulating + stakeholder alignment on data-sharing model across Sales, Product, and CSO</td></tr>
+                  <tr><td>Self-Service Portal Linking</td><td><span class="badge badge-amber">Later</span></td><td>Self-service team ready to consume API</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="deep-dives">
+            <a class="deep-dive-link" href="scope-and-future.html" target="_blank">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+              Scope &amp; Future Vision
+            </a>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════
+             SECTION 11: FUTURE FEATURES
+             ═══════════════════════════════════════ -->
+        <section class="proposal-section" id="s11">
+          <div class="section-header">
+            <div class="section-num">Section 11</div>
+            <h2>Anticipated Future Features</h2>
+          </div>
+
+          <div class="prose">
+            <p>Phase 1's architecture <strong>deliberately enables</strong> everything below. Structured records (not free text) become training data for AI. Transparent rule-based scores build trust before opaque ML models. An API-first aggregation layer means new consumers (Phase 2 alerts, Phase 3 AI) are additive, not re-architectural.</p>
+            <p>Seven features span Phases 2&ndash;3. Phase 2 upgrades the tool from a reference surface into an action workspace. Phase 3 shifts CSO from reactive support into proactive customer partnership &mdash; the North Star articulated in paragraph 2 of the original prompt.</p>
+          </div>
+
+          <div class="visual-card">
+            <div class="visual-card-title">Future Features</div>
+            <div class="future-grid">
+              <div class="future-card">
+                <span class="future-badge badge-blue">Phase 2</span>
+                <h4>Advanced ML Health Scoring</h4>
+                <p>Signal weights adjust by customer segment. Adds predictive churn indicators and trend analytics.</p>
+              </div>
+              <div class="future-card">
+                <span class="future-badge badge-blue">Phase 2</span>
+                <h4>Proactive Alert System</h4>
+                <p>Automated flags for at-risk accounts: missed payments, declining logins, NPS detractors, payroll deadlines.</p>
+              </div>
+              <div class="future-card">
+                <span class="future-badge badge-blue">Phase 2</span>
+                <h4>In-Place Ticket Actions</h4>
+                <p>Create and modify Zendesk tickets without leaving Customer Central. Full workflow integration.</p>
+              </div>
+              <div class="future-card">
+                <span class="future-badge badge-blue">Phase 2</span>
+                <h4>Benefits Life Events</h4>
+                <p>Guided flows for marriage, baby, divorce. Multi-system cascades across carriers and state rules.</p>
+              </div>
+              <div class="future-card">
+                <span class="future-badge badge-purple">Phase 3</span>
+                <h4>AI Interaction Summaries</h4>
+                <p>NLP-generated summaries of past calls, chats, and emails. Leverages 90+ days of structured records.</p>
+              </div>
+              <div class="future-card">
+                <span class="future-badge badge-purple">Phase 3</span>
+                <h4>Churn Prediction</h4>
+                <p>Interaction velocity, sentiment trajectory, and escalation frequency as churn indicators.</p>
+              </div>
+              <div class="future-card">
+                <span class="future-badge badge-purple">Phase 3+</span>
+                <h4>Agent Copilot</h4>
+                <p>Real-time AI assistance during live calls. Suggested responses, relevant articles, next-best-action prompts.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="deep-dives">
+            <a class="deep-dive-link" href="scope-and-future.html" target="_blank">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+              Scope &amp; Future Vision
+            </a>
+          </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════
+             ARTIFACT INDEX
+             ═══════════════════════════════════════ -->
+        <section class="proposal-section" id="artifact-index">
+          <div class="section-header">
+            <div class="section-num" style="letter-spacing:0;">&#x1F4C1;</div>
+            <h2>Artifact Index</h2>
+          </div>
+
+          <div class="prose">
+            <p>Every artifact produced for this case study, organized by category. The proposal above synthesizes all of this work &mdash; these links let you go deeper on anything that catches your attention.</p>
+          </div>
+
+          <!-- How I Thought About It -->
+          <div class="artifact-category">
+            <div class="artifact-category-label" style="color:var(--accent-purple);">How I Thought About It</div>
+            <div class="artifact-grid">
+              <a class="artifact-link" href="justworks_north_star_and_problem_overview.pdf" target="_blank">
+                <div class="artifact-icon" style="background:rgba(124,58,237,0.1);">&#x2B50;</div>
+                <div class="artifact-info"><h4>North Star &amp; Problem Overview</h4><p>Strategic framing, north star metric, problem definition</p></div>
+                <span class="artifact-badge ab-pdf">PDF</span>
+              </a>
+              <a class="artifact-link" href="justworks_deep_problem_analysis.pdf" target="_blank">
+                <div class="artifact-icon" style="background:rgba(124,58,237,0.1);">&#x1F50D;</div>
+                <div class="artifact-info"><h4>Deep Problem Analysis</h4><p>CSO pain points, root causes, compounding problem framework</p></div>
+                <span class="artifact-badge ab-pdf">PDF</span>
+              </a>
+              <a class="artifact-link" href="customer_central_user_stories.pdf" target="_blank">
+                <div class="artifact-icon" style="background:rgba(124,58,237,0.1);">&#x1F4CB;</div>
+                <div class="artifact-info"><h4>Problem Statements &amp; User Stories</h4><p>6 problems traced to the brief + 9 user stories with acceptance criteria</p></div>
+                <span class="artifact-badge ab-pdf">PDF</span>
+              </a>
+              <a class="artifact-link" href="assumptions-chain.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(124,58,237,0.1);">&#x1F9E0;</div>
+                <div class="artifact-info"><h4>The Decision Chain</h4><p>14-step reasoning chain with 45 documented assumptions</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+              <a class="artifact-link" href="justworks-prioritization.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(124,58,237,0.1);">&#x1F3AF;</div>
+                <div class="artifact-info"><h4>Prioritization Logic</h4><p>Dependency chain proving why Phase 1 must come before Phase 2</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+              <a class="artifact-link" href="success-metrics.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(124,58,237,0.1);">&#x1F4CF;</div>
+                <div class="artifact-info"><h4>Success Metrics</h4><p>Outcome metrics, guardrails, leading indicators, and anti-metrics</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- What I'd Build -->
+          <div class="artifact-category">
+            <div class="artifact-category-label" style="color:var(--accent-green);">What I&rsquo;d Build</div>
+            <div class="artifact-grid">
+              <a class="artifact-link" href="customer-central.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(5,150,105,0.1);">&#x1F5A5;&#xFE0F;</div>
+                <div class="artifact-info"><h4>Interactive Prototype</h4><p>Fully interactive Customer Central dashboard &mdash; all 11 features testable</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+              <a class="artifact-link" href="feature-showcase.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(5,150,105,0.1);">&#x1F3A8;</div>
+                <div class="artifact-info"><h4>Feature Showcase</h4><p>Visual walkthrough of all 11 MVP features with design rationale</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+              <a class="artifact-link" href="customer-central-test-guide.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(5,150,105,0.1);">&#x1F9EA;</div>
+                <div class="artifact-info"><h4>Prototype Test Guide</h4><p>Story-by-story walkthrough with step-by-step instructions</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+              <a class="artifact-link" href="data-model.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(5,150,105,0.1);">&#x1F517;</div>
+                <div class="artifact-info"><h4>Data Model</h4><p>Interactive ER diagram &mdash; 13 entities, 4 source systems</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+              <a class="artifact-link" href="data-requirements.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(5,150,105,0.1);">&#x1F4CB;</div>
+                <div class="artifact-info"><h4>Data Requirements Matrix</h4><p>55 data fields mapped across 11 features and 5 source systems</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+              <a class="artifact-link" href="data-performance.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(5,150,105,0.1);">&#x26A1;</div>
+                <div class="artifact-info"><h4>Data Performance Strategy</h4><p>4-tier loading model, DB schema, caching, volume estimates</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- How I'd Ship It -->
+          <div class="artifact-category">
+            <div class="artifact-category-label" style="color:var(--accent-blue);">How I&rsquo;d Ship It</div>
+            <div class="artifact-grid">
+              <a class="artifact-link" href="phased-roadmap.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(37,99,235,0.1);">&#x1F4C5;</div>
+                <div class="artifact-info"><h4>Phased Roadmap</h4><p>7-week Gantt-style timeline with role-specific tasks and stage gates</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+              <a class="artifact-link" href="engineering-resources.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(37,99,235,0.1);">&#x1F465;</div>
+                <div class="artifact-info"><h4>Engineering Resources</h4><p>Team composition, sprint plan, and 4 de-risking strategies</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+              <a class="artifact-link" href="scope-and-future.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(37,99,235,0.1);">&#x1F52E;</div>
+                <div class="artifact-info"><h4>Scope &amp; Future Vision</h4><p>13 excluded items with rationale + future feature deep-dives</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+              <a class="artifact-link" href="rollout-training.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(37,99,235,0.1);">&#x1F680;</div>
+                <div class="artifact-info"><h4>Rollout &amp; Training Plan</h4><p>3-stage rollout, stage gates, 3-layer training, champions program</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- How I'd Collaborate -->
+          <div class="artifact-category">
+            <div class="artifact-category-label" style="color:var(--accent-amber);">How I&rsquo;d Collaborate</div>
+            <div class="artifact-grid">
+              <a class="artifact-link" href="https://miro.com/app/board/uXjVG8qK-KU=/?share_link_id=653655420381" target="_blank">
+                <div class="artifact-icon" style="background:rgba(217,119,6,0.1);">&#x1F5C2;&#xFE0F;</div>
+                <div class="artifact-info"><h4>Workshop Board (Miro)</h4><p>45-minute MVP scoping sprint with exercises and dot voting</p></div>
+                <span class="artifact-badge ab-miro">Miro</span>
+              </a>
+              <a class="artifact-link" href="open-questions.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(217,119,6,0.1);">&#x2753;</div>
+                <div class="artifact-info"><h4>Open Questions</h4><p>17 questions organized by stakeholder with assumptions</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Reference -->
+          <div class="artifact-category">
+            <div class="artifact-category-label">Reference</div>
+            <div class="artifact-grid">
+              <a class="artifact-link" href="presentation-outline.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(107,110,133,0.1);">&#x1F399;&#xFE0F;</div>
+                <div class="artifact-info"><h4>Presentation Outline</h4><p>7-section speaker guide with scripted beats</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+              <a class="artifact-link" href="presentation-workshop-plan.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(107,110,133,0.1);">&#x1F4DD;</div>
+                <div class="artifact-info"><h4>Workshop + Q&amp;A Plan</h4><p>Full session plan with contingency plans</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+              <a class="artifact-link" href="submission-checklist.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(107,110,133,0.1);">&#x1F4CB;</div>
+                <div class="artifact-info"><h4>Submission Checklist</h4><p>Audit of all deliverables against the case study prompt</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+              <a class="artifact-link" href="justworks_cso_success_model.pdf" target="_blank">
+                <div class="artifact-icon" style="background:rgba(107,110,133,0.1);">&#x1F3AF;</div>
+                <div class="artifact-info"><h4>CSO Success Model</h4><p>What success looks like at agent, team lead, and leadership levels</p></div>
+                <span class="artifact-badge ab-pdf">PDF</span>
+              </a>
+              <a class="artifact-link" href="product_case_study.pdf" target="_blank">
+                <div class="artifact-icon" style="background:rgba(107,110,133,0.1);">&#x1F4C4;</div>
+                <div class="artifact-info"><h4>Product Case Study Prompt</h4><p>The original brief this entire project responds to</p></div>
+                <span class="artifact-badge ab-pdf">PDF</span>
+              </a>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="proposal-footer">
+          <p>Prepared by Darrien Watson</p>
+        </footer>
+
+      </div>
+    </main>
+
+  </div>
+</div>
+
+<script>
+  // ── Password gate ──
+  const HASH_STANDARD = '80107215236f645b8f39dac1653b79a7f70c0129ca571594dbf85a2e06739dca';
+  const HASH_ADMIN = '10ebc6a77ba980649d3ad8f01674a589c3e3feae814ee0542ac08a24ffc2873a';
+  const SESSION_KEY = 'jw_access';
+
+  async function sha256(message) {
+    const msgBuffer = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  function unlock() {
+    document.getElementById('gate').classList.add('unlocked');
+    document.getElementById('content').classList.add('visible');
+  }
+
+  const stored = sessionStorage.getItem(SESSION_KEY);
+  if (stored === 'admin' || stored === '1') {
+    unlock();
+  }
+
+  document.getElementById('gate-form').addEventListener('submit', async function() {
+    const input = document.getElementById('gate-password');
+    const errorEl = document.getElementById('gate-error');
+    const hash = await sha256(input.value);
+    if (hash === HASH_ADMIN || hash === HASH_STANDARD) {
+      errorEl.textContent = '';
+      sessionStorage.setItem(SESSION_KEY, hash === HASH_ADMIN ? 'admin' : '1');
+      unlock();
+    } else {
+      input.classList.add('error');
+      errorEl.textContent = 'Incorrect password. Please try again.';
+      setTimeout(() => input.classList.remove('error'), 400);
+    }
+  });
+
+  document.getElementById('gate-password').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') document.getElementById('gate-submit').click();
+  });
+
+  // ── Scroll-tracking TOC ──
+  const tocLinks = document.querySelectorAll('.toc-link');
+  const sections = document.querySelectorAll('.proposal-section');
+
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute('id');
+        tocLinks.forEach(function(link) {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, {
+    rootMargin: '-10% 0px -80% 0px',
+    threshold: 0
+  });
+
+  sections.forEach(function(section) { observer.observe(section); });
+
+  // ── Smooth scrolling for TOC clicks ──
+  tocLinks.forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      var target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      // Close mobile TOC if open
+      document.getElementById('toc-sidebar').classList.remove('open');
+      document.getElementById('toc-overlay').classList.remove('open');
+    });
+  });
+
+  // ── Mobile TOC toggle ──
+  var tocToggle = document.getElementById('toc-toggle');
+  var tocSidebar = document.getElementById('toc-sidebar');
+  var tocOverlay = document.getElementById('toc-overlay');
+
+  tocToggle.addEventListener('click', function() {
+    tocSidebar.classList.toggle('open');
+    tocOverlay.classList.toggle('open');
+  });
+
+  tocOverlay.addEventListener('click', function() {
+    tocSidebar.classList.remove('open');
+    tocOverlay.classList.remove('open');
+  });
+</script>
+
+</body>
+</html>
