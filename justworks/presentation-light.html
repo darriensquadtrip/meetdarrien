@@ -1,0 +1,3458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Central — Presentation (Light) | Darrien Watson</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-deep: #f8f9fc;
+  --bg-surface: #ffffff;
+  --bg-card: #f1f3f8;
+  --bg-elevated: #e8ebf2;
+  --border: #d4d8e3;
+  --text-primary: #1a1c25;
+  --text-secondary: #4a4e63;
+  --text-muted: #7b7f97;
+  --accent-blue: #2563eb;
+  --accent-purple: #7c3aed;
+  --accent-green: #059669;
+  --accent-amber: #d97706;
+  --accent-red: #dc2626;
+  --accent-pink: #db2777;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: linear-gradient(145deg, #f0f0f8 0%, #f8f9fc 40%, #f4f6fb 100%);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+  height: 100vh;
+}
+
+/* ═══════════════════════════════════════
+   SCROLL CONTAINER
+   ═══════════════════════════════════════ */
+.deck {
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+/* ═══════════════════════════════════════
+   SLIDE BASE
+   ═══════════════════════════════════════ */
+.slide {
+  height: 100vh;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 48px 80px;
+  overflow: hidden;
+  max-width: 1100px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* ═══════════════════════════════════════
+   SLIDE NAV
+   ═══════════════════════════════════════ */
+.slide-nav {
+  position: fixed;
+  bottom: 24px;
+  right: 32px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 16px;
+}
+
+.slide-counter {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* ═══════════════════════════════════════
+   TYPOGRAPHY
+   ═══════════════════════════════════════ */
+.section-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent-blue);
+  margin-bottom: 8px;
+}
+
+.slide h2 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+
+.slide h2 em {
+  color: var(--accent-blue);
+  font-style: italic;
+}
+
+.slide h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.slide p, .slide li {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.slide p strong { color: var(--text-primary); font-weight: 600; }
+
+.tagline {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 1.6rem;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.3;
+  max-width: 520px;
+  background: linear-gradient(135deg, #1a1c25 0%, #7c3aed 50%, #2563eb 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 16px;
+}
+
+/* ═══════════════════════════════════════
+   TAGS & BADGES
+   ═══════════════════════════════════════ */
+.header-tags {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.header-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 5px 12px;
+  border-radius: 6px;
+  background: rgba(37, 99, 235, 0.1);
+  color: var(--accent-blue);
+  border: 1px solid rgba(37, 99, 235, 0.2);
+}
+.header-tag.purple { background: rgba(124, 58, 237, 0.1); color: var(--accent-purple); border-color: rgba(124, 58, 237, 0.2); }
+.header-tag.green { background: rgba(5, 150, 105, 0.1); color: var(--accent-green); border-color: rgba(5, 150, 105, 0.2); }
+
+.badge {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 5px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.badge-green { background: rgba(5, 150, 105, 0.15); color: var(--accent-green); }
+.badge-blue { background: rgba(37, 99, 235, 0.15); color: var(--accent-blue); }
+.badge-purple { background: rgba(124, 58, 237, 0.15); color: var(--accent-purple); }
+.badge-amber { background: rgba(217, 119, 6, 0.15); color: var(--accent-amber); }
+.badge-red { background: rgba(220, 38, 38, 0.15); color: var(--accent-red); }
+
+/* ═══════════════════════════════════════
+   STAT PILLS
+   ═══════════════════════════════════════ */
+.stat-pills {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.stat-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.stat-pill .pill-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--accent-blue);
+}
+
+.stat-pill .pill-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+/* ═══════════════════════════════════════
+   VISUAL CARDS
+   ═══════════════════════════════════════ */
+.visual-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.visual-card-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+}
+
+/* ═══════════════════════════════════════
+   TIMELINE (Slide 2)
+   ═══════════════════════════════════════ */
+.timeline-strip {
+  display: flex;
+  gap: 2px;
+  margin-top: 16px;
+}
+
+.timeline-step {
+  flex: 1;
+  padding: 14px 12px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.timeline-step .t-time {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.timeline-step .t-action {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.timeline-step .t-system {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.ts-red { background: rgba(220, 38, 38, 0.08); border: 1px solid rgba(220, 38, 38, 0.2); }
+.ts-red .t-time { color: var(--accent-red); }
+.ts-amber { background: rgba(217, 119, 6, 0.08); border: 1px solid rgba(217, 119, 6, 0.2); }
+.ts-amber .t-time { color: var(--accent-amber); }
+.ts-green { background: rgba(5, 150, 105, 0.08); border: 1px solid rgba(5, 150, 105, 0.2); }
+.ts-green .t-time { color: var(--accent-green); }
+
+/* ═══════════════════════════════════════
+   PROBLEM CARDS (Slide 3)
+   ═══════════════════════════════════════ */
+.problem-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.problem-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.problem-card .p-id {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--accent-blue);
+  margin-bottom: 6px;
+}
+
+.problem-card h4 {
+  font-size: 0.88rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--text-primary);
+}
+
+.problem-card p {
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+/* ═══════════════════════════════════════
+   OPPORTUNITY STATS (Slide 4)
+   ═══════════════════════════════════════ */
+.opp-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.opp-stat {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 16px;
+  text-align: center;
+}
+
+.opp-stat .os-num {
+  font-family: 'Instrument Serif', serif;
+  font-size: 2rem;
+  font-weight: 400;
+  margin-bottom: 4px;
+}
+
+.opp-stat .os-label {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.os-green .os-num { color: var(--accent-green); }
+.os-blue .os-num { color: var(--accent-blue); }
+.os-purple .os-num { color: var(--accent-purple); }
+.os-amber .os-num { color: var(--accent-amber); }
+
+/* ═══════════════════════════════════════
+   NORTH STAR (Slide 5) — NEW
+   ═══════════════════════════════════════ */
+.north-star-display {
+  text-align: center;
+  padding: 32px 24px;
+}
+
+.ns-metric {
+  font-family: 'Instrument Serif', serif;
+  font-size: 2.8rem;
+  font-weight: 400;
+  line-height: 1.15;
+  background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 16px;
+}
+
+.ns-formula {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.ns-context {
+  max-width: 600px;
+  margin: 0 auto;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+/* ═══════════════════════════════════════
+   PHASE COLUMNS (Slide 6) — NEW
+   ═══════════════════════════════════════ */
+.phase-cols {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.phase-col {
+  border-radius: 12px;
+  padding: 20px 16px;
+  border: 1px solid;
+  position: relative;
+}
+
+.phase-col .pc-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+
+.phase-col h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.phase-col .pc-time {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.phase-col p {
+  font-size: 0.8rem;
+  line-height: 1.55;
+}
+
+.pc-green { background: rgba(5, 150, 105, 0.06); border-color: rgba(5, 150, 105, 0.2); }
+.pc-green .pc-label, .pc-green h4 { color: var(--accent-green); }
+.pc-green p { color: rgba(5, 150, 105, 0.8); }
+
+.pc-blue { background: rgba(37, 99, 235, 0.06); border-color: rgba(37, 99, 235, 0.2); }
+.pc-blue .pc-label, .pc-blue h4 { color: var(--accent-blue); }
+.pc-blue p { color: rgba(37, 99, 235, 0.8); }
+
+.pc-purple { background: rgba(124, 58, 237, 0.06); border-color: rgba(124, 58, 237, 0.2); }
+.pc-purple .pc-label, .pc-purple h4 { color: var(--accent-purple); }
+.pc-purple p { color: rgba(124, 58, 237, 0.8); }
+
+.dep-insight {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin-top: 14px;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.dep-insight strong { color: var(--text-primary); }
+
+/* ═══════════════════════════════════════
+   MILESTONE STRIP (Slide 7)
+   ═══════════════════════════════════════ */
+.milestone-strip {
+  display: flex;
+  gap: 4px;
+  margin-top: 12px;
+}
+
+.milestone-item {
+  flex: 1;
+  padding: 14px 10px;
+  text-align: center;
+  border-radius: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+}
+
+.milestone-item .mw {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.milestone-item .mn {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.35;
+}
+
+.mi-disc .mw { color: var(--accent-amber); }
+.mi-build .mw { color: var(--accent-green); }
+.mi-alpha .mw { color: var(--accent-blue); }
+.mi-beta .mw { color: var(--accent-blue); }
+.mi-launch .mw { color: var(--accent-purple); }
+
+/* ═══════════════════════════════════════
+   FEATURE TABLE (Slide 8)
+   ═══════════════════════════════════════ */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.data-table th {
+  text-align: left;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.data-table td {
+  padding: 9px 12px;
+  border-bottom: 1px solid rgba(51, 55, 72, 0.5);
+  color: var(--text-secondary);
+  vertical-align: top;
+  line-height: 1.4;
+}
+
+.data-table tr:last-child td { border-bottom: none; }
+
+/* ═══════════════════════════════════════
+   WIREFRAME (Slide 9)
+   ═══════════════════════════════════════ */
+.wireframe-wrap {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.wf-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.wf-dots { display: flex; gap: 5px; }
+.wf-dot { width: 8px; height: 8px; border-radius: 50%; }
+.wf-dot.r { background: var(--accent-red); }
+.wf-dot.y { background: var(--accent-amber); }
+.wf-dot.g { background: var(--accent-green); }
+
+.wf-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.wf-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 12px;
+}
+
+.wf-panel {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+}
+
+.wf-panel-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+}
+
+.wf-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 5px 0;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.wf-row .dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.wf-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.wf-tab {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  padding: 4px 10px;
+  border-radius: 5px;
+  background: var(--bg-elevated);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+}
+
+.wf-tab.active {
+  background: rgba(37, 99, 235, 0.1);
+  color: var(--accent-blue);
+  border-color: rgba(37, 99, 235, 0.3);
+}
+
+/* ═══════════════════════════════════════
+   SYSTEM DIAGRAM (Slide 10)
+   ═══════════════════════════════════════ */
+.sys-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.sys-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 12px;
+  text-align: center;
+}
+
+.sys-card .sc-icon {
+  font-size: 1.3rem;
+  margin-bottom: 6px;
+}
+
+.sys-card h4 {
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: var(--text-primary);
+}
+
+.sys-card p {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.sys-arrow {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 8px 0;
+}
+
+.aggregation-box {
+  background: rgba(37, 99, 235, 0.06);
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  border-radius: 10px;
+  padding: 14px 20px;
+  text-align: center;
+}
+
+.aggregation-box h4 {
+  font-size: 0.95rem;
+  color: var(--accent-blue);
+  margin-bottom: 4px;
+}
+
+.aggregation-box p {
+  font-size: 0.8rem;
+  color: rgba(37, 99, 235, 0.7);
+}
+
+/* ═══════════════════════════════════════
+   LOADING TIERS (Slide 11) — NEW
+   ═══════════════════════════════════════ */
+.tier-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.tier-card {
+  border-radius: 10px;
+  padding: 14px 12px;
+  text-align: center;
+  border: 1px solid;
+}
+
+.tier-card .tc-time {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.tier-card h4 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.tier-card p {
+  font-size: 0.72rem;
+  line-height: 1.4;
+}
+
+.tc-instant { background: rgba(220,38,38,0.06); border-color: rgba(220,38,38,0.2); }
+.tc-instant .tc-time, .tc-instant h4 { color: var(--accent-red); }
+.tc-fast { background: rgba(217,119,6,0.06); border-color: rgba(217,119,6,0.2); }
+.tc-fast .tc-time, .tc-fast h4 { color: var(--accent-amber); }
+.tc-lazy { background: rgba(37,99,235,0.06); border-color: rgba(37,99,235,0.2); }
+.tc-lazy .tc-time, .tc-lazy h4 { color: var(--accent-blue); }
+.tc-click { background: rgba(124,58,237,0.06); border-color: rgba(124,58,237,0.2); }
+.tc-click .tc-time, .tc-click h4 { color: var(--accent-purple); }
+
+.risk-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.risk-card {
+  background: rgba(220, 38, 38, 0.05);
+  border: 1px solid rgba(220, 38, 38, 0.15);
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.risk-card h4 {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--accent-red);
+  margin-bottom: 6px;
+}
+
+.risk-card p {
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+/* ═══════════════════════════════════════
+   TEAM CARDS (Slide 12)
+   ═══════════════════════════════════════ */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.team-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.team-card .tc-role {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+
+.team-card h4 {
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: var(--text-primary);
+}
+
+.team-card p {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+.tc-be .tc-role { color: var(--accent-blue); }
+.tc-fe .tc-role { color: var(--accent-green); }
+.tc-de .tc-role { color: var(--accent-amber); }
+.tc-ds .tc-role { color: var(--accent-purple); }
+.tc-pm .tc-role { color: var(--accent-pink); }
+.tc-qa .tc-role { color: var(--accent-red); }
+
+.team-summary {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.team-summary .ts-item {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.team-summary .ts-item strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* ═══════════════════════════════════════
+   QUESTIONS (Slide 13)
+   ═══════════════════════════════════════ */
+.question-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.question-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 20px;
+  display: flex;
+  gap: 14px;
+}
+
+.question-item .qi-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent-amber);
+  flex-shrink: 0;
+  width: 24px;
+}
+
+.question-item .qi-to {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 4px;
+}
+
+.question-item p {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ═══════════════════════════════════════
+   METRICS TABLE (Slide 14)
+   ═══════════════════════════════════════ */
+.metrics-section {
+  margin-bottom: 14px;
+}
+
+.metrics-section .ms-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+  padding-left: 4px;
+}
+
+.ms-leading .ms-label { color: var(--accent-green); }
+.ms-outcome .ms-label { color: var(--accent-blue); }
+.ms-guardrail .ms-label { color: var(--accent-amber); }
+
+.metric-items {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.metric-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+
+.metric-item .mi-val {
+  font-family: 'DM Mono', monospace;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.metric-item .mi-name {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.35;
+}
+
+/* ═══════════════════════════════════════
+   ROLLOUT GATES (Slide 15) — NEW
+   ═══════════════════════════════════════ */
+.rollout-stages {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.rollout-stage {
+  border-radius: 12px;
+  padding: 18px 16px;
+  border: 1px solid;
+}
+
+.rollout-stage .rs-badge {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+
+.rollout-stage h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.rollout-stage .rs-who {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+}
+
+.rollout-stage .rs-gate-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+
+.rollout-stage ul {
+  list-style: none;
+  padding: 0;
+}
+
+.rollout-stage li {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  padding-left: 14px;
+  position: relative;
+}
+
+.rollout-stage li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+
+.rs-alpha { background: rgba(5,150,105,0.06); border-color: rgba(5,150,105,0.2); }
+.rs-alpha .rs-badge, .rs-alpha h4 { color: var(--accent-green); }
+.rs-alpha .rs-gate-label { color: var(--accent-green); }
+.rs-alpha li::before { background: var(--accent-green); }
+
+.rs-beta { background: rgba(37,99,235,0.06); border-color: rgba(37,99,235,0.2); }
+.rs-beta .rs-badge, .rs-beta h4 { color: var(--accent-blue); }
+.rs-beta .rs-gate-label { color: var(--accent-blue); }
+.rs-beta li::before { background: var(--accent-blue); }
+
+.rs-launch { background: rgba(124,58,237,0.06); border-color: rgba(124,58,237,0.2); }
+.rs-launch .rs-badge, .rs-launch h4 { color: var(--accent-purple); }
+.rs-launch .rs-gate-label { color: var(--accent-purple); }
+.rs-launch li::before { background: var(--accent-purple); }
+
+/* ═══════════════════════════════════════
+   DECISION CHAIN (Slide 16)
+   ═══════════════════════════════════════ */
+.mvp-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 20px;
+  flex: 1;
+  min-height: 0;
+}
+
+.decision-chain {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.decision-step {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.decision-step .ds-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: var(--accent-blue);
+  margin-bottom: 2px;
+}
+
+.decision-step h4 {
+  font-size: 0.78rem;
+  font-weight: 700;
+  margin-bottom: 2px;
+  color: var(--text-primary);
+}
+
+.decision-step p {
+  font-size: 0.68rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+/* Decision funnel visual */
+.funnel-frame {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(37, 99, 235, 0.15);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.funnel-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.15;
+  filter: brightness(1.5);
+}
+
+.funnel-svg {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 380px;
+}
+
+/* ═══════════════════════════════════════
+   SCOPE / FUTURE (Slide 17) — NEW
+   ═══════════════════════════════════════ */
+.scope-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.scope-col {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.scope-col .sc-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 10px;
+}
+
+.scope-col ul {
+  list-style: none;
+  padding: 0;
+}
+
+.scope-col li {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  padding: 4px 0;
+  padding-left: 14px;
+  position: relative;
+}
+
+.scope-col li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--text-muted);
+}
+
+.sc-deferred .sc-label { color: var(--accent-amber); }
+.sc-future .sc-label { color: var(--accent-purple); }
+
+.crosssell-note {
+  background: rgba(124, 58, 237, 0.06);
+  border: 1px solid rgba(124, 58, 237, 0.15);
+  border-radius: 10px;
+  padding: 14px 18px;
+}
+
+.crosssell-note p {
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+/* ═══════════════════════════════════════
+   REACTIVE → PROACTIVE (Slide 18)
+   ═══════════════════════════════════════ */
+.transform-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 20px;
+}
+
+.transform-panel {
+  flex: 1;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 16px 16px;
+  text-align: center;
+  position: relative;
+}
+
+.transform-panel.tp-reactive {
+  border-color: rgba(239, 68, 68, 0.25);
+  background: rgba(239, 68, 68, 0.04);
+}
+
+.transform-panel.tp-proactive {
+  border-color: rgba(34, 197, 94, 0.25);
+  background: rgba(34, 197, 94, 0.04);
+}
+
+.tp-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+}
+
+.tp-reactive .tp-label { color: var(--accent-red); }
+.tp-proactive .tp-label { color: var(--accent-green); }
+
+.tp-desc {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-top: 10px;
+}
+
+.transform-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  flex-shrink: 0;
+}
+
+.foundation-strip {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.foundation-phase {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 14px 12px;
+  position: relative;
+}
+
+.foundation-phase.fp-mvp {
+  border-color: rgba(59, 130, 246, 0.35);
+  background: rgba(59, 130, 246, 0.06);
+}
+
+.fp-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent-blue);
+  margin-bottom: 4px;
+}
+
+.foundation-phase:nth-child(2) .fp-tag { color: var(--accent-purple); }
+.foundation-phase:nth-child(3) .fp-tag { color: var(--accent-amber); }
+
+.fp-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.fp-items {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.fp-connector {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin: 10px 0 4px;
+  letter-spacing: 0.04em;
+}
+
+/* ═══════════════════════════════════════
+   PROTOTYPE EMBED (Slide 19)
+   ═══════════════════════════════════════ */
+.slide--proto {
+  padding: 0;
+}
+
+.proto-container {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.proto-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 20px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.proto-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.proto-iframe {
+  flex: 1;
+  width: 100%;
+  border: none;
+  background: var(--bg-deep);
+}
+
+/* ═══════════════════════════════════════
+   THESIS SUMMARY (Slide 19)
+   ═══════════════════════════════════════ */
+.thesis-block {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.thesis-block .tb-before {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--accent-red);
+  margin-bottom: 8px;
+}
+
+.thesis-block .tb-after {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--accent-green);
+  margin-bottom: 24px;
+}
+
+.thesis-points {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 24px;
+  text-align: left;
+}
+
+.thesis-point {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.thesis-point h4 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.thesis-point p {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.tp-green h4 { color: var(--accent-green); }
+.tp-blue h4 { color: var(--accent-blue); }
+.tp-purple h4 { color: var(--accent-purple); }
+
+/* ═══════════════════════════════════════
+   CTA SLIDE (Slide 20) — NEW
+   ═══════════════════════════════════════ */
+.cta-block {
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.artifact-index {
+  column-count: 2;
+  column-gap: 40px;
+  margin-top: 16px;
+  text-align: left;
+}
+
+.artifact-group {
+  break-inside: avoid;
+  margin-bottom: 14px;
+}
+
+.ag-header {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent-blue);
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+  border-bottom: 1px solid rgba(99, 148, 255, 0.15);
+}
+
+.artifact-item {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  text-decoration: none;
+  padding: 3.5px 0;
+  transition: color 0.15s;
+}
+
+.artifact-item:hover .ai-title {
+  color: var(--accent-blue);
+}
+
+.artifact-item:hover .ai-arrow {
+  opacity: 1;
+}
+
+.ai-title {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+.ai-arrow {
+  font-size: 0.65rem;
+  color: var(--accent-blue);
+  opacity: 0.5;
+  transition: opacity 0.15s;
+  flex-shrink: 0;
+}
+
+.ai-url {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  opacity: 0.6;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cta-footer {
+  margin-top: 18px;
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.cta-footer strong {
+  color: var(--text-primary);
+}
+
+/* ═══════════════════════════════════════
+   TITLE SLIDE LAYOUT (Slide 1)
+   ═══════════════════════════════════════ */
+.title-layout {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+.title-text { flex: 1; min-width: 0; }
+
+/* Hub diagram */
+.hub-wrap {
+  flex: 0 0 400px;
+  position: relative;
+  height: 380px;
+}
+
+.hub-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 130px;
+  height: 90px;
+  background: rgba(37, 99, 235, 0.12);
+  border: 2px solid var(--accent-blue);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.hub-center-icon {
+  font-size: 1.6rem;
+  margin-bottom: 2px;
+}
+
+.hub-center-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--accent-blue);
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* Orbiting ring */
+.hub-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  border: 1px dashed rgba(37, 99, 235, 0.15);
+}
+
+/* Satellite nodes */
+.hub-node {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  z-index: 2;
+}
+
+.hub-node-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  border: 1px solid;
+}
+
+.hub-node-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.58rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.hn-agents .hub-node-icon { background: rgba(5, 150, 105, 0.1); border-color: rgba(5, 150, 105, 0.3); }
+.hn-agents .hub-node-label { color: var(--accent-green); }
+.hn-data .hub-node-icon { background: rgba(124, 58, 237, 0.1); border-color: rgba(124, 58, 237, 0.3); }
+.hn-data .hub-node-label { color: var(--accent-purple); }
+.hn-analytics .hub-node-icon { background: rgba(37, 99, 235, 0.1); border-color: rgba(37, 99, 235, 0.3); }
+.hn-analytics .hub-node-label { color: var(--accent-blue); }
+.hn-systems .hub-node-icon { background: rgba(217, 119, 6, 0.1); border-color: rgba(217, 119, 6, 0.3); }
+.hn-systems .hub-node-label { color: var(--accent-amber); }
+.hn-health .hub-node-icon { background: rgba(220, 38, 38, 0.1); border-color: rgba(220, 38, 38, 0.3); }
+.hn-health .hub-node-label { color: var(--accent-red); }
+.hn-insights .hub-node-icon { background: rgba(244, 114, 182, 0.1); border-color: rgba(244, 114, 182, 0.3); }
+.hn-insights .hub-node-label { color: var(--accent-pink); }
+
+/* Connector lines via SVG */
+.hub-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.hub-lines line {
+  stroke: rgba(37, 99, 235, 0.2);
+  stroke-width: 1.5;
+  stroke-dasharray: 6 4;
+}
+
+/* ═══════════════════════════════════════
+   OPERATIONAL FIX vs STRATEGIC (Slide 4)
+   ═══════════════════════════════════════ */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.compare-col {
+  border-radius: 12px;
+  padding: 18px;
+  border: 1px solid;
+}
+
+.compare-col h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.compare-col ul {
+  list-style: none;
+  padding: 0;
+}
+
+.compare-col li {
+  font-size: 0.82rem;
+  line-height: 1.7;
+  padding: 2px 0;
+  padding-left: 16px;
+  position: relative;
+  color: var(--text-secondary);
+}
+
+.compare-col li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+
+.cc-fix {
+  background: rgba(217, 119, 6, 0.04);
+  border-color: rgba(217, 119, 6, 0.2);
+}
+.cc-fix h4 { color: var(--accent-amber); }
+.cc-fix li::before { background: var(--accent-amber); }
+
+.cc-strategic {
+  background: rgba(5, 150, 105, 0.04);
+  border-color: rgba(5, 150, 105, 0.2);
+}
+.cc-strategic h4 { color: var(--accent-green); }
+.cc-strategic li::before { background: var(--accent-green); }
+
+/* ═══════════════════════════════════════
+   SCREENSHOT + ANNOTATIONS (Slides 9, 17)
+   ═══════════════════════════════════════ */
+.screenshot-container {
+  position: relative;
+  border-radius: 12px;
+  overflow: visible;
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+}
+
+.screenshot-container img {
+  width: 100%;
+  display: block;
+  border-radius: 12px;
+}
+
+.annotation {
+  position: absolute;
+  background: rgba(15, 17, 23, 0.92);
+  backdrop-filter: blur(8px);
+  border: 1px solid;
+  border-radius: 8px;
+  padding: 5px 11px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.annotation-green { border-color: var(--accent-green); color: var(--accent-green); }
+.annotation-blue { border-color: var(--accent-blue); color: var(--accent-blue); }
+.annotation-purple { border-color: var(--accent-purple); color: var(--accent-purple); }
+.annotation-amber { border-color: var(--accent-amber); color: var(--accent-amber); }
+.annotation-red { border-color: var(--accent-red); color: var(--accent-red); }
+
+/* Flow strip for Slide 9 */
+.flow-strip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.flow-step {
+  text-align: center;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+}
+
+.flow-step .fs-time {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.flow-step .fs-name {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.flow-arrow {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+}
+
+/* ═══════════════════════════════════════
+   PHASE 3 PREVIEW (Slide 17)
+   ═══════════════════════════════════════ */
+.future-preview {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(124, 58, 237, 0.25);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.future-preview img {
+  width: 100%;
+  display: block;
+}
+
+.future-preview-label {
+  background: rgba(124, 58, 237, 0.08);
+  padding: 8px 14px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--accent-purple);
+  text-align: center;
+}
+
+/* ═══════════════════════════════════════
+   CLOSING SPLIT SCREEN (Slide 20)
+   ═══════════════════════════════════════ */
+.closing-slide {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.closing-question {
+  font-family: 'Inter', 'DM Sans', sans-serif;
+  font-size: 1.65rem;
+  font-weight: 300;
+  line-height: 1.4;
+  background: linear-gradient(135deg, #1a1c25 0%, #7c3aed 40%, #2563eb 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: center;
+  margin-bottom: 24px;
+  flex-shrink: 0;
+}
+
+.closing-panels {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0;
+  flex: 1;
+  min-height: 0;
+}
+
+.closing-panel {
+  border-radius: 14px;
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.closing-panel.cp-before {
+  background: rgba(220, 38, 38, 0.04);
+  border: 1px solid rgba(220, 38, 38, 0.15);
+}
+
+.closing-panel.cp-after {
+  background: rgba(5, 150, 105, 0.04);
+  border: 1px solid rgba(5, 150, 105, 0.15);
+}
+
+.cp-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 14px;
+}
+
+.cp-before .cp-label { color: var(--accent-red); }
+.cp-after .cp-label { color: var(--accent-green); }
+
+.cp-time {
+  font-family: 'Outfit', sans-serif;
+  font-size: 4rem;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.cp-before .cp-time { color: rgba(220, 38, 38, 0.3); }
+.cp-after .cp-time {
+  background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.cp-unit {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 22px;
+}
+
+.cp-before .cp-unit { color: rgba(220, 38, 38, 0.45); }
+.cp-after .cp-unit { color: var(--accent-green); }
+
+.cp-visual {
+  margin-bottom: 22px;
+}
+
+.cp-items {
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.closing-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+}
+
+.closing-invest {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.closing-invest strong { color: var(--text-primary); }
+
+/* ═══════════════════════════════════════
+   CHAOS DIAGRAM (Slide 3)
+   ═══════════════════════════════════════ */
+.chaos-section {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.chaos-diagram {
+  flex: 0 0 320px;
+  position: relative;
+  height: 260px;
+}
+
+.chaos-scribble {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 280px;
+  height: 240px;
+  z-index: 1;
+}
+
+.chaos-scribble path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.5;
+}
+
+.chaos-node {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  z-index: 2;
+}
+
+.chaos-node-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  border: 2px solid;
+  background: var(--bg-deep);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.4);
+}
+
+.chaos-node-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.55rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.cn-sf .chaos-node-icon { border-color: var(--accent-blue); color: var(--accent-blue); }
+.cn-sf .chaos-node-label { color: var(--accent-blue); }
+.cn-zd .chaos-node-icon { border-color: var(--accent-green); color: var(--accent-green); }
+.cn-zd .chaos-node-label { color: var(--accent-green); }
+.cn-db .chaos-node-icon { border-color: var(--accent-amber); color: var(--accent-amber); }
+.cn-db .chaos-node-label { color: var(--accent-amber); }
+.cn-bill .chaos-node-icon { border-color: var(--accent-purple); color: var(--accent-purple); }
+.cn-bill .chaos-node-label { color: var(--accent-purple); }
+.cn-pay .chaos-node-icon { border-color: var(--accent-red); color: var(--accent-red); }
+.cn-pay .chaos-node-label { color: var(--accent-red); }
+.cn-slack .chaos-node-icon { border-color: var(--accent-pink); color: var(--accent-pink); }
+.cn-slack .chaos-node-label { color: var(--accent-pink); }
+
+.chaos-center-num {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  font-family: 'Outfit', sans-serif;
+  font-size: 2.8rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--accent-red), var(--accent-amber));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: center;
+  line-height: 1;
+  text-shadow: none;
+}
+
+.chaos-center-sub {
+  display: block;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  -webkit-text-fill-color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.chaos-right {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ═══════════════════════════════════════
+   DREAM SLIDE (Slide 2 — NEW)
+   ═══════════════════════════════════════ */
+.dream-slide {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.dream-content {
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.dream-narration {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 2.6rem;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 1.45;
+  background: linear-gradient(135deg, #1a1c25 0%, #7c3aed 40%, #2563eb 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 40px;
+}
+
+.dream-screenshot {
+  max-width: 600px;
+  margin: 0 auto;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(37, 99, 235, 0.15);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+}
+
+.dream-screenshot img {
+  width: 100%;
+  display: block;
+  opacity: 0.55;
+}
+
+/* ═══════════════════════════════════════
+   CONTEXT FLOW (Slide 6 — MVP Highlight)
+   ═══════════════════════════════════════ */
+.context-flow {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  margin-top: 12px;
+}
+
+.context-step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.context-step-icons {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 1.5rem;
+  min-height: 44px;
+  align-items: flex-end;
+}
+
+.context-step-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 18px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.context-step-time {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+}
+
+.context-step-card h4 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.context-step-card p {
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+
+.context-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 48px;
+  padding-top: 44px;
+}
+
+.context-arrow svg {
+  width: 32px;
+  height: 20px;
+}
+
+.cs-green .context-step-time { color: var(--accent-green); }
+.cs-green .context-step-card { border-color: rgba(5, 150, 105, 0.2); }
+.cs-blue .context-step-time { color: var(--accent-blue); }
+.cs-blue .context-step-card { border-color: rgba(37, 99, 235, 0.2); }
+.cs-purple .context-step-time { color: var(--accent-purple); }
+.cs-purple .context-step-card { border-color: rgba(124, 58, 237, 0.2); }
+
+/* ═══════════════════════════════════════
+   STRATEGIC CASE (Slide 7 — MERGED)
+   ═══════════════════════════════════════ */
+.strategic-case {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 28px;
+  align-items: center;
+}
+
+.strategic-left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.strategic-left svg {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+}
+
+.strategic-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px 20px;
+}
+
+.strategic-right .ns-metric {
+  font-size: 2.2rem;
+  margin-bottom: 12px;
+}
+
+.strategic-right .ns-formula {
+  font-size: 0.82rem;
+  margin-bottom: 16px;
+}
+
+.strategic-right .ns-context {
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+/* ═══════════════════════════════════════
+   RESPONSIVE — 900px TABLET DEFENSE
+   ═══════════════════════════════════════ */
+@media (max-width: 900px) {
+  .slide { padding: 32px 28px; }
+  .slide h2 { font-size: 1.6rem; }
+  .problem-grid { grid-template-columns: repeat(2, 1fr); }
+  .opp-stats { grid-template-columns: repeat(2, 1fr); }
+  .phase-cols { grid-template-columns: 1fr; }
+  .sys-grid { grid-template-columns: repeat(3, 1fr); }
+  .tier-grid { grid-template-columns: repeat(2, 1fr); }
+  .team-grid { grid-template-columns: repeat(2, 1fr); }
+  .metric-items { grid-template-columns: repeat(2, 1fr); }
+  .rollout-stages { grid-template-columns: 1fr; }
+  .mvp-layout { grid-template-columns: 1fr; }
+  .scope-grid { grid-template-columns: 1fr; }
+  .thesis-points { grid-template-columns: 1fr; }
+  .artifact-index { column-count: 1; }
+  .timeline-strip { flex-wrap: wrap; }
+  .milestone-strip { flex-wrap: wrap; }
+  .wf-grid { grid-template-columns: 1fr; }
+  .risk-cards { grid-template-columns: 1fr; }
+  .title-layout { flex-direction: column; gap: 24px; }
+  .hub-wrap { flex: none; width: 100%; max-width: 340px; height: 320px; margin: 0 auto; }
+  .hub-ring { width: 270px; height: 270px; }
+  .compare-grid { grid-template-columns: 1fr; }
+  .flow-strip { flex-wrap: wrap; }
+  .transform-visual { flex-direction: column; gap: 16px; }
+  .annotation { font-size: 0.62rem; padding: 3px 8px; }
+  .context-flow { flex-direction: column; gap: 16px; }
+  .context-arrow { flex: none; padding-top: 0; transform: rotate(90deg); }
+  .context-step-icons { min-height: auto; }
+  .chaos-section { flex-direction: column; gap: 16px; }
+  .chaos-diagram { flex: none; width: 100%; max-width: 280px; height: 220px; margin: 0 auto; }
+  .dream-narration { font-size: 1.6rem; }
+  .dream-screenshot { max-width: 100%; }
+  .strategic-case { grid-template-columns: 1fr; }
+  .strategic-left svg { max-width: 240px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════
+     SCROLL DECK
+     ═══════════════════════════════════════ -->
+<div class="deck" id="deck">
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE 1 — TITLE: Customer Central
+     ══════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="1">
+  <div class="title-layout">
+    <div class="title-text">
+      <div class="header-tags">
+        <span class="header-tag">Strategic Proposal</span>
+        <span class="header-tag purple">Customer Central MVP</span>
+        <span class="header-tag green">Justworks CSO</span>
+      </div>
+      <h2 style="font-size:2.4rem;">Customer Central</h2>
+      <p class="tagline">What if agents already knew everything before the customer said hello?</p>
+      <p style="font-size:0.95rem;color:var(--text-secondary);max-width:480px;line-height:1.7;margin-bottom:16px;">A unified agent workspace that replaces the 5-system scavenger hunt with a single pane of glass &mdash; complete customer context in under 3 seconds.</p>
+      <p style="font-size:0.92rem;color:var(--text-muted);margin-bottom:20px;">Darrien Watson &middot; February 2026</p>
+      <div class="stat-pills">
+        <div class="stat-pill"><span class="pill-num">3</span><span class="pill-label">Phases</span></div>
+        <div class="stat-pill"><span class="pill-num">11</span><span class="pill-label">MVP Features</span></div>
+        <div class="stat-pill"><span class="pill-num">7</span><span class="pill-label">Week Timeline</span></div>
+        <div class="stat-pill"><span class="pill-num">5+1</span><span class="pill-label">Team</span></div>
+      </div>
+    </div>
+    <div class="hub-wrap">
+      <!-- Connector lines -->
+      <svg class="hub-lines" viewBox="0 0 400 380" preserveAspectRatio="xMidYMid meet">
+        <line x1="200" y1="190" x2="68"  y2="52"/>
+        <line x1="200" y1="190" x2="332" y2="52"/>
+        <line x1="200" y1="190" x2="370" y2="190"/>
+        <line x1="200" y1="190" x2="332" y2="328"/>
+        <line x1="200" y1="190" x2="68"  y2="328"/>
+        <line x1="200" y1="190" x2="30"  y2="190"/>
+      </svg>
+      <!-- Orbital ring -->
+      <div class="hub-ring"></div>
+      <!-- Center node -->
+      <div class="hub-center">
+        <div class="hub-center-icon">&#x1F5A5;</div>
+        <div class="hub-center-label">Customer<br>Central</div>
+      </div>
+      <!-- Satellite nodes — positioned around the circle -->
+      <div class="hub-node hn-agents" style="top:18px;left:24px;">
+        <div class="hub-node-icon">&#x1F3A7;</div>
+        <div class="hub-node-label">Agents</div>
+      </div>
+      <div class="hub-node hn-systems" style="top:18px;right:24px;">
+        <div class="hub-node-icon">&#x2699;</div>
+        <div class="hub-node-label">5 Systems</div>
+      </div>
+      <div class="hub-node hn-analytics" style="top:50%;right:0;transform:translateY(-50%);">
+        <div class="hub-node-icon">&#x1F4C8;</div>
+        <div class="hub-node-label">Analytics</div>
+      </div>
+      <div class="hub-node hn-health" style="bottom:18px;right:24px;">
+        <div class="hub-node-icon">&#x1F6E1;</div>
+        <div class="hub-node-label">Health</div>
+      </div>
+      <div class="hub-node hn-data" style="bottom:18px;left:24px;">
+        <div class="hub-node-icon">&#x1F5C4;</div>
+        <div class="hub-node-label">Unified Data</div>
+      </div>
+      <div class="hub-node hn-insights" style="top:50%;left:0;transform:translateY(-50%);">
+        <div class="hub-node-icon">&#x2728;</div>
+        <div class="hub-node-label">Insights</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE 2 — THE IDEAL ENCOUNTER (NEW — Dream Slide)
+     ══════════════════════════════════════════════════════ -->
+<div class="slide dream-slide" data-slide="2">
+  <div class="dream-content">
+    <p class="dream-narration">A customer calls. The agent's screen already shows their name, their company, their open tickets, their health score. In 30 seconds, the call is resolved.</p>
+    <div class="dream-screenshot">
+      <img src="images/agent-dashboard.png" alt="Customer Central — The Ideal Encounter">
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE 3 — THE AGENT'S REALITY TODAY
+     ══════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="3">
+
+  <h2>The Agent's Reality Today</h2>
+
+  <div class="chaos-section">
+    <!-- Chaos diagram — tangled scribble with system nodes -->
+    <div class="chaos-diagram">
+      <!-- Central scribble SVG -->
+      <svg class="chaos-scribble" viewBox="0 0 280 240" preserveAspectRatio="xMidYMid meet">
+        <!-- Tangled lines connecting systems — the visual chaos -->
+        <path d="M60,50 C90,20 160,80 200,40 S250,100 220,130 S140,90 100,130 S50,100 80,70 S130,40 60,50" stroke="rgba(220,38,38,0.35)" stroke-width="1.8"/>
+        <path d="M220,50 C190,80 100,30 60,80 S30,150 80,170 S160,120 200,170 S250,140 220,100 S150,60 220,50" stroke="rgba(217,119,6,0.3)" stroke-width="1.5"/>
+        <path d="M40,130 C70,90 150,160 200,100 S240,60 210,120 S130,170 80,120 S20,160 40,130" stroke="rgba(37,99,235,0.3)" stroke-width="1.5"/>
+        <path d="M140,30 C100,70 180,110 120,150 S60,120 110,80 S180,50 160,110 S90,140 140,180 S200,150 170,100 S100,50 140,30" stroke="rgba(124,58,237,0.3)" stroke-width="1.3"/>
+        <path d="M50,170 C90,130 140,200 200,150 S170,80 120,110 S70,70 100,150 S150,190 200,160" stroke="rgba(244,114,182,0.25)" stroke-width="1.3"/>
+        <path d="M180,30 C150,70 80,50 60,110 S90,170 150,140 S210,110 230,170 S180,200 120,170 S70,140 100,90 S160,40 180,30" stroke="rgba(5,150,105,0.25)" stroke-width="1.3"/>
+        <!-- Extra chaos loops -->
+        <path d="M100,60 Q140,100 110,140 T150,110 T120,70 T160,90" stroke="rgba(220,38,38,0.2)" stroke-width="1"/>
+        <path d="M170,70 Q130,120 180,150 T140,130 T190,90" stroke="rgba(217,119,6,0.2)" stroke-width="1"/>
+      </svg>
+
+      <!-- "5–6" center number -->
+      <div class="chaos-center-num">
+        5&ndash;6
+        <span class="chaos-center-sub">systems per call</span>
+      </div>
+
+      <!-- System nodes positioned around the tangle -->
+      <div class="chaos-node cn-sf" style="top:0;left:15%;">
+        <div class="chaos-node-icon">&#x2601;</div>
+        <div class="chaos-node-label">Salesforce</div>
+      </div>
+      <div class="chaos-node cn-zd" style="top:0;right:15%;">
+        <div class="chaos-node-icon">&#x1F3AB;</div>
+        <div class="chaos-node-label">Zendesk</div>
+      </div>
+      <div class="chaos-node cn-db" style="top:42%;right:0;transform:translateY(-50%);">
+        <div class="chaos-node-icon">&#x1F5C4;</div>
+        <div class="chaos-node-label">Prod DB</div>
+      </div>
+      <div class="chaos-node cn-bill" style="bottom:0;right:18%;">
+        <div class="chaos-node-icon">&#x1F4B3;</div>
+        <div class="chaos-node-label">Billing</div>
+      </div>
+      <div class="chaos-node cn-pay" style="bottom:0;left:18%;">
+        <div class="chaos-node-icon">&#x1F4B0;</div>
+        <div class="chaos-node-label">Payroll</div>
+      </div>
+      <div class="chaos-node cn-slack" style="top:42%;left:0;transform:translateY(-50%);">
+        <div class="chaos-node-icon">&#x1F4AC;</div>
+        <div class="chaos-node-label">Slack</div>
+      </div>
+    </div>
+
+    <!-- Timeline card on the right -->
+    <div class="chaos-right">
+      <p style="margin-bottom:12px;">Every call starts with a scavenger hunt. Agents toggle between disconnected systems to assemble customer context &mdash; before they can even begin helping.</p>
+
+      <div class="visual-card">
+        <div class="visual-card-title">Timeline of a Single Customer Call</div>
+        <div class="timeline-strip">
+          <div class="timeline-step ts-red">
+            <div class="t-time">T+0s</div>
+            <div class="t-action">Phone Rings</div>
+            <div class="t-system">Who is calling?</div>
+          </div>
+          <div class="timeline-step ts-red">
+            <div class="t-time">T+15s</div>
+            <div class="t-action">Open Salesforce</div>
+            <div class="t-system">Find company</div>
+          </div>
+          <div class="timeline-step ts-red">
+            <div class="t-time">T+30s</div>
+            <div class="t-action">Open Zendesk</div>
+            <div class="t-system">Check ticket history</div>
+          </div>
+          <div class="timeline-step ts-amber">
+            <div class="t-time">T+60s</div>
+            <div class="t-action">Check Billing</div>
+            <div class="t-system">Account status</div>
+          </div>
+          <div class="timeline-step ts-amber">
+            <div class="t-time">T+90s</div>
+            <div class="t-action">Check Payroll</div>
+            <div class="t-system">Next run date</div>
+          </div>
+          <div class="timeline-step ts-green">
+            <div class="t-time">T+120s</div>
+            <div class="t-action">Begin Helping</div>
+            <div class="t-system">Customer has repeated themselves</div>
+          </div>
+        </div>
+      </div>
+
+      <p style="font-size:0.88rem;color:var(--text-muted);margin-top:8px;"><strong style="color:var(--accent-red);">120 seconds</strong> of context-building before a single problem is addressed.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE 4 — SIX COMPOUNDING PROBLEMS
+     ══════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="4">
+
+  <h2>Six Compounding Problems</h2>
+  <p style="margin-bottom:16px;">All traced back to the case study brief. P1&ndash;P4 map to Phase 1 MVP; P5&ndash;P6 require the data foundation the MVP builds.</p>
+
+  <div class="problem-grid">
+    <div class="problem-card">
+      <div class="p-id">P1</div>
+      <h4>Context-Switching Tax</h4>
+      <p>5&ndash;6 disconnected systems per call. Every switch costs cognitive bandwidth and clock time.</p>
+    </div>
+    <div class="problem-card">
+      <div class="p-id">P2</div>
+      <h4>Caller Identity Problem</h4>
+      <p>Admin or employee? Which company? First 30&ndash;60 seconds wasted on identification.</p>
+    </div>
+    <div class="problem-card">
+      <div class="p-id">P3</div>
+      <h4>Repeat-Yourself Problem</h4>
+      <p>History split across Zendesk and Salesforce. Customers tell their story three times.</p>
+    </div>
+    <div class="problem-card">
+      <div class="p-id">P4</div>
+      <h4>Account Status Blindspot</h4>
+      <p>Billing status and payroll dates live in production DB &mdash; not in the tools agents use.</p>
+    </div>
+    <div class="problem-card">
+      <div class="p-id">P5</div>
+      <h4>Proactive Blindspot</h4>
+      <p>Usage patterns and lifecycle signals exist but are never synthesized into agent-facing alerts.</p>
+    </div>
+    <div class="problem-card">
+      <div class="p-id">P6</div>
+      <h4>Open Issues Gap</h4>
+      <p>No way to see all active work for an account. Agents diagnose issues others are already fixing.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE 5 — THE AGENT DASHBOARD (MOVED from old slide 9)
+     ══════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="5">
+  <h2>The Agent Dashboard</h2>
+  <p style="margin-bottom:10px;">A <strong style="color:var(--accent-blue);">unified view</strong> of identity, history, and health. No more hunting.</p>
+
+  <div class="flow-strip">
+    <div class="flow-step">
+      <div class="fs-time" style="color:var(--accent-green);">&lt;500ms</div>
+      <div class="fs-name">Instant Search</div>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step">
+      <div class="fs-time" style="color:var(--accent-blue);">&lt;2s</div>
+      <div class="fs-name">Caller Card Loads</div>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step">
+      <div class="fs-time" style="color:var(--accent-purple);">1 click</div>
+      <div class="fs-name">Health Score</div>
+    </div>
+  </div>
+
+  <div class="screenshot-container">
+    <img src="images/agent-dashboard.png" alt="Customer Central — Agent Dashboard showing Sarah Chen at Acme Corp with full context">
+    <div class="annotation annotation-green" style="top:28%;left:2%;">Person &amp; Company</div>
+    <div class="annotation annotation-blue" style="top:7%;left:22%;">Cmd+K Search</div>
+    <div class="annotation annotation-amber" style="top:7%;right:2%;">Status Strip</div>
+    <div class="annotation annotation-red" style="bottom:16%;left:28%;">Open Tickets Pinned</div>
+    <div class="annotation annotation-purple" style="bottom:16%;right:2%;">Recent Changes</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE 6 — CONTEXT IN SECONDS (MVP Highlight)
+     ══════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="6">
+  <h2>Context in Seconds</h2>
+  <p style="margin-bottom:4px;">Three capabilities that replace the 120-second scavenger hunt. Everything an agent needs, in the order they need it.</p>
+
+  <div class="context-flow">
+    <!-- Step 1: Instant Search -->
+    <div class="context-step cs-green">
+      <div class="context-step-icons">
+        <span>&#x1F50D;</span>
+        <span>&#x1F5C4;</span>
+      </div>
+      <div class="context-step-card">
+        <div class="context-step-time">&lt; 500ms</div>
+        <h4>Instant Search</h4>
+        <p>Fuzzy search across 500K contacts by name, email, phone, or company. Results before the customer finishes their greeting.</p>
+      </div>
+    </div>
+
+    <!-- Arrow -->
+    <div class="context-arrow">
+      <svg viewBox="0 0 32 20" fill="none">
+        <path d="M0 10h24M18 4l8 6-8 6" stroke="var(--accent-blue)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <!-- Step 2: Caller Card -->
+    <div class="context-step cs-blue">
+      <div class="context-step-icons">
+        <span>&#x1F464;</span>
+        <span>&#x1F4CB;</span>
+        <span>&#x23F1;</span>
+      </div>
+      <div class="context-step-card">
+        <div class="context-step-time">&lt; 2 seconds</div>
+        <h4>Caller Card Loads</h4>
+        <p>Full profile in one view: identity, company, plan, billing status, payroll countdown, open tickets. No toggling.</p>
+      </div>
+    </div>
+
+    <!-- Arrow -->
+    <div class="context-arrow">
+      <svg viewBox="0 0 32 20" fill="none">
+        <path d="M0 10h24M18 4l8 6-8 6" stroke="var(--accent-blue)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <!-- Step 3: Health Score -->
+    <div class="context-step cs-purple">
+      <div class="context-step-icons">
+        <span>&#x1F4CA;</span>
+        <span>&#x1F6E1;</span>
+        <span>&#x2764;</span>
+      </div>
+      <div class="context-step-card">
+        <div class="context-step-time">1 click</div>
+        <h4>Health Score</h4>
+        <p>Expandable breakdown of account health &mdash; billing, payroll, support, satisfaction. Transparent formula, no black box.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="dep-insight" style="margin-top:16px;">
+    <strong>Read-only MVP.</strong> No write-back actions in Phase 1. We validate data accuracy for 60+ days before agents act on it. Wrong data displayed is fixable. Wrong data written back is a disaster.
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE 7 — THE STRATEGIC CASE (MERGED from old slides 4+5)
+     ══════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="7">
+  <h2>The Strategic Case</h2>
+  <p style="margin-bottom:14px;">Justworks has incredible agents pulling off +60 NPS <strong>in spite of their tools</strong>, not because of them. A model that relies on individual heroics doesn't scale.</p>
+
+  <div class="strategic-case">
+    <div class="strategic-left">
+      <!-- North Star compass + rising chart illustration -->
+      <svg viewBox="0 0 300 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Compass outer ring -->
+        <circle cx="150" cy="110" r="72" stroke="var(--accent-blue)" stroke-width="2" opacity="0.5"/>
+        <circle cx="150" cy="110" r="58" stroke="var(--accent-blue)" stroke-width="1.5" opacity="0.35"/>
+
+        <!-- Compass cardinal labels -->
+        <text x="150" y="28" text-anchor="middle" fill="var(--accent-blue)" font-family="DM Mono, monospace" font-size="13" font-weight="600">N</text>
+        <text x="150" y="200" text-anchor="middle" fill="var(--accent-blue)" font-family="DM Mono, monospace" font-size="13" font-weight="600">S</text>
+        <text x="68" y="115" text-anchor="middle" fill="var(--accent-blue)" font-family="DM Mono, monospace" font-size="13" font-weight="600">W</text>
+        <text x="232" y="115" text-anchor="middle" fill="var(--accent-blue)" font-family="DM Mono, monospace" font-size="13" font-weight="600">E</text>
+
+        <!-- Compass star — 8 points -->
+        <!-- Main N-S-E-W points (large) -->
+        <polygon points="150,48 156,100 150,90 144,100" fill="var(--accent-green)" opacity="0.8"/>
+        <polygon points="150,172 144,120 150,130 156,120" fill="var(--accent-blue)" opacity="0.5"/>
+        <polygon points="212,110 160,104 170,110 160,116" fill="var(--accent-blue)" opacity="0.5"/>
+        <polygon points="88,110 140,116 130,110 140,104" fill="var(--accent-blue)" opacity="0.5"/>
+        <!-- Diagonal points (smaller) -->
+        <polygon points="194,66 158,102 164,96 156,96" fill="var(--accent-green)" opacity="0.4"/>
+        <polygon points="106,66 144,96 136,96 142,102" fill="var(--accent-green)" opacity="0.4"/>
+        <polygon points="194,154 156,118 164,124 158,118" fill="var(--accent-blue)" opacity="0.3"/>
+        <polygon points="106,154 142,118 136,124 144,118" fill="var(--accent-blue)" opacity="0.3"/>
+        <!-- Center dot -->
+        <circle cx="150" cy="110" r="4" fill="var(--accent-blue)"/>
+
+        <!-- Bar chart below compass -->
+        <!-- Grid lines -->
+        <line x1="50" y1="260" x2="50" y2="395" stroke="var(--border)" stroke-width="1"/>
+        <line x1="50" y1="395" x2="265" y2="395" stroke="var(--border)" stroke-width="1"/>
+
+        <!-- Bars — ascending -->
+        <rect x="62" y="360" width="32" height="35" rx="3" fill="var(--accent-blue)" opacity="0.2" stroke="var(--accent-blue)" stroke-width="1" stroke-opacity="0.3"/>
+        <rect x="104" y="340" width="32" height="55" rx="3" fill="var(--accent-green)" opacity="0.25" stroke="var(--accent-green)" stroke-width="1" stroke-opacity="0.3"/>
+        <rect x="146" y="310" width="32" height="85" rx="3" fill="var(--accent-blue)" opacity="0.3" stroke="var(--accent-blue)" stroke-width="1" stroke-opacity="0.4"/>
+        <rect x="188" y="280" width="32" height="115" rx="3" fill="var(--accent-green)" opacity="0.35" stroke="var(--accent-green)" stroke-width="1" stroke-opacity="0.4"/>
+
+        <!-- Trend arrow — rising line with arrowhead -->
+        <polyline points="68,358 120,332 162,298 204,265" stroke="var(--accent-blue)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <polygon points="204,265 218,258 210,272" fill="var(--accent-blue)"/>
+
+        <!-- Stat labels on bars -->
+        <text x="78" y="355" text-anchor="middle" fill="var(--text-muted)" font-family="DM Mono, monospace" font-size="8.5" font-weight="500">9</text>
+        <text x="120" y="335" text-anchor="middle" fill="var(--text-muted)" font-family="DM Mono, monospace" font-size="8.5" font-weight="500">+60</text>
+        <text x="162" y="305" text-anchor="middle" fill="var(--text-muted)" font-family="DM Mono, monospace" font-size="8.5" font-weight="500">10K+</text>
+        <text x="204" y="275" text-anchor="middle" fill="var(--text-muted)" font-family="DM Mono, monospace" font-size="8.5" font-weight="500">$27B</text>
+        <text x="78" y="410" text-anchor="middle" fill="var(--text-muted)" font-family="DM Sans, sans-serif" font-size="7">Stevies</text>
+        <text x="120" y="410" text-anchor="middle" fill="var(--text-muted)" font-family="DM Sans, sans-serif" font-size="7">NPS</text>
+        <text x="162" y="410" text-anchor="middle" fill="var(--text-muted)" font-family="DM Sans, sans-serif" font-size="7">Customers</text>
+        <text x="204" y="410" text-anchor="middle" fill="var(--text-muted)" font-family="DM Sans, sans-serif" font-size="7">Market</text>
+
+        <!-- Arrow axis label -->
+        <text x="258" y="398" fill="var(--text-muted)" font-family="DM Mono, monospace" font-size="9">&rarr;</text>
+      </svg>
+    </div>
+    <div class="strategic-right">
+      <div class="ns-metric">NPS &divide; CSO Headcount $</div>
+      <div class="ns-formula">Not NPS alone. Not AHT alone. The ratio that captures leverage.</div>
+      <div class="ns-context">
+        <p>The ratio of customer satisfaction to support investment should <strong>improve quarter over quarter</strong> &mdash; not because service gets worse, but because the system gets smarter.</p>
+        <p style="margin-top:10px;"><strong style="color:var(--accent-green);">Small business context:</strong> Justworks serves companies without dedicated HR. When their admin calls, CSO may be their only expert.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE 8 — THREE PHASES
+     ══════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="8">
+
+  <h2>Three Phases, One Dependency Chain</h2>
+
+  <div class="phase-cols">
+    <div class="phase-col pc-green">
+      <div class="pc-label">Phase 1 &mdash; Foundation</div>
+      <h4>Unified Context</h4>
+      <div class="pc-time">7 weeks</div>
+      <p>Read-only. Give agents a single screen with complete customer context. This is the foundation everything else depends on.</p>
+    </div>
+    <div class="phase-col pc-blue">
+      <div class="pc-label">Phase 2 &mdash; Intelligence</div>
+      <h4>Health &amp; Action</h4>
+      <div class="pc-time">8&ndash;12 weeks</div>
+      <p>Clean data flowing &rarr; layer in ML scoring, write-back actions, proactive alerts, benefits life events.</p>
+    </div>
+    <div class="phase-col pc-purple">
+      <div class="pc-label">Phase 3 &mdash; Proactive</div>
+      <h4>Prediction</h4>
+      <div class="pc-time">Following quarter</div>
+      <p>90+ days of structured data &rarr; AI summaries, churn prediction, agent copilot, upsell intelligence.</p>
+    </div>
+  </div>
+
+  <div class="dep-insight">
+    <strong>Each phase produces the data the next phase needs.</strong> Phase 1 isn't just a smaller version of the end state &mdash; it's the instrumentation layer that makes Phases 2 and 3 possible. This maps directly to the prompt: Phase 1 = handle direct problems. Phase 2 = pre-empt problems. Phase 3 = proprietary data as competitive advantage.
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE 9 — 7-WEEK ROADMAP
+     ══════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="9">
+
+  <h2>7-Week Roadmap</h2>
+  <p style="margin-bottom:12px;">Every week ends with a decision gate. If data accuracy or agent trust isn't there, we extend rather than push forward.</p>
+
+  <div class="visual-card" style="padding:16px;">
+    <div class="milestone-strip">
+      <div class="milestone-item mi-disc">
+        <div style="font-size:1.2rem;margin-bottom:4px;">&#x1F50D;</div>
+        <div class="mw">Wk 0</div>
+        <div class="mn">Discovery &amp; Validation</div>
+      </div>
+      <div class="milestone-item mi-build">
+        <div style="font-size:1.2rem;margin-bottom:4px;">&#x2699;</div>
+        <div class="mw">Wk 1</div>
+        <div class="mn">Data Spikes &amp; Foundation</div>
+      </div>
+      <div class="milestone-item mi-build">
+        <div style="font-size:1.2rem;margin-bottom:4px;">&#x1F517;</div>
+        <div class="mw">Wk 2</div>
+        <div class="mn">API Core &amp; Search</div>
+      </div>
+      <div class="milestone-item mi-build">
+        <div style="font-size:1.2rem;margin-bottom:4px;">&#x1F528;</div>
+        <div class="mw">Wk 3&ndash;4</div>
+        <div class="mn">Feature Build Sprint</div>
+      </div>
+      <div class="milestone-item mi-alpha">
+        <div style="font-size:1.2rem;margin-bottom:4px;">&#x1F9EA;</div>
+        <div class="mw">Wk 5</div>
+        <div class="mn">Alpha (5 Agents)</div>
+      </div>
+      <div class="milestone-item mi-beta">
+        <div style="font-size:1.2rem;margin-bottom:4px;">&#x1F465;</div>
+        <div class="mw">Wk 6</div>
+        <div class="mn">Beta (Full Pod)</div>
+      </div>
+      <div class="milestone-item mi-launch">
+        <div style="font-size:1.2rem;margin-bottom:4px;">&#x1F680;</div>
+        <div class="mw">Wk 7</div>
+        <div class="mn">Full Rollout</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px;">
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:12px;">
+      <div style="font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--accent-green);margin-bottom:4px;">WEEKS 0&ndash;2</div>
+      <p style="font-size:0.8rem;">Shadow agents, validate data access, build API core &amp; search. <strong>De-risk before committing to scope.</strong></p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:12px;">
+      <div style="font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--accent-blue);margin-bottom:4px;">WEEKS 3&ndash;5</div>
+      <p style="font-size:0.8rem;">All 11 features built &amp; tested. Alpha with 5 volunteer agents, daily feedback standups.</p>
+    </div>
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:8px;padding:12px;">
+      <div style="font-family:'DM Mono',monospace;font-size:0.68rem;color:var(--accent-purple);margin-bottom:4px;">WEEKS 6&ndash;7</div>
+      <p style="font-size:0.8rem;">Beta with full pod (20&ndash;30 agents). Identify champions. Gated rollout to all CSO.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE 10 — PHASE 1 MVP: 11 FEATURES
+     ══════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="10">
+
+  <h2>Phase 1 MVP &mdash; 11 Features <span class="badge badge-green" style="font-size:0.7rem;vertical-align:middle;margin-left:8px;">Read-Only MVP</span></h2>
+  <p style="margin-bottom:14px;">8 full builds + 3 deep-link integrations. The deep-link approach covers ~80% of each use case at ~20% of the build cost.</p>
+
+  <div class="visual-card" style="padding:14px 18px;">
+    <table class="data-table">
+      <thead>
+        <tr><th>ID</th><th>Feature</th><th>Category</th><th>Build Type</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>FS-1</td><td>Instant Caller Recognition</td><td><span class="badge badge-green">Foundation</span></td><td>Full Build</td></tr>
+        <tr><td>FS-2</td><td>Complete Interaction History</td><td><span class="badge badge-green">Foundation</span></td><td>Full Build</td></tr>
+        <tr><td>FS-3</td><td>Account Status at a Glance</td><td><span class="badge badge-green">Foundation</span></td><td>Full Build</td></tr>
+        <tr><td>PS-1</td><td>Paycheck Discrepancy Resolution</td><td><span class="badge badge-blue">Problem</span></td><td>Full Build</td></tr>
+        <tr><td>PS-2</td><td>Payroll Failure Triage</td><td><span class="badge badge-blue">Problem</span></td><td>Alert + Deep Link</td></tr>
+        <tr><td>PS-3</td><td>Tax Document Lookup</td><td><span class="badge badge-blue">Problem</span></td><td>Full Build</td></tr>
+        <tr><td>PS-4</td><td>Benefits Enrollment Guidance</td><td><span class="badge badge-blue">Problem</span></td><td>Quick-View + Deep Link</td></tr>
+        <tr><td>PS-5</td><td>Invoice Explanation</td><td><span class="badge badge-blue">Problem</span></td><td>Deep Link + Annotation</td></tr>
+        <tr><td>PS-6</td><td>Payment Failure Cascade</td><td><span class="badge badge-blue">Problem</span></td><td>Full Build</td></tr>
+        <tr><td>HS-1</td><td>Lightweight Health Score</td><td><span class="badge badge-purple">Health</span></td><td>Full Build</td></tr>
+        <tr><td>HS-2</td><td>Leadership Health Overview</td><td><span class="badge badge-purple">Health</span></td><td>Full Build</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p style="font-size:0.82rem;color:var(--text-muted);margin-top:4px;"><strong style="color:var(--text-primary);">Read-before-write principle:</strong> No write-back actions in Phase 1. We need 60+ days of accuracy validation before we let agents act on the data. Write-back comes in Phase 2.</p>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE 11 — DATA ARCHITECTURE
+     ══════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="11">
+
+  <h2>Data Architecture &mdash; 5 Sources</h2>
+  <p style="margin-bottom:14px;">55 data fields from 5 source systems, consolidated into a purpose-built read-optimized aggregation layer.</p>
+
+  <div class="sys-grid">
+    <div class="sys-card">
+      <div class="sc-icon" style="color:var(--accent-blue);">&#x2601;</div>
+      <h4>Salesforce</h4>
+      <p>Accounts, contacts, cases, opportunities</p>
+    </div>
+    <div class="sys-card">
+      <div class="sc-icon" style="color:var(--accent-green);">&#x1F3AB;</div>
+      <h4>Zendesk</h4>
+      <p>Tickets, interactions, CSAT ratings</p>
+    </div>
+    <div class="sys-card">
+      <div class="sc-icon" style="color:var(--accent-amber);">&#x1F5C4;</div>
+      <h4>Production DB</h4>
+      <p>Payroll, employees, company data</p>
+    </div>
+    <div class="sys-card">
+      <div class="sc-icon" style="color:var(--accent-purple);">&#x1F4B3;</div>
+      <h4>Billing</h4>
+      <p>Invoices, payments, subscription status</p>
+    </div>
+    <div class="sys-card">
+      <div class="sc-icon" style="color:var(--accent-red);">&#x26A1;</div>
+      <h4>Event Stream</h4>
+      <p>Logins, feature usage, changes</p>
+    </div>
+  </div>
+
+  <div class="sys-arrow">&darr; sync &amp; aggregate &darr;</div>
+
+  <div class="aggregation-box">
+    <h4>Customer Central Aggregation Layer</h4>
+    <p>Separate read store &mdash; not direct source queries. Pre-computed, cached, optimized for &lt;500ms page loads. Source systems remain authoritative.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE 12 — LOADING STRATEGY + RISKS
+     ══════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="12">
+
+  <h2>Loading Strategy + Integration Risks</h2>
+
+  <div class="tier-grid">
+    <div class="tier-card tc-instant">
+      <div class="tc-time">&lt;500ms</div>
+      <h4>Instant</h4>
+      <p>Identity &amp; status from cache. On screen before the agent finishes saying hello.</p>
+    </div>
+    <div class="tier-card tc-fast">
+      <div class="tc-time">500ms&ndash;2s</div>
+      <h4>Fast</h4>
+      <p>Interaction timeline &amp; recent changes. Arrives while customer is still talking.</p>
+    </div>
+    <div class="tier-card tc-lazy">
+      <div class="tc-time">2s&ndash;5s</div>
+      <h4>Background</h4>
+      <p>Tax badges &amp; benefits summary. Loads silently &mdash; agent never sees a spinner.</p>
+    </div>
+    <div class="tier-card tc-click">
+      <div class="tc-time">On Click</div>
+      <h4>On Demand</h4>
+      <p>Pay stubs, invoices, payment cascade. Only fetched when agent needs them.</p>
+    </div>
+  </div>
+
+  <div class="visual-card-title" style="margin-top:4px;">Integration Risks &mdash; Week 1 Discovery Items</div>
+  <div class="risk-cards">
+    <div class="risk-card">
+      <h4>Zendesk &harr; Salesforce Join Key</h4>
+      <p>May not exist cleanly. If no shared identifier, we need a resolution strategy in Week 1. Scoped to affect FS-2, not the whole MVP.</p>
+    </div>
+    <div class="risk-card">
+      <h4>Real-Time Payroll Status</h4>
+      <p>Unknown if queryable or batch process. Determines whether we show live data or cached snapshots for payroll countdown.</p>
+    </div>
+    <div class="risk-card">
+      <h4>Payment Cascade Logic</h4>
+      <p>"Failed payment blocks payroll for 34 employees" requires business rules that might only live in someone's head. Needs documentation.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE 13 — TEAM: 5+1 MODEL
+     ══════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="13">
+
+  <h2>Team &mdash; 5+1 Model</h2>
+  <p style="margin-bottom:14px;">Work split by vertical, not by layer. Each engineer owns a complete slice &mdash; database to API to UI. No handoffs.</p>
+
+  <div class="team-grid">
+    <div class="team-card tc-be">
+      <div class="tc-role">Full-Stack Engineer</div>
+      <h4>Engineer #1</h4>
+      <p>Foundation features (FS-1, FS-2, FS-3): search, identity, timeline, status strip. Full-time, weeks 1&ndash;7.</p>
+    </div>
+    <div class="team-card tc-fe">
+      <div class="tc-role">Full-Stack Engineer</div>
+      <h4>Engineer #2</h4>
+      <p>Problem panels (PS-1 through PS-6): payroll, tax, benefits, billing, payment cascade. Full-time, weeks 1&ndash;7.</p>
+    </div>
+    <div class="team-card tc-de">
+      <div class="tc-role">Data Services</div>
+      <h4>Data Engineer</h4>
+      <p>Salesforce sync, Zendesk pipeline, aggregation layer, schema design. 75% allocation, weeks 1&ndash;5.</p>
+    </div>
+    <div class="team-card tc-ds">
+      <div class="tc-role">Designer</div>
+      <h4>Product Designer</h4>
+      <p>IA, component specs, agent observation. Full-time weeks 1&ndash;2, then 50%.</p>
+    </div>
+    <div class="team-card tc-pm">
+      <div class="tc-role">PM</div>
+      <h4>Product Manager</h4>
+      <p>Discovery, specs, alpha/beta coordination, stakeholder management. Full-time.</p>
+    </div>
+    <div class="team-card tc-qa">
+      <div class="tc-role">QA (Shared)</div>
+      <h4>QA Engineer</h4>
+      <p>Data accuracy validation, regression testing, alpha/beta QA. 50%, weeks 3&ndash;7.</p>
+    </div>
+  </div>
+
+  <div class="team-summary">
+    <div class="ts-item"><strong>~23</strong> engineer-weeks total</div>
+    <div class="ts-item"><strong>5+1</strong> team members</div>
+    <div class="ts-item"><strong>7</strong> calendar weeks</div>
+    <div class="ts-item" style="color:var(--accent-amber);">Biggest staffing risk: Data Services allocation</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE 14 — WHAT I DON'T KNOW
+     ══════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="14">
+
+  <h2>What I Don't Know</h2>
+  <p style="margin-bottom:16px;">17 questions mapped to 5 stakeholders. These three could change the scope:</p>
+
+  <div class="question-list">
+    <div class="question-item">
+      <div class="qi-num">1</div>
+      <div>
+        <div class="qi-to">Caroline Crossland &mdash; Salesforce Solutions Architect</div>
+        <p>Is there a reliable join key between Salesforce accounts and Zendesk organizations? <strong>Single highest-risk data question.</strong> If no shared identifier exists, FS-2 degrades to Zendesk-only history.</p>
+      </div>
+    </div>
+    <div class="question-item">
+      <div class="qi-num">2</div>
+      <div>
+        <div class="qi-to">Evan Lehrman &mdash; Sr. Technical PM</div>
+        <p>Can we get read-replica access to the production database, or must we go through internal APIs? This affects loading strategy and performance targets for the entire MVP.</p>
+      </div>
+    </div>
+    <div class="question-item">
+      <div class="qi-num">3</div>
+      <div>
+        <div class="qi-to">Renee Orser &mdash; VP of Internal Tools</div>
+        <p>What signals does leadership actually use today to assess account health? I have a hypothesis in my scoring formula, but I need to validate it against how decisions are actually made.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="dep-insight" style="margin-top:16px;">
+    <strong>Transparency:</strong> I haven't spoken to a single CSO agent to validate these problems. I haven't dug into support ticket volumes to know what to prioritize. This is from the outside looking in &mdash; I would do this differently from within the organization. I've made <strong>47 explicit assumptions</strong> after conducting research, and every one of them is documented at length in the proposal. My first actions would be to shadow 5&ndash;10 calls and pull ticket data to validate or correct the priorities.
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE 15 — SUCCESS METRICS
+     ══════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="15">
+
+  <h2>Success Metrics</h2>
+  <p style="margin-bottom:14px;">Three tiers because different audiences care about different timescales. But above all: <strong style="color:var(--accent-green);">CSO agent adoption is the #1 metric.</strong> They have to <em>want</em> to use it because it makes their job easier &mdash; not because they were told to.</p>
+
+  <div class="metrics-section ms-leading">
+    <div class="ms-label">Leading Indicators (Week 1&ndash;2)</div>
+    <div class="metric-items">
+      <div class="metric-item"><div class="mi-val" style="color:var(--accent-green);">&lt;10s <span style="font-size:0.75rem;">&#x2193;</span></div><div class="mi-name">Orientation time &mdash; can the agent find what they need?</div></div>
+      <div class="metric-item"><div class="mi-val" style="color:var(--accent-green);">5 &rarr; 2 <span style="font-size:0.75rem;">&#x2193;</span></div><div class="mi-name">Systems accessed per call drops from 5 to 2 or fewer</div></div>
+      <div class="metric-item"><div class="mi-val" style="color:var(--accent-green);">80%+ <span style="font-size:0.75rem;">&#x2191;</span></div><div class="mi-name">Health score accuracy vs. manual assessments</div></div>
+    </div>
+  </div>
+
+  <div class="metrics-section ms-outcome">
+    <div class="ms-label">Outcome Metrics (90 Days)</div>
+    <div class="metric-items">
+      <div class="metric-item"><div class="mi-val" style="color:var(--accent-blue);">15&ndash;20% <span style="font-size:0.75rem;">&#x2193;</span></div><div class="mi-name">Average handle time reduction</div></div>
+      <div class="metric-item"><div class="mi-val" style="color:var(--accent-blue);">+10% <span style="font-size:0.75rem;">&#x2191;</span></div><div class="mi-name">First-contact resolution improvement</div></div>
+      <div class="metric-item"><div class="mi-val" style="color:var(--accent-blue);">&uarr; QoQ <span style="font-size:0.75rem;">&#x2191;</span></div><div class="mi-name">North Star: NPS per CSO headcount dollar trending up</div></div>
+    </div>
+  </div>
+
+  <div class="metrics-section ms-guardrail">
+    <div class="ms-label">Guardrails (Continuous)</div>
+    <div class="metric-items">
+      <div class="metric-item"><div class="mi-val" style="color:var(--accent-amber);">&ge; +60 <span style="font-size:0.75rem;">&#x1F6E1;</span></div><div class="mi-name">NPS floor &mdash; quality doesn't erode</div></div>
+      <div class="metric-item"><div class="mi-val" style="color:var(--accent-amber);">&ge; 98% <span style="font-size:0.75rem;">&#x1F6E1;</span></div><div class="mi-name">Data accuracy &mdash; agents trust what they see</div></div>
+      <div class="metric-item"><div class="mi-val" style="color:var(--accent-amber);">0% <span style="font-size:0.75rem;">&#x1F6E1;</span></div><div class="mi-name">No increase in escalation rate</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE 16 — PULL-BASED ROLLOUT
+     ══════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="16">
+
+  <h2>Pull-Based Rollout</h2>
+  <p style="margin-bottom:16px;">If agents don't prefer it, we don't force it &mdash; we fix it. Three stages, each gated.</p>
+
+  <div class="rollout-stages">
+    <div class="rollout-stage rs-alpha">
+      <div class="rs-badge">Alpha &mdash; Week 5</div>
+      <h4>5 Agents</h4>
+      <div class="rs-who">Volunteer agents, supplementing existing tools. Daily 15-min feedback standups.</div>
+      <div class="rs-gate-label">Gate to Proceed</div>
+      <ul>
+        <li>Data accuracy &ge; 95%</li>
+        <li>Core flow works without crashing</li>
+        <li>3/5 agents prefer it over current tools</li>
+        <li>No critical data gaps identified</li>
+      </ul>
+    </div>
+    <div class="rollout-stage rs-beta">
+      <div class="rs-badge">Beta &mdash; Week 6</div>
+      <h4>20&ndash;30 Agents</h4>
+      <div class="rs-who">Full pod, Customer Central as primary tool. Structured surveys + session recordings.</div>
+      <div class="rs-gate-label">Gate to Proceed</div>
+      <ul>
+        <li>Satisfaction &ge; 3.5/5.0</li>
+        <li>70%+ using as primary tool</li>
+        <li>No data accuracy regressions</li>
+        <li>2&ndash;3 champions identified</li>
+      </ul>
+    </div>
+    <div class="rollout-stage rs-launch">
+      <div class="rs-badge">Launch &mdash; Week 7</div>
+      <h4>All CSO Agents</h4>
+      <div class="rs-who">Champions co-facilitate training. 45-min live demo, self-paced sandbox, quick reference card.</div>
+      <div class="rs-gate-label">Ongoing Support</div>
+      <ul>
+        <li>Weekly office hours (drop-in)</li>
+        <li>PM monitors adoption daily</li>
+        <li>Champions = peer trainers</li>
+        <li>Month 2+: Phase 2 intake opens</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE 17 — HOW I GOT TO THE MVP
+     ══════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="17">
+
+  <h2>How I Got to the MVP</h2>
+  <p style="margin-bottom:12px;">14-step decision chain, compressed into 4 moves:</p>
+
+  <div class="mvp-layout">
+    <!-- Left: vertical steps -->
+    <div class="decision-chain">
+      <div class="decision-step">
+        <div class="ds-num">Step 1</div>
+        <h4>Extract Jobs</h4>
+        <p>Decomposed the prompt into 6 jobs CSO agents need to perform. Every feature maps to a job.</p>
+      </div>
+      <div class="decision-step">
+        <div class="ds-num">Step 2</div>
+        <h4>Dependency Stack</h4>
+        <p>Foundation before operations before intelligence. You can't score data you haven't consolidated.</p>
+      </div>
+      <div class="decision-step">
+        <div class="ds-num">Step 3</div>
+        <h4>Score &amp; Rank</h4>
+        <p>20 problems scored on impact, confidence, and ease. Top-scoring problems converge on the same 6 data fields.</p>
+      </div>
+      <div class="decision-step">
+        <div class="ds-num">Step 4</div>
+        <h4>Read Before Write</h4>
+        <p>Read-only MVP. Wrong data displayed is fixable. Wrong data written back is a disaster.</p>
+      </div>
+    </div>
+
+    <!-- Right: decision funnel with Miro background -->
+    <div class="funnel-frame">
+      <div class="funnel-bg" style="background-image:url('images/miro-board.png');"></div>
+      <svg class="funnel-svg" viewBox="0 0 380 420">
+        <!-- Layer 1: Extract Jobs -->
+        <rect x="10" y="8" width="360" height="68" rx="8" fill="rgba(37,99,235,0.07)" stroke="rgba(37,99,235,0.3)" stroke-width="1.5"/>
+        <text x="190" y="30" text-anchor="middle" fill="var(--accent-blue)" font-family="'DM Mono',monospace" font-size="9" font-weight="600">EXTRACT JOBS</text>
+        <text x="36" y="52" fill="var(--text-secondary)" font-family="'DM Sans',sans-serif" font-size="10">Case study brief</text>
+        <text x="142" y="52" fill="var(--text-secondary)" font-family="'DM Sans',sans-serif" font-size="10">3 personas</text>
+        <text x="228" y="52" fill="var(--text-secondary)" font-family="'DM Sans',sans-serif" font-size="10">Journey maps</text>
+        <text x="330" y="52" fill="var(--text-primary)" font-family="'DM Mono',monospace" font-size="10" font-weight="600">6 jobs</text>
+
+        <!-- Connector -->
+        <path d="M190,80 L190,100" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <polygon points="185,98 190,106 195,98" fill="var(--text-muted)"/>
+
+        <!-- Layer 2: Dependency Stack -->
+        <rect x="40" y="110" width="300" height="68" rx="8" fill="rgba(124,58,237,0.07)" stroke="rgba(124,58,237,0.3)" stroke-width="1.5"/>
+        <text x="190" y="132" text-anchor="middle" fill="var(--accent-purple)" font-family="'DM Mono',monospace" font-size="9" font-weight="600">DEPENDENCY STACK</text>
+        <!-- Three ordered boxes -->
+        <rect x="58" y="144" width="76" height="22" rx="4" fill="rgba(37,99,235,0.1)" stroke="rgba(37,99,235,0.25)" stroke-width="1"/>
+        <text x="96" y="159" text-anchor="middle" fill="var(--text-secondary)" font-family="'DM Sans',sans-serif" font-size="9">Foundation</text>
+        <rect x="152" y="144" width="76" height="22" rx="4" fill="rgba(124,58,237,0.1)" stroke="rgba(124,58,237,0.25)" stroke-width="1"/>
+        <text x="190" y="159" text-anchor="middle" fill="var(--text-secondary)" font-family="'DM Sans',sans-serif" font-size="9">Operations</text>
+        <rect x="246" y="144" width="76" height="22" rx="4" fill="rgba(217,119,6,0.1)" stroke="rgba(217,119,6,0.25)" stroke-width="1"/>
+        <text x="284" y="159" text-anchor="middle" fill="var(--text-secondary)" font-family="'DM Sans',sans-serif" font-size="9">Intelligence</text>
+        <!-- Arrows between -->
+        <path d="M136,155 L150,155" stroke="var(--text-muted)" stroke-width="1"/>
+        <polygon points="148,152 153,155 148,158" fill="var(--text-muted)"/>
+        <path d="M230,155 L244,155" stroke="var(--text-muted)" stroke-width="1"/>
+        <polygon points="242,152 247,155 242,158" fill="var(--text-muted)"/>
+
+        <!-- Connector -->
+        <path d="M190,182 L190,202" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <polygon points="185,200 190,208 195,200" fill="var(--text-muted)"/>
+
+        <!-- Layer 3: Score & Rank -->
+        <rect x="70" y="212" width="240" height="78" rx="8" fill="rgba(5,150,105,0.07)" stroke="rgba(5,150,105,0.3)" stroke-width="1.5"/>
+        <text x="190" y="234" text-anchor="middle" fill="var(--accent-green)" font-family="'DM Mono',monospace" font-size="9" font-weight="600">SCORE &amp; RANK</text>
+        <!-- Dot grid: high-scoring (bright) to low (faded) -->
+        <circle cx="100" cy="256" r="5" fill="rgba(5,150,105,0.55)"/>
+        <circle cx="120" cy="256" r="5" fill="rgba(5,150,105,0.5)"/>
+        <circle cx="140" cy="256" r="5" fill="rgba(5,150,105,0.45)"/>
+        <circle cx="160" cy="256" r="5" fill="rgba(5,150,105,0.35)"/>
+        <circle cx="180" cy="256" r="5" fill="rgba(5,150,105,0.25)"/>
+        <circle cx="200" cy="256" r="5" fill="rgba(5,150,105,0.18)"/>
+        <circle cx="220" cy="256" r="5" fill="rgba(124,58,237,0.15)"/>
+        <circle cx="240" cy="256" r="5" fill="rgba(124,58,237,0.1)"/>
+        <circle cx="260" cy="256" r="5" fill="var(--text-muted)" fill-opacity="0.22"/>
+        <circle cx="280" cy="256" r="5" fill="var(--text-muted)" fill-opacity="0.16"/>
+        <!-- Second row -->
+        <circle cx="100" cy="274" r="5" fill="var(--text-muted)" fill-opacity="0.2"/>
+        <circle cx="120" cy="274" r="5" fill="var(--text-muted)" fill-opacity="0.16"/>
+        <circle cx="140" cy="274" r="5" fill="var(--text-muted)" fill-opacity="0.07"/>
+        <circle cx="160" cy="274" r="5" fill="var(--text-muted)" fill-opacity="0.14"/>
+        <circle cx="180" cy="274" r="5" fill="var(--text-muted)" fill-opacity="0.22"/>
+        <circle cx="200" cy="274" r="5" fill="var(--text-muted)" fill-opacity="0.22"/>
+        <circle cx="220" cy="274" r="5" fill="var(--text-muted)" fill-opacity="0.2"/>
+        <circle cx="240" cy="274" r="5" fill="var(--text-muted)" fill-opacity="0.2"/>
+        <circle cx="260" cy="274" r="5" fill="var(--text-muted)" fill-opacity="0.16"/>
+        <circle cx="280" cy="274" r="5" fill="var(--text-muted)" fill-opacity="0.16"/>
+        <!-- Cutoff line -->
+        <line x1="189" y1="247" x2="189" y2="283" stroke="var(--accent-amber)" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="189" y="244" text-anchor="middle" fill="var(--accent-amber)" font-family="'DM Mono',monospace" font-size="7">cutoff</text>
+
+        <!-- Connector -->
+        <path d="M190,294 L190,314" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <polygon points="185,312 190,320 195,312" fill="var(--text-muted)"/>
+
+        <!-- Layer 4: Read Before Write -->
+        <rect x="100" y="324" width="180" height="48" rx="8" fill="rgba(217,119,6,0.07)" stroke="rgba(217,119,6,0.3)" stroke-width="1.5"/>
+        <text x="190" y="346" text-anchor="middle" fill="var(--accent-amber)" font-family="'DM Mono',monospace" font-size="9" font-weight="600">READ BEFORE WRITE</text>
+        <text x="190" y="362" text-anchor="middle" fill="var(--text-secondary)" font-family="'DM Sans',sans-serif" font-size="9">Validate 60+ days before acting</text>
+
+        <!-- Final connector -->
+        <path d="M190,376 L190,392" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <polygon points="185,390 190,398 195,390" fill="var(--text-muted)"/>
+
+        <!-- Result -->
+        <rect x="120" y="400" width="140" height="18" rx="4" fill="rgba(37,99,235,0.15)" stroke="rgba(37,99,235,0.35)" stroke-width="1.5"/>
+        <text x="190" y="413" text-anchor="middle" fill="var(--accent-blue)" font-family="'DM Mono',monospace" font-size="9.5" font-weight="700">11 MVP FEATURES</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="dep-insight" style="margin-top:10px;">
+    <strong>The convergence insight:</strong> Top-scoring problems and the health dashboard need the <em>same six data fields</em>. That convergence is why 11 features feel achievable in 7 weeks.
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE 18 — FROM REACTIVE TO PROACTIVE
+     ══════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="18">
+
+  <h2>From Reactive to Proactive</h2>
+  <p style="margin-bottom:14px;">The MVP isn't the end state &mdash; it's the <strong>foundation</strong> that makes everything after it possible.</p>
+
+  <!-- Reactive → Proactive transformation visual -->
+  <div class="transform-visual">
+    <div class="transform-panel tp-reactive">
+      <div class="tp-label">Reactive</div>
+      <svg viewBox="0 0 200 120" width="200" height="120" style="display:block;margin:0 auto;">
+        <!-- Overwhelmed figure with cascading data streams -->
+        <!-- Person silhouette, hunched -->
+        <circle cx="100" cy="30" r="10" fill="rgba(220,38,38,0.5)"/>
+        <line x1="100" y1="40" x2="100" y2="72" stroke="rgba(220,38,38,0.5)" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="100" y1="50" x2="82" y2="62" stroke="rgba(220,38,38,0.5)" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="100" y1="50" x2="118" y2="62" stroke="rgba(220,38,38,0.5)" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="100" y1="72" x2="86" y2="95" stroke="rgba(220,38,38,0.5)" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="100" y1="72" x2="114" y2="95" stroke="rgba(220,38,38,0.5)" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- Cracking wall behind -->
+        <path d="M30,105 L30,40 L50,40" stroke="rgba(220,38,38,0.3)" stroke-width="2" fill="none"/>
+        <path d="M170,105 L170,40 L150,40" stroke="rgba(220,38,38,0.3)" stroke-width="2" fill="none"/>
+        <!-- Cracks -->
+        <path d="M45,55 L55,65 L48,78 L56,90" stroke="rgba(220,38,38,0.35)" stroke-width="1.5" fill="none"/>
+        <path d="M155,50 L147,62 L153,75 L145,88" stroke="rgba(220,38,38,0.35)" stroke-width="1.5" fill="none"/>
+        <!-- Water/data streaming through cracks -->
+        <path d="M56,65 C62,68 65,75 60,85" stroke="rgba(220,38,38,0.2)" stroke-width="3" fill="none"/>
+        <path d="M147,62 C140,66 138,72 142,82" stroke="rgba(220,38,38,0.2)" stroke-width="3" fill="none"/>
+        <!-- Scattered system icons -->
+        <rect x="20" y="10" width="18" height="12" rx="2" fill="none" stroke="rgba(220,38,38,0.25)" stroke-width="1"/>
+        <rect x="60" y="5" width="18" height="12" rx="2" fill="none" stroke="rgba(220,38,38,0.25)" stroke-width="1"/>
+        <rect x="130" y="8" width="18" height="12" rx="2" fill="none" stroke="rgba(220,38,38,0.25)" stroke-width="1"/>
+        <rect x="162" y="14" width="18" height="12" rx="2" fill="none" stroke="rgba(220,38,38,0.25)" stroke-width="1"/>
+        <!-- Ground line -->
+        <line x1="25" y1="105" x2="175" y2="105" stroke="rgba(220,38,38,0.2)" stroke-width="1.5"/>
+      </svg>
+      <div class="tp-desc">Agents fight fires. <br>120 seconds of context-hunting. <br>5 systems. No unified view.</div>
+    </div>
+
+    <div class="transform-arrow">
+      <svg viewBox="0 0 50 30" width="50" height="30">
+        <defs>
+          <linearGradient id="arrow-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="var(--accent-red)" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="var(--accent-green)" stop-opacity="0.8"/>
+          </linearGradient>
+        </defs>
+        <path d="M5,15 L35,15" stroke="url(#arrow-grad)" stroke-width="2.5" fill="none"/>
+        <path d="M32,8 L42,15 L32,22" stroke="var(--accent-green)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <div class="transform-panel tp-proactive">
+      <div class="tp-label">Proactive</div>
+      <svg viewBox="0 0 200 120" width="200" height="120" style="display:block;margin:0 auto;">
+        <!-- Confident figure standing on solid foundation -->
+        <!-- Person silhouette, upright -->
+        <circle cx="100" cy="25" r="10" fill="rgba(5,150,105,0.5)"/>
+        <line x1="100" y1="35" x2="100" y2="67" stroke="rgba(5,150,105,0.5)" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="100" y1="45" x2="82" y2="38" stroke="rgba(5,150,105,0.5)" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="100" y1="45" x2="118" y2="38" stroke="rgba(5,150,105,0.5)" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="100" y1="67" x2="88" y2="88" stroke="rgba(5,150,105,0.5)" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="100" y1="67" x2="112" y2="88" stroke="rgba(5,150,105,0.5)" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- Solid wall / foundation -->
+        <rect x="30" y="92" width="140" height="16" rx="3" fill="rgba(5,150,105,0.12)" stroke="rgba(5,150,105,0.3)" stroke-width="1.5"/>
+        <text x="100" y="103" text-anchor="middle" fill="rgba(5,150,105,0.5)" font-size="7" font-family="'DM Mono',monospace" font-weight="600">UNIFIED WORKSPACE</text>
+        <!-- Shield / protection aura -->
+        <path d="M55,88 C55,50 100,15 100,15 C100,15 145,50 145,88" stroke="rgba(5,150,105,0.15)" stroke-width="1.5" fill="rgba(5,150,105,0.03)"/>
+        <!-- Organized data flowing in -->
+        <path d="M40,25 L60,25 L65,30" stroke="rgba(5,150,105,0.25)" stroke-width="1" fill="none"/>
+        <path d="M160,25 L140,25 L135,30" stroke="rgba(5,150,105,0.25)" stroke-width="1" fill="none"/>
+        <path d="M35,50 L55,50 L62,52" stroke="rgba(5,150,105,0.25)" stroke-width="1" fill="none"/>
+        <path d="M165,50 L145,50 L138,52" stroke="rgba(5,150,105,0.25)" stroke-width="1" fill="none"/>
+      </svg>
+      <div class="tp-desc">Agents anticipate needs. <br>Complete context in 3 seconds. <br>One screen. Full picture.</div>
+    </div>
+  </div>
+
+  <!-- Foundation dependency chain -->
+  <div class="fp-connector">Each phase produces the data the next phase needs &darr;</div>
+
+  <div class="foundation-strip">
+    <div class="foundation-phase fp-mvp">
+      <div class="fp-tag">Phase 1 &mdash; MVP</div>
+      <div class="fp-title">Unified Workspace</div>
+      <div class="fp-items">Instant search, caller card, interaction timeline, health score. The foundation everything else depends on.</div>
+    </div>
+    <div class="foundation-phase">
+      <div class="fp-tag">Phase 2 &mdash; Intelligence</div>
+      <div class="fp-title">Health &amp; Action</div>
+      <div class="fp-items">ML scoring, proactive alerts, write-back actions, cross-sell signals.</div>
+    </div>
+    <div class="foundation-phase">
+      <div class="fp-tag">Phase 3 &mdash; Prediction</div>
+      <div class="fp-title">AI &amp; Foresight</div>
+      <div class="fp-items">AI summaries, churn prediction, agent copilot, expansion signals.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE 19 — PROTOTYPE DEMO
+     ══════════════════════════════════════════════════════ -->
+<div class="slide slide--proto" data-slide="19">
+  <div class="proto-container">
+    <div class="proto-bar">
+      <div class="wf-dots"><div class="wf-dot r"></div><div class="wf-dot y"></div><div class="wf-dot g"></div></div>
+      <div class="proto-title">Customer Central &mdash; Interactive Prototype &middot; Use Cmd+K to search, click tabs, expand health scores</div>
+    </div>
+    <iframe class="proto-iframe" src="https://meetdarrien.com/justworks/customer-central.html" loading="lazy" sandbox="allow-scripts allow-same-origin"></iframe>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE 20 — ASPIRATIONAL CLOSING (REWORKED)
+     ══════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="20">
+  <div class="closing-slide">
+    <div class="closing-question">What if the customer never needed to call in the first place?</div>
+
+    <div class="closing-panels">
+      <div class="closing-panel cp-before">
+        <div class="cp-label">Today</div>
+        <div class="cp-time">120</div>
+        <div class="cp-unit">seconds</div>
+
+        <div class="cp-visual">
+          <svg viewBox="0 0 200 110" width="200" height="110">
+            <!-- Scattered system boxes -->
+            <rect x="10" y="8" width="34" height="20" rx="3" fill="none" stroke="rgba(220,38,38,0.25)" stroke-width="1.2"/>
+            <rect x="58" y="2" width="34" height="20" rx="3" fill="none" stroke="rgba(220,38,38,0.25)" stroke-width="1.2"/>
+            <rect x="108" y="10" width="34" height="20" rx="3" fill="none" stroke="rgba(220,38,38,0.25)" stroke-width="1.2"/>
+            <rect x="155" y="4" width="34" height="20" rx="3" fill="none" stroke="rgba(220,38,38,0.25)" stroke-width="1.2"/>
+            <rect x="30" y="52" width="34" height="20" rx="3" fill="none" stroke="rgba(220,38,38,0.25)" stroke-width="1.2"/>
+            <rect x="130" y="54" width="34" height="20" rx="3" fill="none" stroke="rgba(220,38,38,0.25)" stroke-width="1.2"/>
+            <!-- Tangled lines -->
+            <path d="M27,28 C42,48 52,36 47,52" stroke="rgba(220,38,38,0.15)" stroke-width="1.2" fill="none"/>
+            <path d="M75,22 C84,42 100,26 125,30" stroke="rgba(220,38,38,0.15)" stroke-width="1.2" fill="none"/>
+            <path d="M142,30 C150,48 134,52 147,54" stroke="rgba(220,38,38,0.15)" stroke-width="1.2" fill="none"/>
+            <path d="M64,52 C82,47 108,50 130,54" stroke="rgba(220,38,38,0.15)" stroke-width="1.2" fill="none"/>
+            <path d="M172,24 C176,42 166,48 164,54" stroke="rgba(220,38,38,0.15)" stroke-width="1.2" fill="none"/>
+            <!-- Clock -->
+            <circle cx="100" cy="90" r="14" fill="none" stroke="rgba(220,38,38,0.3)" stroke-width="1.2"/>
+            <line x1="100" y1="90" x2="100" y2="80" stroke="rgba(220,38,38,0.4)" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="100" y1="90" x2="108" y2="94" stroke="rgba(220,38,38,0.4)" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </div>
+
+        <div class="cp-items">
+          5 systems to check<br>
+          Customer repeats themselves<br>
+          Heroes in spite of their tools
+        </div>
+      </div>
+
+      <div class="closing-divider">
+        <svg viewBox="0 0 30 80" width="30" height="80">
+          <defs>
+            <linearGradient id="close-arrow" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="var(--accent-red)" stop-opacity="0.4"/>
+              <stop offset="100%" stop-color="var(--accent-green)" stop-opacity="0.8"/>
+            </linearGradient>
+          </defs>
+          <path d="M8,15 L22,40 L8,65" stroke="url(#close-arrow)" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <div class="closing-panel cp-after">
+        <div class="cp-label">Customer Central</div>
+        <div class="cp-time">3</div>
+        <div class="cp-unit">seconds</div>
+
+        <div class="cp-visual">
+          <svg viewBox="0 0 200 110" width="200" height="110">
+            <!-- Unified dashboard -->
+            <rect x="30" y="10" width="140" height="82" rx="6" fill="rgba(5,150,105,0.04)" stroke="rgba(5,150,105,0.25)" stroke-width="1.5"/>
+            <!-- Header bar -->
+            <rect x="30" y="10" width="140" height="15" rx="6" fill="rgba(5,150,105,0.08)"/>
+            <circle cx="41" cy="17.5" r="2.5" fill="rgba(5,150,105,0.3)"/>
+            <circle cx="49" cy="17.5" r="2.5" fill="rgba(5,150,105,0.3)"/>
+            <circle cx="57" cy="17.5" r="2.5" fill="rgba(5,150,105,0.3)"/>
+            <!-- Content rows -->
+            <rect x="38" y="32" width="55" height="5" rx="2.5" fill="rgba(5,150,105,0.15)"/>
+            <rect x="38" y="43" width="75" height="5" rx="2.5" fill="rgba(5,150,105,0.1)"/>
+            <rect x="38" y="54" width="48" height="5" rx="2.5" fill="rgba(5,150,105,0.1)"/>
+            <rect x="38" y="65" width="65" height="5" rx="2.5" fill="rgba(5,150,105,0.08)"/>
+            <rect x="38" y="76" width="40" height="5" rx="2.5" fill="rgba(5,150,105,0.06)"/>
+            <!-- Status dots -->
+            <circle cx="145" cy="35" r="3.5" fill="rgba(5,150,105,0.4)"/>
+            <circle cx="145" cy="46" r="3.5" fill="rgba(37,99,235,0.4)"/>
+            <circle cx="145" cy="57" r="3.5" fill="rgba(5,150,105,0.3)"/>
+            <circle cx="145" cy="68" r="3.5" fill="rgba(217,119,6,0.3)"/>
+            <!-- Shield aura -->
+            <path d="M22,95 C22,42 100,5 100,5 C100,5 178,42 178,95" stroke="rgba(5,150,105,0.1)" stroke-width="1.5" fill="none"/>
+          </svg>
+        </div>
+
+        <div class="cp-items">
+          One screen, full context<br>
+          Pattern recognition &amp; alerts<br>
+          A strategic moat, not a quick fix
+        </div>
+      </div>
+    </div>
+
+    <div class="closing-invest">All of it starts with <strong>7 weeks</strong> and <strong>23 engineer-weeks</strong> of investment.</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE 21 — EXPLORE THE PROPOSAL
+     ══════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="21" style="padding:36px 50px;">
+
+  <h2>Explore the Proposal</h2>
+
+  <div class="cta-block">
+    <p style="font-size:1rem;line-height:1.6;color:var(--text-secondary);margin-bottom:4px;text-align:center;">19 artifacts across strategy, design, data, and execution. Every link below is live.</p>
+
+    <div class="artifact-index">
+
+      <!-- HOW I THOUGHT ABOUT IT -->
+      <div class="artifact-group">
+        <div class="ag-header">How I Thought About It</div>
+        <a class="artifact-item" href="https://meetdarrien.com/justworks/proposal.html" target="_blank">
+          <span class="ai-title">Full Proposal</span><span class="ai-arrow">&#8599;</span>
+          <span class="ai-url">meetdarrien.com/justworks/proposal.html</span>
+        </a>
+        <a class="artifact-item" href="https://meetdarrien.com/justworks/justworks_north_star_and_problem_overview.pdf" target="_blank">
+          <span class="ai-title">North Star &amp; Problem Overview</span><span class="ai-arrow">&#8599;</span>
+          <span class="ai-url">meetdarrien.com/justworks/justworks_north_star_and_problem_overview.pdf</span>
+        </a>
+        <a class="artifact-item" href="https://meetdarrien.com/justworks/justworks_deep_problem_analysis.pdf" target="_blank">
+          <span class="ai-title">Deep Problem Analysis</span><span class="ai-arrow">&#8599;</span>
+          <span class="ai-url">meetdarrien.com/justworks/justworks_deep_problem_analysis.pdf</span>
+        </a>
+        <a class="artifact-item" href="https://meetdarrien.com/justworks/customer_central_user_stories.pdf" target="_blank">
+          <span class="ai-title">Problem Statements &amp; User Stories</span><span class="ai-arrow">&#8599;</span>
+          <span class="ai-url">meetdarrien.com/justworks/customer_central_user_stories.pdf</span>
+        </a>
+        <a class="artifact-item" href="https://meetdarrien.com/justworks/assumptions-chain.html" target="_blank">
+          <span class="ai-title">The Decision Chain</span><span class="ai-arrow">&#8599;</span>
+          <span class="ai-url">meetdarrien.com/justworks/assumptions-chain.html</span>
+        </a>
+        <a class="artifact-item" href="https://meetdarrien.com/justworks/justworks-prioritization.html" target="_blank">
+          <span class="ai-title">Prioritization Logic</span><span class="ai-arrow">&#8599;</span>
+          <span class="ai-url">meetdarrien.com/justworks/justworks-prioritization.html</span>
+        </a>
+        <a class="artifact-item" href="https://meetdarrien.com/justworks/success-metrics.html" target="_blank">
+          <span class="ai-title">Success Metrics</span><span class="ai-arrow">&#8599;</span>
+          <span class="ai-url">meetdarrien.com/justworks/success-metrics.html</span>
+        </a>
+        <a class="artifact-item" href="https://meetdarrien.com/justworks/justworks_cso_success_model.pdf" target="_blank">
+          <span class="ai-title">CSO Success Model</span><span class="ai-arrow">&#8599;</span>
+          <span class="ai-url">meetdarrien.com/justworks/justworks_cso_success_model.pdf</span>
+        </a>
+      </div>
+
+      <!-- WHAT I'D BUILD -->
+      <div class="artifact-group">
+        <div class="ag-header">What I'd Build</div>
+        <a class="artifact-item" href="https://meetdarrien.com/justworks/customer-central.html" target="_blank">
+          <span class="ai-title">Interactive Prototype</span><span class="ai-arrow">&#8599;</span>
+          <span class="ai-url">meetdarrien.com/justworks/customer-central.html</span>
+        </a>
+        <a class="artifact-item" href="https://meetdarrien.com/justworks/feature-showcase.html" target="_blank">
+          <span class="ai-title">Feature Showcase</span><span class="ai-arrow">&#8599;</span>
+          <span class="ai-url">meetdarrien.com/justworks/feature-showcase.html</span>
+        </a>
+        <a class="artifact-item" href="https://meetdarrien.com/justworks/customer-central-test-guide.html" target="_blank">
+          <span class="ai-title">Prototype Test Guide</span><span class="ai-arrow">&#8599;</span>
+          <span class="ai-url">meetdarrien.com/justworks/customer-central-test-guide.html</span>
+        </a>
+        <a class="artifact-item" href="https://meetdarrien.com/justworks/data-model.html" target="_blank">
+          <span class="ai-title">Data Model</span><span class="ai-arrow">&#8599;</span>
+          <span class="ai-url">meetdarrien.com/justworks/data-model.html</span>
+        </a>
+        <a class="artifact-item" href="https://meetdarrien.com/justworks/data-requirements.html" target="_blank">
+          <span class="ai-title">Data Requirements Matrix</span><span class="ai-arrow">&#8599;</span>
+          <span class="ai-url">meetdarrien.com/justworks/data-requirements.html</span>
+        </a>
+        <a class="artifact-item" href="https://meetdarrien.com/justworks/data-performance.html" target="_blank">
+          <span class="ai-title">Data Performance Strategy</span><span class="ai-arrow">&#8599;</span>
+          <span class="ai-url">meetdarrien.com/justworks/data-performance.html</span>
+        </a>
+      </div>
+
+      <!-- HOW I'D SHIP IT -->
+      <div class="artifact-group">
+        <div class="ag-header">How I'd Ship It</div>
+        <a class="artifact-item" href="https://meetdarrien.com/justworks/phased-roadmap.html" target="_blank">
+          <span class="ai-title">Phased Roadmap</span><span class="ai-arrow">&#8599;</span>
+          <span class="ai-url">meetdarrien.com/justworks/phased-roadmap.html</span>
+        </a>
+        <a class="artifact-item" href="https://meetdarrien.com/justworks/engineering-resources.html" target="_blank">
+          <span class="ai-title">Engineering Resources</span><span class="ai-arrow">&#8599;</span>
+          <span class="ai-url">meetdarrien.com/justworks/engineering-resources.html</span>
+        </a>
+        <a class="artifact-item" href="https://meetdarrien.com/justworks/scope-and-future.html" target="_blank">
+          <span class="ai-title">Scope &amp; Future Vision</span><span class="ai-arrow">&#8599;</span>
+          <span class="ai-url">meetdarrien.com/justworks/scope-and-future.html</span>
+        </a>
+        <a class="artifact-item" href="https://meetdarrien.com/justworks/rollout-training.html" target="_blank">
+          <span class="ai-title">Rollout &amp; Training Plan</span><span class="ai-arrow">&#8599;</span>
+          <span class="ai-url">meetdarrien.com/justworks/rollout-training.html</span>
+        </a>
+      </div>
+
+      <!-- HOW I'D COLLABORATE -->
+      <div class="artifact-group">
+        <div class="ag-header">How I'd Collaborate</div>
+        <a class="artifact-item" href="https://miro.com/app/board/uXjVG8qK-KU=/?share_link_id=653655420381" target="_blank">
+          <span class="ai-title">Workshop Board (Miro)</span><span class="ai-arrow">&#8599;</span>
+          <span class="ai-url">miro.com/app/board/uXjVG8qK-KU=</span>
+        </a>
+        <a class="artifact-item" href="https://meetdarrien.com/justworks/open-questions.html" target="_blank">
+          <span class="ai-title">Open Questions</span><span class="ai-arrow">&#8599;</span>
+          <span class="ai-url">meetdarrien.com/justworks/open-questions.html</span>
+        </a>
+      </div>
+
+    </div>
+
+    <div class="cta-footer">
+      <p><strong>Darrien Watson</strong> &middot; I've made 47 explicit assumptions in this proposal. Some of them are wrong. The proposal is designed to be a starting point for the conversation, not the final answer.</p>
+    </div>
+  </div>
+</div>
+
+</div><!-- end .deck -->
+
+<!-- ═══════════════════════════════════════
+     SLIDE NAV
+     ═══════════════════════════════════════ -->
+<div class="slide-nav">
+  <span class="slide-counter" id="slide-counter">1 / 21</span>
+</div>
+
+<script>
+(function() {
+  var deck = document.getElementById('deck');
+  var counter = document.getElementById('slide-counter');
+  var slides = document.querySelectorAll('.slide');
+  var total = slides.length;
+
+  // Slide counter via IntersectionObserver
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        var idx = Array.from(slides).indexOf(entry.target) + 1;
+        counter.textContent = idx + ' / ' + total;
+      }
+    });
+  }, {
+    root: deck,
+    rootMargin: '-40% 0px -55% 0px',
+    threshold: 0
+  });
+
+  slides.forEach(function(s) { observer.observe(s); });
+
+  // Get current slide index
+  function getCurrentSlideIndex() {
+    var viewportMid = window.innerHeight / 2;
+    for (var i = slides.length - 1; i >= 0; i--) {
+      if (slides[i].getBoundingClientRect().top <= viewportMid) return i;
+    }
+    return 0;
+  }
+
+  // Keyboard navigation
+  document.addEventListener('keydown', function(e) {
+    var current = getCurrentSlideIndex();
+
+    if (['ArrowDown','ArrowRight','PageDown',' '].indexOf(e.key) !== -1) {
+      e.preventDefault();
+      if (current < slides.length - 1) {
+        slides[current + 1].scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+    if (['ArrowUp','ArrowLeft','PageUp'].indexOf(e.key) !== -1) {
+      e.preventDefault();
+      if (current > 0) {
+        slides[current - 1].scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+    // Home/End
+    if (e.key === 'Home') {
+      e.preventDefault();
+      slides[0].scrollIntoView({ behavior: 'smooth' });
+    }
+    if (e.key === 'End') {
+      e.preventDefault();
+      slides[slides.length - 1].scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
