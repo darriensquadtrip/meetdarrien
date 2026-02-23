@@ -1546,6 +1546,100 @@
   .proposal-footer a:hover { text-decoration: underline; }
 
   /* ═══════════════════════════════════════
+     ARTIFACT INDEX
+     ═══════════════════════════════════════ */
+  .artifact-category {
+    margin-bottom: 24px;
+  }
+
+  .artifact-category-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .artifact-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .artifact-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.2s var(--ease-out);
+  }
+
+  .artifact-link:hover {
+    border-color: var(--accent-blue);
+    transform: translateY(-1px);
+  }
+
+  .artifact-icon {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    border-radius: 8px;
+  }
+
+  .artifact-info h4 {
+    font-size: 0.90rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+  }
+
+  .artifact-info p {
+    font-size: 0.80rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  .artifact-badge {
+    margin-left: auto;
+    flex-shrink: 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.70rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: rgba(78,140,255,0.1);
+    color: var(--accent-blue);
+  }
+
+  .artifact-badge.ab-pdf {
+    background: rgba(248,113,113,0.1);
+    color: var(--accent-red);
+  }
+
+  .artifact-badge.ab-miro {
+    background: rgba(251,191,36,0.1);
+    color: var(--accent-amber);
+  }
+
+  @media (max-width: 900px) {
+    .artifact-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ═══════════════════════════════════════
      RESPONSIVE
      ═══════════════════════════════════════ */
   @media (max-width: 900px) {
@@ -1829,6 +1923,7 @@
         <li class="toc-item"><a class="toc-link" href="#s09"><span class="toc-num">09</span> MVP Rationale</a></li>
         <li class="toc-item"><a class="toc-link" href="#s10"><span class="toc-num">10</span> Out of Scope</a></li>
         <li class="toc-item"><a class="toc-link" href="#s11"><span class="toc-num">11</span> Future Features</a></li>
+        <li class="toc-item"><a class="toc-link" href="#artifact-index"><span class="toc-num" style="font-size:0.65rem;">&#x1F4C1;</span> Artifact Index</a></li>
       </ul>
     </nav>
 
@@ -2887,9 +2982,174 @@
           </div>
         </section>
 
+        <!-- ═══════════════════════════════════════
+             ARTIFACT INDEX
+             ═══════════════════════════════════════ -->
+        <section class="proposal-section" id="artifact-index">
+          <div class="section-header">
+            <div class="section-num" style="letter-spacing:0;">&#x1F4C1;</div>
+            <h2>Artifact Index</h2>
+          </div>
+
+          <div class="prose">
+            <p>Every artifact produced for this case study, organized by category. The proposal above synthesizes all of this work &mdash; these links let you go deeper on anything that catches your attention.</p>
+          </div>
+
+          <!-- How I Thought About It -->
+          <div class="artifact-category">
+            <div class="artifact-category-label" style="color:var(--accent-purple);">How I Thought About It</div>
+            <div class="artifact-grid">
+              <a class="artifact-link" href="justworks_north_star_and_problem_overview.pdf" target="_blank">
+                <div class="artifact-icon" style="background:rgba(139,92,246,0.1);">&#x2B50;</div>
+                <div class="artifact-info"><h4>North Star &amp; Problem Overview</h4><p>Strategic framing, north star metric, problem definition</p></div>
+                <span class="artifact-badge ab-pdf">PDF</span>
+              </a>
+              <a class="artifact-link" href="justworks_deep_problem_analysis.pdf" target="_blank">
+                <div class="artifact-icon" style="background:rgba(139,92,246,0.1);">&#x1F50D;</div>
+                <div class="artifact-info"><h4>Deep Problem Analysis</h4><p>CSO pain points, root causes, compounding problem framework</p></div>
+                <span class="artifact-badge ab-pdf">PDF</span>
+              </a>
+              <a class="artifact-link" href="customer_central_user_stories.pdf" target="_blank">
+                <div class="artifact-icon" style="background:rgba(139,92,246,0.1);">&#x1F4CB;</div>
+                <div class="artifact-info"><h4>Problem Statements &amp; User Stories</h4><p>6 problems traced to the brief + 9 user stories with acceptance criteria</p></div>
+                <span class="artifact-badge ab-pdf">PDF</span>
+              </a>
+              <a class="artifact-link" href="assumptions-chain.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(139,92,246,0.1);">&#x1F9E0;</div>
+                <div class="artifact-info"><h4>The Decision Chain</h4><p>14-step reasoning chain with 45 documented assumptions</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+              <a class="artifact-link" href="justworks-prioritization.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(139,92,246,0.1);">&#x1F3AF;</div>
+                <div class="artifact-info"><h4>Prioritization Logic</h4><p>Dependency chain proving why Phase 1 must come before Phase 2</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+              <a class="artifact-link" href="success-metrics.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(139,92,246,0.1);">&#x1F4CF;</div>
+                <div class="artifact-info"><h4>Success Metrics</h4><p>Outcome metrics, guardrails, leading indicators, and anti-metrics</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- What I'd Build -->
+          <div class="artifact-category">
+            <div class="artifact-category-label" style="color:var(--accent-green);">What I&rsquo;d Build</div>
+            <div class="artifact-grid">
+              <a class="artifact-link" href="customer-central.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(52,211,153,0.1);">&#x1F5A5;&#xFE0F;</div>
+                <div class="artifact-info"><h4>Interactive Prototype</h4><p>Fully interactive Customer Central dashboard &mdash; all 11 features testable</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+              <a class="artifact-link" href="feature-showcase.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(52,211,153,0.1);">&#x1F3A8;</div>
+                <div class="artifact-info"><h4>Feature Showcase</h4><p>Visual walkthrough of all 11 MVP features with design rationale</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+              <a class="artifact-link" href="customer-central-test-guide.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(52,211,153,0.1);">&#x1F9EA;</div>
+                <div class="artifact-info"><h4>Prototype Test Guide</h4><p>Story-by-story walkthrough with step-by-step instructions</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+              <a class="artifact-link" href="data-model.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(52,211,153,0.1);">&#x1F517;</div>
+                <div class="artifact-info"><h4>Data Model</h4><p>Interactive ER diagram &mdash; 13 entities, 4 source systems</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+              <a class="artifact-link" href="data-requirements.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(52,211,153,0.1);">&#x1F4CB;</div>
+                <div class="artifact-info"><h4>Data Requirements Matrix</h4><p>55 data fields mapped across 11 features and 5 source systems</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+              <a class="artifact-link" href="data-performance.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(52,211,153,0.1);">&#x26A1;</div>
+                <div class="artifact-info"><h4>Data Performance Strategy</h4><p>4-tier loading model, DB schema, caching, volume estimates</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- How I'd Ship It -->
+          <div class="artifact-category">
+            <div class="artifact-category-label" style="color:var(--accent-blue);">How I&rsquo;d Ship It</div>
+            <div class="artifact-grid">
+              <a class="artifact-link" href="phased-roadmap.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(78,140,255,0.1);">&#x1F4C5;</div>
+                <div class="artifact-info"><h4>Phased Roadmap</h4><p>7-week Gantt-style timeline with role-specific tasks and stage gates</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+              <a class="artifact-link" href="engineering-resources.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(78,140,255,0.1);">&#x1F465;</div>
+                <div class="artifact-info"><h4>Engineering Resources</h4><p>Team composition, sprint plan, and 4 de-risking strategies</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+              <a class="artifact-link" href="scope-and-future.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(78,140,255,0.1);">&#x1F52E;</div>
+                <div class="artifact-info"><h4>Scope &amp; Future Vision</h4><p>13 excluded items with rationale + future feature deep-dives</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+              <a class="artifact-link" href="rollout-training.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(78,140,255,0.1);">&#x1F680;</div>
+                <div class="artifact-info"><h4>Rollout &amp; Training Plan</h4><p>3-stage rollout, stage gates, 3-layer training, champions program</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- How I'd Collaborate -->
+          <div class="artifact-category">
+            <div class="artifact-category-label" style="color:var(--accent-amber);">How I&rsquo;d Collaborate</div>
+            <div class="artifact-grid">
+              <a class="artifact-link" href="https://miro.com/app/board/uXjVG8qK-KU=/?share_link_id=653655420381" target="_blank">
+                <div class="artifact-icon" style="background:rgba(251,191,36,0.1);">&#x1F5C2;&#xFE0F;</div>
+                <div class="artifact-info"><h4>Workshop Board (Miro)</h4><p>45-minute MVP scoping sprint with exercises and dot voting</p></div>
+                <span class="artifact-badge ab-miro">Miro</span>
+              </a>
+              <a class="artifact-link" href="open-questions.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(251,191,36,0.1);">&#x2753;</div>
+                <div class="artifact-info"><h4>Open Questions</h4><p>17 questions organized by stakeholder with assumptions</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Reference -->
+          <div class="artifact-category">
+            <div class="artifact-category-label">Reference</div>
+            <div class="artifact-grid">
+              <a class="artifact-link" href="presentation-outline.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(107,110,133,0.1);">&#x1F399;&#xFE0F;</div>
+                <div class="artifact-info"><h4>Presentation Outline</h4><p>7-section speaker guide with scripted beats</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+              <a class="artifact-link" href="presentation-workshop-plan.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(107,110,133,0.1);">&#x1F4DD;</div>
+                <div class="artifact-info"><h4>Workshop + Q&amp;A Plan</h4><p>Full session plan with contingency plans</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+              <a class="artifact-link" href="submission-checklist.html" target="_blank">
+                <div class="artifact-icon" style="background:rgba(107,110,133,0.1);">&#x1F4CB;</div>
+                <div class="artifact-info"><h4>Submission Checklist</h4><p>Audit of all deliverables against the case study prompt</p></div>
+                <span class="artifact-badge">Interactive</span>
+              </a>
+              <a class="artifact-link" href="justworks_cso_success_model.pdf" target="_blank">
+                <div class="artifact-icon" style="background:rgba(107,110,133,0.1);">&#x1F3AF;</div>
+                <div class="artifact-info"><h4>CSO Success Model</h4><p>What success looks like at agent, team lead, and leadership levels</p></div>
+                <span class="artifact-badge ab-pdf">PDF</span>
+              </a>
+              <a class="artifact-link" href="product_case_study.pdf" target="_blank">
+                <div class="artifact-icon" style="background:rgba(107,110,133,0.1);">&#x1F4C4;</div>
+                <div class="artifact-info"><h4>Product Case Study Prompt</h4><p>The original brief this entire project responds to</p></div>
+                <span class="artifact-badge ab-pdf">PDF</span>
+              </a>
+            </div>
+          </div>
+
+        </section>
+
         <!-- FOOTER -->
         <footer class="proposal-footer">
-          <p>Prepared by Darrien Watson &middot; <a href="index.html">Back to Overview</a></p>
+          <p>Prepared by Darrien Watson</p>
         </footer>
 
       </div>
