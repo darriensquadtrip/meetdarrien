@@ -1641,6 +1641,100 @@ body {
   border-radius: 12px;
 }
 
+/* ═══════════════════════════════════════
+   GRAND VISION (Slide 5 — NEW)
+   ═══════════════════════════════════════ */
+.grand-vision {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.gv-aspiration {
+  text-align: center;
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.gv-aspiration p {
+  font-size: 1.05rem;
+  font-weight: 450;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+
+.gv-screenshot {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(124, 58, 237, 0.25);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  max-width: 920px;
+  max-height: 48vh;
+  margin: 0 auto;
+}
+
+.gv-screenshot img {
+  width: 100%;
+  display: block;
+  border-radius: 12px;
+}
+
+.gv-screenshot .gv-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(124, 58, 237, 0.9);
+  color: #fff;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 5px 12px;
+  border-radius: 6px;
+  backdrop-filter: blur(4px);
+}
+
+.gv-capabilities {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  max-width: 920px;
+  margin: 0 auto;
+}
+
+.gv-cap {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  text-align: center;
+}
+
+.gv-cap .gv-cap-icon {
+  font-size: 1.2rem;
+  margin-bottom: 4px;
+}
+
+.gv-cap .gv-cap-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.gv-cap .gv-cap-desc {
+  font-size: 0.78rem;
+  font-weight: 450;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+@media (max-width: 900px) {
+  .gv-capabilities { grid-template-columns: 1fr; }
+}
+
 .annotation {
   position: absolute;
   background: rgba(15, 17, 23, 0.92);
@@ -2166,14 +2260,6 @@ body {
   .strategic-left svg { max-width: 240px; }
 }
 </style>
-<!-- PostHog Analytics -->
-<script>
-    !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
-    posthog.init("phc_LcdaDlRybT3k43qFjVismYdhbTZcRlhG7caj7zdkmkW", {
-        api_host: "https://us.i.posthog.com",
-        person_profiles: "identified_only"
-    });
-</script>
 </head>
 <body>
 
@@ -2407,112 +2493,42 @@ body {
 </div>
 
 <!-- ══════════════════════════════════════════════════════
-     SLIDE 5 — THE AGENT DASHBOARD (MOVED from old slide 9)
+     SLIDE 5 — THE GRAND VISION (NEW)
      ══════════════════════════════════════════════════════ -->
 <div class="slide" data-slide="5">
-  <h2>The Agent Dashboard</h2>
-  <p style="margin-bottom:10px;">A <strong style="color:var(--accent-blue);">unified view</strong> of identity, history, and health. No more hunting.</p>
+  <h2>The Grand Vision</h2>
+  <p style="margin-bottom:8px;">This is the end state &mdash; not just unified context, but a <strong style="color:var(--accent-purple);">proactive, intelligent system</strong> that understands every dimension of the customer relationship and feeds insights across the entire business.</p>
 
-  <div class="flow-strip">
-    <div class="flow-step">
-      <div class="fs-time" style="color:var(--accent-green);">&lt;500ms</div>
-      <div class="fs-name">Instant Search</div>
+  <div class="grand-vision">
+    <div class="gv-screenshot">
+      <img src="images/phase3-intelligence.png" alt="Customer Central — Phase 3 Intelligence Layer with AI summaries, churn prediction, and cross-functional insights">
+      <div class="gv-badge">Phase 3 &mdash; End State</div>
     </div>
-    <div class="flow-arrow">&rarr;</div>
-    <div class="flow-step">
-      <div class="fs-time" style="color:var(--accent-blue);">&lt;2s</div>
-      <div class="fs-name">Caller Card Loads</div>
-    </div>
-    <div class="flow-arrow">&rarr;</div>
-    <div class="flow-step">
-      <div class="fs-time" style="color:var(--accent-purple);">1 click</div>
-      <div class="fs-name">Health Score</div>
-    </div>
-  </div>
 
-  <div class="screenshot-container">
-    <img src="images/agent-dashboard.png" alt="Customer Central — Agent Dashboard showing Sarah Chen at Acme Corp with full context">
-    <div class="annotation annotation-green" style="top:28%;left:2%;">Person &amp; Company</div>
-    <div class="annotation annotation-blue" style="top:7%;left:22%;">Cmd+K Search</div>
-    <div class="annotation annotation-amber" style="top:7%;right:2%;">Status Strip</div>
-    <div class="annotation annotation-red" style="bottom:16%;left:28%;">Open Tickets Pinned</div>
-    <div class="annotation annotation-purple" style="bottom:16%;right:2%;">Recent Changes</div>
+    <div class="gv-capabilities">
+      <div class="gv-cap">
+        <div class="gv-cap-icon">&#x1F9E0;</div>
+        <div class="gv-cap-name">AI Summaries &amp; Copilot</div>
+        <div class="gv-cap-desc">Auto-generated context briefs before every call. Agent copilot suggests next actions.</div>
+      </div>
+      <div class="gv-cap">
+        <div class="gv-cap-icon">&#x1F4C9;</div>
+        <div class="gv-cap-name">Churn Prediction</div>
+        <div class="gv-cap-desc">ML models flag at-risk accounts weeks before they cancel. Proactive outreach, not reactive saves.</div>
+      </div>
+      <div class="gv-cap">
+        <div class="gv-cap-icon">&#x1F4E1;</div>
+        <div class="gv-cap-name">Cross-Functional Signals</div>
+        <div class="gv-cap-desc">Insights flow to product, sales, marketing, and leadership &mdash; not just support.</div>
+      </div>
+    </div>
   </div>
 </div>
 
 <!-- ══════════════════════════════════════════════════════
-     SLIDE 6 — CONTEXT IN SECONDS (MVP Highlight)
+     SLIDE 6 — THE STRATEGIC CASE (MOVED from old 7)
      ══════════════════════════════════════════════════════ -->
 <div class="slide" data-slide="6">
-  <h2>Context in Seconds</h2>
-  <p style="margin-bottom:4px;">Three capabilities that replace the 120-second scavenger hunt. Everything an agent needs, in the order they need it.</p>
-
-  <div class="context-flow">
-    <!-- Step 1: Instant Search -->
-    <div class="context-step cs-green">
-      <div class="context-step-icons">
-        <span>&#x1F50D;</span>
-        <span>&#x1F5C4;</span>
-      </div>
-      <div class="context-step-card">
-        <div class="context-step-time">&lt; 500ms</div>
-        <h4>Instant Search</h4>
-        <p>Fuzzy search across 500K contacts by name, email, phone, or company. Results before the customer finishes their greeting.</p>
-      </div>
-    </div>
-
-    <!-- Arrow -->
-    <div class="context-arrow">
-      <svg viewBox="0 0 32 20" fill="none">
-        <path d="M0 10h24M18 4l8 6-8 6" stroke="var(--accent-blue)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </div>
-
-    <!-- Step 2: Caller Card -->
-    <div class="context-step cs-blue">
-      <div class="context-step-icons">
-        <span>&#x1F464;</span>
-        <span>&#x1F4CB;</span>
-        <span>&#x23F1;</span>
-      </div>
-      <div class="context-step-card">
-        <div class="context-step-time">&lt; 2 seconds</div>
-        <h4>Caller Card Loads</h4>
-        <p>Full profile in one view: identity, company, plan, billing status, payroll countdown, open tickets. No toggling.</p>
-      </div>
-    </div>
-
-    <!-- Arrow -->
-    <div class="context-arrow">
-      <svg viewBox="0 0 32 20" fill="none">
-        <path d="M0 10h24M18 4l8 6-8 6" stroke="var(--accent-blue)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </div>
-
-    <!-- Step 3: Health Score -->
-    <div class="context-step cs-purple">
-      <div class="context-step-icons">
-        <span>&#x1F4CA;</span>
-        <span>&#x1F6E1;</span>
-        <span>&#x2764;</span>
-      </div>
-      <div class="context-step-card">
-        <div class="context-step-time">1 click</div>
-        <h4>Health Score</h4>
-        <p>Expandable breakdown of account health &mdash; billing, payroll, support, satisfaction. Transparent formula, no black box.</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="dep-insight" style="margin-top:16px;">
-    <strong>Read-only MVP.</strong> No write-back actions in Phase 1. We validate data accuracy for 60+ days before agents act on it. Wrong data displayed is fixable. Wrong data written back is a disaster.
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════════════════════
-     SLIDE 7 — THE STRATEGIC CASE (MERGED from old slides 4+5)
-     ══════════════════════════════════════════════════════ -->
-<div class="slide" data-slide="7">
   <h2>The Strategic Case</h2>
   <p style="margin-bottom:14px;">Justworks has incredible agents pulling off +60 NPS <strong>in spite of their tools</strong>, not because of them. A model that relies on individual heroics doesn't scale.</p>
 
@@ -2578,6 +2594,7 @@ body {
       <div class="ns-formula">Not NPS alone. Not AHT alone. The ratio that captures leverage.</div>
       <div class="ns-context">
         <p>The ratio of customer satisfaction to support investment should <strong>improve quarter over quarter</strong> &mdash; not because service gets worse, but because the system gets smarter.</p>
+        <p style="margin-top:10px;"><strong style="color:var(--accent-green);">This is how we change our scaling equation.</strong> Linear headcount growth &rarr; logarithmic. More customers, barely more cost &mdash; because smarter tools create massive leverage.</p>
         <p style="margin-top:10px;"><strong style="color:var(--accent-green);">Small business context:</strong> Justworks serves companies without dedicated HR. When their admin calls, CSO may be their only expert.</p>
       </div>
     </div>
@@ -2585,11 +2602,12 @@ body {
 </div>
 
 <!-- ══════════════════════════════════════════════════════
-     SLIDE 8 — THREE PHASES
+     SLIDE 7 — THREE PHASES (MOVED from old 8)
      ══════════════════════════════════════════════════════ -->
-<div class="slide" data-slide="8">
+<div class="slide" data-slide="7">
 
   <h2>Three Phases, One Dependency Chain</h2>
+  <p style="margin-bottom:10px;">You've seen the vision. Here's how we get there &mdash; and why <strong>you can't skip a step</strong>.</p>
 
   <div class="phase-cols">
     <div class="phase-col pc-green">
@@ -2618,9 +2636,113 @@ body {
 </div>
 
 <!-- ══════════════════════════════════════════════════════
-     SLIDE 9 — 7-WEEK ROADMAP
+     SLIDE 8 — THE AGENT DASHBOARD (MOVED from old 5)
+     ══════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="8">
+  <div class="section-num" style="color:var(--accent-green);margin-bottom:4px;">Phase 1 &mdash; This is where we start</div>
+  <h2>The Agent Dashboard</h2>
+  <p style="margin-bottom:10px;">Now let's get real. We have <strong style="color:var(--accent-green);">7 weeks</strong>. Here's the product that solves the scavenger hunt &mdash; the foundation that earns us the right to build everything else.</p>
+
+  <div class="flow-strip">
+    <div class="flow-step">
+      <div class="fs-time" style="color:var(--accent-green);">&lt;500ms</div>
+      <div class="fs-name">Instant Search</div>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step">
+      <div class="fs-time" style="color:var(--accent-blue);">&lt;2s</div>
+      <div class="fs-name">Caller Card Loads</div>
+    </div>
+    <div class="flow-arrow">&rarr;</div>
+    <div class="flow-step">
+      <div class="fs-time" style="color:var(--accent-purple);">1 click</div>
+      <div class="fs-name">Health Score</div>
+    </div>
+  </div>
+
+  <div class="screenshot-container">
+    <img src="images/agent-dashboard.png" alt="Customer Central — Agent Dashboard showing Sarah Chen at Acme Corp with full context">
+    <div class="annotation annotation-green" style="top:28%;left:2%;">Person &amp; Company</div>
+    <div class="annotation annotation-blue" style="top:7%;left:22%;">Cmd+K Search</div>
+    <div class="annotation annotation-amber" style="top:7%;right:2%;">Status Strip</div>
+    <div class="annotation annotation-red" style="bottom:16%;left:28%;">Open Tickets Pinned</div>
+    <div class="annotation annotation-purple" style="bottom:16%;right:2%;">Recent Changes</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE 9 — CONTEXT IN SECONDS (MOVED from old 6)
      ══════════════════════════════════════════════════════ -->
 <div class="slide" data-slide="9">
+  <h2>Context in Seconds</h2>
+  <p style="margin-bottom:4px;">Phase 1 delivers three core capabilities &mdash; the foundation everything else depends on.</p>
+
+  <div class="context-flow">
+    <!-- Step 1: Instant Search -->
+    <div class="context-step cs-green">
+      <div class="context-step-icons">
+        <span>&#x1F50D;</span>
+        <span>&#x1F5C4;</span>
+      </div>
+      <div class="context-step-card">
+        <div class="context-step-time">&lt; 500ms</div>
+        <h4>Instant Search</h4>
+        <p>Fuzzy search across 500K contacts by name, email, phone, or company. Results before the customer finishes their greeting.</p>
+      </div>
+    </div>
+
+    <!-- Arrow -->
+    <div class="context-arrow">
+      <svg viewBox="0 0 32 20" fill="none">
+        <path d="M0 10h24M18 4l8 6-8 6" stroke="var(--accent-blue)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <!-- Step 2: Caller Card -->
+    <div class="context-step cs-blue">
+      <div class="context-step-icons">
+        <span>&#x1F464;</span>
+        <span>&#x1F4CB;</span>
+        <span>&#x23F1;</span>
+      </div>
+      <div class="context-step-card">
+        <div class="context-step-time">&lt; 2 seconds</div>
+        <h4>Caller Card Loads</h4>
+        <p>Full profile in one view: identity, company, plan, billing status, payroll countdown, open tickets. No toggling.</p>
+      </div>
+    </div>
+
+    <!-- Arrow -->
+    <div class="context-arrow">
+      <svg viewBox="0 0 32 20" fill="none">
+        <path d="M0 10h24M18 4l8 6-8 6" stroke="var(--accent-blue)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <!-- Step 3: Health Score -->
+    <div class="context-step cs-purple">
+      <div class="context-step-icons">
+        <span>&#x1F4CA;</span>
+        <span>&#x1F6E1;</span>
+        <span>&#x2764;</span>
+      </div>
+      <div class="context-step-card">
+        <div class="context-step-time">1 click</div>
+        <h4>Health Score</h4>
+        <p>Expandable breakdown of account health &mdash; billing, payroll, support, satisfaction. Transparent formula, no black box.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="dep-insight" style="margin-top:16px;">
+    <strong>Read-only MVP.</strong> No write-back actions in Phase 1. We validate data accuracy for 60+ days before agents act on it. Wrong data displayed is fixable. Wrong data written back is a disaster.
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     SLIDE 10 — 7-WEEK ROADMAP
+     ══════════════════════════════════════════════════════ -->
+<div class="slide" data-slide="10">
 
   <h2>7-Week Roadmap</h2>
   <p style="margin-bottom:12px;">Every week ends with a decision gate. If data accuracy or agent trust isn't there, we extend rather than push forward.</p>
@@ -2682,9 +2804,9 @@ body {
 </div>
 
 <!-- ══════════════════════════════════════════════════════
-     SLIDE 10 — PHASE 1 MVP: 11 FEATURES
+     SLIDE 11 — PHASE 1 MVP: 11 FEATURES
      ══════════════════════════════════════════════════════ -->
-<div class="slide" data-slide="10">
+<div class="slide" data-slide="11">
 
   <h2>Phase 1 MVP &mdash; 11 Features <span class="badge badge-green" style="font-size:0.7rem;vertical-align:middle;margin-left:8px;">Read-Only MVP</span></h2>
   <p style="margin-bottom:14px;">8 full builds + 3 deep-link integrations. The deep-link approach covers ~80% of each use case at ~20% of the build cost.</p>
@@ -2711,12 +2833,13 @@ body {
   </div>
 
   <p style="font-size:0.82rem;color:var(--text-muted);margin-top:4px;"><strong style="color:var(--text-primary);">Read-before-write principle:</strong> No write-back actions in Phase 1. We need 60+ days of accuracy validation before we let agents act on the data. Write-back comes in Phase 2.</p>
+  <p style="font-size:0.82rem;color:var(--text-muted);margin-top:4px;"><strong style="color:var(--accent-purple);">HS-1 and HS-2</strong> are the beginning of Phase 2, delivered here in lightweight rules-based form. The ML-driven version comes in Phase 2.</p>
 </div>
 
 <!-- ══════════════════════════════════════════════════════
-     SLIDE 11 — DATA ARCHITECTURE
+     SLIDE 12 — DATA ARCHITECTURE
      ══════════════════════════════════════════════════════ -->
-<div class="slide" data-slide="11">
+<div class="slide" data-slide="12">
 
   <h2>Data Architecture &mdash; 5 Sources</h2>
   <p style="margin-bottom:14px;">55 data fields from 5 source systems, consolidated into a purpose-built read-optimized aggregation layer.</p>
@@ -2758,9 +2881,9 @@ body {
 </div>
 
 <!-- ══════════════════════════════════════════════════════
-     SLIDE 12 — LOADING STRATEGY + RISKS
+     SLIDE 13 — LOADING STRATEGY + RISKS
      ══════════════════════════════════════════════════════ -->
-<div class="slide" data-slide="12">
+<div class="slide" data-slide="13">
 
   <h2>Loading Strategy + Integration Risks</h2>
 
@@ -2805,9 +2928,9 @@ body {
 </div>
 
 <!-- ══════════════════════════════════════════════════════
-     SLIDE 13 — TEAM: 5+1 MODEL
+     SLIDE 14 — TEAM: 5+1 MODEL
      ══════════════════════════════════════════════════════ -->
-<div class="slide" data-slide="13">
+<div class="slide" data-slide="14">
 
   <h2>Team &mdash; 5+1 Model</h2>
   <p style="margin-bottom:14px;">Work split by vertical, not by layer. Each engineer owns a complete slice &mdash; database to API to UI. No handoffs.</p>
@@ -2854,9 +2977,9 @@ body {
 </div>
 
 <!-- ══════════════════════════════════════════════════════
-     SLIDE 14 — WHAT I DON'T KNOW
+     SLIDE 15 — WHAT I DON'T KNOW
      ══════════════════════════════════════════════════════ -->
-<div class="slide" data-slide="14">
+<div class="slide" data-slide="15">
 
   <h2>What I Don't Know</h2>
   <p style="margin-bottom:16px;">17 questions mapped to 5 stakeholders. These three could change the scope:</p>
@@ -2891,9 +3014,9 @@ body {
 </div>
 
 <!-- ══════════════════════════════════════════════════════
-     SLIDE 15 — SUCCESS METRICS
+     SLIDE 16 — SUCCESS METRICS
      ══════════════════════════════════════════════════════ -->
-<div class="slide" data-slide="15">
+<div class="slide" data-slide="16">
 
   <h2>Success Metrics</h2>
   <p style="margin-bottom:14px;">Three tiers because different audiences care about different timescales. But above all: <strong style="color:var(--accent-green);">CSO agent adoption is the #1 metric.</strong> They have to <em>want</em> to use it because it makes their job easier &mdash; not because they were told to.</p>
@@ -2927,9 +3050,9 @@ body {
 </div>
 
 <!-- ══════════════════════════════════════════════════════
-     SLIDE 16 — PULL-BASED ROLLOUT
+     SLIDE 17 — PULL-BASED ROLLOUT
      ══════════════════════════════════════════════════════ -->
-<div class="slide" data-slide="16">
+<div class="slide" data-slide="17">
 
   <h2>Pull-Based Rollout</h2>
   <p style="margin-bottom:16px;">If agents don't prefer it, we don't force it &mdash; we fix it. Three stages, each gated.</p>
@@ -2975,9 +3098,9 @@ body {
 </div>
 
 <!-- ══════════════════════════════════════════════════════
-     SLIDE 17 — HOW I GOT TO THE MVP
+     SLIDE 18 — HOW I GOT TO THE MVP
      ══════════════════════════════════════════════════════ -->
-<div class="slide" data-slide="17">
+<div class="slide" data-slide="18">
 
   <h2>How I Got to the MVP</h2>
   <p style="margin-bottom:12px;">14-step decision chain, compressed into 4 moves:</p>
@@ -3098,9 +3221,9 @@ body {
 </div>
 
 <!-- ══════════════════════════════════════════════════════
-     SLIDE 18 — FROM REACTIVE TO PROACTIVE
+     SLIDE 19 — FROM REACTIVE TO PROACTIVE
      ══════════════════════════════════════════════════════ -->
-<div class="slide" data-slide="18">
+<div class="slide" data-slide="19">
 
   <h2>From Reactive to Proactive</h2>
   <p style="margin-bottom:14px;">The MVP isn't the end state &mdash; it's the <strong>foundation</strong> that makes everything after it possible.</p>
@@ -3200,9 +3323,9 @@ body {
 </div>
 
 <!-- ══════════════════════════════════════════════════════
-     SLIDE 19 — PROTOTYPE DEMO
+     SLIDE 20 — PROTOTYPE DEMO
      ══════════════════════════════════════════════════════ -->
-<div class="slide slide--proto" data-slide="19">
+<div class="slide slide--proto" data-slide="20">
   <div class="proto-container">
     <div class="proto-bar">
       <div class="wf-dots"><div class="wf-dot r"></div><div class="wf-dot y"></div><div class="wf-dot g"></div></div>
@@ -3213,9 +3336,9 @@ body {
 </div>
 
 <!-- ══════════════════════════════════════════════════════
-     SLIDE 20 — ASPIRATIONAL CLOSING (REWORKED)
+     SLIDE 21 — ASPIRATIONAL CLOSING (REWORKED)
      ══════════════════════════════════════════════════════ -->
-<div class="slide" data-slide="20">
+<div class="slide" data-slide="21">
   <div class="closing-slide">
     <div class="closing-question">What if the customer never needed to call in the first place?</div>
 
@@ -3304,14 +3427,14 @@ body {
       </div>
     </div>
 
-    <div class="closing-invest">All of it starts with <strong>7 weeks</strong> and <strong>23 engineer-weeks</strong> of investment.</div>
+    <div class="closing-invest">Phase 1 builds the foundation. Phase 2 adds intelligence. Phase 3 brings prediction. <strong>Every phase earns the next.</strong><br>All of it starts with <strong>7 weeks</strong> and <strong>23 engineer-weeks</strong> of investment.</div>
   </div>
 </div>
 
 <!-- ══════════════════════════════════════════════════════
-     SLIDE 21 — EXPLORE THE PROPOSAL
+     SLIDE 22 — EXPLORE THE PROPOSAL
      ══════════════════════════════════════════════════════ -->
-<div class="slide" data-slide="21" style="padding:36px 50px;">
+<div class="slide" data-slide="22" style="padding:36px 50px;">
 
   <h2>Explore the Proposal</h2>
 
@@ -3434,7 +3557,7 @@ body {
      SLIDE NAV
      ═══════════════════════════════════════ -->
 <div class="slide-nav">
-  <span class="slide-counter" id="slide-counter">1 / 21</span>
+  <span class="slide-counter" id="slide-counter">1 / 22</span>
 </div>
 
 <script>
