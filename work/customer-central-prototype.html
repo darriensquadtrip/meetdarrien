@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Central</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg0:#f5f6f8;--bg1:#222222;--bg2:#ffffff;--bg3:#f0f1f3;--bg4:#e8e9ed;
+  --b0:rgba(0,0,0,0.04);--b1:rgba(0,0,0,0.08);--b2:rgba(0,0,0,0.12);
+  --t1:#1a1a2e;--t2:#4a4a5a;--t3:#6b7280;--t4:#9ca3af;
+  --g:#059669;--gb:rgba(5,150,105,0.08);--gd:rgba(5,150,105,0.2);
+  --bl:#4f46e5;--blb:rgba(79,70,229,0.08);--bld:rgba(79,70,229,0.15);
+  --a:#d97706;--ab:rgba(217,119,6,0.08);--ad:rgba(217,119,6,0.15);
+  --r:#dc2626;--rb:rgba(220,38,38,0.08);--rd:rgba(220,38,38,0.15);
+  --p:#db2777;--pb:rgba(219,39,119,0.08);
+  --o:#ea580c;
+}
+body{font-family:'Inter',sans-serif;background:var(--bg0);color:var(--t1);height:100vh;overflow:hidden}
+.app{display:grid;grid-template-columns:230px 1fr;grid-template-rows:56px 1fr;height:100vh}
+
+/* NAV */
+.nav{grid-column:1/-1;background:#ffffff;border-bottom:1px solid rgba(0,0,0,0.08);display:flex;align-items:center;padding:0 20px;gap:16px;z-index:100}
+.logo{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:500;letter-spacing:1.5px;color:var(--t1);display:flex;align-items:center;gap:8px;flex-shrink:0}
+.logo-dot{width:7px;height:7px;border-radius:50%;background:var(--g);box-shadow:0 0 8px rgba(5,150,105,0.3);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.search-wrap{flex:1;max-width:460px;position:relative}
+.search-in{width:100%;padding:9px 14px 9px 36px;background:#f5f6f8;border:1px solid rgba(0,0,0,0.1);border-radius:7px;color:var(--t1);font-family:'Inter',sans-serif;font-size:15px;outline:none;transition:all .2s}
+.search-in:focus{border-color:var(--g);background:#ffffff}
+.search-in::placeholder{color:var(--t4)}
+.search-ico{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--t4);font-size:16px}
+.search-dd{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#ffffff;border:1px solid rgba(0,0,0,0.1);border-radius:10px;overflow:hidden;display:none;z-index:200;box-shadow:0 12px 40px rgba(0,0,0,.12)}
+.search-dd.vis{display:block}
+.sr{padding:11px 16px;cursor:pointer;display:flex;align-items:center;gap:10px;transition:background .12s;border-bottom:1px solid var(--b0)}
+.sr:last-child{border:none}
+.sr:hover{background:var(--bg4)}
+.av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0}
+.sr-info{flex:1}
+.sr-name{font-size:15px;font-weight:500}
+.sr-det{font-size:13px;color:var(--t3);margin-top:2px}
+.sr-badge{font-family:'JetBrains Mono',monospace;font-size:13px;padding:3px 9px;border-radius:4px}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:10px;font-size:14px;color:var(--t1)}
+.nav-av{width:32px;height:32px;border-radius:50%;background:var(--blb);border:1px solid var(--bld);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--bl)}
+
+
+/* SIDEBAR */
+.side{background:var(--bg1);border-right:none;padding:16px 0;overflow-y:auto}
+.sl{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:400;letter-spacing:2px;color:rgba(255,255,255,0.4);text-transform:uppercase;padding:0 20px;margin-bottom:8px;margin-top:18px}
+.sl:first-child{margin-top:0}
+.si{display:flex;align-items:center;gap:10px;padding:10px 16px;margin:0 6px;border-radius:0 7px 7px 0;border-left:3px solid transparent;cursor:pointer;font-size:15px;font-weight:400;color:rgba(255,255,255,0.7);transition:all .12s}
+.si:hover{background:rgba(255,255,255,0.06);color:#ffffff}
+.si.act{background:rgba(5,150,105,0.15);color:#6ee7b7;border-left-color:#6ee7b7;font-weight:400}
+.si .ic{font-size:15px;width:20px;text-align:center}
+.si .ct{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:400;background:rgba(255,255,255,0.1);padding:2px 8px;border-radius:3px;color:rgba(255,255,255,0.6)}
+.si.act .ct{background:rgba(5,150,105,0.25);color:#6ee7b7}
+#sideAcct{display:none}
+
+/* MAIN */
+.main{overflow-y:auto;position:relative}
+/* Empty */
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;text-align:center;padding:40px}
+.empty .ei{font-size:52px;margin-bottom:20px;opacity:.25}
+.empty h2{font-size:22px;font-weight:500;color:var(--t2);margin-bottom:8px}
+.empty p{font-size:15px;color:var(--t3);max-width:340px}
+.empty .ek{margin-top:14px;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--t3);background:#ffffff;padding:7px 16px;border-radius:5px;border:1px solid rgba(0,0,0,0.1)}
+
+/* DASHBOARD */
+.dash{display:none;height:100%;overflow-y:auto}
+.dash.vis{display:block}
+
+/* Status Strip (FS-3) */
+.strip{display:grid;grid-template-columns:repeat(6,1fr);gap:1px;background:rgba(0,0,0,0.06);border-bottom:1px solid rgba(0,0,0,0.08)}
+.strip-i{background:#ffffff;padding:12px 16px;cursor:pointer;transition:background .12s}
+.strip-i:hover{background:#f8f9fb}
+.strip-l{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.5px;color:var(--t4);text-transform:uppercase;margin-bottom:4px}
+.strip-v{font-size:18px;font-weight:600;display:flex;align-items:center;gap:5px}
+.strip-s{font-size:13px;color:var(--t3);margin-top:2px}
+.sdot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+
+/* Company Header */
+.co-head{padding:18px 24px;background:#ffffff;border-bottom:1px solid rgba(0,0,0,0.08);display:flex;align-items:flex-start;gap:16px}
+.co-av{width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,rgba(5,150,105,0.12),rgba(79,70,229,0.1));border:1px solid rgba(5,150,105,0.2);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;color:var(--g);flex-shrink:0}
+.co-info{flex:1}
+.co-name{font-size:26px;font-weight:600;margin-bottom:4px}
+.co-meta{display:flex;gap:8px;flex-wrap:wrap}
+.mt{font-family:'JetBrains Mono',monospace;font-size:13px;padding:4px 10px;border-radius:4px;display:flex;align-items:center;gap:4px}
+.co-acts{display:flex;gap:6px;flex-shrink:0}
+.btn{padding:8px 16px;border-radius:6px;border:1px solid rgba(0,0,0,0.12);background:#ffffff;color:var(--t2);font-family:'Inter',sans-serif;font-size:14px;cursor:pointer;transition:all .12s;display:flex;align-items:center;gap:5px;white-space:nowrap}
+.btn:hover{background:#f5f6f8;border-color:rgba(0,0,0,0.18);color:var(--t1)}
+.btn-g{background:var(--g);border-color:var(--g);color:#ffffff}
+.btn-g:hover{background:#047857}
+
+/* Caller Card (FS-1) */
+.caller{background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-left:3px solid var(--g);border-radius:9px;padding:14px 18px;margin:16px 24px 0;display:flex;align-items:center;gap:14px;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
+.caller-av{width:40px;height:40px;border-radius:50%;background:rgba(5,150,105,0.1);border:2px solid var(--g);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:14px;color:var(--g)}
+.caller-info{flex:1}
+.caller-n{font-size:16px;font-weight:600}
+.caller-r{font-size:14px;color:var(--t2);margin-top:2px}
+.caller-c{font-size:13px;color:var(--t3);margin-top:2px}
+.caller-b{font-family:'JetBrains Mono',monospace;font-size:13px;padding:4px 10px;border-radius:4px;background:var(--gb);color:var(--g);border:1px solid var(--gd)}
+
+/* Tax badges (PS-3) */
+.tax-row{padding:12px 24px 0;display:flex;gap:8px}
+.tax-b{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:6px;font-size:13px;font-family:'JetBrains Mono',monospace}
+
+/* Tabs */
+.tabs{display:flex;gap:0;padding:0 24px;margin-top:16px;border-bottom:1px solid var(--b1)}
+.tab{padding:11px 18px;background:transparent;border:none;border-bottom:2px solid transparent;color:var(--t3);font-family:'Inter',sans-serif;font-size:15px;cursor:pointer;transition:all .12s}
+.tab:hover{color:var(--t2)}
+.tab.act{color:var(--g);border-bottom-color:var(--g)}
+.tab .tc{font-family:'JetBrains Mono',monospace;font-size:13px;background:var(--b0);padding:2px 7px;border-radius:3px;margin-left:5px}
+.tab.act .tc{background:var(--gb);color:var(--g)}
+
+.tcon{padding:18px 24px 40px}
+.tp{display:none}
+.tp.act{display:block}
+
+/* Section header */
+.sh{font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:1.5px;color:var(--t3);text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+
+/* Timeline (FS-2) */
+.tl{position:relative;padding-left:20px}
+.tl::before{content:'';position:absolute;left:5px;top:16px;bottom:16px;width:2px;background:var(--b1)}
+.tli{display:flex;gap:12px;padding:10px 0 10px 0;position:relative;cursor:pointer;border-radius:7px;transition:background .12s}
+.tli:hover{background:var(--b0)}
+.tld{width:10px;height:10px;border-radius:50%;border:2px solid;background:#f5f6f8;z-index:1;flex-shrink:0;margin-top:3px;margin-left:-17px}
+.tlc{flex:1}
+.tlh{display:flex;align-items:center;gap:6px;margin-bottom:2px;flex-wrap:wrap}
+.tlch{font-family:'JetBrains Mono',monospace;font-size:13px;padding:3px 9px;border-radius:3px}
+.tldt{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--t4)}
+.tlst{font-family:'JetBrains Mono',monospace;font-size:13px;padding:3px 7px;border-radius:3px}
+.tlt{font-size:15px;color:var(--t1);line-height:1.5}
+.tla{font-size:13px;color:var(--t3);margin-top:2px}
+
+/* Pinned ticket */
+.pinned{border:1px solid var(--ad);background:rgba(217,119,6,.06);border-radius:8px;padding:12px 16px;margin-bottom:10px}
+.pin-l{font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:1.5px;color:var(--a);text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:5px}
+
+/* Paystub (PS-1) */
+.ps-card{background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-radius:9px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
+.ps-head{padding:12px 16px;background:#f8f9fb;border-bottom:1px solid rgba(0,0,0,0.06);display:flex;justify-content:space-between;align-items:center}
+.ps-head-l{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--t2)}
+.ps-net{font-size:22px;font-weight:600}
+.ps-net-d{font-size:13px;color:var(--t3);margin-top:2px}
+.ps-rows{padding:4px 0}
+.psr{display:grid;grid-template-columns:1fr 110px 110px 80px;padding:7px 16px;font-size:14px;align-items:center}
+.psr.hd{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--t4);letter-spacing:.5px;text-transform:uppercase;padding:8px 16px;border-bottom:1px solid var(--b1)}
+.psr .lb{color:var(--t2)}
+.psr .cur{font-family:'JetBrains Mono',monospace;text-align:right}
+.psr .prev{font-family:'JetBrains Mono',monospace;text-align:right;color:var(--t3)}
+.psr .dl{font-family:'JetBrains Mono',monospace;text-align:right;font-size:13px}
+.dl-up{color:var(--r)}
+.dl-dn{color:var(--g)}
+.dl-sm{color:var(--t4)}
+.psr.hl{background:var(--ab)}
+.psr.hl-r{background:var(--rb)}
+.ann{grid-column:1/-1;padding:5px 16px 9px;font-size:13px;display:flex;align-items:center;gap:5px}
+.ann-b{font-family:'JetBrains Mono',monospace;font-size:13px;padding:2px 7px;border-radius:3px}
+.ps-foot{padding:12px 16px;border-top:1px solid var(--b1);display:flex;justify-content:space-between;align-items:center}
+.ps-sum{font-size:14px;color:var(--t3);padding:10px 0;display:flex;align-items:flex-start;gap:5px;line-height:1.6}
+
+/* Payment Panel (PS-6) */
+.pay-stat{border-radius:9px;padding:16px;display:flex;align-items:center;gap:14px}
+.pay-ico{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.pay-info{flex:1}
+.pay-t{font-size:16px;font-weight:500}
+.pay-d{font-size:14px;margin-top:2px}
+.risk-cas{background:#ffffff;border:1px solid var(--rd);border-radius:9px;overflow:hidden;margin-top:12px}
+.risk-hd{padding:11px 16px;background:var(--rb);border-bottom:1px solid var(--rd);font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:1.5px;color:var(--r);text-transform:uppercase;display:flex;align-items:center;gap:5px}
+.risk-s{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-bottom:1px solid var(--b0)}
+.risk-s:last-child{border:none}
+.risk-n{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:500;flex-shrink:0}
+.risk-t{font-size:15px;line-height:1.5}
+.risk-t strong{font-weight:600}
+
+/* Invoice rows (PS-5) */
+.inv-r{display:grid;grid-template-columns:1fr 110px 90px 80px;padding:12px 16px;background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-radius:7px;font-size:14px;align-items:center;cursor:pointer;transition:all .12s;margin-bottom:5px;box-shadow:0 1px 2px rgba(0,0,0,0.03)}
+.inv-r:hover{border-color:rgba(0,0,0,0.15);background:#f8f9fb}
+
+/* Benefits (PS-4) */
+.ben-g{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ben-c{background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-radius:8px;padding:14px;box-shadow:0 1px 2px rgba(0,0,0,0.03)}
+.ben-type{font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:1px;color:var(--t3);text-transform:uppercase;margin-bottom:5px}
+.ben-plan{font-size:15px;font-weight:500;margin-bottom:2px}
+.ben-car{font-size:14px;color:var(--t2)}
+.ben-det{font-size:13px;color:var(--t3);margin-top:4px}
+
+/* Changes feed */
+.chg{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border-radius:6px;transition:background .12s}
+.chg:hover{background:var(--b0)}
+.chg-ico{width:30px;height:30px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+.chg-t{font-size:14px;color:var(--t2);line-height:1.5}
+.chg-t strong{color:var(--t1);font-weight:500}
+.chg-d{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--t4);margin-top:2px}
+
+/* Alert banner */
+.alert{margin:0 0 14px;padding:12px 16px;border-radius:8px;display:flex;align-items:center;gap:8px;font-size:15px}
+
+/* Deep link */
+.dl-btn{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:5px;background:rgba(79,70,229,0.06);border:1px solid rgba(79,70,229,0.15);color:var(--bl);font-size:13px;cursor:pointer;transition:all .12s;text-decoration:none;font-family:'Inter',sans-serif}
+.dl-btn:hover{background:rgba(79,70,229,.12)}
+
+/* Modal */
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.35);backdrop-filter:blur(3px);z-index:500;display:none;align-items:center;justify-content:center}
+.modal-ov.vis{display:flex}
+.modal{background:#ffffff;border:1px solid rgba(0,0,0,0.1);border-radius:12px;width:500px;max-height:80vh;overflow-y:auto;box-shadow:0 20px 50px rgba(0,0,0,.15)}
+.modal-hd{padding:18px 20px;border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between}
+.modal-ti{font-size:18px;font-weight:600}
+.modal-x{width:28px;height:28px;border-radius:5px;border:none;background:rgba(0,0,0,0.04);color:var(--t3);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .12s}
+.modal-x:hover{background:rgba(0,0,0,0.08);color:var(--t1)}
+.modal-bd{padding:18px 20px}
+.modal-ft{padding:14px 20px;border-top:1px solid var(--b1);display:flex;justify-content:flex-end;gap:8px}
+.mbtn{padding:9px 20px;border-radius:7px;font-family:'Inter',sans-serif;font-size:14px;cursor:pointer;transition:all .12s;border:1px solid rgba(0,0,0,0.12);background:#ffffff;color:var(--t2)}
+.mbtn:hover{background:#f5f6f8}
+.mbtn-g{background:var(--g);border-color:var(--g);color:#ffffff}
+.mbtn-g:hover{background:#047857}
+.m-field{margin-bottom:14px}
+.m-label{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--t4);letter-spacing:1px;display:block;margin-bottom:6px;text-transform:uppercase}
+.m-input{width:100%;padding:10px 14px;background:#f8f9fb;border:1px solid rgba(0,0,0,0.1);border-radius:6px;font-size:15px;color:var(--t1);font-family:'Inter',sans-serif;outline:none}
+.m-input:focus{border-color:var(--gd)}
+.m-ta{resize:vertical;height:70px}
+.m-opts{display:flex;gap:5px}
+.m-opt{padding:6px 14px;border-radius:5px;border:1px solid rgba(0,0,0,0.1);background:#ffffff;color:var(--t3);font-size:14px;cursor:pointer;font-family:'Inter',sans-serif;transition:all .12s}
+.m-opt:hover{background:#f5f6f8;color:var(--t2)}
+.m-opt.sel{background:var(--g);border-color:var(--g);color:#ffffff}
+
+/* Toast */
+.toast-c{position:fixed;bottom:20px;right:20px;z-index:600;display:flex;flex-direction:column;gap:6px}
+.toast{background:#ffffff;border:1px solid rgba(5,150,105,0.2);border-radius:8px;padding:12px 18px;display:flex;align-items:center;gap:8px;box-shadow:0 8px 24px rgba(0,0,0,.1);animation:slideIn .3s ease-out;font-size:15px}
+@keyframes slideIn{from{transform:translateX(80px);opacity:0}to{transform:translateX(0);opacity:1}}
+
+/* Prototype badge */
+.proto{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);background:#ffffff;border:1px solid rgba(0,0,0,0.1);border-radius:16px;padding:6px 16px;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--t4);letter-spacing:1px;z-index:50;display:flex;align-items:center;gap:6px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.proto .pd{width:5px;height:5px;border-radius:50%;background:var(--a)}
+
+/* Scenario toggle */
+.scenario-bar{padding:0 20px;margin-top:10px}
+.scen-toggle{display:flex;gap:0;border-radius:7px;overflow:hidden;border:1px solid rgba(0,0,0,0.1);width:fit-content;background:#ffffff}
+.scen-btn{padding:7px 16px;background:transparent;border:none;color:var(--t3);font-family:'JetBrains Mono',monospace;font-size:13px;cursor:pointer;transition:all .12s;letter-spacing:.5px}
+.scen-btn.act{background:var(--g);color:#ffffff}
+
+/* Health Score (HS-1) */
+.hs-badge{background:#ffffff;padding:12px 16px;cursor:pointer;transition:background .12s;position:relative}
+.hs-badge:hover{background:#f8f9fb}
+.hs-score{font-size:18px;font-weight:700;display:flex;align-items:center;gap:5px}
+.hs-band{font-size:13px;font-weight:500;margin-left:2px}
+.hs-breakdown{display:none;position:absolute;top:100%;left:0;right:0;min-width:320px;background:#ffffff;border:1px solid rgba(0,0,0,0.1);border-radius:10px;box-shadow:0 12px 40px rgba(0,0,0,.12);z-index:200;padding:14px 16px}
+.hs-breakdown.vis{display:block}
+.hs-breakdown-title{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1.5px;color:var(--t4);text-transform:uppercase;margin-bottom:8px}
+.hs-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--b0);font-size:14px}
+.hs-row:last-child{border-bottom:none}
+.hs-row-label{color:var(--t2)}
+.hs-row-score{font-family:'JetBrains Mono',monospace;font-weight:600}
+.hs-row-detail{font-size:12px;color:var(--t3);margin-left:8px}
+.hs-row-overall{padding:8px 0 2px;border-top:2px solid var(--b1);margin-top:4px;font-weight:600}
+
+/* Portfolio Health (HS-2) */
+.portfolio-view{display:none;height:100%;overflow-y:auto;padding:24px}
+.portfolio-view.vis{display:block}
+.port-header{margin-bottom:20px}
+.port-header h2{font-size:22px;font-weight:600;margin-bottom:4px}
+.port-header p{font-size:14px;color:var(--t3)}
+.port-dist{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.port-dist-item{padding:8px 14px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:13px;display:flex;align-items:center;gap:6px}
+.port-dist-count{font-size:18px;font-weight:700}
+.port-table{width:100%;border-collapse:collapse;background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-radius:9px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
+.port-table th{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:1px;color:var(--t4);text-transform:uppercase;text-align:left;padding:10px 14px;border-bottom:2px solid var(--b1);background:#f8f9fb;cursor:pointer;white-space:nowrap;user-select:none}
+.port-table th:hover{color:var(--t2)}
+.port-table td{padding:10px 14px;border-bottom:1px solid var(--b0);font-size:14px}
+.port-table tr:last-child td{border-bottom:none}
+.port-table tr:hover td{background:#f8f9fb}
+.port-band{font-family:'JetBrains Mono',monospace;font-size:12px;padding:2px 8px;border-radius:4px;font-weight:500;white-space:nowrap}
+.port-score{font-family:'JetBrains Mono',monospace;font-weight:600;font-size:15px}
+.port-risk-signal{font-size:13px;color:var(--t3)}
+
+/* PHASE 3: INTELLIGENCE VIEW */
+.intel-view{display:none;height:100%;overflow-y:auto;background:var(--bg0);color:var(--t1)}
+.intel-view.vis{display:block}
+.intel-banner{display:flex;align-items:center;gap:12px;padding:14px 24px;background:#ffffff;border-bottom:1px solid rgba(0,0,0,0.08)}
+.intel-banner-title{font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:1px;color:var(--t4)}
+.intel-banner-badge{font-family:'JetBrains Mono',monospace;font-size:11px;padding:3px 10px;border-radius:4px;background:var(--gb);color:var(--g);border:1px solid var(--gd);letter-spacing:1px}
+.intel-grid{display:grid;grid-template-columns:1fr 300px;gap:0;min-height:calc(100% - 48px)}
+.intel-main{padding:24px;overflow-y:auto}
+.intel-aside{padding:24px 20px;background:#f8f9fb;border-left:1px solid rgba(0,0,0,0.08);overflow-y:auto}
+.intel-profile{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.intel-avatar{width:48px;height:48px;border-radius:50%;background:var(--g);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#ffffff;flex-shrink:0}
+.intel-profile-name{font-size:20px;font-weight:600;color:var(--t1)}
+.intel-profile-meta{font-size:13px;color:var(--t3);margin-top:3px}
+.intel-churn-badge{font-family:'JetBrains Mono',monospace;font-size:12px;padding:4px 10px;border-radius:5px;background:var(--rb);color:var(--r);border:1px solid var(--rd);margin-left:auto;white-space:nowrap}
+.intel-hr{border:none;border-top:1px solid rgba(0,0,0,0.08);margin:0 0 20px}
+.intel-card{background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-radius:10px;padding:18px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
+.intel-card-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.intel-card-icon{font-size:16px}
+.intel-card-label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--t4);text-transform:uppercase}
+.intel-card p{font-size:14px;line-height:1.7;color:var(--t2)}
+.intel-card p strong{color:var(--t1);font-weight:600}
+.intel-metrics{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.intel-metric{background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-radius:10px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
+.intel-metric-label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+.intel-metric-value{font-size:22px;font-weight:700;margin-bottom:4px}
+.intel-metric-detail{font-size:12px;color:var(--t3)}
+.intel-action-item{display:flex;align-items:flex-start;gap:12px;padding:14px 0;border-bottom:1px solid var(--b0)}
+.intel-action-item:last-child{border-bottom:none}
+.intel-action-emoji{font-size:18px;flex-shrink:0;margin-top:1px}
+.intel-action-text{font-size:14px;color:var(--t2);flex:1;line-height:1.5}
+.intel-action-badge{font-family:'JetBrains Mono',monospace;font-size:10px;padding:3px 8px;border-radius:4px;white-space:nowrap;flex-shrink:0;margin-top:2px;letter-spacing:0.5px}
+.intel-action-badge.auto{background:var(--blb);color:var(--bl);border:1px solid var(--bld)}
+.intel-action-badge.suggested{background:var(--gb);color:var(--g);border:1px solid var(--gd)}
+.intel-action-badge.sales{background:var(--ab);color:var(--a);border:1px solid var(--ad)}
+.intel-aside-title{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--t4);text-transform:uppercase;margin-bottom:14px}
+.intel-insight{background:#ffffff;border:1px solid rgba(0,0,0,0.08);border-radius:9px;padding:14px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
+.intel-insight-title{font-size:13px;font-weight:600;color:var(--t1);margin-bottom:6px}
+.intel-insight-text{font-size:12px;color:var(--t3);line-height:1.6;margin-bottom:8px}
+.intel-insight-pill{font-family:'JetBrains Mono',monospace;font-size:10px;padding:2px 8px;border-radius:3px;letter-spacing:0.5px;display:inline-block}
+.intel-insight-pill.product{background:var(--blb);color:var(--bl);border:1px solid var(--bld)}
+.intel-insight-pill.sales-pill{background:var(--ab);color:var(--a);border:1px solid var(--ad)}
+.intel-insight-pill.help{background:var(--gb);color:var(--g);border:1px solid var(--gd)}
+.intel-insight-pill.leadership{background:var(--pb);color:var(--p);border:1px solid rgba(219,39,119,0.15)}
+</style>
+<!-- PostHog Analytics -->
+<script>
+    !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+    posthog.init("phc_LcdaDlRybT3k43qFjVismYdhbTZcRlhG7caj7zdkmkW", {
+        api_host: "https://us.i.posthog.com",
+        person_profiles: "identified_only"
+    });
+</script>
+</head>
+<body>
+<div class="app">
+<!-- NAV -->
+<nav class="nav">
+  <div class="logo"><span class="logo-dot"></span>CUSTOMER CENTRAL</div>
+  <div class="search-wrap">
+    <span class="search-ico">⌕</span>
+    <input class="search-in" id="searchIn" type="text" placeholder="Search by company, name, email, or phone... (⌘K)" autocomplete="off" value="Sarah Chen · Acme Corp">
+    <div class="search-dd" id="searchDD">
+      <div class="sr" onclick="loadCustomer()">
+        <div class="av" style="background:var(--gb);color:var(--g)">SC</div>
+        <div class="sr-info"><div class="sr-name">Sarah Chen</div><div class="sr-det">Admin · Acme Corp · Enterprise Plan</div></div>
+        <span class="sr-badge" style="background:var(--gb);color:var(--g);border:1px solid var(--gd)">Active</span>
+      </div>
+      <div class="sr" onclick="loadCustomer()">
+        <div class="av" style="background:var(--blb);color:var(--bl)">AC</div>
+        <div class="sr-info"><div class="sr-name">Acme Corp</div><div class="sr-det">Enterprise Plan · 34 employees · Since Jan 2022</div></div>
+        <span class="sr-badge" style="background:var(--gb);color:var(--g);border:1px solid var(--gd)">Current</span>
+      </div>
+      <div class="sr" onclick="loadCustomer()">
+        <div class="av" style="background:var(--pb);color:var(--p)">MJ</div>
+        <div class="sr-info"><div class="sr-name">Marcus Johnson</div><div class="sr-det">Employee · Acme Corp · Engineering · CA</div></div>
+        <span class="sr-badge" style="background:var(--blb);color:var(--bl);border:1px solid var(--bld)">Employee</span>
+      </div>
+    </div>
+  </div>
+  <div class="nav-right"><div class="nav-av">JM</div>Jordan Mitchell · Support Ops</div>
+</nav>
+
+<!-- SIDEBAR -->
+<aside class="side">
+  <div class="sl">Navigation</div>
+  <div class="si act" onclick="sideNav(this)"><span class="ic">◉</span>Dashboard</div>
+  <div class="si" id="siIntelligence" onclick="showIntelligence()"><span class="ic">✦</span>Intelligence</div>
+  <div class="si" onclick="sideNav(this)"><span class="ic">☰</span>My Queue<span class="ct">7</span></div>
+  <div class="si" onclick="sideNav(this)"><span class="ic">◷</span>Recent</div>
+  <div class="sl">Actions</div>
+  <div class="si" onclick="showModal('newTicket')"><span class="ic">＋</span>New Ticket</div>
+  <div class="si" onclick="showModal('logInt')"><span class="ic">✎</span>Log Interaction</div>
+  <div class="si" onclick="toast('📋 Escalation form copied')"><span class="ic">↗</span>Escalate</div>
+  <div class="sl">Leadership</div>
+  <div class="si" id="siPortfolio" onclick="showPortfolio()"><span class="ic">◉</span>Portfolio Health</div>
+  <div class="si" onclick="toast('📊 Trend Analytics — coming in Phase 3')"><span class="ic">▤</span>Trend Analytics</div>
+  <div id="sideAcct" style="display:block">
+    <div class="sl">Account</div>
+    <div class="si" onclick="showTab('overview')"><span class="ic">◈</span>Overview</div>
+    <div class="si" onclick="showTab('history')"><span class="ic">◷</span>History<span class="ct">10</span></div>
+    <div class="si" onclick="showTab('payroll')"><span class="ic">$</span>Payroll</div>
+    <div class="si" onclick="showTab('billing')"><span class="ic">▤</span>Billing</div>
+    <div class="si" onclick="showTab('benefits')"><span class="ic">♡</span>Benefits</div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+<div class="empty" id="emptyState" style="display:none">
+  <div class="ei">⌕</div>
+  <h2>Search for a customer to get started</h2>
+  <p>Type a company name, person name, email, or phone number above.</p>
+  <div class="ek">⌘K to focus search</div>
+</div>
+
+<div class="dash vis" id="dash">
+<!-- FS-3: STATUS STRIP -->
+<div class="strip">
+  <div class="hs-badge" id="hsBadge" onclick="toggleHealthBreakdown(event)">
+    <div class="strip-l">Health Score</div>
+    <div class="hs-score" id="hsScore" style="color:#4caf50"><span class="sdot" style="background:#4caf50"></span><span id="hsScoreNum">82</span> <span class="hs-band" id="hsBand">— Good</span></div>
+    <div class="strip-s" id="hsSubtext">5 signals + tenure · Rule-based</div>
+    <div class="hs-breakdown" id="hsBreakdown">
+      <div class="hs-breakdown-title">Health Score Breakdown</div>
+      <div class="hs-row"><span class="hs-row-label">Billing</span><div><span class="hs-row-score" style="color:var(--g)" id="hsBilling">100</span><span class="hs-row-detail" id="hsBillingDetail">Current — paid Feb 1</span></div></div>
+      <div class="hs-row"><span class="hs-row-label">Payroll</span><div><span class="hs-row-score" style="color:var(--g)" id="hsPayroll">100</span><span class="hs-row-detail" id="hsPayrollDetail">Last 3 runs successful</span></div></div>
+      <div class="hs-row"><span class="hs-row-label">Support</span><div><span class="hs-row-score" style="color:var(--a)" id="hsSupport">72</span><span class="hs-row-detail" id="hsSupportDetail">1 open ticket, 3 days old, medium</span></div></div>
+      <div class="hs-row"><span class="hs-row-label">Satisfaction</span><div><span class="hs-row-score" style="color:var(--g)" id="hsSatisfaction">85</span><span class="hs-row-detail" id="hsSatisfactionDetail">Last 3 CSAT avg</span></div></div>
+      <div class="hs-row"><span class="hs-row-label">Activity</span><div><span class="hs-row-score" style="color:var(--g)" id="hsActivity">80</span><span class="hs-row-detail" id="hsActivityDetail">Moderate — 3 changes in 14 days</span></div></div>
+      <div class="hs-row" id="hsTenureRow" style="border-top:1px dashed var(--b2);margin-top:4px;padding-top:8px"><span class="hs-row-label" style="color:var(--bl)">Tenure Factor</span><div><span class="hs-row-score" style="color:var(--bl)" id="hsTenureFactor">×1.00</span><span class="hs-row-detail" id="hsTenureDetail">Customer since Jan 2022 (180+ days)</span></div></div>
+      <div class="hs-row hs-row-overall" id="hsOverallRow"><span>Overall</span><span class="hs-row-score" id="hsOverallScore" style="color:#4caf50">82 — Good</span></div>
+    </div>
+  </div>
+  <div class="strip-i" onclick="showTab('billing')">
+    <div class="strip-l">Billing</div>
+    <div class="strip-v" style="color:var(--g)"><span class="sdot" style="background:var(--g)"></span>Current</div>
+    <div class="strip-s">Paid Feb 1 · $12,480</div>
+  </div>
+  <div class="strip-i" onclick="showTab('payroll')">
+    <div class="strip-l">Next Payroll</div>
+    <div class="strip-v" style="color:var(--a)">Feb 28</div>
+    <div class="strip-s">Bi-weekly · Deadline Feb 26 · <span style="color:var(--a)">17 days</span></div>
+  </div>
+  <div class="strip-i" onclick="showTab('history')">
+    <div class="strip-l">Open Tickets</div>
+    <div class="strip-v" style="color:var(--a)"><span class="sdot" style="background:var(--a)"></span>1 Open</div>
+    <div class="strip-s">Payroll discrepancy · 3 days</div>
+  </div>
+  <div class="strip-i">
+    <div class="strip-l">Recent Changes</div>
+    <div class="strip-v">3</div>
+    <div class="strip-s">Last 14 days · 2 hires</div>
+  </div>
+  <div class="strip-i">
+    <div class="strip-l">Customer Since</div>
+    <div class="strip-v">Jan 2022</div>
+    <div class="strip-s">3 yrs · Enterprise Plan since '23</div>
+  </div>
+</div>
+
+<!-- COMPANY HEADER -->
+<div class="co-head">
+  <div class="co-av">A</div>
+  <div class="co-info">
+    <div class="co-name">Acme Corp</div>
+    <div class="co-meta">
+      <span class="mt" style="background:var(--gb);color:var(--g);border:1px solid var(--gd)">Enterprise Plan</span>
+      <span class="mt" style="background:var(--b0);color:var(--t2);border:1px solid var(--b1)">34 employees</span>
+      <span class="mt" style="background:var(--b0);color:var(--t2);border:1px solid var(--b1)">NY, CA, TX</span>
+      <span class="mt" style="background:var(--b0);color:var(--t2);border:1px solid var(--b1)">SaaS · Technology</span>
+    </div>
+  </div>
+  <div class="co-acts">
+    <button class="btn" onclick="toast('↗ Opening Salesforce account...')">Salesforce ↗</button>
+    <button class="btn btn-g" onclick="showModal('logInt')">＋ Log Interaction</button>
+  </div>
+</div>
+
+<!-- FS-1: CALLER CARD -->
+<div class="caller">
+  <div class="caller-av">SC</div>
+  <div class="caller-info">
+    <div class="caller-n">Sarah Chen</div>
+    <div class="caller-r">Account Administrator · Primary Contact</div>
+    <div class="caller-c">sarah.chen@acmecorp.com · (212) 555-0147 · Last contact: Feb 8 (email)</div>
+  </div>
+  <div style="text-align:right">
+    <div class="caller-b">Admin</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t4);margin-top:4px">Since Mar 2022</div>
+  </div>
+</div>
+
+<!-- PS-3: TAX DOC BADGES -->
+<div class="tax-row">
+  <div class="tax-b" style="background:var(--gb);color:var(--g);border:1px solid var(--gd)">✓ W-2s Available · Issued Jan 31</div>
+  <div class="tax-b" style="background:var(--ab);color:var(--a);border:1px solid var(--ad)">⏳ 1099s: 8 of 10 complete</div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab act" id="tabOverview" onclick="showTab('overview')">Overview</button>
+  <button class="tab" id="tabHistory" onclick="showTab('history')">History <span class="tc">10</span></button>
+  <button class="tab" id="tabPayroll" onclick="showTab('payroll')">Payroll</button>
+  <button class="tab" id="tabBilling" onclick="showTab('billing')">Billing</button>
+  <button class="tab" id="tabBenefits" onclick="showTab('benefits')">Benefits</button>
+</div>
+
+<div class="tcon">
+<!-- OVERVIEW -->
+<div class="tp act" id="pOverview">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+  <div>
+    <div class="sh">⚠ Open Tickets</div>
+    <div class="pinned">
+      <div class="pin-l">⚡ OPEN · 3 DAYS</div>
+      <div style="font-size:13px;font-weight:500;margin-bottom:3px">Payroll discrepancy — new hire withholding</div>
+      <div style="font-size:11px;color:var(--t2);margin-bottom:5px;line-height:1.5">Sarah reported Marcus Johnson's first paycheck had incorrect state tax withholding. CA resident taxed as NY.</div>
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:1px 7px;border-radius:3px;background:var(--ab);color:var(--a)">Medium</span>
+        <span style="font-size:11px;color:var(--t4)">Assigned: Alex Rivera · Feb 8</span>
+      </div>
+      <div style="margin-top:7px;display:flex;gap:6px">
+        <button class="btn" style="font-size:11px;padding:4px 8px" onclick="showModal('ticket')">View Full Ticket</button>
+        <button class="btn" style="font-size:11px;padding:4px 8px" onclick="toast('🔗 Ticket link copied')">Copy Link</button>
+        <button class="btn btn-g" style="font-size:11px;padding:4px 8px" onclick="toast('✓ Ticket reassigned to you')">Take Over</button>
+      </div>
+    </div>
+  </div>
+  <div>
+    <div class="sh">Recent Changes (14 days)</div>
+    <div class="chg">
+      <div class="chg-ico" style="background:var(--gb);color:var(--g)">＋</div>
+      <div><div class="chg-t"><strong>Marcus Johnson</strong> added · Engineering · CA</div><div class="chg-d">Feb 3, 2026</div></div>
+    </div>
+    <div class="chg">
+      <div class="chg-ico" style="background:var(--gb);color:var(--g)">＋</div>
+      <div><div class="chg-t"><strong>Lisa Park</strong> added · Design · NY</div><div class="chg-d">Feb 1, 2026</div></div>
+    </div>
+    <div class="chg">
+      <div class="chg-ico" style="background:var(--blb);color:var(--bl)">✎</div>
+      <div><div class="chg-t"><strong>Payroll</strong> ran · 32 employees · $148,230</div><div class="chg-d">Jan 31, 2026</div></div>
+    </div>
+    <div class="chg">
+      <div class="chg-ico" style="background:var(--ab);color:var(--a)">↻</div>
+      <div><div class="chg-t"><strong>Benefits</strong> updated for 3 employees</div><div class="chg-d">Jan 28, 2026</div></div>
+    </div>
+  </div>
+</div>
+<div style="margin-top:16px">
+  <div class="sh">Recent Interactions</div>
+  <div class="tl">
+    <div class="tli" onclick="showTab('history')">
+      <div class="tld" style="border-color:var(--a)"></div>
+      <div class="tlc"><div class="tlh"><span class="tlch" style="background:var(--blb);color:var(--bl)">Email</span><span class="tldt">Feb 8</span><span class="tlst" style="background:var(--ab);color:var(--a)">OPEN</span></div><div class="tlt">Payroll discrepancy — Marcus Johnson's state withholding incorrect</div><div class="tla">Sarah Chen → Alex Rivera</div></div>
+    </div>
+    <div class="tli">
+      <div class="tld" style="border-color:var(--g)"></div>
+      <div class="tlc"><div class="tlh"><span class="tlch" style="background:var(--gb);color:var(--g)">Phone</span><span class="tldt">Jan 22</span></div><div class="tlt">Adding two new employees — onboarding for remote hires in CA and TX</div><div class="tla">Sarah Chen → Jordan Mitchell · 12 min</div></div>
+    </div>
+    <div class="tli">
+      <div class="tld" style="border-color:var(--g)"></div>
+      <div class="tlc"><div class="tlh"><span class="tlch" style="background:var(--pb);color:var(--p)">Chat</span><span class="tldt">Jan 15</span></div><div class="tlt">Benefits enrollment deadline — open enrollment closes Feb 15</div><div class="tla">Sarah Chen → Kim Patel · 4 min</div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- HISTORY (FS-2) -->
+<div class="tp" id="pHistory">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+  <div class="sh" style="margin:0">Full Interaction Timeline</div>
+  <div style="display:flex;gap:4px">
+    <button class="btn act-f" style="font-size:11px;padding:3px 8px" onclick="filterTL('all',this)">All</button>
+    <button class="btn" style="font-size:11px;padding:3px 8px" onclick="filterTL('phone',this)">📞</button>
+    <button class="btn" style="font-size:11px;padding:3px 8px" onclick="filterTL('email',this)">📧</button>
+    <button class="btn" style="font-size:11px;padding:3px 8px" onclick="filterTL('chat',this)">💬</button>
+  </div>
+</div>
+<div class="tl" id="fullTL">
+  <div class="tli" data-ch="email"><div class="tld" style="border-color:var(--a)"></div><div class="tlc"><div class="tlh"><span class="tlch" style="background:var(--blb);color:var(--bl)">Email</span><span class="tldt">Feb 8 · 2:14 PM</span><span class="tlst" style="background:var(--ab);color:var(--a)">OPEN</span></div><div class="tlt">Payroll discrepancy — Marcus Johnson's first paycheck had incorrect state tax withholding. CA resident taxed as NY.</div><div class="tla">Sarah Chen → Alex Rivera · Payroll Team</div></div></div>
+  <div class="tli" data-ch="phone"><div class="tld" style="border-color:var(--g)"></div><div class="tlc"><div class="tlh"><span class="tlch" style="background:var(--gb);color:var(--g)">Phone</span><span class="tldt">Jan 22 · 10:45 AM</span><span class="tlst" style="background:var(--gb);color:var(--g)">RESOLVED</span></div><div class="tlt">Adding two new employees — Marcus Johnson (Engineering, CA) and Lisa Park (Design, NY). Walked through remote hire onboarding.</div><div class="tla">Sarah Chen → Jordan Mitchell · 12 min</div></div></div>
+  <div class="tli" data-ch="chat"><div class="tld" style="border-color:var(--g)"></div><div class="tlc"><div class="tlh"><span class="tlch" style="background:var(--pb);color:var(--p)">Chat</span><span class="tldt">Jan 15 · 3:22 PM</span><span class="tlst" style="background:var(--gb);color:var(--g)">RESOLVED</span></div><div class="tlt">Benefits enrollment deadline — confirmed open enrollment window closes Feb 15.</div><div class="tla">Sarah Chen → Kim Patel · 4 min</div></div></div>
+  <div class="tli" data-ch="phone"><div class="tld" style="border-color:var(--g)"></div><div class="tlc"><div class="tlh"><span class="tlch" style="background:var(--gb);color:var(--g)">Phone</span><span class="tldt">Jan 3 · 9:15 AM</span><span class="tlst" style="background:var(--gb);color:var(--g)">RESOLVED</span></div><div class="tlt">Year-end review — confirmed all W-2 data accurate. Discussed 1099 timeline for contractors.</div><div class="tla">Sarah Chen → Jordan Mitchell · 18 min</div></div></div>
+  <div class="tli" data-ch="email"><div class="tld" style="border-color:var(--g)"></div><div class="tlc"><div class="tlh"><span class="tlch" style="background:var(--blb);color:var(--bl)">Email</span><span class="tldt">Dec 18 · 11:30 AM</span><span class="tlst" style="background:var(--gb);color:var(--g)">RESOLVED</span></div><div class="tlt">Invoice question — December billing higher due to 2 mid-month hires. Explained prorated charges.</div><div class="tla">Sarah Chen → Alex Rivera</div></div></div>
+  <div class="tli" data-ch="phone"><div class="tld" style="border-color:var(--g)"></div><div class="tlc"><div class="tlh"><span class="tlch" style="background:var(--gb);color:var(--g)">Phone</span><span class="tldt">Dec 2 · 2:00 PM</span><span class="tlst" style="background:var(--gb);color:var(--g)">RESOLVED</span></div><div class="tlt">PTO policy setup — configured accrual rules for NY and CA employees. Different state requirements.</div><div class="tla">Sarah Chen → Kim Patel · 22 min</div></div></div>
+  <div class="tli" data-ch="phone"><div class="tld" style="border-color:var(--g)"></div><div class="tlc"><div class="tlh"><span class="tlch" style="background:var(--gb);color:var(--g)">Phone</span><span class="tldt">Nov 15 · 11:00 AM</span><span class="tlst" style="background:var(--gb);color:var(--g)">RESOLVED</span></div><div class="tlt">Texas registration — hiring first TX employee. State tax registration and workers' comp requirements.</div><div class="tla">Sarah Chen → Jordan Mitchell · 25 min</div></div></div>
+  <div class="tli" data-ch="chat"><div class="tld" style="border-color:var(--g)"></div><div class="tlc"><div class="tlh"><span class="tlch" style="background:var(--pb);color:var(--p)">Chat</span><span class="tldt">Oct 28 · 4:10 PM</span><span class="tlst" style="background:var(--gb);color:var(--g)">RESOLVED</span></div><div class="tlt">Open enrollment setup — requested timeline and employee communication templates.</div><div class="tla">Sarah Chen → Alex Rivera · 6 min</div></div></div>
+  <div class="tli" data-ch="phone"><div class="tld" style="border-color:var(--g)"></div><div class="tlc"><div class="tlh"><span class="tlch" style="background:var(--gb);color:var(--g)">Phone</span><span class="tldt">Sep 12 · 1:30 PM</span><span class="tlst" style="background:var(--gb);color:var(--g)">RESOLVED</span></div><div class="tlt">401(k) match question — confirmed employer match formula and vesting schedule.</div><div class="tla">Sarah Chen → Kim Patel · 8 min</div></div></div>
+  <div class="tli" data-ch="email"><div class="tld" style="border-color:var(--g)"></div><div class="tlc"><div class="tlh"><span class="tlch" style="background:var(--blb);color:var(--bl)">Email</span><span class="tldt">Aug 5 · 10:00 AM</span><span class="tlst" style="background:var(--gb);color:var(--g)">RESOLVED</span></div><div class="tlt">Enterprise Plan upgrade completed — migrated from Standard Plan. Benefits enrollment opened for all employees.</div><div class="tla">Sarah Chen → Jordan Mitchell</div></div></div>
+</div>
+</div>
+
+<!-- PAYROLL (PS-1 + PS-2) -->
+<div class="tp" id="pPayroll">
+<!-- PS-2: Alert -->
+<div class="alert" style="background:var(--gb);border:1px solid var(--gd);color:var(--g)">
+  ✓ Last payroll ran successfully · Jan 31 · 32 employees · $148,230
+  <button class="dl-btn" style="margin-left:auto" onclick="toast('↗ Opening payroll admin...')">View Payroll Details ↗</button>
+</div>
+
+<!-- Scenario toggle -->
+<div style="margin-bottom:12px;display:flex;align-items:center;gap:10px">
+  <div class="sh" style="margin:0">Pay Stub Viewer</div>
+  <div class="scen-toggle">
+    <button class="scen-btn act" onclick="switchEmployee('marcus',this)">Marcus Johnson</button>
+    <button class="scen-btn" onclick="switchEmployee('sarah',this)">Sarah Chen</button>
+  </div>
+</div>
+
+<div id="stubMarcus">
+<div style="font-size:11px;color:var(--t3);margin-bottom:8px">Engineering · California · Salaried · $120,000/yr</div>
+<div class="ps-card">
+  <div class="ps-head">
+    <div class="ps-head-l">Jan 16 – Jan 31, 2026 vs Jan 1 – Jan 15</div>
+    <div style="text-align:right"><div class="ps-net">$3,847.23</div><div class="ps-net-d">Net pay · <span style="color:var(--r)">-$142.50 vs prior</span></div></div>
+  </div>
+  <div class="ps-rows">
+    <div class="psr hd"><span>Item</span><span style="text-align:right">Current</span><span style="text-align:right">Previous</span><span style="text-align:right">Delta</span></div>
+    <div class="psr"><span class="lb">Gross Pay</span><span class="cur">$5,000.00</span><span class="prev">$5,000.00</span><span class="dl dl-sm">—</span></div>
+    <div class="psr"><span class="lb">Federal Income Tax</span><span class="cur">$612.50</span><span class="prev">$612.50</span><span class="dl dl-sm">—</span></div>
+    <div class="psr hl"><span class="lb" style="color:var(--t1);font-weight:500">State Income Tax</span><span class="cur" style="color:var(--a)">$316.27</span><span class="prev">$256.50</span><span class="dl dl-up">+$59.77</span></div>
+    <div class="ann" style="background:var(--ab)"><span class="ann-b" style="background:var(--ab);color:var(--a);border:1px solid var(--ad)">WHY</span><span style="color:var(--a)">Withholding changed NY (5.13%) → CA (6.33%) on Jan 20</span></div>
+    <div class="psr"><span class="lb">Social Security</span><span class="cur">$310.00</span><span class="prev">$310.00</span><span class="dl dl-sm">—</span></div>
+    <div class="psr"><span class="lb">Medicare</span><span class="cur">$72.50</span><span class="prev">$72.50</span><span class="dl dl-sm">—</span></div>
+    <div class="psr hl-r"><span class="lb" style="color:var(--t1);font-weight:500">CA SDI</span><span class="cur" style="color:var(--r)">$55.00</span><span class="prev">—</span><span class="dl dl-up">+$55.00</span></div>
+    <div class="ann" style="background:var(--rb)"><span class="ann-b" style="background:var(--rb);color:var(--r);border:1px solid var(--rd)">NEW</span><span style="color:var(--r)">CA State Disability Insurance — mandatory for CA employees, effective Jan 16</span></div>
+    <div class="psr"><span class="lb">Health Insurance (Aetna PPO)</span><span class="cur">$186.50</span><span class="prev">$186.50</span><span class="dl dl-sm">—</span></div>
+    <div class="psr hl-r"><span class="lb" style="color:var(--t1);font-weight:500">Dental (Delta Dental)</span><span class="cur" style="color:var(--r)">$27.73</span><span class="prev">—</span><span class="dl dl-up">+$27.73</span></div>
+    <div class="ann" style="background:var(--rb)"><span class="ann-b" style="background:var(--rb);color:var(--r);border:1px solid var(--rd)">NEW</span><span style="color:var(--r)">Dental enrollment effective Jan 16 — Employee-only plan</span></div>
+    <div class="psr"><span class="lb">401(k) Contribution (6%)</span><span class="cur">$300.00</span><span class="prev">$300.00</span><span class="dl dl-sm">—</span></div>
+  </div>
+  <div class="ps-foot">
+    <div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t3)">Total Deductions: </span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--r);font-weight:500">$1,152.77</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--r);margin-left:4px">+$142.50</span></div>
+    <div style="display:flex;gap:6px"><button class="btn" style="font-size:11px;padding:4px 8px" onclick="toast('📄 Pay stub PDF downloaded')">Download PDF</button><button class="btn" style="font-size:11px;padding:4px 8px" onclick="toast('📋 Summary copied to clipboard')">Copy Summary</button></div>
+  </div>
+</div>
+<div class="ps-sum">
+  <span style="color:var(--a);flex-shrink:0">💡</span>
+  <span><strong style="color:var(--t2)">Summary:</strong> Net pay decreased $142.50 due to: CA state tax (+$59.77), CA SDI (+$55.00), dental enrollment (+$27.73). All changes align with state update to California on Jan 20 and benefits enrollment Jan 16.</span>
+</div>
+</div>
+
+<div id="stubSarah" style="display:none">
+<div style="font-size:11px;color:var(--t3);margin-bottom:8px">Administrator · New York · Salaried · $145,000/yr</div>
+<div class="ps-card">
+  <div class="ps-head">
+    <div class="ps-head-l">Jan 16 – Jan 31, 2026 vs Jan 1 – Jan 15</div>
+    <div style="text-align:right"><div class="ps-net">$4,412.88</div><div class="ps-net-d">Net pay · <span style="color:var(--t3)">No change</span></div></div>
+  </div>
+  <div class="ps-rows">
+    <div class="psr hd"><span>Item</span><span style="text-align:right">Current</span><span style="text-align:right">Previous</span><span style="text-align:right">Delta</span></div>
+    <div class="psr"><span class="lb">Gross Pay</span><span class="cur">$6,041.67</span><span class="prev">$6,041.67</span><span class="dl dl-sm">—</span></div>
+    <div class="psr"><span class="lb">Federal Income Tax</span><span class="cur">$785.42</span><span class="prev">$785.42</span><span class="dl dl-sm">—</span></div>
+    <div class="psr"><span class="lb">NY State Tax</span><span class="cur">$310.14</span><span class="prev">$310.14</span><span class="dl dl-sm">—</span></div>
+    <div class="psr"><span class="lb">NYC Tax</span><span class="cur">$82.17</span><span class="prev">$82.17</span><span class="dl dl-sm">—</span></div>
+    <div class="psr"><span class="lb">Social Security</span><span class="cur">$374.58</span><span class="prev">$374.58</span><span class="dl dl-sm">—</span></div>
+    <div class="psr"><span class="lb">Medicare</span><span class="cur">$87.60</span><span class="prev">$87.60</span><span class="dl dl-sm">—</span></div>
+    <div class="psr"><span class="lb">Health (Aetna PPO, Emp+Spouse)</span><span class="cur">$373.00</span><span class="prev">$373.00</span><span class="dl dl-sm">—</span></div>
+    <div class="psr"><span class="lb">Dental (Delta, Emp+Spouse)</span><span class="cur">$42.38</span><span class="prev">$42.38</span><span class="dl dl-sm">—</span></div>
+    <div class="psr"><span class="lb">Vision (VSP, Emp+Spouse)</span><span class="cur">$18.50</span><span class="prev">$18.50</span><span class="dl dl-sm">—</span></div>
+    <div class="psr"><span class="lb">401(k) (8%)</span><span class="cur">$483.33</span><span class="prev">$483.33</span><span class="dl dl-sm">—</span></div>
+  </div>
+  <div class="ps-foot">
+    <div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t3)">Total Deductions: </span><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--t2);font-weight:500">$1,628.79</span></div>
+    <div style="display:flex;gap:6px"><button class="btn" style="font-size:11px;padding:4px 8px" onclick="toast('📄 Pay stub PDF downloaded')">Download PDF</button></div>
+  </div>
+</div>
+<div class="ps-sum"><span style="color:var(--g);flex-shrink:0">✓</span><span>No changes between pay periods. All deductions consistent.</span></div>
+</div>
+</div>
+
+<!-- BILLING (PS-5 + PS-6) -->
+<div class="tp" id="pBilling">
+<!-- PS-6: Payment status — toggle between healthy and at-risk -->
+<div style="margin-bottom:12px;display:flex;align-items:center;gap:10px">
+  <div class="sh" style="margin:0">Payment Status</div>
+  <div class="scen-toggle">
+    <button class="scen-btn act" onclick="switchBilling('good',this)">Current (Acme)</button>
+    <button class="scen-btn" onclick="switchBilling('risk',this)">At-Risk Scenario</button>
+  </div>
+</div>
+
+<div id="billGood">
+  <div class="pay-stat" style="background:var(--gb);border:1px solid var(--gd)">
+    <div class="pay-ico" style="background:rgba(110,231,183,.15);color:var(--g)">✓</div>
+    <div class="pay-info"><div class="pay-t" style="color:var(--g)">All Payments Current</div><div class="pay-d" style="color:var(--t2)">Last: $12,480 · Feb 1 · ACH ···4892</div></div>
+    <button class="btn" style="font-size:11px;padding:4px 8px" onclick="showModal('payHist')">Payment History</button>
+  </div>
+</div>
+
+<div id="billRisk" style="display:none">
+  <div class="pay-stat" style="background:var(--rb);border:1px solid var(--rd)">
+    <div class="pay-ico" style="background:rgba(248,113,113,.15);color:var(--r)">✕</div>
+    <div class="pay-info"><div class="pay-t" style="color:var(--r)">Payment Failed — $12,480 Past Due (8 days)</div><div class="pay-d" style="color:var(--t2)">ACH rejected Feb 1 · Reason: Insufficient funds · Bank: Chase ···4892</div></div>
+    <button class="btn" style="font-size:11px;padding:4px 8px;border-color:var(--rd);color:var(--r)" onclick="showModal('updatePay')">Update Payment Method</button>
+  </div>
+  <!-- Risk cascade -->
+  <div class="risk-cas">
+    <div class="risk-hd">⚠ RISK CASCADE</div>
+    <div class="risk-s">
+      <div class="risk-n" style="background:var(--rb);color:var(--r)">1</div>
+      <div class="risk-t"><strong style="color:var(--r)">Payment failed</strong> — $12,480 ACH rejected on Feb 1. Insufficient funds. Account past due 8 days.</div>
+    </div>
+    <div class="risk-s">
+      <div class="risk-n" style="background:var(--ab);color:var(--a)">2</div>
+      <div class="risk-t"><strong style="color:var(--a)">Next payroll at risk</strong> — Payroll scheduled Feb 28. If payment not resolved by <strong>Feb 21</strong>, payroll processing may be blocked.</div>
+    </div>
+    <div class="risk-s">
+      <div class="risk-n" style="background:var(--ab);color:var(--a)">3</div>
+      <div class="risk-t"><strong style="color:var(--a)">34 employees affected</strong> — If payroll is blocked, 34 employees across NY, CA, and TX will not receive their Feb 28 paycheck on time.</div>
+    </div>
+    <div style="padding:10px 14px;background:var(--b0);display:flex;align-items:center;gap:8px">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--r);letter-spacing:1px">RESOLUTION DEADLINE: FEB 21 (13 DAYS)</span>
+      <button class="btn btn-g" style="font-size:11px;padding:4px 8px;margin-left:auto" onclick="showModal('updatePay')">Update Payment Method</button>
+      <button class="btn" style="font-size:11px;padding:4px 8px" onclick="toast('↗ Escalating to billing team...')">Escalate to Billing</button>
+    </div>
+  </div>
+</div>
+
+<!-- PS-5: Invoices -->
+<div style="margin-top:16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+  <div class="sh" style="margin:0">Recent Invoices</div>
+  <button class="dl-btn" onclick="toast('↗ Opening billing dashboard...')">View All Invoices ↗</button>
+</div>
+<div class="inv-r" onclick="showModal('invDetail')">
+  <div><div style="font-weight:500">February 2026</div><div style="font-size:11px;color:var(--t3);margin-top:1px">34 employees · Billed Feb 1</div></div>
+  <div style="text-align:right;font-family:'JetBrains Mono',monospace">$12,480</div>
+  <div style="text-align:right"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:1px 6px;border-radius:3px;background:var(--gb);color:var(--g)">Paid</span></div>
+  <div style="text-align:right;color:var(--r);font-family:'JetBrains Mono',monospace;font-size:11px">+$720</div>
+</div>
+<div class="inv-r" onclick="showModal('invDetail')">
+  <div><div style="font-weight:500">January 2026</div><div style="font-size:11px;color:var(--t3);margin-top:1px">32 employees · Billed Jan 1</div></div>
+  <div style="text-align:right;font-family:'JetBrains Mono',monospace">$11,760</div>
+  <div style="text-align:right"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:1px 6px;border-radius:3px;background:var(--gb);color:var(--g)">Paid</span></div>
+  <div style="text-align:right;color:var(--t4);font-family:'JetBrains Mono',monospace;font-size:11px">—</div>
+</div>
+<div class="inv-r" onclick="showModal('invDetail')">
+  <div><div style="font-weight:500">December 2025</div><div style="font-size:11px;color:var(--t3);margin-top:1px">32 employees · Billed Dec 1</div></div>
+  <div style="text-align:right;font-family:'JetBrains Mono',monospace">$11,760</div>
+  <div style="text-align:right"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:1px 6px;border-radius:3px;background:var(--gb);color:var(--g)">Paid</span></div>
+  <div style="text-align:right;color:var(--t4);font-family:'JetBrains Mono',monospace;font-size:11px">—</div>
+</div>
+<div class="ps-sum"><span style="color:var(--a);flex-shrink:0">💡</span><span>Feb invoice +$720 vs Jan. Reason: <strong style="color:var(--t2)">+2 employees</strong> (Marcus Johnson Feb 3, Lisa Park Feb 1) at $360/employee Enterprise Plan rate.</span></div>
+</div>
+
+<!-- BENEFITS (PS-4) -->
+<div class="tp" id="pBenefits">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+  <div><div class="sh" style="margin:0">Sarah Chen — Benefits</div><div style="font-size:11px;color:var(--t3);margin-top:2px">Enrollment: <span style="color:var(--a)">Open enrollment closes Feb 15</span></div></div>
+  <button class="dl-btn" onclick="toast('↗ Opening benefits admin...')">Manage Benefits ↗</button>
+</div>
+<div class="ben-g">
+  <div class="ben-c"><div class="ben-type">Medical</div><div class="ben-plan">Aetna PPO — Employee + Spouse</div><div class="ben-car">Aetna · PPO-2000</div><div class="ben-det">$373/mo · Employer pays $280</div><div style="margin-top:6px"><button class="dl-btn" style="font-size:11px;padding:3px 8px" onclick="toast('📞 Aetna: 1-800-872-3862')">Aetna Contact ↗</button></div></div>
+  <div class="ben-c"><div class="ben-type">Dental</div><div class="ben-plan">Delta Dental PPO — Emp Only</div><div class="ben-car">Delta Dental</div><div class="ben-det">$27.73/mo · Employer pays $20</div></div>
+  <div class="ben-c"><div class="ben-type">Vision</div><div class="ben-plan">VSP Choice — Employee + Spouse</div><div class="ben-car">VSP Vision Care</div><div class="ben-det">$18.50/mo · Employer pays $12</div></div>
+  <div class="ben-c"><div class="ben-type">401(k)</div><div class="ben-plan">8% contribution · $483.33/period</div><div class="ben-car">Slavic401k</div><div class="ben-det">Employer match: 50% up to 4%</div></div>
+  <div class="ben-c"><div class="ben-type">Life Insurance</div><div class="ben-plan">Basic Life — 1x Salary</div><div class="ben-car">Guardian</div><div class="ben-det">Employer paid</div></div>
+  <div class="ben-c" style="border-style:dashed;opacity:.5"><div class="ben-type">FSA / HSA</div><div class="ben-plan" style="color:var(--t3)">Not enrolled</div><div class="ben-car" style="color:var(--t4)">Available</div><div style="margin-top:6px"><button class="dl-btn" style="font-size:11px;padding:3px 8px;opacity:.7" onclick="toast('↗ Opening enrollment...')">Enroll ↗</button></div></div>
+</div>
+<div style="margin-top:14px">
+  <div class="sh">Dependents</div>
+  <div style="background:var(--bg2);border:1px solid var(--b1);border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:10px">
+    <div class="av" style="background:var(--blb);color:var(--bl);width:28px;height:28px;font-size:11px">DC</div>
+    <div><div style="font-size:12px;font-weight:500">David Chen</div><div style="font-size:11px;color:var(--t3)">Spouse · Medical, Vision · DOB: 1988-03-14</div></div>
+  </div>
+</div>
+</div>
+
+</div><!-- tcon -->
+</div><!-- dash -->
+
+<!-- HS-2: PORTFOLIO HEALTH VIEW -->
+<div class="portfolio-view" id="portfolioView">
+  <div class="port-header">
+    <h2>Portfolio Health Overview</h2>
+    <p>Health distribution across all managed accounts. Scores are rule-based: Base = (Billing × 0.30) + (Payroll × 0.25) + (Support × 0.20) + (Satisfaction × 0.15) + (Activity × 0.10), then Final = Base × Tenure Factor<br><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--t4);margin-top:4px;display:inline-block">Tenure Factor: &lt;30 days = 0.75, 30-90 days = 0.85, 90-180 days = 0.95, 180+ days = 1.00</span></p>
+  </div>
+  <div class="port-dist">
+    <div class="port-dist-item" style="background:rgba(76,175,80,0.08);color:#388e3c;border:1px solid rgba(76,175,80,0.2)"><span class="port-dist-count">487</span>Healthy</div>
+    <div class="port-dist-item" style="background:rgba(139,195,74,0.08);color:#689f38;border:1px solid rgba(139,195,74,0.2)"><span class="port-dist-count">312</span>Good</div>
+    <div class="port-dist-item" style="background:var(--ab);color:var(--a);border:1px solid var(--ad)"><span class="port-dist-count">89</span>Attention</div>
+    <div class="port-dist-item" style="background:rgba(234,88,12,0.08);color:var(--o);border:1px solid rgba(234,88,12,0.15)"><span class="port-dist-count">21</span>At Risk</div>
+    <div class="port-dist-item" style="background:var(--rb);color:var(--r);border:1px solid var(--rd)"><span class="port-dist-count">3</span>Critical</div>
+  </div>
+
+  <table class="port-table" id="portTable">
+    <thead>
+      <tr>
+        <th onclick="sortPortfolio('company')">Company &#9650;&#9660;</th>
+        <th onclick="sortPortfolio('plan')">Plan &#9650;&#9660;</th>
+        <th onclick="sortPortfolio('employees')">Employees &#9650;&#9660;</th>
+        <th onclick="sortPortfolio('score')">Health Score &#9650;&#9660;</th>
+        <th>Band</th>
+        <th>Top Risk Signal</th>
+      </tr>
+    </thead>
+    <tbody id="portBody">
+      <tr style="cursor:pointer" onclick="toast('→ Opening Acme Corp profile...')">
+        <td style="font-weight:500">Acme Corp</td>
+        <td>Enterprise Plan</td>
+        <td>34</td>
+        <td><span class="port-score" style="color:#689f38">82</span></td>
+        <td><span class="port-band" style="background:rgba(139,195,74,0.12);color:#689f38;border:1px solid rgba(139,195,74,0.2)">Good</span></td>
+        <td class="port-risk-signal">1 open ticket (3 days, medium)</td>
+      </tr>
+      <tr style="cursor:pointer" onclick="toast('→ Opening Globex Industries profile...')">
+        <td style="font-weight:500">Globex Industries</td>
+        <td>Enterprise Plan</td>
+        <td>128</td>
+        <td><span class="port-score" style="color:#388e3c">95</span></td>
+        <td><span class="port-band" style="background:rgba(76,175,80,0.12);color:#388e3c;border:1px solid rgba(76,175,80,0.2)">Healthy</span></td>
+        <td class="port-risk-signal">None — all signals green</td>
+      </tr>
+      <tr style="cursor:pointer" onclick="toast('→ Opening Initech profile...')">
+        <td style="font-weight:500">Initech</td>
+        <td>Standard Plan</td>
+        <td>22</td>
+        <td><span class="port-score" style="color:#d97706">58</span></td>
+        <td><span class="port-band" style="background:var(--ab);color:var(--a);border:1px solid var(--ad)">Attention</span></td>
+        <td class="port-risk-signal">CSAT below 60 (2 negative surveys)</td>
+      </tr>
+      <tr style="cursor:pointer" onclick="toast('→ Opening Massive Dynamic profile...')">
+        <td style="font-weight:500">Massive Dynamic <span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:2px 6px;border-radius:3px;background:rgba(79,70,229,0.08);color:var(--bl);border:1px solid rgba(79,70,229,0.15);margin-left:4px;font-weight:400">NEW — Feb 2026</span></td>
+        <td>Enterprise Plan</td>
+        <td>87</td>
+        <td><span class="port-score" style="color:var(--a)">53</span> <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t4)">(base 70 × 0.75)</span></td>
+        <td><span class="port-band" style="background:var(--ab);color:var(--a);border:1px solid var(--ad)">Attention</span></td>
+        <td class="port-risk-signal">New customer (&lt;30 days) — tenure factor 0.75 applied</td>
+      </tr>
+      <tr style="cursor:pointer" onclick="toast('→ Opening Prestige Worldwide profile...')">
+        <td style="font-weight:500">Prestige Worldwide</td>
+        <td>Basic Plan</td>
+        <td>12</td>
+        <td><span class="port-score" style="color:var(--o)">34</span></td>
+        <td><span class="port-band" style="background:rgba(234,88,12,0.08);color:var(--o);border:1px solid rgba(234,88,12,0.15)">At Risk</span></td>
+        <td class="port-risk-signal">Payment failed — 12 days past due</td>
+      </tr>
+      <tr style="cursor:pointer" onclick="toast('→ Opening Wayne Enterprises profile...')">
+        <td style="font-weight:500">Wayne Enterprises</td>
+        <td>Enterprise Plan</td>
+        <td>210</td>
+        <td><span class="port-score" style="color:#388e3c">91</span></td>
+        <td><span class="port-band" style="background:rgba(76,175,80,0.12);color:#388e3c;border:1px solid rgba(76,175,80,0.2)">Healthy</span></td>
+        <td class="port-risk-signal">None — all signals green</td>
+      </tr>
+      <tr style="cursor:pointer" onclick="toast('→ Opening Soylent Corp profile...')">
+        <td style="font-weight:500">Soylent Corp</td>
+        <td>Standard Plan</td>
+        <td>8</td>
+        <td><span class="port-score" style="color:var(--r)">22</span></td>
+        <td><span class="port-band" style="background:var(--rb);color:var(--r);border:1px solid var(--rd)">Critical</span></td>
+        <td class="port-risk-signal">Payment 30+ days past due, no CSAT</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- PHASE 3: INTELLIGENCE VIEW (CONCEPT) -->
+<div class="intel-view" id="intelligenceView">
+  <div class="intel-banner">
+    <span class="intel-banner-title">Customer Central — Phase 3 Intelligence Layer</span>
+    <span class="intel-banner-badge">CONCEPT ONLY</span>
+  </div>
+  <div class="intel-grid">
+    <div class="intel-main">
+
+      <!-- Profile Header -->
+      <div class="intel-profile">
+        <div class="intel-avatar">SC</div>
+        <div>
+          <div class="intel-profile-name">Sarah Chen · Acme Corp</div>
+          <div class="intel-profile-meta">Account Admin · Enterprise Plan · 34 employees · 3 yr tenure</div>
+        </div>
+        <div class="intel-churn-badge">Churn Risk: 73%</div>
+      </div>
+      <hr class="intel-hr">
+
+      <!-- AI Summary -->
+      <div class="intel-card">
+        <div class="intel-card-header">
+          <span class="intel-card-icon" style="color:var(--bl)">✦</span>
+          <span class="intel-card-label">AI Summary</span>
+        </div>
+        <p>Acme Corp has contacted support <strong>4 times in 9 days</strong> — 3× their rolling average. Two interactions involved billing discrepancies tied to the same payroll migration error. <strong>NPS dropped from 9 to 6</strong> in the last survey. The pattern matches pre-churn behavior seen in 23 similar accounts. Sarah's last email tone was escalatory.</p>
+      </div>
+
+      <!-- 2×2 Metric Cards -->
+      <div class="intel-metrics">
+        <div class="intel-metric">
+          <div class="intel-metric-label" style="color:var(--r)">Churn Prediction</div>
+          <div class="intel-metric-value" style="color:var(--r)">73% risk</div>
+          <div class="intel-metric-detail">↑ from 31% last month · 3 triggers active</div>
+        </div>
+        <div class="intel-metric">
+          <div class="intel-metric-label" style="color:var(--a)">Sentiment Trajectory</div>
+          <div class="intel-metric-value" style="color:var(--a)">Declining</div>
+          <div class="intel-metric-detail">NPS 9 → 6 · Tone shift in last 2 emails</div>
+        </div>
+        <div class="intel-metric">
+          <div class="intel-metric-label" style="color:var(--g)">Expansion Signal</div>
+          <div class="intel-metric-value" style="color:var(--g)">Enterprise Plan → Premium</div>
+          <div class="intel-metric-detail">34 employees · Hitting plan limits on 3 features</div>
+        </div>
+        <div class="intel-metric">
+          <div class="intel-metric-label" style="color:var(--g)">Resolution Confidence</div>
+          <div class="intel-metric-value" style="color:var(--g)">High</div>
+          <div class="intel-metric-detail">Root cause identified · Similar fix resolved 19/23 cases</div>
+        </div>
+      </div>
+
+      <!-- Recommended Actions -->
+      <div class="intel-card">
+        <div class="intel-card-header">
+          <span class="intel-card-icon">⚡</span>
+          <span class="intel-card-label">Recommended Actions</span>
+        </div>
+        <div class="intel-action-item">
+          <span class="intel-action-emoji">📨</span>
+          <span class="intel-action-text">Send billing credit + apology for payroll migration error</span>
+          <span class="intel-action-badge auto">AUTO-DRAFT</span>
+        </div>
+        <div class="intel-action-item">
+          <span class="intel-action-emoji">📞</span>
+          <span class="intel-action-text">Schedule proactive check-in call within 48 hours</span>
+          <span class="intel-action-badge suggested">SUGGESTED</span>
+        </div>
+        <div class="intel-action-item">
+          <span class="intel-action-emoji">💰</span>
+          <span class="intel-action-text">Flag to Sales: Premium upgrade conversation when stable</span>
+          <span class="intel-action-badge sales">SALES SIGNAL</span>
+        </div>
+      </div>
+
+    </div>
+    <aside class="intel-aside">
+      <div class="intel-aside-title">Cross-Functional Insights</div>
+
+      <div class="intel-insight">
+        <div class="intel-insight-title">Payroll Migration Bug Pattern</div>
+        <div class="intel-insight-text">Same billing error seen in 23 accounts post-migration. Systemic root cause, not one-off.</div>
+        <span class="intel-insight-pill product">PRODUCT</span>
+      </div>
+
+      <div class="intel-insight">
+        <div class="intel-insight-title">Enterprise Plan Plan Ceiling</div>
+        <div class="intel-insight-text">12 accounts hitting feature limits this quarter. Expansion pipeline: ~$84K ARR.</div>
+        <span class="intel-insight-pill sales-pill">SALES</span>
+      </div>
+
+      <div class="intel-insight">
+        <div class="intel-insight-title">NY/CA Tax Confusion Spike</div>
+        <div class="intel-insight-text">Multi-state employers calling 2.3× more about withholding. Help article gap identified.</div>
+        <span class="intel-insight-pill help">HELP CENTER</span>
+      </div>
+
+      <div class="intel-insight">
+        <div class="intel-insight-title">Churn Cohort Alert</div>
+        <div class="intel-insight-text">7 accounts in 'At Risk' share the same trigger: 3+ contacts in 10 days with declining sentiment.</div>
+        <span class="intel-insight-pill leadership">LEADERSHIP</span>
+      </div>
+
+      <div class="intel-insight">
+        <div class="intel-insight-title">Q1 Benefits Enrollment Gap</div>
+        <div class="intel-insight-text">18% of new hires not completing dental enrollment. Guided flow could cut tickets by ~40/week.</div>
+        <span class="intel-insight-pill product">PRODUCT</span>
+      </div>
+
+    </aside>
+  </div>
+</div>
+
+</main>
+</div>
+
+<!-- MODAL -->
+<div class="modal-ov" id="modalOv" onclick="closeModal(event)">
+<div class="modal" id="modalBox" onclick="event.stopPropagation()"></div>
+</div>
+
+<!-- TOASTS -->
+<div class="toast-c" id="toastC"></div>
+
+<!-- PROTO BADGE -->
+<div class="proto"><span class="pd"></span>PROTOTYPE · DARRIEN WATSON · CUSTOMER CENTRAL</div>
+
+<script>
+const searchIn=document.getElementById('searchIn'),searchDD=document.getElementById('searchDD');
+searchIn.addEventListener('input',function(){searchDD.classList.toggle('vis',this.value.length>0)});
+searchIn.addEventListener('focus',function(){if(this.value.length>0)searchDD.classList.add('vis')});
+document.addEventListener('click',e=>{if(!searchIn.contains(e.target)&&!searchDD.contains(e.target))searchDD.classList.remove('vis')});
+document.addEventListener('keydown',e=>{if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();searchIn.focus();searchIn.select()}if(e.key==='Escape'){searchDD.classList.remove('vis');closeModalDirect()}});
+
+function loadCustomer(){
+  searchDD.classList.remove('vis');
+  searchIn.value='Sarah Chen · Acme Corp';
+  document.getElementById('emptyState').style.display='none';
+  document.getElementById('dash').classList.add('vis');
+  document.getElementById('sideAcct').style.display='block';
+  toast('✓ Loaded Acme Corp — Sarah Chen (Admin)');
+}
+
+function sideNav(el){document.querySelectorAll('.si').forEach(s=>s.classList.remove('act'));el.classList.add('act')}
+
+function showTab(t){
+  document.querySelectorAll('.tab').forEach(el=>el.classList.remove('act'));
+  document.querySelectorAll('.tp').forEach(el=>el.classList.remove('act'));
+  const map={overview:'Overview',history:'History',payroll:'Payroll',billing:'Billing',benefits:'Benefits'};
+  document.getElementById('tab'+map[t]).classList.add('act');
+  document.getElementById('p'+map[t]).classList.add('act');
+}
+
+function filterTL(ch,btn){
+  document.querySelectorAll('#fullTL .tli').forEach(i=>{i.style.display=(ch==='all'||i.dataset.ch===ch)?'flex':'none'});
+  btn.parentElement.querySelectorAll('.btn').forEach(b=>{b.style.background='#ffffff';b.style.color='var(--t3)'});
+  btn.style.background='var(--g)';btn.style.color='#ffffff';
+}
+
+function switchEmployee(who,btn){
+  btn.parentElement.querySelectorAll('.scen-btn').forEach(b=>b.classList.remove('act'));btn.classList.add('act');
+  document.getElementById('stubMarcus').style.display=who==='marcus'?'block':'none';
+  document.getElementById('stubSarah').style.display=who==='sarah'?'block':'none';
+}
+
+function switchBilling(mode,btn){
+  btn.parentElement.querySelectorAll('.scen-btn').forEach(b=>b.classList.remove('act'));btn.classList.add('act');
+  document.getElementById('billGood').style.display=mode==='good'?'block':'none';
+  document.getElementById('billRisk').style.display=mode==='risk'?'block':'none';
+}
+
+// MODALS
+const modalTemplates={
+  newTicket:{title:'Create New Ticket',body:`<div class="m-field"><label class="m-label">Company</label><div class="m-input" style="cursor:default;color:var(--t2)">Acme Corp — Sarah Chen</div></div><div class="m-field"><label class="m-label">Subject</label><input class="m-input" placeholder="Brief description..."></div><div class="m-field"><label class="m-label">Priority</label><div class="m-opts"><button class="m-opt">Low</button><button class="m-opt sel">Medium</button><button class="m-opt">High</button><button class="m-opt">Urgent</button></div></div><div class="m-field"><label class="m-label">Description</label><textarea class="m-input m-ta" placeholder="Full description..."></textarea></div>`,confirm:'Create Ticket',action:()=>{closeModalDirect();toast('✓ Ticket #4892 created for Acme Corp')}},
+  logInt:{title:'Log Interaction',body:`<div class="m-field"><label class="m-label">Channel</label><div class="m-opts"><button class="m-opt sel">📞 Phone</button><button class="m-opt">📧 Email</button><button class="m-opt">💬 Chat</button></div></div><div class="m-field"><label class="m-label">Topic</label><input class="m-input" placeholder="What was this about?"></div><div class="m-field"><label class="m-label">Resolution</label><div class="m-opts"><button class="m-opt sel">Resolved</button><button class="m-opt">Pending</button><button class="m-opt">Escalated</button></div></div><div class="m-field"><label class="m-label">Notes</label><textarea class="m-input m-ta" placeholder="What happened?"></textarea></div>`,confirm:'Save Interaction',action:()=>{closeModalDirect();toast('✓ Interaction logged · Phone · Resolved')}},
+  ticket:{title:'Ticket #4856 — Payroll Discrepancy',body:`<div style="display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap"><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:1px 6px;border-radius:3px;background:var(--ab);color:var(--a)">Medium</span><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:1px 6px;border-radius:3px;background:var(--ab);color:var(--a)">Open</span><span style="font-size:11px;color:var(--t4)">Feb 8 · Alex Rivera</span></div><div style="background:var(--bg2);border:1px solid var(--b1);border-radius:7px;padding:12px;margin-bottom:10px"><div style="font-size:12px;color:var(--t1);line-height:1.6">Hi,<br><br>My new hire Marcus Johnson's first paycheck (Jan 16-31) seems lower than expected. He's based in California but I think the state withholding is set to NY.<br><br>Can someone look into this before the next pay run?<br><br>Thanks,<br>Sarah</div></div><div style="font-size:11px;color:var(--t3)"><strong style="color:var(--t2)">Agent Note (Alex Rivera, Feb 9):</strong> Confirmed state withholding was NY instead of CA. Correction submitted — effective next payroll run.</div>`,confirm:'Take Over Ticket',action:()=>{closeModalDirect();toast('✓ Ticket #4856 reassigned to you')}},
+  payHist:{title:'Payment History — Acme Corp',body:`<div style="display:grid;gap:4px"><div style="display:grid;grid-template-columns:1fr 80px 80px 60px;padding:6px 0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t4);border-bottom:1px solid var(--b1)"><span>DATE</span><span style="text-align:right">AMOUNT</span><span style="text-align:right">METHOD</span><span style="text-align:right">STATUS</span></div><div style="display:grid;grid-template-columns:1fr 80px 80px 60px;padding:6px 0;font-size:11px;border-bottom:1px solid var(--b0)"><span>Feb 1, 2026</span><span style="text-align:right;font-family:'JetBrains Mono',monospace">$12,480</span><span style="text-align:right;color:var(--t3)">ACH ···4892</span><span style="text-align:right;color:var(--g)">✓ Paid</span></div><div style="display:grid;grid-template-columns:1fr 80px 80px 60px;padding:6px 0;font-size:11px;border-bottom:1px solid var(--b0)"><span>Jan 1, 2026</span><span style="text-align:right;font-family:'JetBrains Mono',monospace">$11,760</span><span style="text-align:right;color:var(--t3)">ACH ···4892</span><span style="text-align:right;color:var(--g)">✓ Paid</span></div><div style="display:grid;grid-template-columns:1fr 80px 80px 60px;padding:6px 0;font-size:11px;border-bottom:1px solid var(--b0)"><span>Dec 1, 2025</span><span style="text-align:right;font-family:'JetBrains Mono',monospace">$11,760</span><span style="text-align:right;color:var(--t3)">ACH ···4892</span><span style="text-align:right;color:var(--g)">✓ Paid</span></div><div style="display:grid;grid-template-columns:1fr 80px 80px 60px;padding:6px 0;font-size:11px;border-bottom:1px solid var(--b0)"><span>Nov 1, 2025</span><span style="text-align:right;font-family:'JetBrains Mono',monospace">$11,400</span><span style="text-align:right;color:var(--t3)">ACH ···4892</span><span style="text-align:right;color:var(--g)">✓ Paid</span></div><div style="display:grid;grid-template-columns:1fr 80px 80px 60px;padding:6px 0;font-size:11px"><span>Oct 1, 2025</span><span style="text-align:right;font-family:'JetBrains Mono',monospace">$11,400</span><span style="text-align:right;color:var(--t3)">ACH ···4892</span><span style="text-align:right;color:var(--g)">✓ Paid</span></div></div>`,confirm:null},
+  updatePay:{title:'Update Payment Method',body:`<div class="m-field"><label class="m-label">Current Method</label><div style="padding:8px 10px;background:var(--rb);border:1px solid var(--rd);border-radius:6px;font-size:12px;color:var(--r)">ACH · Chase ···4892 · <strong>FAILED — Insufficient Funds</strong></div></div><div class="m-field"><label class="m-label">New Bank Account</label><input class="m-input" placeholder="Routing number"></div><div class="m-field"><input class="m-input" placeholder="Account number"></div><div style="font-size:11px;color:var(--t3);padding:8px 0">After updating, a retry payment of $12,480 will be initiated within 1 business day.</div>`,confirm:'Update & Retry Payment',action:()=>{closeModalDirect();toast('✓ Payment method updated · Retry initiated')}},
+  invDetail:{title:'Invoice Detail — February 2026',body:`<div style="display:flex;justify-content:space-between;margin-bottom:12px"><div><div style="font-size:14px;font-weight:600">$12,480.00</div><div style="font-size:11px;color:var(--t3)">34 employees · Enterprise Plan</div></div><span style="font-family:'JetBrains Mono',monospace;font-size:11px;padding:2px 7px;border-radius:3px;background:var(--gb);color:var(--g);height:fit-content">Paid Feb 1</span></div><div style="display:grid;gap:3px"><div style="display:grid;grid-template-columns:1fr 80px;padding:5px 0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--t4);border-bottom:1px solid var(--b1)"><span>ITEM</span><span style="text-align:right">AMOUNT</span></div><div style="display:grid;grid-template-columns:1fr 80px;padding:5px 0;font-size:11px;border-bottom:1px solid var(--b0)"><span>Enterprise Plan · 32 employees (full month)</span><span style="text-align:right;font-family:'JetBrains Mono',monospace">$11,520</span></div><div style="display:grid;grid-template-columns:1fr 80px;padding:5px 0;font-size:11px;border-bottom:1px solid var(--b0);background:var(--ab);margin:0 -18px;padding-left:18px;padding-right:18px"><span style="color:var(--a)">Enterprise Plan · Lisa Park (prorated Feb 1-28)</span><span style="text-align:right;font-family:'JetBrains Mono',monospace;color:var(--a)">$360</span></div><div style="display:grid;grid-template-columns:1fr 80px;padding:5px 0;font-size:11px;border-bottom:1px solid var(--b0);background:var(--ab);margin:0 -18px;padding-left:18px;padding-right:18px"><span style="color:var(--a)">Enterprise Plan · Marcus Johnson (prorated Feb 3-28)</span><span style="text-align:right;font-family:'JetBrains Mono',monospace;color:var(--a)">$335</span></div><div style="display:grid;grid-template-columns:1fr 80px;padding:5px 0;font-size:11px;border-bottom:1px solid var(--b0)"><span>Benefits administration fee</span><span style="text-align:right;font-family:'JetBrains Mono',monospace">$265</span></div></div><div style="margin-top:10px;font-size:11px;color:var(--t3);display:flex;align-items:center;gap:5px"><span style="color:var(--a)">💡</span>+$720 vs January due to 2 new employee additions.</div>`,confirm:null},
+};
+
+function showModal(key){
+  const m=modalTemplates[key];if(!m)return;
+  let html=`<div class="modal-hd"><div class="modal-ti">${m.title}</div><button class="modal-x" onclick="closeModalDirect()">✕</button></div><div class="modal-bd">${m.body}</div>`;
+  if(m.confirm)html+=`<div class="modal-ft"><button class="mbtn" onclick="closeModalDirect()">Cancel</button><button class="mbtn mbtn-g" onclick="modalTemplates['${key}'].action()">${m.confirm}</button></div>`;
+  else html+=`<div class="modal-ft"><button class="mbtn" onclick="closeModalDirect()">Close</button></div>`;
+  document.getElementById('modalBox').innerHTML=html;
+  document.getElementById('modalOv').classList.add('vis');
+  // Wire up option buttons
+  document.querySelectorAll('.modal .m-opt').forEach(opt=>{opt.addEventListener('click',function(){this.parentElement.querySelectorAll('.m-opt').forEach(o=>o.classList.remove('sel'));this.classList.add('sel')})});
+}
+
+function closeModal(e){if(e.target===document.getElementById('modalOv'))closeModalDirect()}
+function closeModalDirect(){document.getElementById('modalOv').classList.remove('vis')}
+
+// TOAST
+function toast(msg){
+  const c=document.getElementById('toastC');
+  const t=document.createElement('div');t.className='toast';t.textContent=msg;
+  c.appendChild(t);
+  setTimeout(()=>{t.style.opacity='0';t.style.transition='opacity .3s';setTimeout(()=>t.remove(),300)},3000);
+}
+
+// HS-1: Health Score Breakdown Toggle
+function toggleHealthBreakdown(e){
+  e.stopPropagation();
+  const bd=document.getElementById('hsBreakdown');
+  bd.classList.toggle('vis');
+}
+document.addEventListener('click',function(e){
+  const bd=document.getElementById('hsBreakdown');
+  if(bd&&!document.getElementById('hsBadge').contains(e.target))bd.classList.remove('vis');
+});
+
+// HS-1: Health Score responds to billing scenario toggle
+const origSwitchBilling=switchBilling;
+switchBilling=function(mode,btn){
+  origSwitchBilling(mode,btn);
+  updateHealthScore(mode);
+};
+function updateHealthScore(mode){
+  const scoreEl=document.getElementById('hsScoreNum');
+  const bandEl=document.getElementById('hsBand');
+  const scoreWrap=document.getElementById('hsScore');
+  const dotEl=scoreWrap.querySelector('.sdot');
+  const billingScore=document.getElementById('hsBilling');
+  const billingDetail=document.getElementById('hsBillingDetail');
+  const overallScore=document.getElementById('hsOverallScore');
+  const subtextEl=document.getElementById('hsSubtext');
+  const tenureFactorEl=document.getElementById('hsTenureFactor');
+  const tenureDetailEl=document.getElementById('hsTenureDetail');
+  // Acme Corp: customer since Jan 2022 (180+ days) → tenure factor 1.00
+  const tenureFactor=1.00;
+  if(mode==='risk'){
+    // Risk mode: billing drops to 0, base score ~34, × tenure 1.00 = 34
+    const baseScore=34;
+    const finalScore=Math.round(baseScore*tenureFactor);
+    scoreEl.textContent=String(finalScore);
+    bandEl.textContent='— At Risk';
+    scoreWrap.style.color='#ea580c';
+    dotEl.style.background='#ea580c';
+    billingScore.textContent='0';billingScore.style.color='var(--r)';
+    billingDetail.textContent='Past due 8 days — ACH failed';
+    overallScore.textContent=finalScore+' — At Risk';overallScore.style.color='#ea580c';
+    subtextEl.textContent='Billing signal critical';
+    tenureFactorEl.textContent='×'+tenureFactor.toFixed(2);
+    tenureDetailEl.textContent='Customer since Jan 2022 (180+ days)';
+  } else {
+    // Normal mode: base score 82, × tenure 1.00 = 82
+    const baseScore=82;
+    const finalScore=Math.round(baseScore*tenureFactor);
+    scoreEl.textContent=String(finalScore);
+    bandEl.textContent='— Good';
+    scoreWrap.style.color='#4caf50';
+    dotEl.style.background='#4caf50';
+    billingScore.textContent='100';billingScore.style.color='var(--g)';
+    billingDetail.textContent='Current — paid Feb 1';
+    overallScore.textContent=finalScore+' — Good';overallScore.style.color='#4caf50';
+    subtextEl.textContent='5 signals + tenure · Rule-based';
+    tenureFactorEl.textContent='×'+tenureFactor.toFixed(2);
+    tenureDetailEl.textContent='Customer since Jan 2022 (180+ days)';
+  }
+}
+
+// HS-2: Portfolio Health View
+function showPortfolio(){
+  document.querySelectorAll('.si').forEach(s=>s.classList.remove('act'));
+  document.getElementById('siPortfolio').classList.add('act');
+  document.getElementById('dash').classList.remove('vis');
+  document.getElementById('intelligenceView').classList.remove('vis');
+  document.getElementById('emptyState').style.display='none';
+  document.getElementById('portfolioView').classList.add('vis');
+}
+// PHASE 3: Intelligence View
+function showIntelligence(){
+  document.querySelectorAll('.si').forEach(s=>s.classList.remove('act'));
+  document.getElementById('siIntelligence').classList.add('act');
+  document.getElementById('dash').classList.remove('vis');
+  document.getElementById('portfolioView').classList.remove('vis');
+  document.getElementById('emptyState').style.display='none';
+  document.getElementById('intelligenceView').classList.add('vis');
+}
+
+// Override sideNav to also hide portfolio and intelligence
+const origSideNav=sideNav;
+sideNav=function(el){
+  origSideNav(el);
+  document.getElementById('portfolioView').classList.remove('vis');
+  document.getElementById('intelligenceView').classList.remove('vis');
+  document.getElementById('dash').classList.add('vis');
+};
+// Override showTab to also hide portfolio and intelligence
+const origShowTab=showTab;
+showTab=function(t){
+  document.getElementById('portfolioView').classList.remove('vis');
+  document.getElementById('intelligenceView').classList.remove('vis');
+  document.getElementById('dash').classList.add('vis');
+  origShowTab(t);
+};
+
+// HS-2: Portfolio Sorting
+let portSortDir={};
+function sortPortfolio(col){
+  const tbody=document.getElementById('portBody');
+  const rows=Array.from(tbody.querySelectorAll('tr'));
+  const colMap={company:0,plan:1,employees:2,score:3};
+  const idx=colMap[col];
+  portSortDir[col]=!portSortDir[col];
+  const dir=portSortDir[col]?1:-1;
+  rows.sort((a,b)=>{
+    let av=a.children[idx].textContent.trim();
+    let bv=b.children[idx].textContent.trim();
+    if(col==='employees'||col==='score'){av=parseInt(av);bv=parseInt(bv);return(av-bv)*dir;}
+    return av.localeCompare(bv)*dir;
+  });
+  rows.forEach(r=>tbody.appendChild(r));
+}
+
+// Hash-based deep linking (e.g. #portfolio, #intelligence)
+if(location.hash==='#portfolio'){showPortfolio();}
+if(location.hash==='#intelligence'){showIntelligence();}
+</script>
+</body>
+</html>

@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Central — Case Study | Darrien Watson</title>
+    <meta name="description" content="Case study: Designing a unified agent workspace for a mid-market HR & payroll platform serving thousands of small businesses. Product strategy, interactive prototype, and delivery plan.">
+    <meta property="og:title" content="Customer Central — Case Study | Darrien Watson">
+    <meta property="og:description" content="Designing a unified agent workspace that consolidates 5 disconnected systems into one.">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-JSYY2W7WVC"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-JSYY2W7WVC');
+    </script>
+
+    <!-- PostHog Analytics -->
+    <script>
+        !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+        posthog.init('phc_LcdaDlRybT3k43qFjVismYdhbTZcRlhG7caj7zdkmkW', {
+            api_host: 'https://us.i.posthog.com',
+            person_profiles: 'identified_only'
+        });
+    </script>
+
+<style>
+/* ============================================
+   CASE STUDY — CUSTOMER CENTRAL
+   Light theme, self-contained styles
+   ============================================ */
+
+.cs-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 8px 0;
+    transition: color 0.2s;
+}
+.cs-back:hover { color: var(--accent-solid); }
+
+/* Hero */
+.cs-hero {
+    padding: 60px 0 48px;
+    border-bottom: 1px solid var(--border-subtle);
+    margin-bottom: 56px;
+}
+
+.cs-badge {
+    display: inline-block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 6px 14px;
+    border-radius: 6px;
+    background: var(--accent-light);
+    color: var(--accent-solid);
+    border: 1px solid var(--border-accent);
+    margin-bottom: 16px;
+}
+
+.cs-hero h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1.15;
+    margin-bottom: 12px;
+}
+
+.cs-hero .cs-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    max-width: 700px;
+    margin-bottom: 24px;
+}
+
+.cs-stats {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+
+.cs-stat {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    font-size: 0.88rem;
+}
+
+.cs-stat strong {
+    color: var(--accent-solid);
+    font-weight: 600;
+}
+
+.cs-stat span {
+    color: var(--text-secondary);
+}
+
+.cs-role {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.cs-role strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* Sections */
+.cs-section {
+    margin-bottom: 64px;
+}
+
+.cs-section-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent-solid);
+    margin-bottom: 8px;
+}
+
+.cs-section h2 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+}
+
+.cs-prose {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+}
+
+.cs-prose strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* Problem Grid */
+.cs-problem-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.cs-problem-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 20px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.cs-problem-card:hover {
+    border-color: var(--border-accent);
+    box-shadow: var(--shadow-md);
+}
+
+.cs-problem-icon {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.cs-problem-card h4 {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+}
+
+.cs-problem-card p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+}
+
+/* Approach Cards */
+.cs-approach-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+}
+
+.cs-approach-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 24px;
+    transition: border-color 0.2s;
+}
+
+.cs-approach-card:hover {
+    border-color: var(--border-accent);
+}
+
+.cs-approach-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--accent-light);
+    color: var(--accent-solid);
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.cs-approach-card h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+}
+
+.cs-approach-card p {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+}
+
+/* Feature Architecture */
+.cs-feature-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    overflow: hidden;
+    font-size: 0.88rem;
+}
+
+.cs-feature-table thead {
+    background: var(--bg-secondary);
+}
+
+.cs-feature-table th {
+    text-align: left;
+    padding: 12px 16px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.cs-feature-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-subtle);
+    color: var(--text-secondary);
+    vertical-align: top;
+}
+
+.cs-feature-table tr:last-child td {
+    border-bottom: none;
+}
+
+.cs-feature-table tr:hover td {
+    background: var(--bg-secondary);
+}
+
+.cs-tier-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.cs-tier-foundation { background: rgba(16, 185, 129, 0.1); color: #059669; }
+.cs-tier-problem { background: rgba(99, 102, 241, 0.1); color: #6366f1; }
+.cs-tier-health { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
+
+.cs-build-badge {
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.cs-build-full { background: rgba(16, 185, 129, 0.1); color: #059669; }
+.cs-build-deep { background: rgba(99, 102, 241, 0.1); color: #6366f1; }
+.cs-build-alert { background: rgba(217, 119, 6, 0.1); color: #d97706; }
+
+/* Prototype Embed */
+.cs-prototype-wrapper {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+}
+
+.cs-prototype-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 18px;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.cs-prototype-dots {
+    display: flex;
+    gap: 6px;
+}
+
+.cs-prototype-dots span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--border-subtle);
+}
+
+.cs-prototype-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin-left: auto;
+}
+
+.cs-prototype-bar .cs-prototype-url {
+    flex: 1;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    background: var(--bg-secondary);
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border-subtle);
+}
+
+.cs-prototype-frame {
+    width: 100%;
+    height: 680px;
+    border: none;
+    display: block;
+}
+
+/* Data Architecture Diagram */
+.cs-arch-diagram {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 14px;
+    padding: 28px;
+    margin-bottom: 24px;
+}
+
+.cs-arch-sources {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.cs-arch-source {
+    padding: 10px 16px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+.cs-arch-arrow {
+    text-align: center;
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    margin: 12px 0;
+}
+
+.cs-arch-layer {
+    padding: 16px 20px;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.cs-arch-layer.cs-agg {
+    background: var(--accent-light);
+    border: 1px solid var(--border-accent);
+}
+
+.cs-arch-layer.cs-output {
+    background: rgba(16, 185, 129, 0.08);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.cs-arch-layer h4 {
+    font-size: 0.88rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.cs-arch-layer p {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+}
+
+.cs-loading-tiers {
+    display: flex;
+    gap: 0;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border-subtle);
+    margin-top: 20px;
+}
+
+.cs-loading-tier {
+    flex: 1;
+    padding: 14px 12px;
+    text-align: center;
+    border-right: 1px solid var(--border-subtle);
+}
+
+.cs-loading-tier:last-child {
+    border-right: none;
+}
+
+.cs-loading-tier h5 {
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.cs-loading-tier p {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+}
+
+.cs-loading-tier.lt-instant { background: rgba(16, 185, 129, 0.06); }
+.cs-loading-tier.lt-instant h5 { color: #059669; }
+.cs-loading-tier.lt-fast { background: rgba(99, 102, 241, 0.06); }
+.cs-loading-tier.lt-fast h5 { color: #6366f1; }
+.cs-loading-tier.lt-bg { background: rgba(217, 119, 6, 0.06); }
+.cs-loading-tier.lt-bg h5 { color: #d97706; }
+.cs-loading-tier.lt-demand { background: rgba(139, 92, 246, 0.06); }
+.cs-loading-tier.lt-demand h5 { color: #8b5cf6; }
+
+/* Delivery Plan */
+.cs-phase-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.cs-phase-card {
+    padding: 22px;
+    border-radius: 12px;
+    border: 1px solid;
+    text-align: center;
+}
+
+.cs-phase-card .phase-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+}
+
+.cs-phase-card h4 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.cs-phase-card .phase-duration {
+    font-size: 0.82rem;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.cs-phase-card p {
+    font-size: 0.85rem;
+    line-height: 1.55;
+}
+
+.cs-phase-card.phase-green {
+    background: rgba(16, 185, 129, 0.05);
+    border-color: rgba(16, 185, 129, 0.2);
+}
+.cs-phase-card.phase-green .phase-label,
+.cs-phase-card.phase-green h4 { color: #059669; }
+.cs-phase-card.phase-green .phase-duration { color: rgba(5, 150, 105, 0.7); }
+.cs-phase-card.phase-green p { color: var(--text-secondary); }
+
+.cs-phase-card.phase-blue {
+    background: rgba(99, 102, 241, 0.05);
+    border-color: rgba(99, 102, 241, 0.2);
+}
+.cs-phase-card.phase-blue .phase-label,
+.cs-phase-card.phase-blue h4 { color: #6366f1; }
+.cs-phase-card.phase-blue .phase-duration { color: rgba(99, 102, 241, 0.7); }
+.cs-phase-card.phase-blue p { color: var(--text-secondary); }
+
+.cs-phase-card.phase-purple {
+    background: rgba(139, 92, 246, 0.05);
+    border-color: rgba(139, 92, 246, 0.2);
+}
+.cs-phase-card.phase-purple .phase-label,
+.cs-phase-card.phase-purple h4 { color: #8b5cf6; }
+.cs-phase-card.phase-purple .phase-duration { color: rgba(139, 92, 246, 0.7); }
+.cs-phase-card.phase-purple p { color: var(--text-secondary); }
+
+.cs-team-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.cs-team-card {
+    padding: 16px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 10px;
+    text-align: center;
+}
+
+.cs-team-card h5 {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 3px;
+}
+
+.cs-team-card p {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* Success Framework */
+.cs-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+}
+
+.cs-metric-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 22px;
+}
+
+.cs-metric-card h4 {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 12px;
+}
+
+.cs-metric-card.mc-leading h4 { color: #059669; }
+.cs-metric-card.mc-outcome h4 { color: #6366f1; }
+.cs-metric-card.mc-guardrail h4 { color: #d97706; }
+
+.cs-metric-item {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+.cs-metric-item strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.cs-metric-item::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 6px;
+}
+
+.mc-leading .cs-metric-item::before { background: #059669; }
+.mc-outcome .cs-metric-item::before { background: #6366f1; }
+.mc-guardrail .cs-metric-item::before { background: #d97706; }
+
+/* Decisions */
+.cs-decisions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+}
+
+.cs-decision-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 22px;
+    transition: border-color 0.2s;
+}
+
+.cs-decision-card:hover {
+    border-color: var(--border-accent);
+}
+
+.cs-decision-card h4 {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+}
+
+.cs-decision-card p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .cs-problem-grid,
+    .cs-approach-grid,
+    .cs-phase-cards,
+    .cs-metrics-grid { grid-template-columns: 1fr 1fr; }
+    .cs-team-grid { grid-template-columns: repeat(3, 1fr); }
+    .cs-decisions-grid { grid-template-columns: 1fr; }
+    .cs-hero h1 { font-size: 2rem; }
+}
+
+@media (max-width: 600px) {
+    .cs-problem-grid,
+    .cs-approach-grid,
+    .cs-phase-cards,
+    .cs-metrics-grid { grid-template-columns: 1fr; }
+    .cs-team-grid { grid-template-columns: 1fr 1fr; }
+    .cs-hero h1 { font-size: 1.6rem; }
+    .cs-loading-tiers { flex-direction: column; }
+    .cs-loading-tier { border-right: none; border-bottom: 1px solid var(--border-subtle); }
+    .cs-loading-tier:last-child { border-bottom: none; }
+    .cs-prototype-frame { height: 480px; }
+}
+</style>
+</head>
+<body>
+    <div class="ambient-bg"></div>
+
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <span class="logo-text">Darrien Watson</span>
+            </a>
+            <div class="nav-links">
+                <a href="/#thinking">How I Think</a>
+                <a href="/#work">Work</a>
+                <a href="/#experience">Experience</a>
+                <a href="/#contact" class="nav-cta">Let's Talk</a>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <!-- Back link -->
+            <a href="/" class="cs-back">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+                Back to Home
+            </a>
+
+            <!-- 1. Hero -->
+            <section class="cs-hero">
+                <span class="cs-badge">Product Strategy &amp; System Design</span>
+                <h1>Customer Central</h1>
+                <p class="cs-subtitle">Designing a unified agent workspace for a platform serving thousands of small businesses</p>
+                <div class="cs-stats">
+                    <div class="cs-stat"><strong>11</strong> <span>MVP features</span></div>
+                    <div class="cs-stat"><strong>5</strong> <span>data sources</span></div>
+                    <div class="cs-stat"><strong>7-week</strong> <span>delivery plan</span></div>
+                </div>
+                <p class="cs-role"><strong>My role:</strong> Product strategy, data architecture, UX design, interactive prototype, and delivery planning. This was a solo project completed as a proposal for a product leadership position.</p>
+            </section>
+
+            <!-- 2. The Problem -->
+            <section class="cs-section">
+                <span class="cs-section-label">The Problem</span>
+                <h2>Six Problems Compounding Into One</h2>
+                <p class="cs-prose">A mid-market HR and payroll platform had a support team of roughly 50 agents fielding calls from thousands of SMB customers. On every call, agents were toggling between 5-6 disconnected systems — a CRM, a payroll admin tool, a billing dashboard, a benefits portal, and a ticketing system — just to answer basic questions.</p>
+                <p class="cs-prose">The friction wasn't just inefficiency. It was a cascade of compounding problems, each one making the others worse. Here are the six I identified:</p>
+
+                <div class="cs-problem-grid">
+                    <div class="cs-problem-card">
+                        <div class="cs-problem-icon">🔄</div>
+                        <h4>Context-Switching Tax</h4>
+                        <p>Agents lose 30-60 seconds per call switching between 5-6 systems. At 40+ calls/day, that's hours of wasted productive time.</p>
+                    </div>
+                    <div class="cs-problem-card">
+                        <div class="cs-problem-icon">👤</div>
+                        <h4>Caller Identity Problem</h4>
+                        <p>When a call comes in, agents can't quickly determine who the caller is, their role, or their history. Every call starts cold.</p>
+                    </div>
+                    <div class="cs-problem-card">
+                        <div class="cs-problem-icon">🔁</div>
+                        <h4>Repeat-Yourself Problem</h4>
+                        <p>Customers re-explain their issue to each new agent. No shared timeline of interactions means every handoff resets context.</p>
+                    </div>
+                    <div class="cs-problem-card">
+                        <div class="cs-problem-icon">📊</div>
+                        <h4>Account Status Blindspot</h4>
+                        <p>Agents can't see billing, payroll, or benefits status at a glance. They discover problems reactively, mid-call, in separate systems.</p>
+                    </div>
+                    <div class="cs-problem-card">
+                        <div class="cs-problem-icon">🔮</div>
+                        <h4>Proactive Blindspot</h4>
+                        <p>No alerts for upcoming payroll deadlines, failed payments, or expiring enrollment windows. Agents are always firefighting.</p>
+                    </div>
+                    <div class="cs-problem-card">
+                        <div class="cs-problem-icon">🎫</div>
+                        <h4>Open Issues Visibility Gap</h4>
+                        <p>No quick way to see unresolved tickets for an account. Agents unknowingly re-open resolved issues or miss escalations.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. The Approach -->
+            <section class="cs-section">
+                <span class="cs-section-label">The Approach</span>
+                <h2>Three Guiding Principles</h2>
+                <p class="cs-prose">Rather than building a massive all-in-one tool, I designed the architecture around three principles that sequence risk and maximize learning:</p>
+
+                <div class="cs-approach-grid">
+                    <div class="cs-approach-card">
+                        <div class="cs-approach-num">1</div>
+                        <h4>Read Before Write</h4>
+                        <p>Ship a read-only MVP first to validate data accuracy before enabling write-back actions. This lets agents verify information without risk of corrupting source systems.</p>
+                    </div>
+                    <div class="cs-approach-card">
+                        <div class="cs-approach-num">2</div>
+                        <h4>Dependency Sequencing</h4>
+                        <p>Phase the architecture so each layer enables the next: data aggregation first, then intelligence, then prediction. No phase depends on unproven technology.</p>
+                    </div>
+                    <div class="cs-approach-card">
+                        <div class="cs-approach-num">3</div>
+                        <h4>Tiebreaker Principle</h4>
+                        <p>When features tie on near-term value, pick the one that builds toward the AI-native future. This ensures the MVP creates optionality, not just utility.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. Feature Architecture -->
+            <section class="cs-section">
+                <span class="cs-section-label">The Solution</span>
+                <h2>Feature Architecture: 11 MVP Stories in 3 Tiers</h2>
+                <p class="cs-prose">Each feature was scoped, categorized by build type, and mapped to a specific problem it solves. The architecture is designed so Foundation features are prerequisites — they provide the data layer that Problem-Specific and Health features build on.</p>
+
+                <table class="cs-feature-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Feature</th>
+                            <th>Tier</th>
+                            <th>Build Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>FS-1</strong></td>
+                            <td>Caller recognition &amp; contact card</td>
+                            <td><span class="cs-tier-label cs-tier-foundation">Foundation</span></td>
+                            <td><span class="cs-build-badge cs-build-full">Full Build</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>FS-2</strong></td>
+                            <td>Interaction history timeline</td>
+                            <td><span class="cs-tier-label cs-tier-foundation">Foundation</span></td>
+                            <td><span class="cs-build-badge cs-build-full">Full Build</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>FS-3</strong></td>
+                            <td>Account status strip</td>
+                            <td><span class="cs-tier-label cs-tier-foundation">Foundation</span></td>
+                            <td><span class="cs-build-badge cs-build-full">Full Build</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>PS-1</strong></td>
+                            <td>Pay stub viewer with comparison</td>
+                            <td><span class="cs-tier-label cs-tier-problem">Problem-Specific</span></td>
+                            <td><span class="cs-build-badge cs-build-deep">Deep Link</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>PS-2</strong></td>
+                            <td>Payroll alerts &amp; status</td>
+                            <td><span class="cs-tier-label cs-tier-problem">Problem-Specific</span></td>
+                            <td><span class="cs-build-badge cs-build-alert">Alert + Deep Link</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>PS-3</strong></td>
+                            <td>Tax document access badges</td>
+                            <td><span class="cs-tier-label cs-tier-problem">Problem-Specific</span></td>
+                            <td><span class="cs-build-badge cs-build-deep">Deep Link</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>PS-4</strong></td>
+                            <td>Benefits summary card</td>
+                            <td><span class="cs-tier-label cs-tier-problem">Problem-Specific</span></td>
+                            <td><span class="cs-build-badge cs-build-deep">Deep Link</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>PS-5</strong></td>
+                            <td>Invoice &amp; billing summary</td>
+                            <td><span class="cs-tier-label cs-tier-problem">Problem-Specific</span></td>
+                            <td><span class="cs-build-badge cs-build-deep">Deep Link</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>PS-6</strong></td>
+                            <td>Payment health &amp; risk cascade</td>
+                            <td><span class="cs-tier-label cs-tier-problem">Problem-Specific</span></td>
+                            <td><span class="cs-build-badge cs-build-alert">Alert + Deep Link</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>HS-1</strong></td>
+                            <td>Lightweight account health score</td>
+                            <td><span class="cs-tier-label cs-tier-health">Health</span></td>
+                            <td><span class="cs-build-badge cs-build-full">Full Build</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>HS-2</strong></td>
+                            <td>Leadership portfolio view</td>
+                            <td><span class="cs-tier-label cs-tier-health">Health</span></td>
+                            <td><span class="cs-build-badge cs-build-full">Full Build</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- 5. Interactive Prototype -->
+            <section class="cs-section">
+                <span class="cs-section-label">Interactive Prototype</span>
+                <h2>A Working Prototype to Validate the Design</h2>
+                <p class="cs-prose">I built a functional prototype that demonstrates how all 11 features come together in a single workspace. It includes caller recognition, real-time status, tabbed navigation across payroll/billing/benefits data, scenario toggling between healthy and at-risk accounts, and a portfolio health dashboard for leadership.</p>
+
+                <div class="cs-prototype-wrapper">
+                    <div class="cs-prototype-bar">
+                        <div class="cs-prototype-dots">
+                            <span></span><span></span><span></span>
+                        </div>
+                        <div class="cs-prototype-url">customer-central-prototype.html</div>
+                        <span class="cs-prototype-label">Interactive Prototype</span>
+                    </div>
+                    <iframe src="customer-central-prototype.html" class="cs-prototype-frame" title="Customer Central Prototype"></iframe>
+                </div>
+            </section>
+
+            <!-- 6. Data Architecture -->
+            <section class="cs-section">
+                <span class="cs-section-label">Data Architecture</span>
+                <h2>Read-Optimized Aggregation Layer</h2>
+                <p class="cs-prose">Customer Central doesn't replace source systems — it reads from them through a lightweight aggregation layer that normalizes data from five different sources. This approach avoids the risk of a full data migration while still delivering a unified view.</p>
+
+                <div class="cs-arch-diagram">
+                    <div class="cs-arch-sources">
+                        <div class="cs-arch-source">CRM (Salesforce)</div>
+                        <div class="cs-arch-source">Payroll System</div>
+                        <div class="cs-arch-source">Billing Engine</div>
+                        <div class="cs-arch-source">Benefits Portal</div>
+                        <div class="cs-arch-source">Ticketing (Zendesk)</div>
+                    </div>
+                    <div class="cs-arch-arrow">↓</div>
+                    <div class="cs-arch-layer cs-agg">
+                        <h4>Aggregation Layer</h4>
+                        <p>Read-only data normalization, caching, and pre-computation. No write-back in Phase 1.</p>
+                    </div>
+                    <div class="cs-arch-arrow">↓</div>
+                    <div class="cs-arch-layer cs-output">
+                        <h4>Customer Central</h4>
+                        <p>Unified workspace — all 11 features render from a single, pre-computed data model.</p>
+                    </div>
+
+                    <div class="cs-loading-tiers">
+                        <div class="cs-loading-tier lt-instant">
+                            <h5>Instant (&lt;500ms)</h5>
+                            <p>Caller ID, account status, health score</p>
+                        </div>
+                        <div class="cs-loading-tier lt-fast">
+                            <h5>Fast (~2s)</h5>
+                            <p>Interaction timeline, open tickets</p>
+                        </div>
+                        <div class="cs-loading-tier lt-bg">
+                            <h5>Background (2-5s)</h5>
+                            <p>Pay stubs, invoices, benefits</p>
+                        </div>
+                        <div class="cs-loading-tier lt-demand">
+                            <h5>On Demand</h5>
+                            <p>Tax docs, payment history</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 7. Delivery Plan -->
+            <section class="cs-section">
+                <span class="cs-section-label">Delivery Plan</span>
+                <h2>Three Phases, One Foundation</h2>
+                <p class="cs-prose">The delivery plan sequences risk: Phase 1 is read-only and validates the data layer. Phase 2 adds intelligence once we trust the data. Phase 3 introduces AI capabilities once we have the behavioral data to train on.</p>
+
+                <div class="cs-phase-cards">
+                    <div class="cs-phase-card phase-green">
+                        <div class="phase-label">Phase 1</div>
+                        <h4>Foundation</h4>
+                        <div class="phase-duration">7 weeks</div>
+                        <p>Read-only MVP. All 11 features. Aggregation layer, unified workspace, health scores. Validates data accuracy with real agent usage.</p>
+                    </div>
+                    <div class="cs-phase-card phase-blue">
+                        <div class="phase-label">Phase 2</div>
+                        <h4>Intelligence</h4>
+                        <div class="phase-duration">Post-MVP</div>
+                        <p>ML-powered health scores, write-back actions, proactive alerts. Builds on Phase 1 behavioral data and validated data layer.</p>
+                    </div>
+                    <div class="cs-phase-card phase-purple">
+                        <div class="phase-label">Phase 3</div>
+                        <h4>Prediction</h4>
+                        <div class="phase-duration">Future</div>
+                        <p>AI copilot, churn prediction, cross-functional signals. Requires the intelligence layer and sufficient training data from Phase 2.</p>
+                    </div>
+                </div>
+
+                <h3 style="font-size: 1rem; font-weight: 700; color: var(--text-primary); margin-bottom: 12px;">Team Composition (Phase 1)</h3>
+                <div class="cs-team-grid">
+                    <div class="cs-team-card">
+                        <h5>Product Manager</h5>
+                        <p>Owns roadmap &amp; stakeholders</p>
+                    </div>
+                    <div class="cs-team-card">
+                        <h5>Backend Engineer</h5>
+                        <p>Aggregation layer &amp; APIs</p>
+                    </div>
+                    <div class="cs-team-card">
+                        <h5>Frontend Engineer</h5>
+                        <p>Workspace UI &amp; components</p>
+                    </div>
+                    <div class="cs-team-card">
+                        <h5>Designer</h5>
+                        <p>UX research &amp; design system</p>
+                    </div>
+                    <div class="cs-team-card">
+                        <h5>QA / Support Lead</h5>
+                        <p>Agent testing &amp; feedback loops</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 8. Success Framework -->
+            <section class="cs-section">
+                <span class="cs-section-label">Success Framework</span>
+                <h2>How We'd Know It's Working</h2>
+                <p class="cs-prose">Metrics were designed in three tiers: leading indicators to validate adoption within weeks, outcome metrics to confirm business impact at 90 days, and guardrails to ensure we don't optimize one thing at the expense of another.</p>
+
+                <div class="cs-metrics-grid">
+                    <div class="cs-metric-card mc-leading">
+                        <h4>Leading Indicators (Weeks 1-2)</h4>
+                        <div class="cs-metric-item"><strong>Orientation time &lt;10s</strong> — agent identifies caller and context</div>
+                        <div class="cs-metric-item"><strong>Systems per call: 5 → 2</strong> — primary + Customer Central</div>
+                        <div class="cs-metric-item"><strong>Health score viewed</strong> on 80%+ of calls</div>
+                    </div>
+                    <div class="cs-metric-card mc-outcome">
+                        <h4>Outcome Metrics (90 Days)</h4>
+                        <div class="cs-metric-item"><strong>AHT reduction: -15-20%</strong> via eliminated context-switching</div>
+                        <div class="cs-metric-item"><strong>FCR improvement: +10%</strong> from complete information at first contact</div>
+                        <div class="cs-metric-item"><strong>Escalation rate down</strong> as agents see full account picture</div>
+                    </div>
+                    <div class="cs-metric-card mc-guardrail">
+                        <h4>Guardrails</h4>
+                        <div class="cs-metric-item"><strong>NPS maintained</strong> — no regression from workflow changes</div>
+                        <div class="cs-metric-item"><strong>Data accuracy ≥98%</strong> — aggregation layer vs. source of truth</div>
+                        <div class="cs-metric-item"><strong>Agent satisfaction</strong> — CSAT survey for internal tooling</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 9. Key Decisions & Tradeoffs -->
+            <section class="cs-section">
+                <span class="cs-section-label">Key Decisions</span>
+                <h2>Tradeoffs Worth Explaining</h2>
+
+                <div class="cs-decisions-grid">
+                    <div class="cs-decision-card">
+                        <h4>Why read-only first?</h4>
+                        <p>Write-back actions (creating tickets, updating records) carry data integrity risk. By shipping read-only first, we validate the aggregation layer's accuracy with zero risk to source systems. Write-back becomes a Phase 2 unlock once agents trust the data.</p>
+                    </div>
+                    <div class="cs-decision-card">
+                        <h4>Why rules-based health score over ML?</h4>
+                        <p>ML models need training data we don't have yet. A weighted formula (billing 30%, payroll 25%, support 20%, satisfaction 15%, activity 10%) is transparent, debuggable, and immediately useful. ML upgrades to this in Phase 2 once we have behavioral baselines.</p>
+                    </div>
+                    <div class="cs-decision-card">
+                        <h4>Why 7 weeks, not 12?</h4>
+                        <p>A shorter timeline forces scope discipline and earlier feedback loops. The read-only constraint actually makes this possible — we're building a presentation layer, not modifying core systems. Each sprint ships usable functionality.</p>
+                    </div>
+                    <div class="cs-decision-card">
+                        <h4>Why "NPS per headcount dollar" as north star?</h4>
+                        <p>Traditional support metrics (AHT, FCR) can be gamed. Tying customer satisfaction to staffing efficiency creates a metric that only improves when you genuinely help agents help customers better — not when you rush them off calls.</p>
+                    </div>
+                </div>
+            </section>
+
+        </div><!-- /container -->
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2025 Darrien Watson</p>
+                <div class="footer-links">
+                    <a href="https://www.linkedin.com/in/darrien-watson-7ab648a1/" target="_blank">LinkedIn</a>
+                    <a href="mailto:dcharltonwatson@gmail.com">Email</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Nav background on scroll
+        const nav = document.querySelector('.nav');
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('scrolled', window.scrollY > 50);
+        });
+    </script>
+</body>
+</html>
